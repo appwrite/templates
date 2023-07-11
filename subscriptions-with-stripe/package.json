@@ -1,0 +1,17 @@
+{
+  "name": "subscriptions-with-stripe",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "node src/main.js",
+    "setup": "node src/setup.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "node-appwrite": "^9.0.0",
+    "stripe": "^12.12.0",
+    "stripe-event-types": "^2.3.0"
+  }
+}
