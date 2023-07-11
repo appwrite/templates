@@ -1,14 +1,16 @@
-const getEnvironment = require("./environment");
-const stripe = require("stripe");
+/// <reference types="stripe-event-types" />
+
+const getEnvironment = require('./environment')
+const stripe = require('stripe')
 
 module.exports = function StripeService() {
   const { STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, SUCCESS_URL, CANCEL_URL } =
-    getEnvironment();
+    getEnvironment()
 
   // Note: stripe cjs API types are faulty
   /** @type {import('stripe').Stripe} */
   // @ts-ignore
-  const stripeClient = stripe(STRIPE_SECRET_KEY);
+  const stripeClient = stripe(STRIPE_SECRET_KEY)
 
   return {
     /**
@@ -17,17 +19,17 @@ module.exports = function StripeService() {
     checkoutSubscription: async function (userId) {
       try {
         return await stripeClient.checkout.sessions.create({
-          payment_method_types: ["card"],
+          payment_method_types: ['card'],
           line_items: [
             {
               price_data: {
-                currency: "usd",
+                currency: 'usd',
                 product_data: {
-                  name: "Premium Subscription",
+                  name: 'Premium Subscription',
                 },
                 unit_amount: 1000,
                 recurring: {
-                  interval: "year",
+                  interval: 'year',
                 },
               },
               quantity: 1,
@@ -39,10 +41,10 @@ module.exports = function StripeService() {
           metadata: {
             userId,
           },
-          mode: "subscription",
-        });
+          mode: 'subscription',
+        })
       } catch (err) {
-        return null;
+        return null
       }
     },
     /**
@@ -52,15 +54,13 @@ module.exports = function StripeService() {
       try {
         const event = stripeClient.webhooks.constructEvent(
           req.body,
-          req.headers["stripe-signature"],
+          req.headers['stripe-signature'],
           STRIPE_WEBHOOK_SECRET
-        );
-        return /** @type {import("stripe").Stripe.DiscriminatedEvent} */ (
-          event
-        );
+        )
+        return /** @type {import("stripe").Stripe.DiscriminatedEvent} */ (event)
       } catch (err) {
-        return null;
+        return null
       }
     },
-  };
-};
+  }
+}
