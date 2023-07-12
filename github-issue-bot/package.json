@@ -1,0 +1,20 @@
+{
+  "name": "github-issue-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/main.js",
+  "type": "module",
+  "scripts": {
+    "format": "prettier --write src/**/*.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@octokit/core": "^4.2.4",
+    "@octokit/rest": "^19.0.13",
+    "@octokit/webhooks-methods": "^4.0.0"
+  },
+  "devDependencies": {
+    "prettier": "^3.0.0"
+  }
+}
