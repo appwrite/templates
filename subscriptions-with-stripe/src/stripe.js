@@ -1,9 +1,9 @@
 /// <reference types="stripe-event-types" />
 
-const getEnvironment = require('./environment')
-const stripe = require('stripe')
+import getEnvironment from './environment'
+import stripe from 'stripe'
 
-module.exports = function StripeService() {
+export default function StripeService() {
   const { STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, SUCCESS_URL, CANCEL_URL } =
     getEnvironment()
 

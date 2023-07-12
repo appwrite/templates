@@ -36,7 +36,7 @@ function isValidUrl(url) {
   }
 }
 
-module.exports = function getEnvironment() {
+export default function getEnvironment() {
   return {
     APPWRITE_ENDPOINT: getRequiredUrlEnv('APPWRITE_ENDPOINT'),
     APPWRITE_PROJECT_ID: getRequiredEnv('APPWRITE_PROJECT_ID'),

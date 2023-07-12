@@ -1,11 +1,11 @@
-const { Client, Databases } = require('node-appwrite')
-const getEnvironment = require('./environment')
+import { Client, Databases } from 'node-appwrite'
+import getEnvironment from './environment'
 
 const Subscriptions = {
   PREMIUM: 'premium',
 }
 
-module.exports = function AppwriteService() {
+export default function AppwriteService() {
   const {
     APPWRITE_ENDPOINT,
     APPWRITE_PROJECT_ID,

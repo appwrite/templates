@@ -1,8 +1,8 @@
-const StripeService = require('./stripe')
-const AppwriteService = require('./appwrite')
-const getEnvironment = require('./environment')
+import StripeService from './stripe'
+import AppwriteService from './appwrite'
+import getEnvironment from './environment'
 
-module.exports = async ({ req, res, log, error }) => {
+export default async ({ req, res, log, error }) => {
   const { CANCEL_URL } = getEnvironment()
 
   const appwrite = AppwriteService()

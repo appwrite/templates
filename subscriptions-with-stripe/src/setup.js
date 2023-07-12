@@ -1,4 +1,4 @@
-const AppwriteService = require('./appwrite')
+import AppwriteService from './appwrite'
 
 /**
  * Setup script for the subscribers database.
