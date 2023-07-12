@@ -3,19 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "main": "src/main.js",
+  "type": "module",
   "scripts": {
     "format": "prettier --write src/**/*.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/appwrite/templates-for-node.git"
-  },
   "author": "",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/appwrite/templates-for-node/issues"
-  },
-  "homepage": "https://github.com/appwrite/templates-for-node#readme",
   "devDependencies": {
     "prettier": "^3.0.0"
   }
