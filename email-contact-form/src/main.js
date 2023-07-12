@@ -60,14 +60,7 @@ export default async ({ req, res, log, error }) => {
 
   const form = querystring.parse(req.body)
 
-  if (
-    !(
-      form.email &&
-      form._next &&
-      typeof form.email === 'string' &&
-      typeof form._next === 'string'
-    )
-  ) {
+  if (!(form.email && typeof form.email === 'string')) {
     error('Missing form data.')
     return res.redirect(
       urlWithCodeParam(referer, ErrorCode.MISSING_FORM_FIELDS),
@@ -76,6 +69,9 @@ export default async ({ req, res, log, error }) => {
     )
   }
   log('Form data is valid.')
+
+  const successUrl =
+    typeof form._next === 'string' && form._next ? form._next : '/success'
 
   try {
     mail.send({
@@ -96,7 +92,7 @@ export default async ({ req, res, log, error }) => {
   log('Email sent successfully.')
 
   return res.redirect(
-    new URL(form._next, origin).toString(),
+    new URL(successUrl, origin).toString(),
     301,
     cors.getHeaders()
   )
