@@ -1,11 +1,3 @@
-export default function getEnvironment() {
-  return {
-    GITHUB_WEBHOOK_SECRET: getRequiredEnv('GITHUB_WEBHOOK_SECRET'),
-    GITHUB_TOKEN: getRequiredEnv('GITHUB_TOKEN'),
-    DISCORD_LINK: getRequiredEnv('DISCORD_LINK'),
-  }
-}
-
 /**
  * @param {string} key
  * @return {string}
@@ -17,3 +9,13 @@ function getRequiredEnv(key) {
   }
   return value
 }
+
+function EnvironmentService() {
+  return {
+    GITHUB_WEBHOOK_SECRET: getRequiredEnv('GITHUB_WEBHOOK_SECRET'),
+    GITHUB_TOKEN: getRequiredEnv('GITHUB_TOKEN'),
+    DISCORD_LINK: getRequiredEnv('DISCORD_LINK'),
+  }
+}
+
+export default EnvironmentService

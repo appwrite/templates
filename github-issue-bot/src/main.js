@@ -1,16 +1,13 @@
-import getEnvironment from './environment'
-import { verify } from '@octokit/webhooks-methods'
-import GithubService from './github'
+import EnvironmentService from './environment.js'
+import GithubService from './github.js'
 
 export default async ({ res, req, log, error }) => {
-  const { GITHUB_WEBHOOK_SECRET, DISCORD_LINK } = getEnvironment()
-  const github = GithubService()
+  const environment = EnvironmentService()
+  const github = GithubService(environment)
 
-  const signature = req.headers['x-hub-signature-256']
-  if (
-    typeof signature !== 'string' ||
-    (await verify(GITHUB_WEBHOOK_SECRET, req.bodyString, signature))
-  ) {
+  const { DISCORD_LINK } = environment
+
+  if (!(await github.verifyWebhook(req))) {
     error('Invalid signature')
     return res.json({ error: 'Invalid signature' }, 401)
   }
