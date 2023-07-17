@@ -2,14 +2,14 @@ import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { OpenAIApi, Configuration } from 'openai'
-import getEnvironment from './environment'
+import EnvironmentService from './environment.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 const staticFolder = path.join(__dirname, '../static')
 
 export default async ({ req, res }) => {
-  const { OPENAI_API_KEY, OPENAI_MAX_TOKENS } = getEnvironment()
+  const { OPENAI_API_KEY, OPENAI_MAX_TOKENS } = EnvironmentService()
 
   const configuration = new Configuration({
     apiKey: OPENAI_API_KEY,
@@ -18,7 +18,6 @@ export default async ({ req, res }) => {
 
   if (req.method === 'GET') {
     let html = fs.readFileSync(path.join(staticFolder, 'index.html')).toString()
-
     return res.send(html, 200, { 'Content-Type': 'text/html; charset=utf-8' })
   }
 

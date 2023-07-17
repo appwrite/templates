@@ -1,10 +1,3 @@
-module.exports = function getEnvironment() {
-  return {
-    OPENAI_API_KEY: getRequiredEnv('OPENAI_API_KEY'),
-    OPENAI_MAX_TOKENS: getNumberEnv('OPENAI_MAX_TOKENS') ?? 64,
-  }
-}
-
 /**
  * @param {string} key
  * @return {string}
@@ -33,3 +26,12 @@ function getNumberEnv(key) {
     throw new Error(`Environment variable ${key} is not a number`)
   }
 }
+
+function EnvironmentService() {
+  return {
+    OPENAI_API_KEY: getRequiredEnv('OPENAI_API_KEY'),
+    OPENAI_MAX_TOKENS: getNumberEnv('OPENAI_MAX_TOKENS') ?? 64,
+  }
+}
+
+export default EnvironmentService
