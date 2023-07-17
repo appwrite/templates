@@ -1,9 +1,3 @@
-export default function getEnvironment() {
-  return {
-    DISCORD_PUBLIC_KEY: getRequiredEnv('DISCORD_PUBLIC_KEY'),
-  }
-}
-
 /**
  * @param {string} key
  * @return {string}
@@ -14,4 +8,10 @@ function getRequiredEnv(key) {
     throw new Error(`Environment variable ${key} is not set`)
   }
   return value
+}
+
+export default function EnvironmentService() {
+  return {
+    DISCORD_PUBLIC_KEY: getRequiredEnv('DISCORD_PUBLIC_KEY'),
+  }
 }

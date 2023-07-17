@@ -1,7 +1,11 @@
 import { InteractionResponseType, InteractionType } from 'discord-interactions'
-import discord from './discord'
+import DiscordService from './discord.js'
+import EnvironmentService from './environment.js'
 
-export default async ({ req, res, log, error }) => {
+export default async ({ req, res, error }) => {
+  const environment = EnvironmentService()
+  const discord = DiscordService(environment)
+
   if (!(await discord.verifyWebhook(req))) {
     error('Invalid request.')
     return res.send('Invalid request signature', 401)
