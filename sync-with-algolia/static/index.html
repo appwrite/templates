@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Algolia Search Demo</title>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/algoliasearch@4.17.2/dist/algoliasearch-lite.umd.js"
+      integrity="sha256-X2G+vjV8i6Jj2NSGFTvy6Z4q2AlmF5aH0HiIpWJ8eU4="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.56.3/dist/instantsearch.production.min.js"
+      integrity="sha256-mWvjWAfZylKMOg+S3HLq+wng1HHRnl2Idr2r8NsUzIU="
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/instantsearch.css@8.0.0/themes/satellite-min.css"
+      integrity="sha256-p/rGN4RGy6EDumyxF9t7LKxWGg6/MZfGhJM/asKkqvA="
+      crossorigin="anonymous"
+    />
+
+    <link rel="stylesheet" href="https://unpkg.com/@appwrite.io/pink" />
+    <link rel="stylesheet" href="https://unpkg.com/@appwrite.io/pink-icons" />
+  </head>
+  <body>
+    <main class="main-content">
+      <div class="top-cover u-padding-block-end-56">
+        <div class="container">
+          <div
+            class="u-flex u-gap-16 u-flex-justify-center u-margin-block-start-16"
+          >
+            <h1 class="heading-level-1">Algolia Search Demo</h1>
+            <code class="u-un-break-text"></code>
+          </div>
+          <p
+            class="body-text-1 u-normal u-margin-block-start-8"
+            style="max-width: 50rem"
+          >
+            This is demo application. You can ue this app to ensure sync between
+            Appwrite Databases and Algolia Seach was successful. Use search
+            input below to search your data.
+          </p>
+        </div>
+      </div>
+      <div class="container u-margin-block-start-negative-56">
+        <div class="card u-flex u-gap-24 u-flex-vertical">
+          <div id="searchbox"></div>
+          <div id="hits"></div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      const searchClient = algoliasearch(
+        "{{ALGOLIA_APP_ID}}",
+        "{{ALGOLIA_SEARCH_API_KEY}}"
+      );
+
+      const search = instantsearch({
+        indexName: "{{ALGOLIA_INDEX_ID}}",
+        searchClient,
+      });
+
+      search.addWidgets([
+        instantsearch.widgets.searchBox({
+          container: "#searchbox",
+        }),
+
+        instantsearch.widgets.hits({
+          container: "#hits",
+          templates: {
+            item(hit, { html, components }) {
+              return html`
+                <div class="u-flex u-flex-vertical u-gap-12">
+                  <div class="u-flex u-gap-12">
+                    <h5 class="eyebrow-heading-2">
+                      ${hit[Object.keys(hit)[0]]}
+                    </h5>
+                    <div><code class="inline-code">${hit.$id}</code></div>
+                  </div>
+
+                  <div style="overflow-x: hidden; line-break: anywhere;">
+                    <p class="u-color-text-gray">${JSON.stringify(hit)}</p>
+                  </div>
+                </div>
+              `;
+            },
+          },
+        }),
+      ]);
+
+      search.start();
+    </script>
+  </body>
+</html>
