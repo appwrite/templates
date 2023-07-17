@@ -1,8 +1,10 @@
-import AppwriteService from './appwrite'
+import AppwriteService from './appwrite.js'
+import EnvironmentService from './environment.js'
 
 async function setup() {
   console.log('Executing setup script...')
 
+  const environment = EnvironmentService()
   const appwrite = AppwriteService()
 
   if (await appwrite.doesURLEntryDatabaseExist()) {

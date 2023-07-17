@@ -1,5 +1,4 @@
 import { Client, Databases } from 'node-appwrite'
-import getEnvironment from './environment'
 
 /**
  * @typedef {Object} URLEntry
@@ -8,7 +7,7 @@ import getEnvironment from './environment'
  * @typedef {import('node-appwrite').Models.Document & URLEntry} URLEntryDocument
  */
 
-export default function AppwriteService() {
+function AppwriteService(environment) {
   const {
     APPWRITE_ENDPOINT,
     APPWRITE_PROJECT_ID,
@@ -17,7 +16,7 @@ export default function AppwriteService() {
     DATABASE_NAME,
     COLLECTION_ID,
     COLLECTION_NAME,
-  } = getEnvironment()
+  } = environment
 
   const client = new Client()
   client
@@ -104,3 +103,5 @@ export default function AppwriteService() {
     },
   }
 }
+
+export default AppwriteService

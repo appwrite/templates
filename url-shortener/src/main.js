@@ -1,10 +1,12 @@
-import AppwriteService from './appwrite'
-import getEnvironment from './environment'
-import { isValidURL, generateShortCode } from './utils'
+import AppwriteService from './appwrite.js'
+import EnvironmentService from './environment.js'
+import { isValidURL, generateShortCode } from './utils.js'
 
 export default async ({ res, req, log, error }) => {
-  const { SHORT_DOMAIN } = getEnvironment()
-  const appwrite = AppwriteService()
+  const environment = EnvironmentService()
+  const appwrite = AppwriteService(environment)
+
+  const { SHORT_DOMAIN } = environment
 
   if (
     req.method === 'POST' &&
