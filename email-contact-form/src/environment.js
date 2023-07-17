@@ -10,7 +10,7 @@ function getRequiredEnv(key) {
   return value
 }
 
-export default function getEnvironment() {
+function EnvironmentService() {
   return {
     SUBMIT_EMAIL: getRequiredEnv('SUBMIT_EMAIL'),
     SMTP_HOST: getRequiredEnv('SMTP_HOST'),
@@ -20,3 +20,5 @@ export default function getEnvironment() {
     ALLOWED_ORIGINS: process.env.ALLOWED_ORIGINS || '*',
   }
 }
+
+export default EnvironmentService

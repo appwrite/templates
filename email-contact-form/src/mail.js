@@ -1,9 +1,7 @@
-import getEnvironment from './environment'
 import nodemailer from 'nodemailer'
 
-export default function MailService() {
-  const { SMTP_HOST, SMTP_PORT, SMTP_USERNAME, SMTP_PASSWORD } =
-    getEnvironment()
+export default function MailService(environment) {
+  const { SMTP_HOST, SMTP_PORT, SMTP_USERNAME, SMTP_PASSWORD } = environment
 
   const transport = nodemailer.createTransport({
     // @ts-ignore

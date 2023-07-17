@@ -2,9 +2,9 @@ import querystring from 'node:querystring'
 import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
-import getEnvironment from './environment'
-import CorsService from './cors'
-import MailService from './mail'
+import CorsService from './cors.js'
+import MailService from './mail.js'
+import EnvironmentService from './environment.js'
 
 const ErrorCode = {
   INVALID_REQUEST: 'invalid-request',
@@ -24,7 +24,8 @@ const __dirname = path.dirname(__filename)
 const staticFolder = path.join(__dirname, '../static')
 
 export default async ({ req, res, log, error }) => {
-  const { SUBMIT_EMAIL, ALLOWED_ORIGINS } = getEnvironment()
+  const environment = EnvironmentService()
+  const { SUBMIT_EMAIL, ALLOWED_ORIGINS } = environment
 
   if (ALLOWED_ORIGINS === '*') {
     log('WARNING: Allowing requests from any origin - this is a security risk!')
@@ -50,8 +51,8 @@ export default async ({ req, res, log, error }) => {
     return res.redirect(urlWithCodeParam(referer, ErrorCode.INVALID_REQUEST))
   }
 
-  const cors = CorsService(origin)
-  const mail = MailService()
+  const cors = CorsService(origin, environment)
+  const mail = MailService(environment)
 
   if (!cors.isOriginPermitted()) {
     error('Origin not permitted.')

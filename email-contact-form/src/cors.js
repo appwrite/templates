@@ -1,10 +1,8 @@
-import getEnvironment from './environment'
-
 /**
  * @param {string} origin Origin header of the request
  */
-export default function CorsService(origin) {
-  const { ALLOWED_ORIGINS } = getEnvironment()
+export default function CorsService(origin, environment) {
+  const { ALLOWED_ORIGINS } = environment
 
   return {
     /**
