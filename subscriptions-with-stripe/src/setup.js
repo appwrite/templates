@@ -1,4 +1,5 @@
-import AppwriteService from './appwrite'
+import AppwriteService from './appwrite.js'
+import EnvironmentService from './environment.js'
 
 /**
  * Setup script for the subscribers database.
@@ -7,7 +8,8 @@ import AppwriteService from './appwrite'
 async function setup() {
   console.log('Executing setup script...')
 
-  const appwrite = AppwriteService()
+  const environment = EnvironmentService()
+  const appwrite = AppwriteService(environment)
 
   if (await appwrite.doesSubscribersDatabaseExist()) {
     console.log(`Database exists.`)

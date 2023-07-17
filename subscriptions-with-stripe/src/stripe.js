@@ -1,11 +1,10 @@
 /// <reference types="stripe-event-types" />
 
-import getEnvironment from './environment'
 import stripe from 'stripe'
 
-export default function StripeService() {
+function StripeService(environment) {
   const { STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, SUCCESS_URL, CANCEL_URL } =
-    getEnvironment()
+    environment
 
   // Note: stripe cjs API types are faulty
   /** @type {import('stripe').Stripe} */
@@ -64,3 +63,5 @@ export default function StripeService() {
     },
   }
 }
+
+export default StripeService

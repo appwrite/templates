@@ -36,7 +36,7 @@ function isValidUrl(url) {
   }
 }
 
-export default function getEnvironment() {
+function EnvironmentService() {
   return {
     APPWRITE_ENDPOINT: getRequiredUrlEnv('APPWRITE_ENDPOINT'),
     APPWRITE_PROJECT_ID: getRequiredEnv('APPWRITE_PROJECT_ID'),
@@ -51,3 +51,5 @@ export default function getEnvironment() {
     COLLECTION_NAME: 'Subscriptions',
   }
 }
+
+export default EnvironmentService

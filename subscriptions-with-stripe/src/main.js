@@ -1,12 +1,13 @@
-import StripeService from './stripe'
-import AppwriteService from './appwrite'
-import getEnvironment from './environment'
+import StripeService from './stripe.js'
+import AppwriteService from './appwrite.js'
+import EnvironmentService from './environment.js'
 
 export default async ({ req, res, log, error }) => {
-  const { CANCEL_URL } = getEnvironment()
+  const environment = EnvironmentService()
+  const appwrite = AppwriteService(environment)
+  const stripe = StripeService(environment)
 
-  const appwrite = AppwriteService()
-  const stripe = StripeService()
+  const { CANCEL_URL } = environment
 
   switch (req.path) {
     case '/checkout':

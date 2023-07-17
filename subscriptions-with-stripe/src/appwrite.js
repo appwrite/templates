@@ -1,11 +1,10 @@
 import { Client, Databases } from 'node-appwrite'
-import getEnvironment from './environment'
 
 const Subscriptions = {
   PREMIUM: 'premium',
 }
 
-export default function AppwriteService() {
+function AppwriteService(environment) {
   const {
     APPWRITE_ENDPOINT,
     APPWRITE_PROJECT_ID,
@@ -14,7 +13,7 @@ export default function AppwriteService() {
     DATABASE_NAME,
     COLLECTION_ID,
     COLLECTION_NAME,
-  } = getEnvironment()
+  } = environment
 
   const client = new Client()
   client
@@ -105,3 +104,5 @@ export default function AppwriteService() {
     },
   }
 }
+
+export default AppwriteService
