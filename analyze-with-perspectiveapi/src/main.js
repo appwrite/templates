@@ -1,6 +1,11 @@
 import fs from 'node:fs'
 import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { fetch } from 'undici'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+const staticFolder = path.join(__dirname, '../static')
 
 export default async ({ req, res }) => {
   const { PERSPECTIVE_API_KEY } = process.env
@@ -10,10 +15,9 @@ export default async ({ req, res }) => {
   }
 
   if (req.method === 'GET') {
-    let html = fs
-      .readFileSync(path.join(__dirname, '../static/index.html'))
+    const html = fs
+      .readFileSync(path.join(staticFolder, 'index.html'))
       .toString()
-
     return res.send(html, 200, { 'Content-Type': 'text/html; charset=utf-8' })
   }
 
