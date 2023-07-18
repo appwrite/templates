@@ -1,14 +1,13 @@
 # Hello World Function
 
-This is a simple function that returns a "Hello, World!" message.
+Serves a simple "Hello, World!" message. If accessed via GET, it serves an HTML page, otherwise, it returns a JSON response.
+### Function API
 
-Navigate to the function in the browser, you should see a basic "Hello, World!" page.
+- `GET` - Returns a HTML page with a greeting.
 
-Send a POST request to the function, and you will get a response that looks like this:
+- `POST` - Returns a JSON object with shape:
 ```json
 {
-    "message": "Hello, World!"
+  "message": "Hello, World! 👋"
 }
 ```
-
-The function also logs 'Hello, World' to the console.
