@@ -1,6 +1,6 @@
-import { readFileSync } from 'fs'
-import { fileURLToPath } from 'url'
+import fs from 'fs'
 import path from 'path'
+import { fileURLToPath } from 'url'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -11,8 +11,9 @@ export default async ({ req, res, log }) => {
   log('Hello, World! 👋')
 
   if (req.method === 'GET') {
-    let html = readFileSync(path.join(staticFolder, 'index.html')).toString()
-
+    const html = fs
+      .readFileSync(path.join(staticFolder, 'index.html'))
+      .toString()
     return res.send(html, 200, { 'Content-Type': 'text/html; charset=utf-8' })
   }
 
