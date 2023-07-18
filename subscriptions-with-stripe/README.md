@@ -1,22 +1,19 @@
 # Stripe Subscriptions Function
 
-This function helps to handle Stripe subscriptions and track them in an Appwrite database. It consists of handling Stripe checkout sessions, webhooks, and managing user subscriptions in a database.
+Integrates Stripe subscriptions into your Appwrite project. Collect payments using the `/checkout` endpoint and check the status of a user subscription using the `Subscriptions` collection.
 
 ## Setup
-
 ### Stripe API
 
-Setting up the Stripe API involves generating the required API keys and setting up the necessary webhook.
+**Stripe Key**
+  - Log in to your Stripe dashboard.
+  - Navigate to Developers > API keys.
+  - Here, you can find your publishable key and your secret key. You will need the secret key for this function (i.e., `STRIPE_SECRET_KEY`). Be sure not to share or expose this key as it could allow others to make API requests on behalf of your account.
 
-1. **API Keys**
-    - Log in to your Stripe dashboard.
-    - Navigate to Developers > API keys.
-    - Here, you can find your publishable key and your secret key. You will need the secret key for this function (i.e., `STRIPE_SECRET_KEY`). Be sure not to share or expose this key as it could allow others to make API requests on behalf of your account.
-
-2. **Webhooks**
-    - In your Stripe dashboard, navigate to Developers > Webhooks.
-    - Click "+ Add endpoint" and set the URL to where you've hosted this function with the /webhook path, and select the "customer.subscription.created" and "customer.subscription.deleted" events.
-    - Once you've created the webhook, you'll be able to view and copy the signing secret (i.e., `STRIPE_WEBHOOK_SECRET`).
+**Stripe Webhook Secret**
+  - In your Stripe dashboard, navigate to Developers > Webhooks.
+   - Click "+ Add endpoint" and set the URL to where you've hosted this function with the /webhook path, and select the "customer.subscription.created" and "customer.subscription.deleted" events.
+  - Once you've created the webhook, you'll be able to view and copy the signing secret (i.e., `STRIPE_WEBHOOK_SECRET`).
 
 ### Environment Variables
 
@@ -37,29 +34,17 @@ Additionally, the function has the following optional variables:
 
 ### Database Setup
 
-To setup the database, run `npm run setup`. 
-If the specified database doesn't exist, the script will automatically create it. It will also create a collection within the database, adding the necessary attributes to the collection.
+A setup script is included in `src/setup.js`. If the `Subscriptions` database doesn't exist, the setup script will automatically create it. It will also create a collection within the database, adding the necessary attributes to the collection. The setup script will run automatically when the function is deployed.
 
-## Usage
+## Function API
 
-This function supports two primary request paths:
+- `GET /checkout` - Creates a Stripe Checkout session and redirects the user to the Stripe Checkout page. If the user successfully completes the payment, they are redirected to the `SUCCESS_URL`. If the user cancels the payment, they are redirected to the `CANCEL_URL`.
 
-1. **Checkout Session Creation**
+- `POST /webhook` - Handles Stripe webhook events. This function handles two events:
+`customer.subscription.created` and `customer.subscription.deleted` - The function validates the webhook event and upgrades or downgrades the user's subscription in the database based on the event type.
 
-   - **Request Path:** /checkout
-   - **Request Type:** GET
-   - **Response:** 
-     - On success, the function will redirect to the Stripe Checkout session URL.
-     - If the request fails, the user is redirected to the specified `CANCEL_URL`.
 
-2. **Webhook Handling**
+## Advanced Usage
 
-   - **Request Path:** /webhook
-   - **Request Type:** POST
-   - **Content Type:** application/json
-   - **Response:** 
-     - The function will respond with an empty response after processing the webhook events.
-     - It handles two events:
-        1. `customer.subscription.created` - The user is upgraded to a premium subscription.
-        2. `customer.subscription.deleted` - The user is downgraded from their premium subscription.
+The checkout page may be customised by editing `src/stripe.js` to include your desired product data, prices, and styling.
 
