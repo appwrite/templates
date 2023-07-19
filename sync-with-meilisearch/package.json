@@ -8,8 +8,6 @@
     "format": "prettier --write src/**/*.js"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "node-appwrite": "^9.0.0",
     "undici": "^5.22.1"
