@@ -5,12 +5,9 @@
   "main": "src/main.js",
   "type": "module",
   "scripts": {
-    "start": "node src/main.js",
     "setup": "node src/setup.js",
     "format": "prettier --write src/**/*.js"
   },
-  "author": "",
-  "license": "MIT",
   "dependencies": {
     "node-appwrite": "^9.0.0",
     "stripe": "^12.12.0"

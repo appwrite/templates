@@ -1,15 +1,15 @@
 /// <reference types="stripe-event-types" />
 
-import stripe from 'stripe'
+import stripe from 'stripe';
 
 function StripeService(environment) {
   const { STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, SUCCESS_URL, CANCEL_URL } =
-    environment
+    environment;
 
   // Note: stripe cjs API types are faulty
   /** @type {import('stripe').Stripe} */
   // @ts-ignore
-  const stripeClient = stripe(STRIPE_SECRET_KEY)
+  const stripeClient = stripe(STRIPE_SECRET_KEY);
 
   return {
     /**
@@ -41,9 +41,9 @@ function StripeService(environment) {
             userId,
           },
           mode: 'subscription',
-        })
+        });
       } catch (err) {
-        return null
+        return null;
       }
     },
     /**
@@ -55,13 +55,15 @@ function StripeService(environment) {
           req.body,
           req.headers['stripe-signature'],
           STRIPE_WEBHOOK_SECRET
-        )
-        return /** @type {import("stripe").Stripe.DiscriminatedEvent} */ (event)
+        );
+        return /** @type {import("stripe").Stripe.DiscriminatedEvent} */ (
+          event
+        );
       } catch (err) {
-        return null
+        return null;
       }
     },
-  }
+  };
 }
 
-export default StripeService
+export default StripeService;

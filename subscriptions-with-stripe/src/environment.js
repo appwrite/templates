@@ -3,11 +3,11 @@
  * @return {string}
  */
 function getRequiredEnv(key) {
-  const value = process.env[key]
+  const value = process.env[key];
   if (value === undefined) {
-    throw new Error(`Environment variable ${key} is not set`)
+    throw new Error(`Environment variable ${key} is not set`);
   }
-  return value
+  return value;
 }
 
 /**
@@ -15,11 +15,11 @@ function getRequiredEnv(key) {
  * @return {string}
  */
 function getRequiredUrlEnv(key) {
-  const value = getRequiredEnv(key)
+  const value = getRequiredEnv(key);
   if (!isValidUrl(value)) {
-    throw new Error(`Environment variable ${key} is a not valid URL`)
+    throw new Error(`Environment variable ${key} is a not valid URL`);
   }
-  return value
+  return value;
 }
 
 /**
@@ -27,12 +27,12 @@ function getRequiredUrlEnv(key) {
  * @returns {boolean}
  */
 function isValidUrl(url) {
-  if (!url) return false
+  if (!url) return false;
   try {
-    new URL(url)
-    return true
+    new URL(url);
+    return true;
   } catch (err) {
-    return false
+    return false;
   }
 }
 
@@ -49,7 +49,7 @@ function EnvironmentService() {
     DATABASE_NAME: 'Stripe Subscriptions',
     COLLECTION_ID: process.env.COLLECTION_ID ?? 'subscriptions',
     COLLECTION_NAME: 'Subscriptions',
-  }
+  };
 }
 
-export default EnvironmentService
+export default EnvironmentService;
