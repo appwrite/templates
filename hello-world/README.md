@@ -6,12 +6,10 @@ A simple "Hello, World!" function. Edit `src/index.js` to get started and create
 
 ### `GET`
 
-- Logs a "Hello, World!" message to the console.
 - Returns a "Hello, World!" HTML page.
 
 ### `POST`
 
-- Logs a "Hello, World!" message to the console.
 - Returns a "Hello, World!" JSON response.
 
 **Response**
