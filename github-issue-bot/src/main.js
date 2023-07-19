@@ -2,10 +2,10 @@ import EnvironmentService from './environment.js';
 import GithubService from './github.js';
 
 export default async ({ res, req, log, error }) => {
-  const environment = EnvironmentService();
-  const github = GithubService(environment);
+  const env = new EnvironmentService();
+  const github = new GithubService(env);
 
-  const { DISCORD_LINK } = environment;
+  const { DISCORD_LINK } = env;
 
   if (!(await github.verifyWebhook(req))) {
     error('Invalid signature');
