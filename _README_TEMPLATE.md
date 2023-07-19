@@ -2,7 +2,7 @@
 # ⚡ Template Function
 
 <!-- Write short function tagline -->
-Function with missing description.
+Your function's description goes here.
 
 ## 🧰 Usage
 
@@ -11,13 +11,13 @@ Function with missing description.
 ### `GET /`
 
 <!-- Describe the endpoint -->
-Endpoint with missing description.
+Your endpoint description goes here.
 
 **Parameters**
 <!-- Document each expected parameter -->
-| Name   | Description                     | Location                     | Type                               | Sample Value |
-|--------|---------------------------------|------------------------------|------------------------------------|--------------|
-| userId | Param with missing description. | Path / Query / Body / Header | String / Number / Boolean / Object | 642...7cd    |
+| Name   | Description                       | Location                     | Type                               | Sample Value |
+|--------|-----------------------------------|------------------------------|------------------------------------|--------------|
+| userId | Your param description goes here. | Path / Query / Body / Header | String / Number / Boolean / Object | 642...7cd    |
 
 **Response**
 
@@ -39,7 +39,7 @@ Sample `400` Response:
 
 ## ⚙️ Configuration
 
-<!-- Update values and remove irelevant settings -->
+<!-- Update values and remove irrelevant settings -->
 | Setting        | Value          |
 |----------------|----------------|
 | Runtime        | Node (18.0)    |
@@ -61,7 +61,7 @@ API Key to talk to Appwrite backend APIs.
 
 <!-- Mark if variable is required or not -->
 <!-- Provide sample (but invalid) value -->
-<!-- Link to docs or remove if irelevant -->
+<!-- Link to docs or remove if irrelevant -->
 | Question       | Answer          |
 |----------------|-----------------|
 | Required       | Yes / No        |
