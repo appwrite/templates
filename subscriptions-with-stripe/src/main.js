@@ -3,24 +3,22 @@ import AppwriteService from './appwrite.js';
 import EnvironmentService from './environment.js';
 
 export default async ({ req, res, log, error }) => {
-  const environment = EnvironmentService();
-  const appwrite = AppwriteService(environment);
-  const stripe = StripeService(environment);
-
-  const { CANCEL_URL } = environment;
+  const env = new EnvironmentService();
+  const appwrite = new AppwriteService(env);
+  const stripe = new StripeService(env);
 
   switch (req.path) {
     case '/checkout':
       const userId = req.headers['x-appwrite-user-id'];
       if (!userId) {
         error('User ID not found in request.');
-        return res.redirect(CANCEL_URL, 303);
+        return res.redirect(env.CANCEL_URL, 303);
       }
 
       const session = await stripe.checkoutSubscription(userId);
       if (!session) {
         error('Failed to create Stripe checkout session.');
-        return res.redirect(CANCEL_URL, 303);
+        return res.redirect(env.CANCEL_URL, 303);
       }
 
       log(`Created Stripe checkout session for user ${userId}.`);

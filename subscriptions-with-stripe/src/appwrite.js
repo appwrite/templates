@@ -4,105 +4,118 @@ const Subscriptions = {
   PREMIUM: 'premium',
 };
 
-function AppwriteService(environment) {
-  const {
-    APPWRITE_ENDPOINT,
-    APPWRITE_PROJECT_ID,
-    APPWRITE_API_KEY,
-    DATABASE_ID,
-    DATABASE_NAME,
-    COLLECTION_ID,
-    COLLECTION_NAME,
-  } = environment;
+class AppwriteService {
+  /**
+   * @param {import('./environment').default} env
+   */
+  constructor(env) {
+    this.env = env;
 
-  const client = new Client();
-  client
-    .setEndpoint(APPWRITE_ENDPOINT)
-    .setProject(APPWRITE_PROJECT_ID)
-    .setKey(APPWRITE_API_KEY);
+    const client = new Client();
+    client
+      .setEndpoint(env.APPWRITE_ENDPOINT)
+      .setProject(env.APPWRITE_PROJECT_ID)
+      .setKey(env.APPWRITE_API_KEY);
 
-  const databases = new Databases(client);
+    const databases = new Databases(client);
+    this.databases = databases;
+  }
 
-  return {
-    /**
-     * @returns {Promise<boolean>}
-     */
-    doesSubscribersDatabaseExist: async function () {
-      try {
-        await databases.get(DATABASE_ID);
-        return true;
-      } catch (err) {
-        if (err.code === 404) return false;
-        throw err;
-      }
-    },
-    setupSubscribersDatabase: async function () {
-      try {
-        await databases.create(DATABASE_ID, DATABASE_NAME);
-        await databases.createCollection(
-          DATABASE_ID,
-          COLLECTION_ID,
-          COLLECTION_NAME
-        );
-        await databases.createStringAttribute(
-          DATABASE_ID,
-          COLLECTION_ID,
-          'userId',
-          255,
-          true
-        );
-        await databases.createStringAttribute(
-          DATABASE_ID,
-          COLLECTION_ID,
-          'subscriptionType',
-          255,
-          true
-        );
-      } catch (err) {
-        // If resource already exists, we can ignore the error
-        if (err.code !== 409) throw err;
-      }
-    },
-    /**
-     * @param {string} userId
-     * @returns {Promise<boolean>}
-     */
-    hasSubscription: async function (userId) {
-      try {
-        await databases.getDocument(DATABASE_ID, COLLECTION_ID, userId);
-        return true;
-      } catch (err) {
-        if (err.code !== 404) throw err;
-        return false;
-      }
-    },
-    /**
-     * @param {string} userId
-     * @returns {Promise<boolean>}
-     */
-    deleteSubscription: async function (userId) {
-      try {
-        await databases.deleteDocument(DATABASE_ID, COLLECTION_ID, userId);
-        return true;
-      } catch (err) {
-        return false;
-      }
-    },
-    /**
-     * @param {string} userId
-     * @returns {Promise<boolean>}
-     */
-    createSubscription: async function (userId) {
-      try {
-        await databases.createDocument(DATABASE_ID, COLLECTION_ID, userId, {
+  /**
+   * @returns {Promise<boolean>}
+   */
+  async doesSubscribersDatabaseExist() {
+    try {
+      await this.databases.get(this.env.DATABASE_ID);
+      return true;
+    } catch (err) {
+      if (err.code === 404) return false;
+      throw err;
+    }
+  }
+
+  async setupSubscribersDatabase() {
+    try {
+      await this.databases.create(this.env.DATABASE_ID, this.env.DATABASE_NAME);
+      await this.databases.createCollection(
+        this.env.DATABASE_ID,
+        this.env.COLLECTION_ID,
+        this.env.COLLECTION_NAME
+      );
+      await this.databases.createStringAttribute(
+        this.env.DATABASE_ID,
+        this.env.COLLECTION_ID,
+        'userId',
+        255,
+        true
+      );
+      await this.databases.createStringAttribute(
+        this.env.DATABASE_ID,
+        this.env.COLLECTION_ID,
+        'subscriptionType',
+        255,
+        true
+      );
+    } catch (err) {
+      // If resource already exists, we can ignore the error
+      if (err.code !== 409) throw err;
+    }
+  }
+
+  /**
+   * @param {string} userId
+   * @returns {Promise<boolean>}
+   */
+  async hasSubscription(userId) {
+    try {
+      await this.databases.getDocument(
+        this.env.DATABASE_ID,
+        this.env.COLLECTION_ID,
+        userId
+      );
+      return true;
+    } catch (err) {
+      if (err.code !== 404) throw err;
+      return false;
+    }
+  }
+
+  /**
+   * @param {string} userId
+   * @returns {Promise<boolean>}
+   */
+  async deleteSubscription(userId) {
+    try {
+      await this.databases.deleteDocument(
+        this.env.DATABASE_ID,
+        this.env.COLLECTION_ID,
+        userId
+      );
+      return true;
+    } catch (err) {
+      return false;
+    }
+  }
+
+  /**
+   * @param {string} userId
+   * @returns {Promise<boolean>}
+   */
+  async createSubscription(userId) {
+    try {
+      await this.databases.createDocument(
+        this.env.DATABASE_ID,
+        this.env.COLLECTION_ID,
+        userId,
+        {
           subscriptionType: Subscriptions.PREMIUM,
-        });
-        return true;
-      } catch (err) {
-        return false;
-      }
-    },
-  };
+        }
+      );
+      return true;
+    } catch (err) {
+      return false;
+    }
+  }
 }
 
 export default AppwriteService;
