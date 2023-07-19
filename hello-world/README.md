@@ -1,13 +1,23 @@
-# Hello World Function
+# ⚡ Hello World Function
 
-Serves a simple "Hello, World!" message. If accessed via GET, it serves an HTML page, otherwise, it returns a JSON response.
-### Function API
+A simple "Hello, World!" function. Edit `src/index.js` to get started and create something awesome! 🚀
 
-- `GET` - Returns a HTML page with a greeting.
+## 🧰 Usage
 
-- `POST` - Returns a JSON object with shape:
+### `GET`
+
+- Logs a "Hello, World!" message to the console.
+- Returns a "Hello, World!" HTML page.
+
+### `POST`
+
+- Logs a "Hello, World!" message to the console.
+- Returns a "Hello, World!" JSON response.
+
+**Response**
+
+Sample `200` Response:
+
 ```json
-{
-  "message": "Hello, World! 👋"
-}
+{ "message": "Hello, World! 👋" }
 ```
