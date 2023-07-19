@@ -19,17 +19,7 @@ function interpolate(template, values) {
 }
 
 export default async ({ req, res, log }) => {
-  const {
-    ALGOLIA_APP_ID,
-    ALGOLIA_ADMIN_API_KEY,
-    ALGOLIA_INDEX_ID,
-    ALGOLIA_SEARCH_API_KEY,
-    APPWRITE_API_KEY,
-    APPWRITE_DATABASE_ID,
-    APPWRITE_COLLECTION_ID,
-    APPWRITE_ENDPOINT,
-    APPWRITE_PROJECT_ID,
-  } = EnvironmentService();
+  const env = new EnvironmentService();
 
   if (req.method === 'GET') {
     const template = fs
@@ -37,23 +27,23 @@ export default async ({ req, res, log }) => {
       .toString();
 
     const html = interpolate(template, {
-      ALGOLIA_APP_ID,
-      ALGOLIA_INDEX_ID,
-      ALGOLIA_SEARCH_API_KEY,
+      ALGOLIA_APP_ID: env.ALGOLIA_APP_ID,
+      ALGOLIA_INDEX_ID: env.ALGOLIA_INDEX_ID,
+      ALGOLIA_SEARCH_API_KEY: env.ALGOLIA_SEARCH_API_KEY,
     });
 
     return res.send(html, 200, { 'Content-Type': 'text/html; charset=utf-8' });
   }
 
   const client = new Client()
-    .setEndpoint(APPWRITE_ENDPOINT)
-    .setProject(APPWRITE_PROJECT_ID)
-    .setKey(APPWRITE_API_KEY);
+    .setEndpoint(env.APPWRITE_ENDPOINT)
+    .setProject(env.APPWRITE_PROJECT_ID)
+    .setKey(env.APPWRITE_API_KEY);
 
   const databases = new Databases(client);
 
-  const algolia = algoliasearch(ALGOLIA_APP_ID, ALGOLIA_ADMIN_API_KEY);
-  const algoliaIndex = algolia.initIndex(ALGOLIA_INDEX_ID);
+  const algolia = algoliasearch(env.ALGOLIA_APP_ID, env.ALGOLIA_ADMIN_API_KEY);
+  const algoliaIndex = algolia.initIndex(env.ALGOLIA_INDEX_ID);
 
   let cursor = null;
 
@@ -65,8 +55,8 @@ export default async ({ req, res, log }) => {
     }
 
     const response = await databases.listDocuments(
-      APPWRITE_DATABASE_ID,
-      APPWRITE_COLLECTION_ID,
+      env.APPWRITE_DATABASE_ID,
+      env.APPWRITE_COLLECTION_ID,
       queries
     );
 
