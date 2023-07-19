@@ -9,8 +9,8 @@ export default async ({ req, res, log, error }) => {
     return res.send('Invalid request.', 400);
   }
 
-  const environment = EnvironmentService();
-  const firebase = FirebaseService(environment);
+  const env = new EnvironmentService();
+  const firebase = new FirebaseService(env);
 
   const { deviceToken, message } = req.body;
   if (!deviceToken || !message) {
