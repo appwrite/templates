@@ -4,6 +4,7 @@ import { fetch } from 'undici';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import EnvironmentService from './environment.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -11,11 +12,7 @@ const staticFolder = path.join(__dirname, '../static');
 
 export default async ({ req, res }) => {
   const { VONAGE_API_KEY, VONAGE_API_SECRET, VONAGE_API_SIGNATURE_SECRET } =
-    process.env;
-
-  if (!VONAGE_API_KEY || !VONAGE_API_SECRET || !VONAGE_API_SIGNATURE_SECRET) {
-    throw new Error('Function is missing required environment variables.');
-  }
+    new EnvironmentService();
 
   if (req.method === 'GET') {
     const html = fs
