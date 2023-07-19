@@ -8,8 +8,6 @@
     "format": "prettier --write src/**/*.js"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "algoliasearch": "^4.17.2",
     "node-appwrite": "^9.0.0"
