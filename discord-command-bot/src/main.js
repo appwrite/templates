@@ -3,8 +3,8 @@ import DiscordService from './discord.js';
 import EnvironmentService from './environment.js';
 
 export default async ({ req, res, error }) => {
-  const environment = EnvironmentService();
-  const discord = DiscordService(environment);
+  const env = new EnvironmentService();
+  const discord = new DiscordService(env);
 
   if (!(await discord.verifyWebhook(req))) {
     error('Invalid request.');

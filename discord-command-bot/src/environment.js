@@ -10,8 +10,8 @@ function getRequiredEnv(key) {
   return value;
 }
 
-export default function EnvironmentService() {
-  return {
-    DISCORD_PUBLIC_KEY: getRequiredEnv('DISCORD_PUBLIC_KEY'),
-  };
+class EnvironmentService {
+  DISCORD_PUBLIC_KEY = getRequiredEnv('DISCORD_PUBLIC_KEY');
 }
+
+export default EnvironmentService;
