@@ -8,7 +8,8 @@ const __dirname = path.dirname(__filename)
 const staticFolder = path.join(__dirname, '../static')
 
 export default async ({ req, res, log }) => {
-  log('Hello, World! 👋')
+  log('Hello, Logs! 👋')
+  error('Hello, Errors! 👋')
 
   if (req.method === 'GET') {
     const html = fs
