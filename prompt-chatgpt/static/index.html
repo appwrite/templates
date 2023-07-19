@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -8,11 +8,11 @@
 
     <script>
       async function onSubmit(prompt) {
-        const response = await fetch("/", {
-          method: "POST",
+        const response = await fetch('/', {
+          method: 'POST',
           body: prompt,
           headers: {
-            "Content-Type": "text/plain",
+            'Content-Type': 'text/plain',
           },
         });
 
