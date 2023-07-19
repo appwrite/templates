@@ -1,0 +1,16 @@
+{
+  "name": "generate-qr-code",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/main.js",
+  "type": "module",
+  "scripts": {
+    "format": "prettier --write src/**/*.js"
+  },
+  "devDependencies": {
+    "prettier": "^3.0.0"
+  },
+  "dependencies": {
+    "qrcode": "^1.5.3"
+  }
+}
