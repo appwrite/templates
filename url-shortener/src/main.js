@@ -1,28 +1,28 @@
-import AppwriteService from './appwrite.js'
-import EnvironmentService from './environment.js'
-import { isValidURL, generateShortCode } from './utils.js'
+import AppwriteService from './appwrite.js';
+import EnvironmentService from './environment.js';
+import { isValidURL, generateShortCode } from './utils.js';
 
 export default async ({ res, req, log, error }) => {
-  const environment = EnvironmentService()
-  const appwrite = AppwriteService(environment)
+  const environment = EnvironmentService();
+  const appwrite = AppwriteService(environment);
 
-  const { SHORT_DOMAIN } = environment
+  const { SHORT_DOMAIN } = environment;
 
   if (
     req.method === 'POST' &&
     req.headers['content-type'] === 'application/json'
   ) {
-    const { url } = req.body
+    const { url } = req.body;
     if (!url || !isValidURL(url)) {
-      error('Invalid url parameter.')
-      return res.json({ error: 'Invalid url parameter' }, 400)
+      error('Invalid url parameter.');
+      return res.json({ error: 'Invalid url parameter' }, 400);
     }
 
-    const shortCode = generateShortCode()
-    const urlEntry = await appwrite.createURLEntry(url, shortCode)
+    const shortCode = generateShortCode();
+    const urlEntry = await appwrite.createURLEntry(url, shortCode);
     if (!urlEntry) {
-      error('Failed to create url entry.')
-      return res.json({ error: 'Failed to create url entry' }, 500)
+      error('Failed to create url entry.');
+      return res.json({ error: 'Failed to create url entry' }, 500);
     }
 
     return res.json(
@@ -31,16 +31,16 @@ export default async ({ res, req, log, error }) => {
         url: urlEntry.url,
       },
       201
-    )
+    );
   }
 
-  const shortId = req.path.replace(/^\/|\/$/g, '')
-  log(`Fetching document from with ID: ${shortId}`)
+  const shortId = req.path.replace(/^\/|\/$/g, '');
+  log(`Fetching document from with ID: ${shortId}`);
 
-  const urlEntry = await appwrite.getURLEntry(shortId)
+  const urlEntry = await appwrite.getURLEntry(shortId);
   if (!urlEntry) {
-    return res.send(`Not found.`, 404)
+    return res.send(`Not found.`, 404);
   }
 
-  return res.redirect(urlEntry.url, 302)
-}
+  return res.redirect(urlEntry.url, 302);
+};

@@ -1,4 +1,4 @@
-import { Client, Databases } from 'node-appwrite'
+import { Client, Databases } from 'node-appwrite';
 
 /**
  * @typedef {Object} URLEntry
@@ -16,15 +16,15 @@ function AppwriteService(environment) {
     DATABASE_NAME,
     COLLECTION_ID,
     COLLECTION_NAME,
-  } = environment
+  } = environment;
 
-  const client = new Client()
+  const client = new Client();
   client
     .setEndpoint(APPWRITE_ENDPOINT)
     .setProject(APPWRITE_PROJECT_ID)
-    .setKey(APPWRITE_API_KEY)
+    .setKey(APPWRITE_API_KEY);
 
-  const databases = new Databases(client)
+  const databases = new Databases(client);
 
   return {
     /**
@@ -35,12 +35,12 @@ function AppwriteService(environment) {
       try {
         const document = /** @type {URLEntryDocument} */ (
           await databases.getDocument(DATABASE_ID, COLLECTION_ID, shortCode)
-        )
+        );
 
-        return document
+        return document;
       } catch (err) {
-        if (err.code !== 404) throw err
-        return null
+        if (err.code !== 404) throw err;
+        return null;
       }
     },
 
@@ -60,12 +60,12 @@ function AppwriteService(environment) {
               url,
             }
           )
-        )
+        );
 
-        return document
+        return document;
       } catch (err) {
-        if (err.code !== 409) throw err
-        return null
+        if (err.code !== 409) throw err;
+        return null;
       }
     },
 
@@ -74,34 +74,34 @@ function AppwriteService(environment) {
      */
     doesURLEntryDatabaseExist: async function () {
       try {
-        await databases.get(DATABASE_ID)
-        return true
+        await databases.get(DATABASE_ID);
+        return true;
       } catch (err) {
-        if (err.code !== 404) throw err
-        return false
+        if (err.code !== 404) throw err;
+        return false;
       }
     },
 
     setupURLEntryDatabase: async function () {
       try {
-        await databases.create(DATABASE_ID, DATABASE_NAME)
+        await databases.create(DATABASE_ID, DATABASE_NAME);
         await databases.createCollection(
           DATABASE_ID,
           COLLECTION_ID,
           COLLECTION_NAME
-        )
+        );
         await databases.createUrlAttribute(
           DATABASE_ID,
           COLLECTION_ID,
           'url',
           true
-        )
+        );
       } catch (err) {
         // If resource already exists, we can ignore the error
-        if (err.code !== 409) throw err
+        if (err.code !== 409) throw err;
       }
     },
-  }
+  };
 }
 
-export default AppwriteService
+export default AppwriteService;

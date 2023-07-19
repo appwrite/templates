@@ -1,15 +1,15 @@
-import { isValidURL } from './utils'
+import { isValidURL } from './utils';
 
 /**
  * @param {string} key
  * @return {string}
  */
 function getRequiredEnv(key) {
-  const value = process.env[key]
+  const value = process.env[key];
   if (value === undefined) {
-    throw new Error(`Environment variable ${key} is not set`)
+    throw new Error(`Environment variable ${key} is not set`);
   }
-  return value
+  return value;
 }
 
 /**
@@ -17,11 +17,11 @@ function getRequiredEnv(key) {
  * @return {string}
  */
 function getRequiredUrlEnv(key) {
-  const value = getRequiredEnv(key)
+  const value = getRequiredEnv(key);
   if (!isValidURL(value)) {
-    throw new Error(`Environment variable ${key}=${value} is a not valid URL`)
+    throw new Error(`Environment variable ${key}=${value} is a not valid URL`);
   }
-  return value
+  return value;
 }
 
 function EnvironmentService() {
@@ -34,7 +34,7 @@ function EnvironmentService() {
     DATABASE_NAME: 'URL Shortener',
     COLLECTION_ID: process.env.COLLECTION_ID ?? 'urls',
     COLLECTION_NAME: 'URLs',
-  }
+  };
 }
 
-export default EnvironmentService
+export default EnvironmentService;
