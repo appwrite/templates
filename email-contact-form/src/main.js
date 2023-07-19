@@ -1,26 +1,13 @@
 import querystring from 'node:querystring';
-import { readFileSync } from 'node:fs';
+import fs from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import CorsService from './cors.js';
 import MailService from './mail.js';
 import EnvironmentService from './environment.js';
 
-const ErrorCode = {
-  INVALID_REQUEST: 'invalid-request',
-  MISSING_FORM_FIELDS: 'missing-form-fields',
-  SERVER_ERROR: 'server-error',
-};
-
-const ROUTES = {
-  '/': 'index.html',
-  '/index.html': 'index.html',
-  '/success.html': 'success.html',
-};
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
 const staticFolder = path.join(__dirname, '../static');
 
 export default async ({ req, res, log, error }) => {
@@ -33,9 +20,8 @@ export default async ({ req, res, log, error }) => {
     );
   }
 
-  if (req.method === 'GET') {
-    const route = ROUTES[req.path];
-    const html = readFileSync(path.join(staticFolder, route));
+  if (req.method === 'GET' && req.path === '/') {
+    const html = fs.readFileSync(path.join(staticFolder, 'index.html'));
     return res.send(html.toString(), 200, {
       'Content-Type': 'text/html; charset=utf-8',
     });
@@ -73,9 +59,6 @@ export default async ({ req, res, log, error }) => {
   }
   log('Form data is valid.');
 
-  const successUrl =
-    typeof form._next === 'string' && form._next ? form._next : '/success';
-
   try {
     mail.send({
       to: SUBMIT_EMAIL,
@@ -94,8 +77,15 @@ export default async ({ req, res, log, error }) => {
 
   log('Email sent successfully.');
 
+  if (typeof form._next !== 'string' || !form._next) {
+    const html = fs.readFileSync(path.join(staticFolder, 'success.html'));
+    return res.send(html.toString(), 200, {
+      'Content-Type': 'text/html; charset=utf-8',
+    });
+  }
+
   return res.redirect(
-    new URL(successUrl, origin).toString(),
+    new URL(form._next, origin).toString(),
     301,
     cors.getHeaders()
   );
@@ -113,6 +103,12 @@ ${Object.entries(form)
   .map(([key, value]) => `${key}: ${value}`)
   .join('\n')}`;
 }
+
+const ErrorCode = {
+  INVALID_REQUEST: 'invalid-request',
+  MISSING_FORM_FIELDS: 'missing-form-fields',
+  SERVER_ERROR: 'server-error',
+};
 
 /**
  * @param {string} baseUrl
