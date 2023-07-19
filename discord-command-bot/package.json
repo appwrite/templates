@@ -7,8 +7,6 @@
   "scripts": {
     "format": "prettier --write src/**/*.js"
   },
-  "author": "",
-  "license": "MIT",
   "dependencies": {
     "discord-interactions": "^3.4.0"
   },
