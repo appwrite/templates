@@ -7,8 +7,6 @@
   "scripts": {
     "format": "prettier --write src/**/*.js"
   },
-  "author": "",
-  "license": "MIT",
   "dependencies": {
     "nodemailer": "^6.9.3"
   },

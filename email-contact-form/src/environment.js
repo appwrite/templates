@@ -3,11 +3,11 @@
  * @return {string}
  */
 function getRequiredEnv(key) {
-  const value = process.env[key]
+  const value = process.env[key];
   if (value === undefined) {
-    throw new Error(`Environment variable ${key} is not set`)
+    throw new Error(`Environment variable ${key} is not set`);
   }
-  return value
+  return value;
 }
 
 function EnvironmentService() {
@@ -18,7 +18,7 @@ function EnvironmentService() {
     SMTP_USERNAME: getRequiredEnv('SMTP_USERNAME'),
     SMTP_PASSWORD: getRequiredEnv('SMTP_PASSWORD'),
     ALLOWED_ORIGINS: process.env.ALLOWED_ORIGINS || '*',
-  }
+  };
 }
 
-export default EnvironmentService
+export default EnvironmentService;
