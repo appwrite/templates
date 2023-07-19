@@ -9,10 +9,10 @@ const __dirname = path.dirname(__filename);
 const staticFolder = path.join(__dirname, '../static');
 
 export default async ({ req, res }) => {
-  const { OPENAI_API_KEY, OPENAI_MAX_TOKENS } = EnvironmentService();
+  const env = new EnvironmentService();
 
   const configuration = new Configuration({
-    apiKey: OPENAI_API_KEY,
+    apiKey: env.OPENAI_API_KEY,
   });
   const openai = new OpenAIApi(configuration);
 
@@ -29,7 +29,7 @@ export default async ({ req, res }) => {
 
   const chatCompletion = await openai.createChatCompletion({
     model: 'gpt-3.5-turbo',
-    max_tokens: OPENAI_MAX_TOKENS,
+    max_tokens: env.OPENAI_MAX_TOKENS,
     messages: [{ role: 'user', content: req.bodyString }],
   });
 
