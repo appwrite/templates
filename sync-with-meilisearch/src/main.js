@@ -20,16 +20,16 @@ function interpolate(template, values) {
 
 export default async ({ req, res, log }) => {
   const {
+    APPWRITE_ENDPOINT,
+    APPWRITE_PROJECT_ID,
+    APPWRITE_API_KEY,
+    APPWRITE_DATABASE_ID,
+    APPWRITE_COLLECTION_ID,
     MEILISEARCH_ENDPOINT,
     MEILISEARCH_ADMIN_API_KEY,
     MEILISEARCH_INDEX_NAME,
     MEILISEARCH_SEARCH_API_KEY,
-    APPWRITE_API_KEY,
-    APPWRITE_DATABASE_ID,
-    APPWRITE_COLLECTION_ID,
-    APPWRITE_ENDPOINT,
-    APPWRITE_PROJECT_ID,
-  } = EnvironmentService();
+  } = new EnvironmentService();
 
   if (req.method === 'GET') {
     const template = fs
@@ -37,7 +37,7 @@ export default async ({ req, res, log }) => {
       .toString();
 
     const html = interpolate(template, {
-      MEILISEARCH_ENDPOINT: MEILISEARCH_ENDPOINT,
+      MEILISEARCH_ENDPOINT,
       MEILISEARCH_INDEX_NAME,
       MEILISEARCH_SEARCH_API_KEY,
     });
