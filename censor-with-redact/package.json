@@ -8,8 +8,6 @@
     "format": "prettier --write src/**/*.js"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
     "prettier": "^3.0.0"
   },
