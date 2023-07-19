@@ -7,7 +7,7 @@ const __dirname = path.dirname(__filename)
 
 const staticFolder = path.join(__dirname, '../static')
 
-export default async ({ req, res, log }) => {
+export default async ({ req, res, log, error }) => {
   log('Hello, Logs! 👋')
   error('Hello, Errors! 👋')
 
