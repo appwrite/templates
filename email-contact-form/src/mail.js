@@ -1,22 +1,27 @@
 import nodemailer from 'nodemailer';
 
-export default function MailService(environment) {
-  const { SMTP_HOST, SMTP_PORT, SMTP_USERNAME, SMTP_PASSWORD } = environment;
+class MailService {
+  /**
+   * @param {import('./environment').default} env
+   */
+  constructor(env) {
+    this.env = env;
 
-  const transport = nodemailer.createTransport({
-    // @ts-ignore
-    // Not sure what's going on here.
-    host: SMTP_HOST,
-    port: SMTP_PORT,
-    auth: { user: SMTP_USERNAME, pass: SMTP_PASSWORD },
-  });
+    this.transport = nodemailer.createTransport({
+      // @ts-ignore
+      // Not sure what's going on here.
+      host: env.SMTP_HOST,
+      port: env.SMTP_PORT,
+      auth: { user: env.SMTP_USERNAME, pass: env.SMTP_PASSWORD },
+    });
+  }
 
-  return {
-    /**
-     * @param {import('nodemailer').SendMailOptions} mailOptions
-     */
-    send: async function (mailOptions) {
-      await transport.sendMail(mailOptions);
-    },
-  };
+  /**
+   * @param {import('nodemailer').SendMailOptions} mailOptions
+   */
+  async send(mailOptions) {
+    await this.transport.sendMail(mailOptions);
+  }
 }
+
+export default MailService;

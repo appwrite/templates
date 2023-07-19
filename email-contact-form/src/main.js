@@ -11,10 +11,9 @@ const __dirname = path.dirname(__filename);
 const staticFolder = path.join(__dirname, '../static');
 
 export default async ({ req, res, log, error }) => {
-  const environment = EnvironmentService();
-  const { SUBMIT_EMAIL, ALLOWED_ORIGINS } = environment;
+  const env = new EnvironmentService();
 
-  if (ALLOWED_ORIGINS === '*') {
+  if (env.ALLOWED_ORIGINS === '*') {
     log(
       'WARNING: Allowing requests from any origin - this is a security risk!'
     );
@@ -39,8 +38,8 @@ export default async ({ req, res, log, error }) => {
     return res.redirect(urlWithCodeParam(referer, ErrorCode.INVALID_REQUEST));
   }
 
-  const cors = CorsService(origin, environment);
-  const mail = MailService(environment);
+  const cors = new CorsService(req, env);
+  const mail = new MailService(env);
 
   if (!cors.isOriginPermitted()) {
     error('Origin not permitted.');
@@ -61,7 +60,7 @@ export default async ({ req, res, log, error }) => {
 
   try {
     mail.send({
-      to: SUBMIT_EMAIL,
+      to: env.SUBMIT_EMAIL,
       from: form.email,
       subject: `New form submission: ${origin}`,
       text: templateFormMessage(form),
