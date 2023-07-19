@@ -7,101 +7,100 @@ import { Client, Databases } from 'node-appwrite';
  * @typedef {import('node-appwrite').Models.Document & URLEntry} URLEntryDocument
  */
 
-function AppwriteService(environment) {
-  const {
-    APPWRITE_ENDPOINT,
-    APPWRITE_PROJECT_ID,
-    APPWRITE_API_KEY,
-    DATABASE_ID,
-    DATABASE_NAME,
-    COLLECTION_ID,
-    COLLECTION_NAME,
-  } = environment;
+class AppwriteService {
+  /**
+   * @param {import('./environment').default} env
+   */
+  constructor(env) {
+    this.env = env;
 
-  const client = new Client();
-  client
-    .setEndpoint(APPWRITE_ENDPOINT)
-    .setProject(APPWRITE_PROJECT_ID)
-    .setKey(APPWRITE_API_KEY);
+    const client = new Client();
+    client
+      .setEndpoint(env.APPWRITE_ENDPOINT)
+      .setProject(env.APPWRITE_PROJECT_ID)
+      .setKey(env.APPWRITE_API_KEY);
 
-  const databases = new Databases(client);
+    this.databases = new Databases(client);
+  }
 
-  return {
-    /**
-     * @param {string} shortCode
-     * @returns {Promise<URLEntryDocument | null>}
-     */
-    getURLEntry: async function (shortCode) {
-      try {
-        const document = /** @type {URLEntryDocument} */ (
-          await databases.getDocument(DATABASE_ID, COLLECTION_ID, shortCode)
-        );
+  /**
+   * @param {string} shortCode
+   * @returns {Promise<URLEntryDocument | null>}
+   */
+  async getURLEntry(shortCode) {
+    try {
+      const document = /** @type {URLEntryDocument} */ (
+        await this.databases.getDocument(
+          this.env.DATABASE_ID,
+          this.env.COLLECTION_ID,
+          shortCode
+        )
+      );
 
-        return document;
-      } catch (err) {
-        if (err.code !== 404) throw err;
-        return null;
-      }
-    },
+      return document;
+    } catch (err) {
+      if (err.code !== 404) throw err;
+      return null;
+    }
+  }
 
-    /**
-     * @param {string} url
-     * @param {string} shortCode
-     * @returns {Promise<URLEntryDocument | null>}
-     */
-    createURLEntry: async function (url, shortCode) {
-      try {
-        const document = /** @type {URLEntryDocument} */ (
-          await databases.createDocument(
-            DATABASE_ID,
-            COLLECTION_ID,
-            shortCode,
-            {
-              url,
-            }
-          )
-        );
+  /**
+   * @param {string} url
+   * @param {string} shortCode
+   * @returns {Promise<URLEntryDocument | null>}
+   */
+  async createURLEntry(url, shortCode) {
+    try {
+      const document = /** @type {URLEntryDocument} */ (
+        await this.databases.createDocument(
+          this.env.DATABASE_ID,
+          this.env.COLLECTION_ID,
+          shortCode,
+          {
+            url,
+          }
+        )
+      );
 
-        return document;
-      } catch (err) {
-        if (err.code !== 409) throw err;
-        return null;
-      }
-    },
+      return document;
+    } catch (err) {
+      if (err.code !== 409) throw err;
+      return null;
+    }
+  }
 
-    /**
-     * @returns {Promise<boolean>}
-     */
-    doesURLEntryDatabaseExist: async function () {
-      try {
-        await databases.get(DATABASE_ID);
-        return true;
-      } catch (err) {
-        if (err.code !== 404) throw err;
-        return false;
-      }
-    },
+  /**
+   * @returns {Promise<boolean>}
+   */
+  async doesURLEntryDatabaseExist() {
+    try {
+      await this.databases.get(this.env.DATABASE_ID);
+      return true;
+    } catch (err) {
+      if (err.code !== 404) throw err;
+      return false;
+    }
+  }
 
-    setupURLEntryDatabase: async function () {
-      try {
-        await databases.create(DATABASE_ID, DATABASE_NAME);
-        await databases.createCollection(
-          DATABASE_ID,
-          COLLECTION_ID,
-          COLLECTION_NAME
-        );
-        await databases.createUrlAttribute(
-          DATABASE_ID,
-          COLLECTION_ID,
-          'url',
-          true
-        );
-      } catch (err) {
-        // If resource already exists, we can ignore the error
-        if (err.code !== 409) throw err;
-      }
-    },
-  };
+  async setupURLEntryDatabase() {
+    try {
+      await this.databases.create(this.env.DATABASE_ID, this.env.DATABASE_NAME);
+      await this.databases.createCollection(
+        this.env.DATABASE_ID,
+        this.env.COLLECTION_ID,
+        this.env.COLLECTION_NAME
+      );
+      await this.databases.createUrlAttribute(
+        this.env.DATABASE_ID,
+        this.env.COLLECTION_ID,
+        'url',
+        true
+      );
+    } catch (err) {
+      // If resource already exists, we can ignore the error
+      if (err.code !== 409) throw err;
+    }
+  }
 }
 
 export default AppwriteService;

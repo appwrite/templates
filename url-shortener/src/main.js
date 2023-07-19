@@ -3,10 +3,8 @@ import EnvironmentService from './environment.js';
 import { isValidURL, generateShortCode } from './utils.js';
 
 export default async ({ res, req, log, error }) => {
-  const environment = EnvironmentService();
-  const appwrite = AppwriteService(environment);
-
-  const { SHORT_DOMAIN } = environment;
+  const env = new EnvironmentService();
+  const appwrite = new AppwriteService(env);
 
   if (
     req.method === 'POST' &&
@@ -27,7 +25,7 @@ export default async ({ res, req, log, error }) => {
 
     return res.json(
       {
-        short: `${SHORT_DOMAIN}/${urlEntry.$id}`,
+        short: `${env.SHORT_DOMAIN}/${urlEntry.$id}`,
         url: urlEntry.url,
       },
       201
