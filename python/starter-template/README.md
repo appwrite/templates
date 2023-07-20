@@ -37,12 +37,10 @@ Sample `200` Response:
 
 | Setting           | Value                             |
 |-------------------|-----------------------------------|
-| Runtime           | Python                            |
+| Runtime           | Python (3.10)                     |
 | Entrypoint        | src/main.py                       |
 | Build Commands    | `pip install -r requirements.txt` |
 | Permissions       | any                               |
-| Events            | users.*.create                    |
-| CRON              | 0 * * * *                         |
 | Timeout (Seconds) | 15                                |
 
 ## 🔒 Environment Variables
