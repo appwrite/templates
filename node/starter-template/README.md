@@ -32,3 +32,17 @@ Sample `200` Response:
   "getInspired": "https://builtwith.appwrite.io"
 }
 ```
+
+## ⚙️ Configuration
+
+| Setting           | Value         |
+|-------------------|---------------|
+| Runtime           | Node (18.0)   |
+| Entrypoint        | `src/main.js` |
+| Build Commands    | `npm install` |
+| Permissions       | `any`         |
+| Timeout (Seconds) | 15            |
+
+## 🔒 Environment Variables
+
+No environment variables required.
