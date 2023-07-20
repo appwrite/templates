@@ -1,4 +1,4 @@
-# ⚡ Starter Function
+# ⚡ Python Starter Function
 
 A simple starter function. Edit `src/main.py` to get started and create something awesome! 🚀
 
@@ -35,8 +35,16 @@ Sample `200` Response:
 
 ## ⚙️ Configuration
 
-| Setting        | Value                             |
-|----------------|-----------------------------------|
-| Runtime        | Python                            |
-| Entrypoint     | src/main.py                       |
-| Build Commands | `pip install -r requirements.txt` |
+| Setting           | Value                             |
+|-------------------|-----------------------------------|
+| Runtime           | Python                            |
+| Entrypoint        | src/main.py                       |
+| Build Commands    | `pip install -r requirements.txt` |
+| Permissions       | any                               |
+| Events            | users.*.create                    |
+| CRON              | 0 * * * *                         |
+| Timeout (Seconds) | 15                                |
+
+## 🔒 Environment Variables
+
+No environment variables required.
