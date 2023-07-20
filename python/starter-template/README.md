@@ -38,9 +38,9 @@ Sample `200` Response:
 | Setting           | Value                             |
 |-------------------|-----------------------------------|
 | Runtime           | Python (3.10)                     |
-| Entrypoint        | src/main.py                       |
+| Entrypoint        | `src/main.py`                     |
 | Build Commands    | `pip install -r requirements.txt` |
-| Permissions       | any                               |
+| Permissions       | `any`                             |
 | Timeout (Seconds) | 15                                |
 
 ## 🔒 Environment Variables
