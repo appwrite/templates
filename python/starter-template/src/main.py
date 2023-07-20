@@ -30,8 +30,8 @@ def main(ctx):
     return ctx.res.json(
         {
             "motto": "Build Fast. Scale Big. All in One Place.",
-            "learn": "https:#appwrite.io/docs",
-            "connect": "https:#appwrite.io/discord",
-            "getInspired": "https:#builtwith.appwrite.io",
+            "learn": "https://appwrite.io/docs",
+            "connect": "https://appwrite.io/discord",
+            "getInspired": "https://builtwith.appwrite.io",
         }
     )
