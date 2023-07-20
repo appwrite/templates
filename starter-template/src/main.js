@@ -6,7 +6,6 @@ export default async ({ req, res, log, error }) => {
   // Why not try the Appwrite SDK?
   //
   // const client = new Client()
-  //    .setEndpoint(process.env.APPWRITE_ENDPOINT)
   //    .setProject(process.env.APPWRITE_PROJECT_ID)
   //    .setKey(process.env.APPWRITE_API_KEY);
 
