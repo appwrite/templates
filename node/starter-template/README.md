@@ -38,9 +38,9 @@ Sample `200` Response:
 | Setting           | Value             |
 |-------------------|-------------------|
 | Runtime           | Node (18.0)       |
-| Entrypoint        | src/main.js       |
+| Entrypoint        | `src/main.js`     |
 | Build Commands    | `npm run install` |
-| Permissions       | any               |
+| Permissions       | `any`             |
 | Timeout (Seconds) | 15                |
 
 ## 🔒 Environment Variables
