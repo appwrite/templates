@@ -4,7 +4,7 @@ import os
 
 # This is your Appwrite function
 # It's executed each time we get a request
-def main(ctx):
+def main(context):
     # Why not try the Appwrite SDK?
     #
     # client = (
@@ -15,19 +15,19 @@ def main(ctx):
     # )
 
     # You can log messages to the console
-    ctx.log("Hello, Logs! 👋")
+    context.log("Hello, Logs! 👋")
 
     # If something goes wrong, log an error
-    ctx.error("Hello, Errors! ⛔")
+    context.error("Hello, Errors! ⛔")
 
     # The `ctx.req` object contains the request data
-    if ctx.req.method == "GET":
+    if context.req.method == "GET":
         # Send a response with the res object helpers
         # `ctx.res.send()` dispatches a string back to the client
-        return ctx.res.send("Hello, World! 🌎")
+        return context.res.send("Hello, World! 🌎")
 
     # `ctx.res.json()` is a handy helper for sending JSON
-    return ctx.res.json(
+    return context.res.json(
         {
             "motto": "Build Fast. Scale Big. All in One Place.",
             "learn": "https://appwrite.io/docs",
