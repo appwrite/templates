@@ -7,10 +7,12 @@ import os
 def main(ctx):
     # Why not try the Appwrite SDK?
     #
-    # client = Client()
-    #    .setEndpoint('https://cloud.appwrite.io/v1')
-    #    .setProject(os.environ['APPWRITE_PROJECT_ID'])
-    #    .setKey(os.environ['APPWRITE_API_KEY'])
+    # client = (
+    #     Client()
+    #     .set_endpoint("https://cloud.appwrite.io/v1")
+    #     .set_project(os.environ["APPWRITE_PROJECT_ID"])
+    #     .set_key(os.environ["APPWRITE_API_KEY"])
+    # )
 
     # You can log messages to the console
     ctx.log("Hello, Logs! 👋")
