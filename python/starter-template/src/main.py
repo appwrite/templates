@@ -1,4 +1,5 @@
 from appwrite.client import Client
+import os
 
 
 # This is your Appwrite function
@@ -7,9 +8,9 @@ def main(ctx):
     # Why not try the Appwrite SDK?
     #
     # client = Client()
-    #    .setEndpoint('https:#cloud.appwrite.io/v1')
-    #    .setProject(process.env.APPWRITE_PROJECT_ID)
-    #    .setKey(process.env.APPWRITE_API_KEY);
+    #    .setEndpoint('https://cloud.appwrite.io/v1')
+    #    .setProject(os.environ['APPWRITE_PROJECT_ID'])
+    #    .setKey(os.environ['APPWRITE_API_KEY'])
 
     # You can log messages to the console
     ctx.log("Hello, Logs! 👋")
