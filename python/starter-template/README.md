@@ -1,6 +1,6 @@
 # ⚡ Starter Function
 
-A simple starter function. Edit `src/main.js` to get started and create something awesome! 🚀
+A simple starter function. Edit `src/main.py` to get started and create something awesome! 🚀
 
 ## 🧰 Usage
 
