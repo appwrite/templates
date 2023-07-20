@@ -1,0 +1,11 @@
+name: starter_template
+version: 1.0.0
+
+environment:
+  sdk: ^3.1.0-edge.3daa47b54e5f39241c44858e0d66ce51723040bf
+
+dependencies:
+  dart_appwrite: ^8.0.1
+
+dev_dependencies:
+  lints: ^2.0.0

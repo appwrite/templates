@@ -1,6 +1,6 @@
-# ⚡ Python Starter Function
+# ⚡ Dart Starter Function
 
-A simple starter function. Edit `src/main.py` to get started and create something awesome! 🚀
+A simple starter function. Edit `lib/main.dart` to get started and create something awesome! 🚀
 
 ## 🧰 Usage
 
@@ -38,8 +38,8 @@ Sample `200` Response:
 | Setting           | Value                             |
 |-------------------|-----------------------------------|
 | Runtime           | Python (3.10)                     |
-| Entrypoint        | `src/main.py`                     |
-| Build Commands    | `pip install -r requirements.txt` |
+| Entrypoint        | `lib/main.dart`                   |
+| Build Commands    | `dart pub get`                    |
 | Permissions       | `any`                             |
 | Timeout (Seconds) | 15                                |
 
