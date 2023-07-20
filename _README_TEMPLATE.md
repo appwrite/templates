@@ -40,15 +40,15 @@ Sample `400` Response:
 ## ⚙️ Configuration
 
 <!-- Update values and remove irrelevant settings -->
-| Setting        | Value          |
-|----------------|----------------|
-| Runtime        | Node (18.0)    |
-| Entrypoint     | src/main.js    |
-| Build Commands | npm run build  |
-| Permissions    | any            |
-| Events         | users.*.create |
-| CRON           | 0 * * * *      |
-| Timeout        | 15 (Seconds)   |
+| Setting           | Value          |
+|-------------------|----------------|
+| Runtime           | Node (18.0)    |
+| Entrypoint        | src/main.js    |
+| Build Commands    | npm run build  |
+| Permissions       | any            |
+| Events            | users.*.create |
+| CRON              | 0 * * * *      |
+| Timeout (Seconds) | 15             |
 
 ## 🔒 Environment Variables
 
