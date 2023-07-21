@@ -39,7 +39,6 @@ Sample `200` Response:
 |-------------------|--------------------|
 | Runtime           | C++ (17)           |
 | Entrypoint        | `src/main.cc`      |
-| Build Commands    |                    |
 | Permissions       | `any`              |
 | Timeout (Seconds) | 15                 |
 
