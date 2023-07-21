@@ -1,6 +1,20 @@
 import * as fs from "fs";
 import * as path from "path";
-import {markdownTable} from 'markdown-table'
+import {markdownTable} from 'markdown-table';
+
+const verboseRuntimes = {
+    cpp: "C++",
+    dart: "Dart",
+    deno: "Deno",
+    dotnet: ".NET",
+    java: "Java",
+    kotlin: "Kotlin",
+    node: "Node.js",
+    php: "PHP",
+    python: "Python",
+    ruby: "Ruby",
+    swift: "Swift"
+};
 
 const folderDenylist = [ '.github', '.git' ];
 
@@ -30,7 +44,7 @@ const rows = uniqueTemplates.map((template) => {
 });
 
 const table = markdownTable([
-    ['Template', ...runtimes],
+    ['Template', ...runtimes.map((r) => verboseRuntimes[r] ? verboseRuntimes[r] : r)],
     ...rows.sort((a, b) => {
         const aCount = a.filter((column) => column !== '');
         const bCount = b.filter((column) => column !== '');
