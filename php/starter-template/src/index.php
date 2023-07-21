@@ -1,6 +1,6 @@
 <?php
 
-require 'vendor/autoload.php'; // Include the Appwrite PHP SDK
+require 'vendor/autoload.php';
 
 use Appwrite\Client;
 use Appwrite\Exception;
