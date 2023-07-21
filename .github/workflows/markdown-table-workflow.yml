@@ -1,0 +1,33 @@
+name: "Generate README markdown table"
+
+on: [pull_request]
+jobs:
+  readme-generator:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Prepare repository
+      uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.pull_request.head.ref }}
+
+    - name: Prepare Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: "16"
+
+    - name: Prepare function
+      run: |
+        cd .github/workflows/markdown-table-workflow
+        npm install
+
+    - name: Run function
+      run: cd .github/workflows/markdown-table-workflow && node index.js
+
+    - name: Push changes
+      run: |
+        git config user.name github-actions
+        git config user.email security@appwrite.io
+        git add README.md
+        git commit -m "Auto: README table generation" || true
+        git push || true
