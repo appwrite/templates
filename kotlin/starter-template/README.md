@@ -39,7 +39,6 @@ Sample `200` Response:
 |-------------------|----------------|
 | Runtime           | Kotlin (1.7)   |
 | Entrypoint        | `src/Main.kt`  |
-| Build Commands    | `gradle build` |
 | Permissions       | `any`          |
 | Timeout (Seconds) | 15             |
 
