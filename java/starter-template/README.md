@@ -39,7 +39,6 @@ Sample `200` Response:
 |-------------------|-----------------|
 | Runtime           | Java (17)       |
 | Entrypoint        | `src/Main.java` |
-| Build Commands    | `gradle`        |
 | Permissions       | `any`           |
 | Timeout (Seconds) | 15              |
 
