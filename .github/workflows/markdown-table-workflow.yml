@@ -1,15 +1,19 @@
 name: "Generate README markdown table"
 
-on: [pull_request]
+on:
+  pull_request:
+    types:
+      - closed
 jobs:
   readme-generator:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     steps:
     - name: Prepare repository
       uses: actions/checkout@v2
       with:
-        ref: ${{ github.event.pull_request.head.ref }}
+        ref: ${{ github.event.pull_request.base.ref }}
 
     - name: Prepare Node.js
       uses: actions/setup-node@v2
