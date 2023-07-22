@@ -18,16 +18,16 @@ public class Handler {
         //     .SetKey(Environment.GetEnvironmentVariable("APPWRITE_API_KEY"))
 
         // You can log messages to the console
-        Context.Log("Hello, Logs! 👋");
+        Context.Log("Hello, Logs!");
 
         // If something goes wrong, log an error
-        Context.Error("Hello, Errors! ⛔");
+        Context.Error("Hello, Errors!");
 
         // The `Context.Req` object contains the request data
         if (Context.Req.Method === "GET") {
             // Send a response with the res object helpers
             // `Context.Res.Send()` dispatches a string back to the client
-            return Context.Req.Send("Hello, World! 🌎");
+            return Context.Req.Send("Hello, World!");
         }
 
         // `Context.Res.Json()` is a handy helper for sending JSON

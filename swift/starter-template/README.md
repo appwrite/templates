@@ -13,7 +13,7 @@ A simple starter function. Edit `Sources/index.swift` to get started and create 
 Sample `200` Response:
 
 ```text
-Hello, World! 🌎
+Hello, World!
 ```
 
 ### `POST`, `PUT`, `PATCH`, `DELETE`

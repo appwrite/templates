@@ -13,7 +13,7 @@ A simple starter function. Edit `src/main.ts` to get started and create somethin
 Sample `200` Response:
 
 ```text
-Hello, World! 🌎
+Hello, World!
 ```
 
 ### `POST`, `PUT`, `PATCH`, `DELETE`

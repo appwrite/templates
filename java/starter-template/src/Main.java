@@ -15,16 +15,16 @@ public class Main {
         //         .setKey(System.getenv("APPWRITE_API_KEY"));
 
         // You can log messages to the console
-        context.log("Hello, Logs! 👋");
+        context.log("Hello, Logs!");
 
         // If something goes wrong, log an error
-        context.error("Hello, Errors! ⛔");
+        context.error("Hello, Errors!");
 
         // The `context.getReq()` object contains the request data
         if (context.getReq().getMethod().equals("GET")) {
             // Send a response with the res object helpers
             // `context.getRes().send()` dispatches a string back to the client
-            return context.getRes().send("Hello, World! 🌎");
+            return context.getRes().send("Hello, World!");
         }
 
         // `context.getRes().json()` is a handy helper for sending JSON

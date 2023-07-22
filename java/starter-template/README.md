@@ -13,7 +13,7 @@ A simple starter function. Edit `src/Main.java` to get started and create someth
 Sample `200` Response:
 
 ```text
-Hello, World! 🌎
+Hello, World!
 ```
 
 ### `POST`, `PUT`, `PATCH`, `DELETE`

@@ -13,16 +13,16 @@ class Main {
         // }
 
         // You can log messages to the console
-        context.log("Hello, Logs! 👋")
+        context.log("Hello, Logs!")
 
         // If something goes wrong, log an error
-        context.error("Hello, Errors! ⛔")
+        context.error("Hello, Errors!")
 
         // The `context.req` object contains the request data
         if (context.req.method == "GET") {
             // Send a response with the res object helpers
             // `context.res.send()` dispatches a string back to the client
-            return context.res.send("Hello, World! 🌎")
+            return context.res.send("Hello, World!")
         }
 
         // `context.res.json()` is a handy helper for sending JSON
