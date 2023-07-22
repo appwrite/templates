@@ -37,7 +37,7 @@ Sample `200` Response:
 
 | Setting           | Value          |
 |-------------------|----------------|
-| Runtime           | dotnet (6.0)     |
+| Runtime           | .NET (6.0)     |
 | Entrypoint        | `src/Index.cs` |
 | Permissions       | `any`          |
 | Timeout (Seconds) | 15             |
