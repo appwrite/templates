@@ -1,6 +1,6 @@
 <?php
 
-require 'vendor/autoload.php';
+require(__DIR__ . '/../vendor/autoload.php');
 
 use Appwrite\Client;
 use Appwrite\Exception;
