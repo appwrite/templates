@@ -1,27 +1,48 @@
-# Email Contact Form Function
+# ⚡ Email Contact Form Function
 
-## Overview
+Sends an email to the configured address with the contents of a contact form submission.
 
-This function facilitates email submission from HTML forms using Appwrite. It validates form data, sends an email through an SMTP server, and handles redirection of the user based on the success or failure of the submission.
+## 🧰 Usage
 
-## Usage
+### `GET`
 
-### HTML Form
+Returns a sample HTML form
 
-To use this function, set the `action` attribute of your HTML form to your function URL, and include a hidden input with the name `_next` and the path of the redirect to on successful form submission (e.g. `/success`).
+### `POST`
 
-```html
-<form action="{{YOUR_FUNCTION_URL}}" method="post">
-  <input type="email" name="email" placeholder="Email" required />
-  <textarea name="message" placeholder="Your Message" required></textarea>
-  <input type="hidden" name="_next" value="{{YOUR_SUCCESS_PATH}}" />
-  <button type="submit">Submit</button>
-</form>
+Submit form data to send an email
+
+**Parameters**
+
+| Name   | Description                       | Location   | Type   | Sample Value                     |
+| ------ | --------------------------------- | ---------- | ------ | -------------------------------- |
+| \_next | URL for redirect after submission | Form Param | String | `https://mywebapp.org/success`   |
+| \*     | Any form values to send in email  | Form Param | String | `Hey, I'd like to get in touch!` |
+
+**Response**
+
+Sample `200` Response:
+
+```text
+Location: https://mywebapp.org/success
 ```
 
-## Environment Variables
+Sample `400` Response:
 
-This function depends on the following environment variables:
+```text
+Location: https://mywebapp.org/referer?error=Invalid+email+address
+```
+
+## ⚙️ Configuration
+
+| Setting           | Value           |
+| ----------------- | --------------- |
+| Runtime           | Node (18.0)     |
+| Entrypoint        | `src/main.js`   |
+| Build Commands    | `npm install`   |
+|                   | `npm run setup` |
+| Permissions       | `any`           |
+| Timeout (Seconds) | 15              |
 
 - **SMTP_HOST** - SMTP server host
 - **SMTP_PORT** - SMTP server port
@@ -30,21 +51,59 @@ This function depends on the following environment variables:
 - **SUBMIT_EMAIL** - The email address to send form submissions
 - **ALLOWED_ORIGINS** - An optional comma-separated list of allowed origins for CORS (defaults to `*`)
 
-## Request
+## 🔒 Environment Variables
 
-### Form Data
+### SMTP_HOST
 
-- **_next_** - The URL to redirect to on successful form submission
-- **email** - The sender's email address
+The address of your SMTP server. Many STMP providers will provide this information in their documentation. Some popular providers include: Mailgun, SendGrid, and Gmail.
 
-- _Additional form data will be included in the email body_
+| Question     | Answer             |
+| ------------ | ------------------ |
+| Required     | Yes                |
+| Sample Value | `smtp.mailgun.org` |
 
-## Response
+### SMTP_PORT
 
-### Success Redirect
+The port of your STMP server. Commnly used ports include `25`, `465`, and `587`.
 
-On successful form submission, the function will redirect users to the URL provided in the `_next` form data.
+| Question     | Answer |
+| ------------ | ------ |
+| Required     | Yes    |
+| Sample Value | `25`   |
 
-### Error Redirect
+### SMTP_USERNAME
 
-In the case of errors such as invalid request methods, missing form data, or SMTP configuration issues, the function will redirect users back to the form URL with an appended error code for more precise error handling. Error codes include `invalid-request`, `missing-form-fields`, and generic `server-error`.
+The username for your SMTP server. This is commonly your email address.
+
+| Question     | Answer                  |
+| ------------ | ----------------------- |
+| Required     | Yes                     |
+| Sample Value | `no-reply@mywebapp.org` |
+
+### SMTP_PASSWORD
+
+The password for your SMTP server.
+
+| Question     | Answer                |
+| ------------ | --------------------- |
+| Required     | Yes                   |
+| Sample Value | `5up3r5tr0ngP4ssw0rd` |
+
+### SUBMIT_EMAIL
+
+The email address to send form submissions to.
+
+| Question     | Answer            |
+| ------------ | ----------------- |
+| Required     | Yes               |
+| Sample Value | `me@mywebapp.org` |
+
+### ALLOWED_ORIGINS
+
+An optional comma-separated list of allowed origins for CORS (defaults to `*`). This is an important security measure to prevent malicious users from abusing your function.
+
+| Question      | Answer                                                              |
+| ------------- | ------------------------------------------------------------------- |
+| Required      | No                                                                  |
+| Sample Value  | `https://mywebapp.org,https://mywebapp.com`                         |
+| Documentation | [MDN: CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) |
