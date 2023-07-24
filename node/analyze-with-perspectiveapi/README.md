@@ -20,12 +20,17 @@ The HTML form
 
 Returns toxicity score of the provided text, as determined by Google's Perspective API
 
+| Name  | Description     | Location    | Type   | Sample Value                 |
+|-------|-----------------|-------------|--------|------------------------------|
+| text  | Text to analyze | Body String | String | `Goodbye, have a great day!` |
+
+
 **Response**
 
 Sample `200` Response:
 
 ```text
-0.85
+0.25
 ```
 
 Sample `500` Response:
@@ -40,6 +45,7 @@ Error analyzing text.
 |-------------------|------------------|
 | Runtime           | Node (18.0)      |
 | Entrypoint        | `src/main.js`    |
+| Build Commands    | `npm install`    |
 | Permissions       | `any`            |
 | Timeout (Seconds) | 15               |
 
@@ -47,7 +53,7 @@ Error analyzing text.
 
 ### PERSPECTIVE_API_KEY
 
-Google Perspective API key. It allows your function to interact with Google's Perspective API.
+Google Perspective API key. It authenticates your function, allowing it to interact with the API.
 
 | Question       | Answer                 |
 |----------------|------------------------|
