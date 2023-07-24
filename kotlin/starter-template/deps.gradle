@@ -1,0 +1,3 @@
+dependencies {
+    implementation 'io.appwrite:sdk-for-kotlin:2.0.0'
+}
