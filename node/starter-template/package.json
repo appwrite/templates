@@ -1,0 +1,16 @@
+{
+  "name": "starter-template",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/main.js",
+  "type": "module",
+  "scripts": {
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "node-appwrite": "^9.0.0"
+  },
+  "devDependencies": {
+    "prettier": "^3.0.0"
+  }
+}
