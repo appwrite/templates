@@ -1,35 +1,77 @@
-# GitHub Issue Bot
+# ⚡ GitHub Issue Bot Function
 
-This function allows you to automate the process of responding to newly opened issues on a GitHub repository. The bot verifies the webhook request, checks if it's a new issue event and then posts a comment on the issue, inviting the user to join your Discord for quicker support.
+Automate the process of responding to newly opened issues on a GitHub repository.
 
-## Environment Variables
+## 🧰 Usage
 
-To ensure the function operates as intended, ensure the following variables are set:
+### Any Request
 
-- **GITHUB_WEBHOOK_SECRET**: The webhook secret from your GitHub repository settings.
-- **GITHUB_TOKEN**: A personal access token from GitHub with the necessary permissions to post comments on issues.
-- **DISCORD_LINK**: The link to your Discord community where users can get support.
+Handles webhook and returns a verification response.
 
-## GitHub Bot Setup
+**Parameters**
 
-Before you can use this function, you need to set up a webhook for your GitHub repository. You can do this in the settings page of your repository. Here, you can click the 'Webhooks' option and then the 'Add webhook' button. 
+| Name                | Description               | Location | Type   | Sample Value                                                                                          |
+| ------------------- | ------------------------- | -------- | ------ | ----------------------------------------------------------------------------------------------------- |
+| x-hub-signature-256 | GitHub webhook signature  | Header   | String | `h74ba0jbla01lagudfo`                                                                                 |
+| x-github-event      | GitHub webhook event type | Header   | String | `issues`                                                                                              |
+| JSON Body           | GitHub webhook payload    | Body     | Object | See [GitHub docs](https://docs.github.com/en/webhooks-and-events/webhooks/webhook-events-and-payload) |
 
-## GitHub Webhooks
+**Response**
 
-This function utilizes the GitHub Webhooks service. Webhooks allow you to build or set up integrations which subscribe to certain events on GitHub. When one of those events is triggered, GitHub sends a HTTP POST payload to the webhook's configured URL. We specifically use the 'issues' event to track new issues on the repository.
+Sample `200` Response:
 
-## Usage
+Webhook verification successful.
 
-This function supports the interaction of new issue events coming from GitHub:
+```json
+{ "success": true }
+```
 
-1. **Posting a comment on newly opened issues**
+Sample `401` Response:
 
-   - **Webhook Event Type:** 'issues'
-   - **Issue Action:** 'opened'
-   - **Response:** 
-     - On successfully posting a comment, the function will end with an HTTP 204 No Content response.
-     - If there's an error while posting the comment, the function will respond with an HTTP 500 status and the error message.
+Webhook verification failed.
 
-## Error Handling
+```json
+{ "error": "Invalid signature" }
+```
 
-In case of any error during the webhook request verification or interaction handling, the function will return an HTTP 401 error with the message "Invalid signature" or an HTTP 500 error with the message "Error posting comment", respectively. In case any of the required environment variables is not set, the function will throw an error specifying which environment variable is missing.
+## ⚙️ Configuration
+
+| Setting           | Value         |
+| ----------------- | ------------- |
+| Runtime           | Node (18.0)   |
+| Entrypoint        | `src/main.js` |
+| Build Commands    | `npm install` |
+| Permissions       | `any`         |
+| Timeout (Seconds) | 15            |
+
+## 🔒 Environment Variables
+
+### GITHUB_WEBHOOK_SECRET
+
+The secret used to verify that the webhook request comes from GitHub.
+
+| Question      | Answer                                                                                          |
+| ------------- | ----------------------------------------------------------------------------------------------- |
+| Required      | Yes                                                                                             |
+| Sample Value  | `d1efb...aec35`                                                                                 |
+| Documentation | [GitHub Docs](https://docs.github.com/en/developers/webhooks-and-events/securing-your-webhooks) |
+
+### GITHUB_TOKEN
+
+A personal access token from GitHub with the necessary permissions to post comments on issues.
+
+| Question      | Answer                                                                                                     |
+| ------------- | ---------------------------------------------------------------------------------------------------------- |
+| Required      | Yes                                                                                                        |
+| Sample Value  | `ghp_1...`                                                                                                 |
+| Documentation | [GitHub Docs](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token) |
+
+### DISCORD_LINK
+
+The link to your Discord community where users can get support.
+
+| Question      | Answer                                                                                                        |
+| ------------- | ------------------------------------------------------------------------------------------------------------- |
+| Required      | Yes                                                                                                           |
+| Sample Value  | `https://discord.gg/...`                                                                                      |
+| Documentation | [Discord Docs](https://support.discord.com/hc/en-us/articles/204849977-How-do-I-invite-friends-to-my-server-) |
