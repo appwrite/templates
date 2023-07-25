@@ -1,0 +1,8 @@
+{
+  "name": "templates/starter",
+  "type": "library",
+  "require": {
+    "php": ">=8.0.0",
+    "appwrite/appwrite": "^8.0"
+  }
+}
