@@ -37,7 +37,9 @@ function isValidUrl(url) {
 }
 
 class EnvironmentService {
-  APPWRITE_ENDPOINT = getRequiredUrlEnv('APPWRITE_ENDPOINT');
+  APPWRITE_ENDPOINT = isValidUrl(process.env.APPWRITE_ENDPOINT)
+    ? process.env.APPWRITE_ENDPOINT
+    : 'https://cloud.appwrite.io/v1';
   APPWRITE_PROJECT_ID = getRequiredEnv('APPWRITE_PROJECT_ID');
   APPWRITE_API_KEY = getRequiredEnv('APPWRITE_API_KEY');
   STRIPE_WEBHOOK_SECRET = getRequiredEnv('STRIPE_WEBHOOK_SECRET');
