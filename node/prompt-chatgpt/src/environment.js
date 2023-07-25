@@ -29,7 +29,7 @@ function getNumberEnv(key) {
 
 class EnvironmentService {
   OPENAI_API_KEY = getRequiredEnv('OPENAI_API_KEY');
-  OPENAI_MAX_TOKENS = getNumberEnv('OPENAI_MAX_TOKENS') ?? 64;
+  OPENAI_MAX_TOKENS = getNumberEnv('OPENAI_MAX_TOKENS') ?? 512;
 }
 
 export default EnvironmentService;
