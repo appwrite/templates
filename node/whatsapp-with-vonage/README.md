@@ -1,36 +1,68 @@
-# WhatsApp Reply Function
+# ⚡ Vonage Message Receiver and Responder
 
-This function allows you to reply to a WhatsApp message through the [Vonage Messages API](https://developer.vonage.com/en/messaging/sms/overview). When a POST request is sent to this function with the necessary information, it sends a reply to the sender using the content of their original message.
+Automatically respond to messages sent to a Vonage WhatsApp number.
 
-## Environment Variables
+## 🧰 Usage
 
-For the function to operate correctly, the following variables must be set:
+### `GET /`
 
-- **VONAGE_API_KEY**: This is your Vonage project's API key. You can obtain this key from the Vonage dashboard under the "Getting Started" section. This key is used to authorize your application's requests to Vonage's APIs.
+Serves a HTML page.
 
-- **VONAGE_API_SECRET**: This is the secret for your Vonage project's API key. You can obtain this secret from the same section in the Vonage dashboard where you got the API key. The API secret is used together with the API key to form the Basic Auth string for your requests.
+### `POST /`
 
-- **VONAGE_API_SIGNATURE_SECRET**: This is the signature secret for your Vonage project's API key. You can generate this secret in the "Settings" section of your Vonage dashboard, under "API Settings". This secret is used to verify the JWT token in the incoming request to ensure it's from an authorized source.
+Receives a message, validates its signature, and sends a response back to the sender.
 
-## Usage
+**Parameters**
 
-This function supports two types of requests:
+| Name         | Description                  | Location | Type                | Sample Value |
+| ------------ | ---------------------------- | -------- | ------------------- | ------------ |
+| Content-Type | Content type of the request  | Header   | `application/json ` | N/A          |
+| from         | Sender's identifier.         | Body     | String              | `12345`      |
+| text         | Text content of the message. | Body     | String              | `Hello!`     |
 
-1. **Displaying a Landing Page**
+**Response**
 
-   - **Request Type:** GET
-   - **Response:** 
-     - On success, the function will respond with a landing page in HTML format.
+Sample `200` Response:
 
-2. **Replying to a WhatsApp Message**
+```text
+OK
+```
 
-   - **Request Type:** POST
-   - **Headers:**
-     - `Authorization`: Bearer token using the `VONAGE_API_SIGNATURE_SECRET`
-   - **Body:** 
-     - `from`: Sender's phone number
-     - `text`: (Optional) Text of the sender's message
-   - **Response:** 
-     - On success, the function will send a WhatsApp message to the sender's number, including the text "Hi there! You sent me: [text]" where [text] is replaced with the content of the sender's message, and respond with a status message of "OK".
-     - If the `from` field is missing in the request, an error message "Payload invalid." is returned.
-     - If the JWT token in the `Authorization` header is invalid or missing, an error message "Invalid signature." is returned.
+## ⚙️ Configuration
+
+| Setting           | Value         |
+| ----------------- | ------------- |
+| Runtime           | Node (18.0)   |
+| Entrypoint        | `src/main.js` |
+| Build Commands    | `npm install` |
+| Permissions       | `any`         |
+| Timeout (Seconds) | 15            |
+
+## 🔒 Environment Variables
+
+### VONAGE_API_KEY
+
+API Key to use the Vonage API.
+
+| Question     | Answer     |
+| ------------ | ---------- |
+| Required     | Yes        |
+| Sample Value | `abcd1234` |
+
+### VONAGE_API_SECRET
+
+Secret to use the Vonage API.
+
+| Question     | Answer     |
+| ------------ | ---------- |
+| Required     | Yes        |
+| Sample Value | `efgh5678` |
+
+### VONAGE_API_SIGNATURE_SECRET
+
+Secret to verify the JWT token sent by Vonage.
+
+| Question     | Answer      |
+| ------------ | ----------- |
+| Required     | Yes         |
+| Sample Value | `ijkl91011` |
