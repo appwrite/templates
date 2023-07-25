@@ -1,41 +1,115 @@
-# Meilisearch Sync Function
+# ⚡ Sync Appwrite to Meilisearch Function
 
-This function enables synchronization of data between your Appwrite project and a Meilisearch instance. When invoked, it retrieves documents from a specified collection in your Appwrite database and syncs them with a designated Meilisearch index. This function is designed for facilitating full-text search and other search functionalities over data stored in Appwrite using Meilisearch. 
+Syncs documents in an Appwrite database collection to a Meilisearch index.
 
-## Environment Variables
+## 🧰 Usage
 
-The function requires the following environment variables to be set:
+### `GET /`
 
-- **MEILISEARCH_ENDPOINT**: The URL where your Meilisearch server is located.
-- **MEILISEARCH_ADMIN_API_KEY**: The admin API key of your Meilisearch instance.
-- **MEILISEARCH_INDEX_NAME**: The name of the Meilisearch index where the documents will be stored.
-- **MEILISEARCH_SEARCH_API_KEY**: The search API key of your Meilisearch instance.
-- **APPWRITE_API_KEY**: Your Appwrite project's API key.
-- **APPWRITE_DATABASE_ID**: The ID of the Appwrite database from which documents will be fetched.
-- **APPWRITE_COLLECTION_ID**: The ID of the collection within the database from which documents will be fetched.
-- **APPWRITE_ENDPOINT**: The URL of your Appwrite server.
-- **APPWRITE_PROJECT_ID**: The ID of your Appwrite project.
+Returns HTML page where search can be performed to test the indexing.
 
-## Usage
+### `POST /`
 
-This function supports two types of requests:
+Triggers indexing of the Appwrite database collection to Meilisearch.
 
-1. **View Search Interface**
+**Response**
 
-   - **Request Type:** GET
-   - **Response:** 
-     - The function will respond with an HTML page for interacting with Meilisearch. The HTML file (`index.html`) should be placed in the `static` folder.
+Sample `204` Response: No content.
 
-2. **Sync Appwrite Documents with Meilisearch**
+## ⚙️ Configuration
 
-   - **Request Type:** POST
-   - **Response:** 
-     - The function will begin fetching documents from the specified Appwrite collection and syncing them with the specified Meilisearch index. If successful, an empty response is returned. The function logs the progress of the operation, which can be monitored via the Appwrite dashboard.
+| Setting           | Value         |
+| ----------------- | ------------- |
+| Runtime           | Node (18.0)   |
+| Entrypoint        | `src/main.js` |
+| Build Commands    | `npm install` |
+| Permissions       | `any`         |
+| Timeout (Seconds) | 15            |
 
-## Limitations
+## 🔒 Environment Variables
 
-This function syncs a maximum of 100 documents at a time. If the collection has more than 100 documents, the function will keep fetching and syncing in chunks until all documents have been processed.
+### APPWRITE_API_KEY
 
-## Caution
+API Key to talk to Appwrite backend APIs.
 
-Be careful when syncing large collections. This function does not implement rate limiting, which could lead to your Appwrite or Meilisearch instance getting overwhelmed by a large number of requests in a short period. Consider adding delay or rate limiting logic if you plan to sync large amounts of data.
+| Question      | Answer                                                                                             |
+| ------------- | -------------------------------------------------------------------------------------------------- |
+| Required      | Yes                                                                                                |
+| Sample Value  | `d1efb...aec35`                                                                                    |
+| Documentation | [Appwrite: Getting Started for Server](https://appwrite.io/docs/getting-started-for-server#apiKey) |
+
+### APPWRITE_DATABASE_ID
+
+The ID of the Appwrite database that contains the collection to sync.
+
+| Question      | Answer                                                    |
+| ------------- | --------------------------------------------------------- |
+| Required      | Yes                                                       |
+| Sample Value  | `612a3...5b6c9`                                           |
+| Documentation | [Appwrite: Databases](https://appwrite.io/docs/databases) |
+
+### APPWRITE_COLLECTION_ID
+
+The ID of the collection in the Appwrite database to sync.
+
+| Question      | Answer                                                        |
+| ------------- | ------------------------------------------------------------- |
+| Required      | Yes                                                           |
+| Sample Value  | `7c3e8...2a9f1`                                               |
+| Documentation | [Appwrite: Collections](https://appwrite.io/docs/collections) |
+
+### APPWRITE_ENDPOINT
+
+The URL endpoint of the Appwrite server. If not provided, it defaults to the Appwrite Cloud server: `https://cloud.appwrite.io/v1`.
+
+| Question     | Answer                         |
+| ------------ | ------------------------------ |
+| Required     | No                             |
+| Sample Value | `https://cloud.appwrite.io/v1` |
+
+### APPWRITE_PROJECT_ID
+
+The ID of the Appwrite project associated with the function.
+
+| Question     | Answer              |
+| ------------ | ------------------- |
+| Required     | Yes                 |
+| Sample Value | `builtWithAppwrite` |
+
+### MEILISEARCH_ENDPOINT
+
+The host URL of the Meilisearch server.
+
+| Question     | Answer                  |
+| ------------ | ----------------------- |
+| Required     | Yes                     |
+| Sample Value | `http://127.0.0.1:7700` |
+
+### MEILISEARCH_ADMIN_API_KEY
+
+The admin API key for Meilisearch.
+
+| Question      | Answer                                                                   |
+| ------------- | ------------------------------------------------------------------------ |
+| Required      | Yes                                                                      |
+| Sample Value  | `masterKey1234`                                                          |
+| Documentation | [Meilisearch: API Keys](https://docs.meilisearch.com/reference/api/keys) |
+
+### MEILISEARCH_INDEX_NAME
+
+Name of the Meilisearch index to which the documents will be synchronized.
+
+| Question     | Answer     |
+| ------------ | ---------- |
+| Required     | Yes        |
+| Sample Value | `my_index` |
+
+### MEILISEARCH_SEARCH_API_KEY
+
+API Key for Meilisearch search operations.
+
+| Question      | Answer                                                                   |
+| ------------- | ------------------------------------------------------------------------ |
+| Required      | Yes                                                                      |
+| Sample Value  | `searchKey1234`                                                          |
+| Documentation | [Meilisearch: API Keys](https://docs.meilisearch.com/reference/api/keys) |
