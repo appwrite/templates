@@ -1,39 +1,116 @@
-# Appwrite - Algolia Sync Function
+# ⚡ Sync With Algolia Function
 
-This function helps in syncing the data between Appwrite's database and Algolia's search index. It fetches the documents from Appwrite database and updates the Algolia search index.
+Dyncs documents in an Appwrite database collection to an Algolia index.
 
-## Environment Variables
+## 🧰 Usage
 
-To ensure the function operates as intended, ensure the following variables are set:
+### `GET /`
 
-- **ALGOLIA_APP_ID**: This is your Algolia application's ID.
-- **ALGOLIA_ADMIN_API_KEY**: This is your Algolia application's Admin API key.
-- **ALGOLIA_INDEX_ID**: This is the ID of the Algolia index where the data is stored.
-- **ALGOLIA_SEARCH_API_KEY**: This is the Search API key of your Algolia application.
-- **APPWRITE_API_KEY**: This is your Appwrite project's API key.
-- **APPWRITE_DATABASE_ID**: This is the ID of your Appwrite database where the data is stored.
-- **APPWRITE_COLLECTION_ID**: This is the ID of the collection within the Appwrite database.
-- **APPWRITE_ENDPOINT**: This is the endpoint where your Appwrite server is located.
-- **APPWRITE_PROJECT_ID**: This refers to the specific ID of your Appwrite project.
+Returns a HTML page where search can be performed to test the indexing.
 
-## Usage
 
-This function supports two types of requests:
+### `POST /`
 
-1. **Retrieving the Search Interface**
+Triggers indexing of the Appwrite database collection to Algolia.
 
-   - **Request Type:** GET
-   - **Response:** 
-     - On success, the function will respond with an HTML interface for Algolia search. The response content type is `text/html`.
+**Response**
 
-2. **Syncing Appwrite Database with Algolia Index**
+Sample `204` Response: No content.
 
-   - **Request Type:** POST
-   - **Response:** 
-     - On success, the function will synchronize the Appwrite database with the specified Algolia index and return an empty response. The sync process operates in chunks, retrieving up to 100 documents per request from the Appwrite database and updating them on the Algolia index.
+## ⚙️ Configuration
 
-## Limitations
+| Setting           | Value         |
+| ----------------- | ------------- |
+| Runtime           | Node (18.0)   |
+| Entrypoint        | `src/main.js` |
+| Build Commands    | `npm install` |
+| Permissions       | `any`         |
+| Timeout (Seconds) | 15            |
 
-This function synchronizes the Appwrite database with the Algolia index in one direction only - from Appwrite to Algolia. If any changes are made directly on the Algolia index, they will not be reflected in the Appwrite database. 
+## 🔒 Environment Variables
 
-Additionally, if any changes are made in the Appwrite database after the sync, they will not be reflected in the Algolia index until the sync function is run again. To achieve real-time sync, consider triggering this function whenever a document is added, updated, or deleted in your Appwrite database.
+### APPWRITE_API_KEY
+
+The API Key to talk to Appwrite backend APIs.
+
+| Question      | Answer                                                                                             |
+| ------------- | -------------------------------------------------------------------------------------------------- |
+| Required      | Yes                                                                                                |
+| Sample Value  | `d1efb...aec35`                                                                                    |
+| Documentation | [Appwrite: Getting Started for Server](https://appwrite.io/docs/getting-started-for-server#apiKey) |
+
+### APPWRITE_DATABASE_ID
+
+The ID of the Appwrite database that contains the collection to sync.
+
+| Question      | Answer                                                    |
+| ------------- | --------------------------------------------------------- |
+| Required      | Yes                                                       |
+| Sample Value  | `612a3...5b6c9`                                           |
+| Documentation | [Appwrite: Databases](https://appwrite.io/docs/databases) |
+
+### APPWRITE_COLLECTION_ID
+
+The ID of the collection in the Appwrite database to sync.
+
+| Question      | Answer                                                        |
+| ------------- | ------------------------------------------------------------- |
+| Required      | Yes                                                           |
+| Sample Value  | `7c3e8...2a9f1`                                               |
+| Documentation | [Appwrite: Collections](https://appwrite.io/docs/collections) |
+
+### APPWRITE_ENDPOINT
+
+The URL endpoint of the Appwrite server. If not provided, it defaults to the Appwrite Cloud server: `https://cloud.appwrite.io/v1`.
+
+| Question     | Answer                         |
+| ------------ | ------------------------------ |
+| Required     | No                             |
+| Sample Value | `https://cloud.appwrite.io/v1` |
+
+### APPWRITE_PROJECT_ID
+
+The ID of the Appwrite project associated with the function.
+
+| Question     | Answer              |
+| ------------ | ------------------- |
+| Required     | Yes                 |
+| Sample Value | `builtWithAppwrite` |
+
+### ALGOLIA_APP_ID
+
+The application ID for your Algolia service.
+
+| Question     | Answer             |
+| ------------ | ------------------ |
+| Required     | Yes                |
+| Sample Value | `YourAlgoliaAppId` |
+
+### ALGOLIA_ADMIN_API_KEY
+
+The admin API Key for your Algolia service.
+
+| Question      | Answer                                                                     |
+| ------------- | -------------------------------------------------------------------------- |
+| Required      | Yes                                                                        |
+| Sample Value  | `YourAlgoliaAdminApiKey`                                                   |
+| Documentation | [Algolia: API Keys](https://www.algolia.com/doc/guides/security/api-keys/) |
+
+### ALGOLIA_INDEX_ID
+
+The ID of the index in Algolia where the documents are to be synced.
+
+| Question     | Answer               |
+| ------------ | -------------------- |
+| Required     | Yes                  |
+| Sample Value | `YourAlgoliaIndexId` |
+
+### ALGOLIA_SEARCH_API_KEY
+
+The search API Key for your Algolia service. This key is used for searching the synced index.
+
+| Question      | Answer                                                                     |
+| ------------- | -------------------------------------------------------------------------- |
+| Required      | Yes                                                                        |
+| Sample Value  | `YourAlgoliaSearchApiKey`                                                  |
+| Documentation | [Algolia: API Keys](https://www.algolia.com/doc/guides/security/api-keys/) |
