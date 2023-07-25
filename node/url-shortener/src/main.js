@@ -25,7 +25,7 @@ export default async ({ res, req, log, error }) => {
 
     return res.json(
       {
-        short: `${env.SHORT_DOMAIN}/${urlEntry.$id}`,
+        short: `${env.SHORT_BASE_URL}/${urlEntry.$id}`,
         url: urlEntry.url,
       },
       201
