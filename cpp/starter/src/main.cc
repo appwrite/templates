@@ -1,3 +1,8 @@
+#include "../RuntimeResponse.h"
+#include "../RuntimeRequest.h"
+#include "../RuntimeOutput.h"
+#include "../RuntimeContext.h"
+
 namespace runtime {
   class Handler {
     public:
@@ -19,10 +24,10 @@ namespace runtime {
 
         // `context.res.json()` is a handy helper for sending JSON
         Json::Value response;
-        response['motto'] = "Build Fast. Scale Big. All in One Place.";
-        response['learn'] = "https://appwrite.io/docs";
-        response['connect'] = "https://appwrite.io/discord";
-        response['getInspired'] = "https://builtwith.appwrite.io";
+        response["motto"] = "Build Fast. Scale Big. All in One Place.";
+        response["learn"] = "https://appwrite.io/docs";
+        response["connect"] = "https://appwrite.io/discord";
+        response["getInspired"] = "https://builtwith.appwrite.io";
         return context.res.json(response);
       }
   };

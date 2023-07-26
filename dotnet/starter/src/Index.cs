@@ -24,19 +24,19 @@ public class Handler {
         Context.Error("Hello, Errors!");
 
         // The `Context.Req` object contains the request data
-        if (Context.Req.Method === "GET") {
+        if (Context.Req.Method == "GET") {
             // Send a response with the res object helpers
             // `Context.Res.Send()` dispatches a string back to the client
-            return Context.Req.Send("Hello, World!");
+            return Context.Res.Send("Hello, World!");
         }
 
         // `Context.Res.Json()` is a handy helper for sending JSON
-        return Context.Res.Json(new()
+        return Context.Res.Json(new Dictionary<string, object?>()
         {
-            { "motto": "Build Fast. Scale Big. All in One Place." },
-            { "learn": "https://appwrite.io/docs" },
-            { "connect": "https://appwrite.io/discord" },
-            { "getInspired": "https://builtwith.appwrite.io" },
+            { "motto", "Build Fast. Scale Big. All in One Place." },
+            { "learn", "https://appwrite.io/docs" },
+            { "connect", "https://appwrite.io/discord" },
+            { "getInspired", "https://builtwith.appwrite.io" },
         });
     }
 }
