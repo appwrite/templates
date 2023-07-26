@@ -1,3 +1,7 @@
+package io.openruntimes.kotlin.src
+
+import io.openruntimes.kotlin.RuntimeContext
+import io.openruntimes.kotlin.RuntimeOutput
 import io.appwrite.Client
 import java.util.HashMap
 
@@ -26,12 +30,11 @@ class Main {
         }
 
         // `context.res.json()` is a handy helper for sending JSON
-        val jsonMap = HashMap<String, String>().apply {
-            put("motto", "Build Fast. Scale Big. All in One Place.")
-            put("learn", "https://appwrite.io/docs")
-            put("connect", "https://appwrite.io/discord")
-            put("getInspired", "https://builtwith.appwrite.io")
-        }
-        return context.res.json(jsonMap)
+        return context.res.json(mutableMapOf(
+            "motto" to "Build Fast. Scale Big. All in One Place.",
+            "learn" to "https://appwrite.io/docs",
+            "connect" to "https://appwrite.io/discord",
+            "getInspired" to "https://builtwith.appwrite.io"
+        ))
     }
 }
