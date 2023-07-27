@@ -98,49 +98,45 @@ For us to find the right balance, please open an issue explaining your template 
 
 This will allow the Appwrite community to sufficiently discuss the new template value.
 
-### 2. Preparing the Template 
+### 2. Preparing the Template
 
-Once you have the green light, you can go ahead and create a PR from your issue. 
+Once you have the go-ahead, you can proceed to create a PR from your issue.
 
-We recommend first building your template in Node.js, as this is the most popular runtime in Appwrite and will allow you to get feedback before continuing to other runtimes.
+The preparation process is largely dependent on the runtime environment you choose to work with. We recommend starting with Node.JS and then moving on to other runtimes, after receiving feedback. Here's a generic process that could be applied to most runtimes:
 
-Let's build a basic Node.js template that prints "Hello World" to the console.
+1. **Create a new folder** in the directory for your specific runtime with the name of your template.
 
-1. Create a new folder in the `node` directory with the name of your template. In this case, we'll call it `hello-world`.
+2. **Initialize your project**. In Node.js for example, you could run `npm init` in the new folder.
 
-2. Copy an existing `.gitignore`, and `package.json` file from the `node/starter` template into the new folder.
+3. **Add a `.gitignore` file** to the new directory, to ignore files and directories that don't need to be version controlled.
 
-3. Update the `package.json` file, changing the `name` and `description` fields to match your template.
+4. **Add configuration files specific to your runtime**. This may include formatter configurations, lockfiles or others.
 
-4. Create a new file at `node/hello-world/src/main.js` file in the new folder. This is where the template logic will be reside.
+5. **Install necessary dependencies**. Using Node.js as an example, you could run `npm install <package-name>`.
 
-> Tip: Other runtimes have a similar structure, but may have additional files. Be sure to view and understand the starter template for the runtime you're working with.
+6. **Create an entry point in the `src` folder**. This will be the main file where the template logic resides.
+
+> Tip: Be sure to take a look at `starter` templates templates to get a better understanding of how they are structured.
 
 ### 3. Building the Template Logic
 
-Now that the template is setup, we can write the template logic.
+With the template setup, you can proceed to writing the template logic in the entry point file.
 
-Update the `main.js` file with your template logic. 
-Here's a basic function that prints "Hello, World!" to the console.
+The writing process should focus more on readability, maintainability and simplicity. It's essential to write code that tells a story. If the logic begins to look complex, consider breaking it down into smaller, manageable files or re-using services from existing templates where applicable.
 
-```javascript
-export default function ({log}) {
-    log("Hello, World!");
-};
-```
-
-If you're unsure about how to write your template logic, you can use the other templates as a guide, we recommend starting with the `node/starter` template.
-
-> Tip: All function templates should be easy to use and understand. If you find yourself writing a lot of code, consider breaking it up into multiple modules.
+> Tip: Be sure to look at some of the existing templates to understand how we expect the code
 
 ### 4. Writing the Template Documentation
 
-Now that the template logic is complete, we can write the template documentation.
+After completing the template logic, the next step is to document the template. This will be very useful to anyone who wants to understand or use your template in the future.
 
-Use the `_README_TEMPLATE.md` file as a guide for writing your template documentation. Be sure to fill out all the fields, and remove any fields that are not relevant to your template.
+The `_README_TEMPLATE.md` file serves as a guide for writing your template documentation. Ensure you complete all the fields and remove any that are not relevant to your template.
 
-Don't worry about updating the `README.md` file in the root of the repository, this will be done automatically when the template is merged.
 
+
+> Note: You don't need to update the table within the `README.md` file in the root of the repository. This will be done automatically once the template is merged.
+
+Once all the steps are completed, you can submit your PR for review. Make sure to include any necessary details in the PR description. This makes it easier for the reviewers to understand the context and provide constructive feedback.
 
 ## Other Ways to Help
 
