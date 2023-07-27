@@ -37,7 +37,7 @@ const uniqueTemplates = [...new Set(templates)];
 
 const rows = uniqueTemplates.map((template) => {
     const languagesSupport = runtimes.map((runtime) => {
-        return fs.existsSync(path.join('.', `../../../${runtime}/${template}`)) ? `[✅](/${runtime}/${template})` : '';
+        return fs.existsSync(path.join('.', `../../../${runtime}/${template}`)) ? `[✅](/${runtime}/${template})` : '❌';
     })
 
     return [template, ...languagesSupport];
