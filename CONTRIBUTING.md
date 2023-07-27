@@ -131,9 +131,6 @@ The writing process should focus more on readability, maintainability and simpli
 After completing the template logic, the next step is to document the template. This will be very useful to anyone who wants to understand or use your template in the future.
 
 The `_README_TEMPLATE.md` file serves as a guide for writing your template documentation. Ensure you complete all the fields and remove any that are not relevant to your template.
-
-
-
 > Note: You don't need to update the table within the `README.md` file in the root of the repository. This will be done automatically once the template is merged.
 
 Once all the steps are completed, you can submit your PR for review. Make sure to include any necessary details in the PR description. This makes it easier for the reviewers to understand the context and provide constructive feedback.
