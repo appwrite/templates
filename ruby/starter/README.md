@@ -1,6 +1,6 @@
 # ⚡ Ruby Starter Function
 
-A simple starter function. Edit `src/main.rb` to get started and create something awesome! 🚀
+A simple starter function. Edit `lib/main.rb` to get started and create something awesome! 🚀
 
 ## 🧰 Usage
 
@@ -38,7 +38,7 @@ Sample `200` Response:
 | Setting           | Value            |
 |-------------------|------------------|
 | Runtime           | Ruby (3.2)       |
-| Entrypoint        | `src/main.rb`    |
+| Entrypoint        | `lib/main.rb`    |
 | Build Commands    | `bundle install` |
 | Permissions       | `any`            |
 | Timeout (Seconds) | 15               |
