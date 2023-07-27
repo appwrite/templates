@@ -120,7 +120,7 @@ The preparation process is largely dependent on the runtime environment you choo
 
 ### 3. Building the Template Logic
 
-With the template setup, you can proceed to writing the template logic in the entry point file.
+With the template setup, you can proceed to writing the template logic in the entrypoint file.
 
 The writing process should focus more on readability, maintainability and simplicity. It's essential to write code that tells a story. If the logic begins to look complex, consider breaking it down into smaller, manageable files or re-using services from existing templates where applicable.
 
