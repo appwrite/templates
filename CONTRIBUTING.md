@@ -114,7 +114,7 @@ The preparation process is largely dependent on the runtime environment you choo
 
 5. **Install necessary dependencies**. Using Node.js as an example, you could run `npm install <package-name>`.
 
-6. **Create an entry point in the `src` folder**. This will be the main file where the template logic resides.
+6. **Create an entrypoint in the `src` folder**. This will be the main file where the template logic resides.
 
 > Tip: Be sure to take a look at `starter` templates templates to get a better understanding of how they are structured.
 
