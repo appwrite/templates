@@ -90,17 +90,57 @@ Usage of dependencies is welcomed for purpose of simplifying template code. Plea
 
 ## Introducing New Templates
 
+### 1. Starting a Discussion
+
 We would 💖 you to contribute to Appwrite, but we also want to ensure Appwrite is loyal to its vision and mission statement 🙏.
 
 For us to find the right balance, please open an issue explaining your template idea before introducing a new pull request.
 
 This will allow the Appwrite community to sufficiently discuss the new template value.
 
-## Tutorials
+### 2. Preparing the Template 
 
-From time to time, our team will add tutorials that will help contributors find their way in the Appwrite source code. Below is a list of currently available tutorials:
+Once you have the green light, you can go ahead and create a PR from your issue. 
 
-- [Adding Function Template](./docs/tutorials/add-function-template.md)
+We recommend first building your template in Node.js, as this is the most popular runtime in Appwrite and will allow you to get feedback before continuing to other runtimes.
+
+Let's build a basic Node.js template that prints "Hello World" to the console.
+
+1. Create a new folder in the `node` directory with the name of your template. In this case, we'll call it `hello-world`.
+
+2. Copy an existing `.gitignore`, and `package.json` file from the `node/starter` template into the new folder.
+
+3. Update the `package.json` file, changing the `name` and `description` fields to match your template.
+
+4. Create a new file at `node/hello-world/src/main.js` file in the new folder. This is where the template logic will be reside.
+
+> Tip: Other runtimes have a similar structure, but may have additional files. Be sure to view and understand the starter template for the runtime you're working with.
+
+### 3. Building the Template Logic
+
+Now that the template is setup, we can write the template logic.
+
+Update the `main.js` file with your template logic. 
+Here's a basic function that prints "Hello, World!" to the console.
+
+```javascript
+export default function ({log}) {
+    log("Hello, World!");
+};
+```
+
+If you're unsure about how to write your template logic, you can use the other templates as a guide, we recommend starting with the `node/starter` template.
+
+> Tip: All function templates should be easy to use and understand. If you find yourself writing a lot of code, consider breaking it up into multiple modules.
+
+### 4. Writing the Template Documentation
+
+Now that the template logic is complete, we can write the template documentation.
+
+Use the `_README_TEMPLATE.md` file as a guide for writing your template documentation. Be sure to fill out all the fields, and remove any fields that are not relevant to your template.
+
+Don't worry about updating the `README.md` file in the root of the repository, this will be done automatically when the template is merged.
+
 
 ## Other Ways to Help
 
