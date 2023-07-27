@@ -4,15 +4,20 @@ import { fetch } from 'undici';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import EnvironmentService from './environment.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const staticFolder = path.join(__dirname, '../static');
 
 export default async ({ req, res }) => {
-  const { VONAGE_API_KEY, VONAGE_API_SECRET, VONAGE_API_SIGNATURE_SECRET } =
-    new EnvironmentService();
+  if (
+    !process.env.VONAGE_API_KEY ||
+    !process.env.VONAGE_API_SECRET ||
+    !process.env.VONAGE_API_SIGNATURE_SECRET ||
+    !process.env.VONAGE_WHATSAPP_NUMBER
+  ) {
+    throw new Error('Missing environment variables.');
+  }
 
   if (req.method === 'GET') {
     const html = fs
@@ -22,24 +27,30 @@ export default async ({ req, res }) => {
   }
 
   const token = (req.headers.authorization ?? '').split(' ')[1];
-  var decoded = jwt.verify(token, VONAGE_API_SIGNATURE_SECRET, {
+  var decoded = jwt.verify(token, process.env.VONAGE_API_SIGNATURE_SECRET, {
     algorithms: ['HS256'],
   });
 
   if (sha256(req.bodyString) != decoded['payload_hash']) {
-    throw new Error('Invalid signature.');
+    return res.json({ ok: false, error: 'Payload hash mismatch.' }, 401);
   }
 
   if (!req.body.from) {
-    throw new Error('Payload invalid.');
+    return res.json(
+      { ok: false, error: 'Missing required parameter: from.' },
+      400
+    );
   }
 
   const text = req.body.text ?? 'I only accept text messages.';
 
+  const basicAuthToken = btoa(
+    `${process.env.VONAGE_API_KEY}:${process.env.VONAGE_API_SECRET}`
+  );
   await fetch(`https://messages-sandbox.nexmo.com/v1/messages`, {
     method: 'POST',
     body: JSON.stringify({
-      from: '14157386102',
+      from: process.env.VONAGE_WHATSAPP_NUMBER,
       to: req.body.from,
       message_type: 'text',
       text: `Hi there! You sent me: ${text}`,
@@ -47,9 +58,9 @@ export default async ({ req, res }) => {
     }),
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Basic ${btoa(`${VONAGE_API_KEY}:${VONAGE_API_SECRET}`)}`,
+      Authorization: `Basic ${basicAuthToken}`,
     },
   });
 
-  return res.send('OK');
+  return res.json({ ok: true });
 };
