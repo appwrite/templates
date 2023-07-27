@@ -10,13 +10,19 @@
       async function onSubmit(prompt) {
         const response = await fetch('/', {
           method: 'POST',
-          body: prompt,
+          body: JSON.stringify({ prompt }),
           headers: {
-            'Content-Type': 'text/plain',
+            'Content-Type': 'application/json',
           },
         });
 
-        return await response.text();
+        const json = await response.json();
+
+        if (!json.ok || json.error) {
+          alert(json.error);
+        }
+
+        return json.completion;
       }
     </script>
 

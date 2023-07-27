@@ -1,4 +1,4 @@
-# ⚡ OpenAI ChatGPT Function
+# 🤖 Node OpenAI ChatGPT Function
 
 Query the OpenAI GPT-3.5-turbo model for chat completions.
 
@@ -14,26 +14,44 @@ Query the model for a completion.
 
 **Parameters**
 
-| Name | Description              | Location | Type   | Sample Value                  |
-| ---- | ------------------------ | -------- | ------ | ----------------------------- |
-| N/A  | Text to prompt the model | Body     | String | `Write a haiku about Mondays` |
+| Name         | Description                          | Location | Type               | Sample Value                  |
+| ------------ | ------------------------------------ | -------- | ------------------ | ----------------------------- |
+| Content-Type | The content type of the request body | Header   | `application/json` | N/A                           |
+| prompt       | Text to prompt the model             | Body     | String             | `Write a haiku about Mondays` |
 
 Sample `200` Response:
 
 Response from the model.
 
-```text
-Monday's heavy weight,
+```json
+{
+    "ok": true,
+    "completion": "Monday's heavy weight,
 Dawning with a sigh of grey,
-Hopeful hearts await.
+Hopeful hearts await."
+}
 ```
 
 Sample `400` Response:
 
 Response when the request body is missing.
 
+```json
+{
+  "ok": false,
+  "error": "Missing body with a prompt."
+}
 ```
-Missing body with a prompt.
+
+Sample `500` Response:
+
+Response when the model fails to respond.
+
+```json
+{
+  "ok": false,
+  "error": "Failed to query model."
+}
 ```
 
 ## ⚙️ Configuration

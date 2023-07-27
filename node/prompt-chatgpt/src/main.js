@@ -2,17 +2,18 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { OpenAIApi, Configuration } from 'openai';
-import EnvironmentService from './environment.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const staticFolder = path.join(__dirname, '../static');
 
 export default async ({ req, res }) => {
-  const env = new EnvironmentService();
+  if (!process.env.OPENAI_API_KEY || !process.env.OPENAI_MAX_TOKENS) {
+    throw new Error('Missing environment variables.');
+  }
 
   const configuration = new Configuration({
-    apiKey: env.OPENAI_API_KEY,
+    apiKey: process.env.OPENAI_API_KEY,
   });
   const openai = new OpenAIApi(configuration);
 
@@ -23,15 +24,20 @@ export default async ({ req, res }) => {
     return res.send(html, 200, { 'Content-Type': 'text/html; charset=utf-8' });
   }
 
-  if (!req.bodyString) {
-    return res.send('Missing body with a prompt.', 400);
+  if (!req.body.prompt) {
+    return res.json({ ok: false, error: 'Missing body with a prompt.' }, 400);
   }
 
-  const chatCompletion = await openai.createChatCompletion({
+  const response = await openai.createChatCompletion({
     model: 'gpt-3.5-turbo',
-    max_tokens: env.OPENAI_MAX_TOKENS,
-    messages: [{ role: 'user', content: req.bodyString }],
+    max_tokens: parseInt(process.env.OPENAI_MAX_TOKENS) ?? 512,
+    messages: [{ role: 'user', content: req.body.prompt }],
   });
+  const completion = response.data.choices[0].message;
 
-  return res.send(chatCompletion.data.choices[0].message, 200);
+  if (!completion) {
+    return res.json({ ok: false, error: 'Failed to query model.' }, 500);
+  }
+
+  return res.json({ ok: true, completion }, 200);
 };
