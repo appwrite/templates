@@ -37,7 +37,7 @@ Sample `200` Response:
 
 | Setting           | Value           |
 |-------------------|-----------------|
-| Runtime           | Dart (3.0)      |
+| Runtime           | Dart (2.17)     |
 | Entrypoint        | `lib/main.dart` |
 | Build Commands    | `dart pub get`  |
 | Permissions       | `any`           |
