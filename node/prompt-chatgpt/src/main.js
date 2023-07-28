@@ -1,5 +1,5 @@
 import { OpenAIApi, Configuration } from 'openai';
-import { getStaticFile, throwIfMissing } from './utils';
+import { getStaticFile, throwIfMissing } from './utils.js';
 
 export default async ({ req, res, error }) => {
   throwIfMissing(process.env, ['OPENAI_API_KEY', 'OPENAI_MAX_TOKENS']);
