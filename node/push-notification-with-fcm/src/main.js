@@ -1,7 +1,14 @@
-import EnvironmentService from './environment.js';
 import FirebaseService from './firebase.js';
+import { throwIfMissing } from './utils.js';
 
 export default async ({ req, res, log, error }) => {
+  throwIfMissing(process.env, [
+    'FIREBASE_PROJECT_ID',
+    'FIREBASE_PRIVATE_KEY',
+    'FIREBASE_CLIENT_EMAIL',
+    'FIREBASE_DATABASE_URL',
+  ]);
+
   if (
     req.method !== 'POST' ||
     req.headers['content-type'] !== 'application/json'
@@ -9,23 +16,23 @@ export default async ({ req, res, log, error }) => {
     return res.send('Invalid request.', 400);
   }
 
-  const env = new EnvironmentService();
-  const firebase = new FirebaseService(env);
+  const firebase = new FirebaseService();
 
-  const { deviceToken, message } = req.body;
-  if (!deviceToken || !message) {
-    error('Device token and message are required.');
-    return res.send('Device token and message are required.', 400);
+  try {
+    throwIfMissing(req.body, ['deviceToken', 'message']);
+    throwIfMissing(req.body.message, ['title', 'body']);
+  } catch (err) {
+    return res.json({ ok: false, error: err.message }, 400);
   }
 
-  log(`Sending message to device: ${deviceToken}`);
+  log(`Sending message to device: ${req.body.deviceToken}`);
 
   const payload = {
     notification: {
-      title: message.title,
-      body: message.body,
+      title: req.body.message.title,
+      body: req.body.message.body,
     },
-    token: deviceToken,
+    token: req.deviceToken,
   };
 
   try {
