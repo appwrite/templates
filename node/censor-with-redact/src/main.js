@@ -1,26 +1,19 @@
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
 import { fetch } from 'undici';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const staticFolder = path.join(__dirname, '../static');
+import { getStaticFile, throwIfMissing } from './utils';
 
 export default async ({ req, res }) => {
-  if (!process.env.PANGEA_REDACT_TOKEN) {
-    throw new Error('Missing required environment variables.');
-  }
+  throwIfMissing(process.env, ['PANGEA_REDACT_TOKEN']);
 
   if (req.method === 'GET') {
-    const html = fs
-      .readFileSync(path.join(staticFolder, 'index.html'))
-      .toString();
-    return res.send(html, 200, { 'Content-Type': 'text/html; charset=utf-8' });
+    return res.send(getStaticFile('index.html'), 200, {
+      'Content-Type': 'text/html; charset=utf-8',
+    });
   }
 
-  if (!req.body.text) {
-    return res.json({ ok: false, error: 'Missing require field: text.' }, 400);
+  try {
+    throwIfMissing(req.body, ['text']);
+  } catch (err) {
+    return res.json({ ok: false, error: err.message }, 400);
   }
 
   const response = await fetch(`https://redact.aws.eu.pangea.cloud/v1/redact`, {
