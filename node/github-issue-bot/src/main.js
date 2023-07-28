@@ -1,29 +1,30 @@
-import EnvironmentService from './environment.js';
 import GithubService from './github.js';
+import { throwIfMissing } from './utils.js';
 
 export default async ({ res, req, log, error }) => {
-  const env = new EnvironmentService();
-  const github = new GithubService(env);
+  throwIfMissing(process.env, [
+    'GITHUB_WEBHOOK_SECRET',
+    'GITHUB_TOKEN',
+    'DISCORD_LINK',
+  ]);
 
-  const { DISCORD_LINK } = env;
+  const github = new GithubService();
 
   if (!(await github.verifyWebhook(req))) {
     error('Invalid signature');
     return res.json({ error: 'Invalid signature' }, 401);
   }
 
-  if (req.headers['x-github-event'] === 'issues') {
-    const { issue } = req.body;
-    if (!issue || req.body.action !== 'opened') {
-      log('No issue provided or not opened event');
-      return res.json({ success: true });
-    }
-
-    await github.postComment(
-      issue,
-      `Thanks for the issue report @${issue.user.login}! I'm inviting you to join our Discord for quicker support: ${DISCORD_LINK}`
-    );
+  if (
+    req.headers['x-github-event'] !== 'issues' ||
+    !req.body.issue ||
+    req.body.action !== 'opened'
+  ) {
+    return res.json({ success: true });
   }
 
-  return res.json({ success: true });
+  await github.postComment(
+    req.body.issue,
+    `Thanks for the issue report @${req.body.issue.user.login}! I'm inviting you to join our Discord for quicker support: ${process.env.DISCORD_LINK}`
+  );
 };

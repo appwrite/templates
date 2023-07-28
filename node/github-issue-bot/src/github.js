@@ -2,13 +2,9 @@ import { Octokit } from '@octokit/rest';
 import { verify } from '@octokit/webhooks-methods';
 
 class GithubService {
-  /*
-   * @param {import('./environment').default} env
-   */
-  constructor(env) {
-    this.env = env;
+  constructor() {
     this.octokit = new Octokit({
-      auth: env.GITHUB_TOKEN,
+      auth: process.env.GITHUB_TOKEN,
     });
   }
 
@@ -21,7 +17,11 @@ class GithubService {
 
     return (
       typeof signature !== 'string' ||
-      (await verify(this.env.GITHUB_WEBHOOK_SECRET, req.bodyString, signature))
+      (await verify(
+        /** @type {*} */ (process.env.GITHUB_WEBHOOK_SECRET),
+        req.bodyString,
+        signature
+      ))
     );
   }
 
