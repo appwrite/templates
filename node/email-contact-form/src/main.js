@@ -37,7 +37,6 @@ export default async ({ req, res, log, error }) => {
   throwIfMissing(req.headers, ['referer', 'origin']);
 
   if (req.headers['content-type'] !== 'application/x-www-form-urlencoded') {
-    log('Invalid request.');
     return res.redirect(
       urlWithCodeParam(req.headers['referer'], 'Invalid request.')
     );
@@ -55,7 +54,6 @@ export default async ({ req, res, log, error }) => {
   const form = querystring.parse(req.body);
   try {
     throwIfMissing(form, ['email']);
-    log('Form data is valid.');
   } catch (err) {
     return res.redirect(
       urlWithCodeParam(req.headers['referer'], err.message),
@@ -71,7 +69,6 @@ export default async ({ req, res, log, error }) => {
       subject: `New form submission: ${origin}`,
       text: templateFormMessage(form),
     });
-    log('Email sent successfully.');
   } catch (err) {
     error(err.message);
     return res.redirect(
