@@ -1,18 +1,16 @@
 import nodemailer from 'nodemailer';
 
 class MailService {
-  /**
-   * @param {import('./environment').default} env
-   */
-  constructor(env) {
-    this.env = env;
-
+  constructor() {
     this.transport = nodemailer.createTransport({
       // @ts-ignore
       // Not sure what's going on here.
-      host: env.SMTP_HOST,
-      port: env.SMTP_PORT,
-      auth: { user: env.SMTP_USERNAME, pass: env.SMTP_PASSWORD },
+      host: process.env.SMTP_HOST,
+      port: process.env.SMTP_PORT || 587,
+      auth: {
+        user: process.env.SMTP_USERNAME,
+        pass: process.env.SMTP_PASSWORD,
+      },
     });
   }
 
