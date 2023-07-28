@@ -1,5 +1,5 @@
 import { fetch } from 'undici';
-import { getStaticFile, throwIfMissing } from './utils';
+import { getStaticFile, throwIfMissing } from './utils.js';
 
 export default async ({ req, res }) => {
   throwIfMissing(process.env, ['PERSPECTIVE_API_KEY']);
