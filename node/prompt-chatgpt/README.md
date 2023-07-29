@@ -1,6 +1,6 @@
-# 🤖 Node OpenAI ChatGPT Function
+# 🤖 Node Prompt ChatGPT Function
 
-Query the OpenAI GPT-3.5-turbo model for chat completions.
+Ask question, and let OpenAI GPT-3.5-turbo answer.
 
 ## 🧰 Usage
 
@@ -26,9 +26,7 @@ Response from the model.
 ```json
 {
     "ok": true,
-    "completion": "Monday's heavy weight,
-Dawning with a sigh of grey,
-Hopeful hearts await."
+    "completion": "Monday's heavy weight, Dawning with a sigh of grey, Hopeful hearts await."
 }
 ```
 
@@ -73,7 +71,7 @@ A unique key used to authenticate with the OpenAI API. Please note that this is 
 | Question      | Answer                                                                      |
 | ------------- | --------------------------------------------------------------------------- |
 | Required      | Yes                                                                         |
-| Sample Value  | `d1efb...aec35`                                                             |
+| Sample Value  | `sk-wzG...vcy`                                                              |
 | Documentation | [OpenAI Docs](https://platform.openai.com/docs/quickstart/add-your-api-key) |
 
 ### OPENAI_MAX_TOKENS
