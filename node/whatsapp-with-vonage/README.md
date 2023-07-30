@@ -31,7 +31,6 @@ Sample `200` Response:
 {
   "ok": true
 }
-````
 
 Sample `400` Response:
 
