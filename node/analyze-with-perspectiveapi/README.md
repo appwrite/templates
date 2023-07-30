@@ -1,12 +1,12 @@
-# ⚡ Analyze with Perspective API Function
+# ☢️ Node.js Analyze with Perspective API Function
 
-Interact with Google's perspective API to analyze the perceived impact of a comment or a string of text. The API uses machine learning to score the text based on several aspects, such as its potential to be perceived as toxic.
+Automate moderation by getting toxicity of messages.
 
 ## 🧰 Usage
 
 ### `GET`
 
-Displays an HTML form where users can input a string of text to be analyzed.
+HTML form for interacting with the model.
 
 ### `POST`
 
@@ -33,7 +33,7 @@ Sample `400` Response:
 ```json
 {
   "ok": false,
-  "error": "Missing body with a prompt."
+  "error": "Missing required field: text"
 }
 ```
 
@@ -65,5 +65,5 @@ Google Perspective API key. It authenticates your function, allowing it to inter
 | Question      | Answer                                                                                |
 | ------------- | ------------------------------------------------------------------------------------- |
 | Required      | Yes                                                                                   |
-| Sample Value  | `d1efbd3jaoja4`                                                                       |
+| Sample Value  | `AIzaS...fk-fuM`                                                                      |
 | Documentation | [Setup Perspective API](https://developers.google.com/codelabs/setup-perspective-api) |

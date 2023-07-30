@@ -25,7 +25,7 @@ export default async ({ req, res }) => {
       },
       body: JSON.stringify({
         comment: {
-          text: req.bodyRaw,
+          text: req.body.text,
           type: 'PLAIN_TEXT',
         },
         languages: ['en'],
