@@ -1,6 +1,6 @@
 # 🤐 Node.js Censor with Redact Function
 
-Cesnor sensitive information from a provided text string using Redact API by Pangea.
+Automatically remove sensitive data from messages.
 
 ## 🧰 Usage
 
