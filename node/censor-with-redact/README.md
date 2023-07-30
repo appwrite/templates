@@ -1,4 +1,4 @@
-# 🛑 Censor with Redact Function
+# 🤐 Node.js Censor with Redact Function
 
 Cesnor sensitive information from a provided text string using Redact API by Pangea.
 
@@ -6,7 +6,7 @@ Cesnor sensitive information from a provided text string using Redact API by Pan
 
 ### `GET`
 
-Returns an HTML form page that can be used to enter text and see the redacted result.
+HTML form for interacting with the model.
 
 ### `POST`
 
@@ -17,7 +17,7 @@ Returns the supplied text string with sensitive information redacted.
 | Name         | Description                 | Location | Type               | Sample Value                                 |
 | ------------ | --------------------------- | -------- | ------------------ | -------------------------------------------- |
 | Content-Type | Content type of the request | Header   | `application/json` | N/A                                          |
-| text         | Text to redact              | Body     | String             | `My email address is dennis.nedry@ingen.com` |
+| text         | Text to redact              | Body     | String             | `My email address is myname2000@gmail.com`   |
 
 **Response**
 
@@ -61,5 +61,5 @@ Access token for the Pangea Redact API
 | Question      | Answer                                                                                  |
 | ------------- | --------------------------------------------------------------------------------------- |
 | Required      | Yes                                                                                     |
-| Sample Value  | `d1efbad42adgj`                                                                         |
+| Sample Value  | `pts_7p4...5wl4`                                                                        |
 | Documentation | [Pangea: Configuration](https://pangea.cloud/docs/redact/getting-started/configuration) |

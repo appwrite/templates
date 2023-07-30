@@ -7,18 +7,22 @@
     <title>Censor with Redact API Demo</title>
 
     <script>
-      async function onSubmit(message) {
-        const response = await fetch("/", {
+      async function onSubmit(text) {
+        const response = await fetch('/', {
           method: "POST",
-          body: message,
+          body: JSON.stringify({ text }),
           headers: {
-            "Content-Type": "text/plain",
+            'Content-Type': 'application/json',
           },
         });
 
-        const censoredMessage = await response.text();
+        const json = await response.json();
 
-        return censoredMessage;
+        if (!json.ok || json.error) {
+          alert(json.error);
+        }
+
+        return json.redacted;
       }
     </script>
 
