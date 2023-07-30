@@ -1,0 +1,17 @@
+{
+  "name": "censor-with-redact",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/main.js",
+  "type": "module",
+  "scripts": {
+    "format": "prettier --write ."
+  },
+  "keywords": [],
+  "devDependencies": {
+    "prettier": "^3.0.0"
+  },
+  "dependencies": {
+    "undici": "^5.22.1"
+  }
+}
