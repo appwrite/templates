@@ -1,12 +1,12 @@
-# ⚡ Vonage Message Receiver and Responder
+# 💬 Node.js WhatsApp Bot with Vonage Function
 
-Automatically respond to messages sent to a Vonage WhatsApp number.
+Simple bot to answer WhatsApp messages.
 
 ## 🧰 Usage
 
 ### `GET`
 
-Serves a HTML page.
+HTML form for interacting with the model.
 
 ### `POST`
 
@@ -14,24 +14,14 @@ Receives a message, validates its signature, and sends a response back to the se
 
 **Parameters**
 
-| Name          | Description                         | Location | Type                | Sample Value     |
-| ------------- | ----------------------------------- | -------- | ------------------- | ---------------- |
-| Content-Type  | Content type of the request         | Header   | `application/json ` | N/A              |
-| Authorization | Authorization token for the request | Header   | String              | `Bearer <token>` |
-| from          | Sender's identifier.                | Body     | String              | `12345`          |
-| text          | Text content of the message.        | Body     | String              | `Hello!`         |
+| Name          | Description                         | Location | Type                | Sample Value         |
+| ------------- | ----------------------------------- | -------- | ------------------- | -------------------- |
+| Content-Type  | Content type of the request         | Header   | `application/json ` | N/A                  |
+| Authorization | Webhook signature for verification  | Header   | String              | `Bearer <signature>` |
+| from          | Sender's identifier.                | Body     | String              | `12345`              |
+| text          | Text content of the message.        | Body     | String              | `Hello!`             |
 
-
-To generate the Bearer token, you can use the following snippet:
-
-````js
-import jwt from 'jsonwebtoken';
-
-const token = jwt.sign(
-    { payload_hash: sha256(JSON.stringify(payload)) },
-    process.env.VONAGE_API_SIGNATURE_SECRET
-);
-```
+> All parameters are coming from Vonage webhook. Exact documentation can be found in [Vonage API Docs](https://developer.vonage.com/en/api/messages-olympus#inbound-message).
 
 **Response**
 
@@ -80,32 +70,35 @@ API Key to use the Vonage API.
 | Question     | Answer     |
 | ------------ | ---------- |
 | Required     | Yes        |
-| Sample Value | `abcd1234` |
+| Sample Value | `62...97`  |
+| Documentation | [Vonage: Q&A](https://api.support.vonage.com/hc/en-us/articles/204014493-How-do-I-find-my-Voice-API-key-and-API-secret-) |
 
 ### VONAGE_API_SECRET
 
 Secret to use the Vonage API.
 
-| Question     | Answer     |
-| ------------ | ---------- |
-| Required     | Yes        |
-| Sample Value | `efgh5678` |
+| Question     | Answer      |
+| ------------ | ----------- |
+| Required     | Yes         |
+| Sample Value | `Zjc...5PH` |
+| Documentation | [Vonage: Q&A](https://api.support.vonage.com/hc/en-us/articles/204014493-How-do-I-find-my-Voice-API-key-and-API-secret-) |
 
 ### VONAGE_API_SIGNATURE_SECRET
 
 Secret to verify the JWT token sent by Vonage.
 
-| Question     | Answer      |
-| ------------ | ----------- |
-| Required     | Yes         |
-| Sample Value | `ijkl91011` |
+| Question     | Answer          |
+| ------------ | --------------- |
+| Required     | Yes             |
+| Sample Value | `NXOi3...IBHDa` |
+| Documentation | [Vonage: Signing Messages](https://developer.vonage.com/en/getting-started/concepts/signing-messages) |
 
 ### VONAGE_WHATSAPP_NUMBER
 
 Vonage WhatsApp number to send messages from.
 
-| Question     | Answer      |
-| ------------ | ----------- |
-| Required     | Yes         |
-| Sample Value | `123456789` |
-
+| Question     | Answer         |
+| ------------ | -------------- |
+| Required     | Yes            |
+| Sample Value | `+14000000102` |
+| Documentation | [Vonage: Q&A](https://api.support.vonage.com/hc/en-us/articles/4431993282580-Where-do-I-find-my-WhatsApp-Number-Certificate-) |
