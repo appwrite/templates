@@ -1,59 +1,47 @@
 import { Client, Databases, Query } from 'node-appwrite';
 import algoliasearch from 'algoliasearch';
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import EnvironmentService from './environment.js';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const staticFolder = path.join(__dirname, '../static');
-
-/**
- * @param {string} template
- * @param {Record<string, string>} values
- * @returns {string}
- */
-function interpolate(template, values) {
-  return template.replace(/{{([^}]+)}}/g, (_, key) => values[key]);
-}
+import { getStaticFile, interpolate, throwIfMissing } from './utils.js';
 
 export default async ({ req, res, log }) => {
-  const {
-    APPWRITE_ENDPOINT,
-    APPWRITE_PROJECT_ID,
-    APPWRITE_API_KEY,
-    APPWRITE_DATABASE_ID,
-    APPWRITE_COLLECTION_ID,
-    ALGOLIA_APP_ID,
-    ALGOLIA_ADMIN_API_KEY,
-    ALGOLIA_INDEX_ID,
-    ALGOLIA_SEARCH_API_KEY,
-  } = new EnvironmentService();
+  throwIfMissing(process.env, [
+    'ALGOLIA_APP_ID',
+    'ALGOLIA_ADMIN_API_KEY',
+    'ALGOLIA_INDEX_ID',
+    'ALGOLIA_SEARCH_API_KEY',
+    'APPWRITE_API_KEY',
+    'APPWRITE_DATABASE_ID',
+    'APPWRITE_COLLECTION_ID',
+    'APPWRITE_PROJECT_ID',
+  ]);
 
   if (req.method === 'GET') {
-    const template = fs
-      .readFileSync(path.join(staticFolder, 'index.html'))
-      .toString();
-
-    const html = interpolate(template, {
-      ALGOLIA_APP_ID,
-      ALGOLIA_INDEX_ID,
-      ALGOLIA_SEARCH_API_KEY,
+    const html = interpolate(getStaticFile('index.html'), {
+      ALGOLIA_APP_ID: process.env.ALGOLIA_APP_ID,
+      ALGOLIA_INDEX_ID: process.env.ALGOLIA_INDEX_ID,
+      ALGOLIA_SEARCH_API_KEY: process.env.ALGOLIA_SEARCH_API_KEY,
     });
 
     return res.send(html, 200, { 'Content-Type': 'text/html; charset=utf-8' });
   }
 
   const client = new Client()
-    .setEndpoint(APPWRITE_ENDPOINT)
-    .setProject(APPWRITE_PROJECT_ID)
-    .setKey(APPWRITE_API_KEY);
+    .setEndpoint(
+      process.env.APPWRITE_ENDPOINT ?? 'https://cloud.appwrite.io/v1'
+    )
+    .setProject(
+      process.env.APPWRITE_PROJECT_ID ??
+        process.env.APPWRITE_FUNCTION_PROJECT_ID ??
+        ''
+    )
+    .setKey(process.env.APPWRITE_API_KEY ?? '');
 
   const databases = new Databases(client);
 
-  const algolia = algoliasearch(ALGOLIA_APP_ID, ALGOLIA_ADMIN_API_KEY);
-  const algoliaIndex = algolia.initIndex(ALGOLIA_INDEX_ID);
+  const algolia = algoliasearch(
+    process.env.ALGOLIA_APP_ID ?? '',
+    process.env.ALGOLIA_ADMIN_API_KEY ?? ''
+  );
+  const algoliaIndex = algolia.initIndex(process.env.ALGOLIA_INDEX_ID ?? '');
 
   let cursor = null;
 
@@ -65,8 +53,8 @@ export default async ({ req, res, log }) => {
     }
 
     const response = await databases.listDocuments(
-      APPWRITE_DATABASE_ID,
-      APPWRITE_COLLECTION_ID,
+      process.env.APPWRITE_DATABASE_ID ?? '',
+      process.env.APPWRITE_COLLECTION_ID ?? '',
       queries
     );
 
