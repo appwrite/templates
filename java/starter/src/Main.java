@@ -15,7 +15,7 @@ public class Main {
         // Client client = new Client();
         // client
         //         .setEndpoint("https://cloud.appwrite.io/v1")
-        //         .setProject(System.getenv("APPWRITE_PROJECT_ID"))
+        //         .setProject(System.getenv("APPWRITE_FUNCTION_PROJECT_ID"))
         //         .setKey(System.getenv("APPWRITE_API_KEY"));
 
         // You can log messages to the console

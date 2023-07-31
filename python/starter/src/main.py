@@ -10,7 +10,7 @@ def main(context):
     # client = (
     #     Client()
     #     .set_endpoint("https://cloud.appwrite.io/v1")
-    #     .set_project(os.environ["APPWRITE_PROJECT_ID"])
+    #     .set_project(os.environ["APPWRITE_FUNCTION_PROJECT_ID"])
     #     .set_key(os.environ["APPWRITE_API_KEY"])
     # )
 

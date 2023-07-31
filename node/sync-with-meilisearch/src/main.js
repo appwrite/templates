@@ -5,7 +5,6 @@ import { getStaticFile, interpolate, throwIfMissing } from './utils.js';
 export default async ({ req, res, log }) => {
   throwIfMissing(process.env, [
     'APPWRITE_API_KEY',
-    'APPWRITE_PROJECT_ID',
     'APPWRITE_DATABASE_ID',
     'APPWRITE_COLLECTION_ID',
     'MEILISEARCH_ENDPOINT',
@@ -27,11 +26,8 @@ export default async ({ req, res, log }) => {
     .setEndpoint(
       process.env.APPWRITE_ENDPOINT ?? 'https://cloud.appwrite.io/v1'
     )
-    .setProject(
-      process.env.APPWRITE_PROJECT_ID ??
-        process.env.APPWRITE_FUNCTION_PROJECT_ID
-    )
-    .setKey(process.env.APPWRITE_API_KEY);
+    .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID ?? '')
+    .setKey(process.env.APPWRITE_API_KEY ?? '');
 
   const databases = new Databases(client);
 

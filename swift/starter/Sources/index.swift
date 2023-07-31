@@ -9,7 +9,7 @@ func main(context: RuntimeContext) async throws -> RuntimeOutput {
     //
     // let client = Client()
     //    .setEndpoint("https://cloud.appwrite.io/v1")
-    //    .setProject(ProcessInfo.processInfo.environment["APPWRITE_PROJECT_ID"])
+    //    .setProject(ProcessInfo.processInfo.environment["APPWRITE_FUNCTION_PROJECT_ID"])
     //    .setKey(ProcessInfo.processInfo.environment["APPWRITE_API_KEY"]);
 
     // You can log messages to the console

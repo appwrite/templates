@@ -7,7 +7,7 @@ export default ({ req, res, log, error }: any) => {
   //
   // const client = new Client()
   //    .setEndpoint('https://cloud.appwrite.io/v1')
-  //    .setProject(Deno.env.get("APPWRITE_PROJECT_ID"))
+  //    .setProject(Deno.env.get("APPWRITE_FUNCTION_PROJECT_ID"))
   //    .setKey(Deno.env.get("APPWRITE_API_KEY"));
 
   // You can log messages to the console
