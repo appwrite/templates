@@ -1,10 +1,8 @@
 import AppwriteService from './appwrite.js';
-import EnvironmentService from './environment.js';
 import { isValidURL, generateShortCode } from './utils.js';
 
 export default async ({ res, req, log, error }) => {
-  const env = new EnvironmentService();
-  const appwrite = new AppwriteService(env);
+  const appwrite = new AppwriteService();
 
   if (
     req.method === 'POST' &&
@@ -25,7 +23,7 @@ export default async ({ res, req, log, error }) => {
 
     return res.json(
       {
-        short: `${env.SHORT_BASE_URL}/${urlEntry.$id}`,
+        short: `${process.env.SHORT_BASE_URL}/${urlEntry.$id}`,
         url: urlEntry.url,
       },
       201

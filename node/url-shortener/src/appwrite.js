@@ -8,17 +8,17 @@ import { Client, Databases } from 'node-appwrite';
  */
 
 class AppwriteService {
-  /**
-   * @param {import('./environment').default} env
-   */
-  constructor(env) {
-    this.env = env;
-
+  constructor() {
     const client = new Client();
     client
-      .setEndpoint(env.APPWRITE_ENDPOINT)
-      .setProject(env.APPWRITE_PROJECT_ID)
-      .setKey(env.APPWRITE_API_KEY);
+      .setEndpoint(
+        process.env.APPWRITE_ENDPOINT ?? 'https://cloud.appwrite.io/v1'
+      )
+      .setProject(
+        process.env.APPWRITE_PROJECT_ID ??
+          process.env.APPWRITE_FUNCTION_PROJECT_ID
+      )
+      .setKey(process.env.APPWRITE_API_KEY);
 
     this.databases = new Databases(client);
   }
@@ -31,8 +31,8 @@ class AppwriteService {
     try {
       const document = /** @type {URLEntryDocument} */ (
         await this.databases.getDocument(
-          this.env.DATABASE_ID,
-          this.env.COLLECTION_ID,
+          process.env.APPWRITE_DATABASE_ID,
+          process.env.APPWRITE_COLLECTION_ID,
           shortCode
         )
       );
@@ -53,8 +53,8 @@ class AppwriteService {
     try {
       const document = /** @type {URLEntryDocument} */ (
         await this.databases.createDocument(
-          this.env.DATABASE_ID,
-          this.env.COLLECTION_ID,
+          process.env.APPWRITE_DATABASE_ID,
+          process.env.APPWRITE_COLLECTION_ID,
           shortCode,
           {
             url,
@@ -74,7 +74,7 @@ class AppwriteService {
    */
   async doesURLEntryDatabaseExist() {
     try {
-      await this.databases.get(this.env.DATABASE_ID);
+      await this.databases.get(process.env.APPWRITE_DATABASE_ID);
       return true;
     } catch (err) {
       if (err.code !== 404) throw err;
@@ -84,15 +84,18 @@ class AppwriteService {
 
   async setupURLEntryDatabase() {
     try {
-      await this.databases.create(this.env.DATABASE_ID, this.env.DATABASE_NAME);
+      await this.databases.create(
+        process.env.APPWRITE_DATABASE_ID,
+        'URL Shortener'
+      );
       await this.databases.createCollection(
-        this.env.DATABASE_ID,
-        this.env.COLLECTION_ID,
-        this.env.COLLECTION_NAME
+        process.env.APPWRITE_DATABASE_ID,
+        process.env.APPWRITE_COLLECTION_ID,
+        'URLs'
       );
       await this.databases.createUrlAttribute(
-        this.env.DATABASE_ID,
-        this.env.COLLECTION_ID,
+        process.env.APPWRITE_DATABASE_ID,
+        process.env.APPWRITE_COLLECTION_ID,
         'url',
         true
       );
