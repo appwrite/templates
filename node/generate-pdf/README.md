@@ -1,12 +1,14 @@
-# ⚡ Generate PDF Function
+# 📄 Node.js Generate PDF Function
 
-Generates a PDF document containg a fake invoice.
+Document containing sample invoice in PDF format
 
 ## 🧰 Usage
 
 ### `GET`
 
 Returns a PDF invoice
+
+No parameters required.
 
 **Response**
 
@@ -23,3 +25,7 @@ Returns a binary stream of the generated PDF document. The `Content-Type` of the
 | Build Commands    | `npm install` |
 | Permissions       | `any`         |
 | Timeout (Seconds) | 15            |
+
+## 🔒 Environment Variables
+
+No environment variables required.
