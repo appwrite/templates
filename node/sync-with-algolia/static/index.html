@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -56,22 +56,22 @@
 
     <script>
       const searchClient = algoliasearch(
-        "{{ALGOLIA_APP_ID}}",
-        "{{ALGOLIA_SEARCH_API_KEY}}"
+        '{{ALGOLIA_APP_ID}}',
+        '{{ALGOLIA_SEARCH_API_KEY}}'
       );
 
       const search = instantsearch({
-        indexName: "{{ALGOLIA_INDEX_ID}}",
+        indexName: '{{ALGOLIA_INDEX_ID}}',
         searchClient,
       });
 
       search.addWidgets([
         instantsearch.widgets.searchBox({
-          container: "#searchbox",
+          container: '#searchbox',
         }),
 
         instantsearch.widgets.hits({
-          container: "#hits",
+          container: '#hits',
           templates: {
             item(hit, { html, components }) {
               return html`

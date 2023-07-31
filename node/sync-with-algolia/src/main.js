@@ -11,7 +11,6 @@ export default async ({ req, res, log }) => {
     'APPWRITE_API_KEY',
     'APPWRITE_DATABASE_ID',
     'APPWRITE_COLLECTION_ID',
-    'APPWRITE_PROJECT_ID',
   ]);
 
   if (req.method === 'GET') {
@@ -28,11 +27,7 @@ export default async ({ req, res, log }) => {
     .setEndpoint(
       process.env.APPWRITE_ENDPOINT ?? 'https://cloud.appwrite.io/v1'
     )
-    .setProject(
-      process.env.APPWRITE_PROJECT_ID ??
-        process.env.APPWRITE_FUNCTION_PROJECT_ID ??
-        ''
-    )
+    .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID ?? '')
     .setKey(process.env.APPWRITE_API_KEY ?? '');
 
   const databases = new Databases(client);
@@ -61,7 +56,7 @@ export default async ({ req, res, log }) => {
     if (response.documents.length > 0) {
       cursor = response.documents[response.documents.length - 1].$id;
     } else {
-      log(`No more documents found.`);
+      log('No more documents found.');
       cursor = null;
       break;
     }

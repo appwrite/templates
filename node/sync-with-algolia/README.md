@@ -1,17 +1,18 @@
-# ⚡ Sync With Algolia Function
+# 🔍 Node.js Sync with Algolia Function
 
-Dyncs documents in an Appwrite database collection to an Algolia index.
+Intuitive search bar for any data in Appwrite Databases.
 
 ## 🧰 Usage
 
 ### `GET /`
 
-Returns a HTML page where search can be performed to test the indexing.
-
+HTML form for interacting with the model.
 
 ### `POST /`
 
 Triggers indexing of the Appwrite database collection to Algolia.
+
+No parameters required.
 
 **Response**
 
@@ -46,7 +47,7 @@ The ID of the Appwrite database that contains the collection to sync.
 | Question      | Answer                                                    |
 | ------------- | --------------------------------------------------------- |
 | Required      | Yes                                                       |
-| Sample Value  | `612a3...5b6c9`                                           |
+| Sample Value  | `64a55...7b912`                                           |
 | Documentation | [Appwrite: Databases](https://appwrite.io/docs/databases) |
 
 ### APPWRITE_COLLECTION_ID
@@ -68,15 +69,6 @@ The URL endpoint of the Appwrite server. If not provided, it defaults to the App
 | Required     | No                             |
 | Sample Value | `https://cloud.appwrite.io/v1` |
 
-### APPWRITE_PROJECT_ID
-
-The ID of the Appwrite project associated with the function.
-
-| Question     | Answer              |
-| ------------ | ------------------- |
-| Required     | Yes                 |
-| Sample Value | `builtWithAppwrite` |
-
 ### ALGOLIA_APP_ID
 
 The application ID for your Algolia service.
@@ -84,7 +76,7 @@ The application ID for your Algolia service.
 | Question     | Answer             |
 | ------------ | ------------------ |
 | Required     | Yes                |
-| Sample Value | `YourAlgoliaAppId` |
+| Sample Value | `EG6...VJJ`        |
 
 ### ALGOLIA_ADMIN_API_KEY
 
@@ -93,7 +85,7 @@ The admin API Key for your Algolia service.
 | Question      | Answer                                                                     |
 | ------------- | -------------------------------------------------------------------------- |
 | Required      | Yes                                                                        |
-| Sample Value  | `YourAlgoliaAdminApiKey`                                                   |
+| Sample Value  | `fd0aa...136a8`                                                            |
 | Documentation | [Algolia: API Keys](https://www.algolia.com/doc/guides/security/api-keys/) |
 
 ### ALGOLIA_INDEX_ID
@@ -103,7 +95,7 @@ The ID of the index in Algolia where the documents are to be synced.
 | Question     | Answer               |
 | ------------ | -------------------- |
 | Required     | Yes                  |
-| Sample Value | `YourAlgoliaIndexId` |
+| Sample Value | `appwrite_index`     |
 
 ### ALGOLIA_SEARCH_API_KEY
 
@@ -112,5 +104,5 @@ The search API Key for your Algolia service. This key is used for searching the 
 | Question      | Answer                                                                     |
 | ------------- | -------------------------------------------------------------------------- |
 | Required      | Yes                                                                        |
-| Sample Value  | `YourAlgoliaSearchApiKey`                                                  |
+| Sample Value  | `bf2f5...df733`                                                            |
 | Documentation | [Algolia: API Keys](https://www.algolia.com/doc/guides/security/api-keys/) |
