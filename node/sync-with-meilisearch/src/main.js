@@ -1,54 +1,39 @@
 import { Client, Databases, Query } from 'node-appwrite';
 import { fetch } from 'undici';
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import EnvironmentService from './environment.js';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const staticFolder = path.join(__dirname, '../static');
-
-/**
- * @param {string} template
- * @param {Record<string, string>} values
- * @returns {string}
- */
-function interpolate(template, values) {
-  return template.replace(/{{([^}]+)}}/g, (_, key) => values[key]);
-}
+import { getStaticFile, interpolate, throwIfMissing } from './utils.js';
 
 export default async ({ req, res, log }) => {
-  const {
-    APPWRITE_ENDPOINT,
-    APPWRITE_PROJECT_ID,
-    APPWRITE_API_KEY,
-    APPWRITE_DATABASE_ID,
-    APPWRITE_COLLECTION_ID,
-    MEILISEARCH_ENDPOINT,
-    MEILISEARCH_ADMIN_API_KEY,
-    MEILISEARCH_INDEX_NAME,
-    MEILISEARCH_SEARCH_API_KEY,
-  } = new EnvironmentService();
+  throwIfMissing(process.env, [
+    'APPWRITE_ENDPOINT',
+    'APPWRITE_API_KEY',
+    'APPWRITE_PROJECT_ID',
+    'APPWRITE_DATABASE_ID',
+    'APPWRITE_COLLECTION_ID',
+    'MEILISEARCH_ENDPOINT',
+    'MEILISEARCH_INDEX_NAME',
+    'MEILISEARCH_SEARCH_API_KEY',
+  ]);
 
   if (req.method === 'GET') {
-    const template = fs
-      .readFileSync(path.join(staticFolder, 'index.html'))
-      .toString();
-
-    const html = interpolate(template, {
-      MEILISEARCH_ENDPOINT,
-      MEILISEARCH_INDEX_NAME,
-      MEILISEARCH_SEARCH_API_KEY,
+    const html = interpolate(getStaticFile('index.html'), {
+      MEILISEARCH_ENDPOINT: process.env.MEILISEARCH_ENDPOINT,
+      MEILISEARCH_INDEX_NAME: process.env.MEILISEARCH_INDEX_NAME,
+      MEILISEARCH_SEARCH_API_KEY: process.env.MEILISEARCH_SEARCH_API_KEY,
     });
 
     return res.send(html, 200, { 'Content-Type': 'text/html; charset=utf-8' });
   }
 
   const client = new Client()
-    .setEndpoint(APPWRITE_ENDPOINT)
-    .setProject(APPWRITE_PROJECT_ID)
-    .setKey(APPWRITE_API_KEY);
+    .setEndpoint(
+      process.env.APPWRITE_ENDPOINT ?? 'https://cloud.appwrite.io/v1'
+    )
+    .setProject(
+      process.env.APPWRITE_PROJECT_ID ??
+        process.env.APPWRITE_FUNCTION_PROJECT_ID ??
+        ''
+    )
+    .setKey(process.env.APPWRITE_API_KEY ?? '');
 
   const databases = new Databases(client);
 
@@ -62,8 +47,8 @@ export default async ({ req, res, log }) => {
     }
 
     const { documents } = await databases.listDocuments(
-      APPWRITE_DATABASE_ID,
-      APPWRITE_COLLECTION_ID,
+      process.env.APPWRITE_DATABASE_ID ?? '',
+      process.env.APPWRITE_COLLECTION_ID ?? '',
       queries
     );
 
@@ -78,12 +63,12 @@ export default async ({ req, res, log }) => {
     log(`Syncing chunk of ${documents.length} documents ...`);
 
     await fetch(
-      `${MEILISEARCH_ENDPOINT}/indexes/${MEILISEARCH_INDEX_NAME}/documents?primaryKey=$id`,
+      `${process.env.MEILISEARCH_ENDPOINT}/indexes/${process.env.MEILISEARCH_INDEX_NAME}/documents?primaryKey=$id`,
       {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${MEILISEARCH_ADMIN_API_KEY}`,
+          Authorization: `Bearer ${process.env.MEILISEARCH_ADMIN_API_KEY}`,
         },
         body: JSON.stringify(documents),
       }
