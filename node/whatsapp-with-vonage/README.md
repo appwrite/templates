@@ -6,7 +6,7 @@ Simple bot to answer WhatsApp messages.
 
 ### `GET`
 
-HTML form for interacting with the model.
+HTML form for interacting with the function.
 
 ### `POST`
 

@@ -6,7 +6,7 @@ Automatically remove sensitive data from messages.
 
 ### `GET`
 
-HTML form for interacting with the model.
+HTML form for interacting with the function.
 
 ### `POST`
 
