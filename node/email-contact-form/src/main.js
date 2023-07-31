@@ -1,11 +1,11 @@
 import querystring from 'node:querystring';
 import { getCorsHeaders, isOriginPermitted } from './cors.js';
-import MailService from './mail.js';
 import {
   getStaticFile,
   throwIfMissing,
   urlWithCodeParam,
   templateFormMessage,
+  sendEmail,
 } from './utils.js';
 
 const ErrorCode = {
@@ -42,8 +42,6 @@ export default async ({ req, res, log, error }) => {
     );
   }
 
-  const mail = new MailService();
-
   if (!isOriginPermitted(req.headers['origin'])) {
     error('Origin not permitted.');
     return res.redirect(
@@ -63,7 +61,7 @@ export default async ({ req, res, log, error }) => {
   }
 
   try {
-    mail.send({
+    sendEmail({
       to: process.env.SUBMIT_EMAIL,
       from: /** @type {string} */ (form['email']),
       subject: `New form submission: ${origin}`,

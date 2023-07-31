@@ -1,6 +1,7 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
+import nodemailer from 'nodemailer';
 
 /**
  * Throws an error if any of the keys are missing from the object
@@ -54,4 +55,21 @@ export function urlWithCodeParam(baseUrl, codeParam) {
   const url = new URL(baseUrl);
   url.searchParams.set('code', codeParam);
   return url.toString();
+}
+
+/**
+ * @param {import('nodemailer').SendMailOptions} options
+ */
+export async function sendEmail(options) {
+  const transport = nodemailer.createTransport({
+    // @ts-ignore
+    // Not sure what's going on here.
+    host: process.env.SMTP_HOST,
+    port: process.env.SMTP_PORT || 587,
+    auth: {
+      user: process.env.SMTP_USERNAME,
+      pass: process.env.SMTP_PASSWORD,
+    },
+  });
+  await transport.sendMail(options);
 }
