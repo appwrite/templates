@@ -4,7 +4,6 @@ import { getStaticFile, interpolate, throwIfMissing } from './utils.js';
 
 export default async ({ req, res, log }) => {
   throwIfMissing(process.env, [
-    'APPWRITE_ENDPOINT',
     'APPWRITE_API_KEY',
     'APPWRITE_PROJECT_ID',
     'APPWRITE_DATABASE_ID',
@@ -30,10 +29,9 @@ export default async ({ req, res, log }) => {
     )
     .setProject(
       process.env.APPWRITE_PROJECT_ID ??
-        process.env.APPWRITE_FUNCTION_PROJECT_ID ??
-        ''
+        process.env.APPWRITE_FUNCTION_PROJECT_ID
     )
-    .setKey(process.env.APPWRITE_API_KEY ?? '');
+    .setKey(process.env.APPWRITE_API_KEY);
 
   const databases = new Databases(client);
 
@@ -47,8 +45,8 @@ export default async ({ req, res, log }) => {
     }
 
     const { documents } = await databases.listDocuments(
-      process.env.APPWRITE_DATABASE_ID ?? '',
-      process.env.APPWRITE_COLLECTION_ID ?? '',
+      process.env.APPWRITE_DATABASE_ID,
+      process.env.APPWRITE_COLLECTION_ID,
       queries
     );
 
