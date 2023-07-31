@@ -3,12 +3,7 @@
 import stripe from 'stripe';
 
 class StripeService {
-  /**
-   * @param {import('./environment.js').default} env
-   */
   constructor(env) {
-    this.env = env;
-
     // Note: stripe cjs API types are faulty
     /** @type {import('stripe').Stripe} */
     // @ts-ignore
@@ -19,26 +14,27 @@ class StripeService {
    * @param {string} userId
    */
   async checkoutSubscription(userId) {
+    /** @type {import('stripe').Stripe.Checkout.SessionCreateParams.LineItem} */
+    const lineItem = {
+      price_data: {
+        currency: 'usd',
+        product_data: {
+          name: 'Premium Subscription',
+        },
+        unit_amount: 1000,
+        recurring: {
+          interval: 'year',
+        },
+      },
+      quantity: 1,
+    };
+
     try {
       return await this.client.checkout.sessions.create({
         payment_method_types: ['card'],
-        line_items: [
-          {
-            price_data: {
-              currency: 'usd',
-              product_data: {
-                name: 'Premium Subscription',
-              },
-              unit_amount: 1000,
-              recurring: {
-                interval: 'year',
-              },
-            },
-            quantity: 1,
-          },
-        ],
-        success_url: this.env.SUCCESS_URL,
-        cancel_url: this.env.CANCEL_URL,
+        line_items: [lineItem],
+        success_url: process.env.SUCCESS_URL,
+        cancel_url: process.env.CANCEL_URL,
         client_reference_id: userId,
         metadata: {
           userId,
@@ -58,7 +54,7 @@ class StripeService {
       const event = this.client.webhooks.constructEvent(
         req.body,
         req.headers['stripe-signature'],
-        this.env.STRIPE_WEBHOOK_SECRET
+        process.env.STRIPE_WEBHOOK_SECRET
       );
       return /** @type {import("stripe").Stripe.DiscriminatedEvent} */ (event);
     } catch (err) {

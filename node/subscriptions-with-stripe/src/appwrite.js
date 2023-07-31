@@ -5,17 +5,17 @@ const Subscriptions = {
 };
 
 class AppwriteService {
-  /**
-   * @param {import('./environment').default} env
-   */
-  constructor(env) {
-    this.env = env;
-
+  constructor() {
     const client = new Client();
     client
-      .setEndpoint(env.APPWRITE_ENDPOINT)
-      .setProject(env.APPWRITE_PROJECT_ID)
-      .setKey(env.APPWRITE_API_KEY);
+      .setEndpoint(
+        process.env.APPWRITE_ENDPOINT ?? 'https://cloud.appwrite.io/v1'
+      )
+      .setProject(
+        process.env.APPWRITE_PROJECT_I ??
+          process.env.APPWRITE_FUNCTION_PROJECT_ID
+      )
+      .setKey(process.env.APPWRITE_API_KEY);
 
     const databases = new Databases(client);
     this.databases = databases;
@@ -26,7 +26,9 @@ class AppwriteService {
    */
   async doesSubscribersDatabaseExist() {
     try {
-      await this.databases.get(this.env.DATABASE_ID);
+      await this.databases.get(
+        process.env.DATABASE_ID ?? 'stripe-subscriptions'
+      );
       return true;
     } catch (err) {
       if (err.code === 404) return false;
@@ -36,22 +38,25 @@ class AppwriteService {
 
   async setupSubscribersDatabase() {
     try {
-      await this.databases.create(this.env.DATABASE_ID, this.env.DATABASE_NAME);
+      await this.databases.create(
+        process.env.DATABASE_ID ?? 'stripe-subscriptions',
+        'Stripe Subscriptions'
+      );
       await this.databases.createCollection(
-        this.env.DATABASE_ID,
-        this.env.COLLECTION_ID,
-        this.env.COLLECTION_NAME
+        process.env.DATABASE_ID ?? 'stripe-subscriptions',
+        process.env.COLLECTION_ID ?? 'subscriptions',
+        'Subscriptions'
       );
       await this.databases.createStringAttribute(
-        this.env.DATABASE_ID,
-        this.env.COLLECTION_ID,
+        process.env.DATABASE_ID ?? 'stripe-subscriptions',
+        process.env.COLLECTION_ID ?? 'subscriptions',
         'userId',
         255,
         true
       );
       await this.databases.createStringAttribute(
-        this.env.DATABASE_ID,
-        this.env.COLLECTION_ID,
+        process.env.DATABASE_ID ?? 'stripe-subscriptions',
+        process.env.COLLECTION_ID ?? 'subscriptions',
         'subscriptionType',
         255,
         true
@@ -69,8 +74,8 @@ class AppwriteService {
   async hasSubscription(userId) {
     try {
       await this.databases.getDocument(
-        this.env.DATABASE_ID,
-        this.env.COLLECTION_ID,
+        process.env.DATABASE_ID ?? 'stripe-subscriptions',
+        process.env.COLLECTION_ID ?? 'subscriptions',
         userId
       );
       return true;
@@ -87,8 +92,8 @@ class AppwriteService {
   async deleteSubscription(userId) {
     try {
       await this.databases.deleteDocument(
-        this.env.DATABASE_ID,
-        this.env.COLLECTION_ID,
+        process.env.DATABASE_ID ?? 'stripe-subscriptions',
+        process.env.COLLECTION_ID ?? 'subscriptions',
         userId
       );
       return true;
@@ -104,8 +109,8 @@ class AppwriteService {
   async createSubscription(userId) {
     try {
       await this.databases.createDocument(
-        this.env.DATABASE_ID,
-        this.env.COLLECTION_ID,
+        process.env.DATABASE_ID ?? 'stripe-subscriptions',
+        process.env.COLLECTION_ID ?? 'subscriptions',
         userId,
         {
           subscriptionType: Subscriptions.PREMIUM,
