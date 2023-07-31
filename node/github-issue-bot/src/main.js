@@ -15,11 +15,7 @@ export default async ({ res, req, log, error }) => {
     return res.json({ error: 'Invalid signature' }, 401);
   }
 
-  if (
-    req.headers['x-github-event'] !== 'issues' ||
-    !req.body.issue ||
-    req.body.action !== 'opened'
-  ) {
+  if (!github.isIssueOpenedEvent(req)) {
     return res.json({ success: true });
   }
 
