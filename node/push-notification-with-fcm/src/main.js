@@ -1,5 +1,4 @@
-import FirebaseService from './firebase.js';
-import { throwIfMissing } from './utils.js';
+import { throwIfMissing, sendPushNotification } from './utils.js';
 
 export default async ({ req, res, log, error }) => {
   throwIfMissing(process.env, [
@@ -16,8 +15,6 @@ export default async ({ req, res, log, error }) => {
     return res.send('Invalid request.', 400);
   }
 
-  const firebase = new FirebaseService();
-
   try {
     throwIfMissing(req.body, ['deviceToken', 'message']);
     throwIfMissing(req.body.message, ['title', 'body']);
@@ -27,16 +24,14 @@ export default async ({ req, res, log, error }) => {
 
   log(`Sending message to device: ${req.body.deviceToken}`);
 
-  const payload = {
-    notification: {
-      title: req.body.message.title,
-      body: req.body.message.body,
-    },
-    token: req.deviceToken,
-  };
-
   try {
-    const response = await firebase.send(payload);
+    const response = await sendPushNotification({
+      notification: {
+        title: req.body.message.title,
+        body: req.body.message.body,
+      },
+      token: req.deviceToken,
+    });
     log(`Successfully sent message: ${response}`);
 
     return res.json({ messageId: response });

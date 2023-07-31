@@ -1,3 +1,5 @@
+import * as admin from 'firebase-admin';
+
 /**
  * Throws an error if any of the keys are missing from the object
  * @param {*} obj
@@ -14,4 +16,20 @@ export function throwIfMissing(obj, keys) {
   if (missing.length > 0) {
     throw new Error(`Missing required fields: ${missing.join(', ')}`);
   }
+}
+
+/**
+ * @param {admin.messaging.Message} payload
+ * @returns {Promise<string>}
+ */
+export async function sendPushNotification(payload) {
+  admin.initializeApp({
+    credential: admin.credential.cert({
+      projectId: process.env.FIREBASE_PROJECT_ID,
+      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+      privateKey: process.env.FIREBASE_PRIVATE_KEY,
+    }),
+    databaseURL: process.env.FIREBASE_DATABASE_URL,
+  });
+  return await admin.messaging().send(payload);
 }
