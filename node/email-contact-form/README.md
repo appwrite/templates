@@ -1,12 +1,12 @@
-# ⚡ Email Contact Form Function
+# 📬 Node.js Email Contact Form Function
 
-Sends an email to the configured address with the contents of a contact form submission.
+Sends an email with the contents of a HTML form.
 
 ## 🧰 Usage
 
 ### `GET`
 
-Returns a sample HTML form
+HTML form for interacting with the function.
 
 ### `POST`
 
@@ -43,13 +43,6 @@ Location: https://mywebapp.org/referer?error=Invalid+email+address
 |                   | `npm run setup` |
 | Permissions       | `any`           |
 | Timeout (Seconds) | 15              |
-
-- **SMTP_HOST** - SMTP server host
-- **SMTP_PORT** - SMTP server port
-- **SMTP_USERNAME** - SMTP server username
-- **SMTP_PASSWORD** - SMTP server password
-- **SUBMIT_EMAIL** - The email address to send form submissions
-- **ALLOWED_ORIGINS** - An optional comma-separated list of allowed origins for CORS (defaults to `*`)
 
 ## 🔒 Environment Variables
 

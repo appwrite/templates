@@ -37,8 +37,9 @@ export default async ({ req, res, log, error }) => {
   throwIfMissing(req.headers, ['referer', 'origin']);
 
   if (req.headers['content-type'] !== 'application/x-www-form-urlencoded') {
+    error('Incorrect content type.');
     return res.redirect(
-      urlWithCodeParam(req.headers['referer'], 'Invalid request.')
+      urlWithCodeParam(req.headers['referer'], ErrorCode.INVALID_REQUEST)
     );
   }
 
