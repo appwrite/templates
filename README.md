@@ -10,13 +10,6 @@ Templates for [Appwrite](https://appwrite.io/) Functions. These templates can be
 # List of Templates
 
 <!-- TABLE:START -->
-
-<style>
-table th:first-of-type {
-    width: 200px;
-}
-</style>
-
 | Template                    | Node.js                                | C++               | Dart               | Deno               | .NET                 | Java               | Kotlin               | PHP               | Python               | Ruby               | Swift               |
 | --------------------------- | -------------------------------------- | ----------------- | ------------------ | ------------------ | -------------------- | ------------------ | -------------------- | ----------------- | -------------------- | ------------------ | ------------------- |
 | starter                     | [✅](/node/starter)                     | [✅](/cpp/starter) | [✅](/dart/starter) | [✅](/deno/starter) | [✅](/dotnet/starter) | [✅](/java/starter) | [✅](/kotlin/starter) | [✅](/php/starter) | [✅](/python/starter) | [✅](/ruby/starter) | [✅](/swift/starter) |
