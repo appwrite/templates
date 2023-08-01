@@ -1,6 +1,6 @@
-# 🤖 Discord Command Bot Function
+# 🤖 Node.js Discord Command Bot Function
 
-Command-interaction bot for Discord. Responds to `/hello` command with a greeting.
+Simple command using Discord Interactions.
 
 ## 🧰 Usage
 

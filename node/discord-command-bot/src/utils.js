@@ -1,5 +1,3 @@
-import { verifyKey } from 'discord-interactions';
-
 /**
  * Throws an error if any of the keys are missing from the object
  * @param {*} obj
@@ -16,17 +14,4 @@ export function throwIfMissing(obj, keys) {
   if (missing.length > 0) {
     throw new Error(`Missing required fields: ${missing.join(', ')}`);
   }
-}
-
-/**
- * @param {*} req
- * @returns {Promise<boolean>}
- */
-export async function verifyWebhookRequest(req) {
-  return await verifyKey(
-    req.bodyRaw,
-    req.headers['x-signature-ed25519'],
-    req.headers['x-signature-timestamp'],
-    process.env.DISCORD_PUBLIC_KEY
-  );
 }

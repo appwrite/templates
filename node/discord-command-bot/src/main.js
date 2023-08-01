@@ -1,10 +1,17 @@
 import { InteractionResponseType, InteractionType } from 'discord-interactions';
-import { throwIfMissing, verifyWebhookRequest } from './utils.js';
+import { throwIfMissing } from './utils.js';
 
 export default async ({ req, res, error }) => {
   throwIfMissing(process.env, ['DISCORD_PUBLIC_KEY']);
 
-  if (!(await verifyWebhookRequest(req))) {
+  const verified = await verifyKey(
+    req.bodyRaw,
+    req.headers['x-signature-ed25519'],
+    req.headers['x-signature-timestamp'],
+    process.env.DISCORD_PUBLIC_KEY
+  );
+
+  if (!verified) {
     error('Invalid request.');
     return res.json({ error: 'Invalid request signature' }, 401);
   }
