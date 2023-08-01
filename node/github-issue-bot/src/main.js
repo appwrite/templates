@@ -8,15 +8,15 @@ export default async ({ res, req, log, error }) => {
 
   if (!(await github.verifyWebhook(req))) {
     error('Invalid signature');
-    return res.json({ error: 'Invalid signature' }, 401);
-  }
-
-  if (!github.isIssueOpenedEvent(req)) {
-    return res.json({ success: true });
+    return res.json({ ok: false, error: 'Invalid signature' }, 401);
   }
 
   await github.postComment(
     req.body.issue,
-    `Thanks for the issue report @${req.body.issue.user.login}! We will look into it ASAP.`
+    `Thanks for the issue report @${req.body.issue.user.login}! We will look into it as soon as possible.`
   );
+
+  if (!github.isIssueOpenedEvent(req)) {
+    return res.json({ ok: true });
+  }
 };

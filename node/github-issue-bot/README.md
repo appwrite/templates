@@ -1,10 +1,10 @@
-# ⚡ GitHub Issue Bot Function
+# 🤖 Node.js GitHub Issue Bot Function
 
 Automate the process of responding to newly opened issues on a GitHub repository.
 
 ## 🧰 Usage
 
-### Any Request
+### `POST`
 
 Handles webhook and returns a verification response.
 
@@ -23,7 +23,7 @@ Sample `200` Response:
 Webhook verification successful.
 
 ```json
-{ "success": true }
+{ "ok": true }
 ```
 
 Sample `401` Response:
@@ -31,7 +31,7 @@ Sample `401` Response:
 Webhook verification failed.
 
 ```json
-{ "error": "Invalid signature" }
+{ "ok": false, "error": "Invalid signature" }
 ```
 
 ## ⚙️ Configuration
