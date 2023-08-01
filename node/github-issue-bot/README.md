@@ -65,13 +65,3 @@ A personal access token from GitHub with the necessary permissions to post comme
 | Required      | Yes                                                                                                        |
 | Sample Value  | `ghp_1...`                                                                                                 |
 | Documentation | [GitHub Docs](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token) |
-
-### DISCORD_LINK
-
-The link to your Discord community where users can get support.
-
-| Question      | Answer                                                                                                        |
-| ------------- | ------------------------------------------------------------------------------------------------------------- |
-| Required      | Yes                                                                                                           |
-| Sample Value  | `https://discord.gg/...`                                                                                      |
-| Documentation | [Discord Docs](https://support.discord.com/hc/en-us/articles/204849977-How-do-I-invite-friends-to-my-server-) |

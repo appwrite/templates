@@ -3,7 +3,6 @@ declare global {
     interface ProcessEnv {
       GITHUB_TOKEN: string;
       GITHUB_WEBHOOK_SECRET: string;
-      DISCORD_LINK: string;
     }
   }
 }

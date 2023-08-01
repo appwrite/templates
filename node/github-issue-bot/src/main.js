@@ -2,11 +2,7 @@ import GithubService from './github.js';
 import { throwIfMissing } from './utils.js';
 
 export default async ({ res, req, log, error }) => {
-  throwIfMissing(process.env, [
-    'GITHUB_WEBHOOK_SECRET',
-    'GITHUB_TOKEN',
-    'DISCORD_LINK',
-  ]);
+  throwIfMissing(process.env, ['GITHUB_WEBHOOK_SECRET', 'GITHUB_TOKEN']);
 
   const github = new GithubService();
 
@@ -21,6 +17,6 @@ export default async ({ res, req, log, error }) => {
 
   await github.postComment(
     req.body.issue,
-    `Thanks for the issue report @${req.body.issue.user.login}! I'm inviting you to join our Discord for quicker support: ${process.env.DISCORD_LINK}`
+    `Thanks for the issue report @${req.body.issue.user.login}! We will look into it ASAP.`
   );
 };
