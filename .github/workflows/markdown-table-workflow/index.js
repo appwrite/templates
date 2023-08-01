@@ -95,22 +95,13 @@ const sortedTableRows = tableRows.sort((a, b) => {
   return aCount > bCount ? -1 : 1;
 });
 
-const styles = `
-<style>
-table th:first-of-type {
-    width: 200px;
-}
-</style>
-`;
-
 const table = markdownTable([
   [
-    "Template",
+    "Template &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;",
     ...runtimes.map((r) => (verboseRuntimes[r] ? verboseRuntimes[r] : r)),
   ],
   ...sortedTableRows,
 ]);
 
-const tableWithStyles = `${styles}\n${table}`;
 const readmePath = path.join(".", "../../../README.md");
-updateReadmeFile(readmePath, tableWithStyles);
+updateReadmeFile(readmePath, table);
