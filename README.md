@@ -10,16 +10,23 @@ Templates for [Appwrite](https://appwrite.io/) Functions. These templates can be
 # List of Templates
 
 <!-- TABLE:START -->
-| Template                    | C++               | Dart               | Deno               | .NET                 | Java               | Kotlin               | Node.js                                | PHP               | Python               | Ruby               | Swift               |
-| --------------------------- | ----------------- | ------------------ | ------------------ | -------------------- | ------------------ | -------------------- | -------------------------------------- | ----------------- | -------------------- | ------------------ | ------------------- |
-| whatsapp-with-vonage        | ❌                 | ❌                  | ❌                  | ❌                    | ❌                  | ❌                    | [✅](/node/whatsapp-with-vonage)        | ❌                 | ❌                    | ❌                  | ❌                   |
-| sync-with-meilisearch       | ❌                 | ❌                  | ❌                  | ❌                    | ❌                  | ❌                    | [✅](/node/sync-with-meilisearch)       | ❌                 | ❌                    | ❌                  | ❌                   |
-| sync-with-algolia           | ❌                 | ❌                  | ❌                  | ❌                    | ❌                  | ❌                    | [✅](/node/sync-with-algolia)           | ❌                 | ❌                    | ❌                  | ❌                   |
-| starter                     | [✅](/cpp/starter) | [✅](/dart/starter) | [✅](/deno/starter) | [✅](/dotnet/starter) | [✅](/java/starter) | [✅](/kotlin/starter) | [✅](/node/starter)                     | [✅](/php/starter) | [✅](/python/starter) | [✅](/ruby/starter) | [✅](/swift/starter) |
-| prompt-chatgpt              | ❌                 | ❌                  | ❌                  | ❌                    | ❌                  | ❌                    | [✅](/node/prompt-chatgpt)              | ❌                 | ❌                    | ❌                  | ❌                   |
-| generate-pdf                | ❌                 | ❌                  | ❌                  | ❌                    | ❌                  | ❌                    | [✅](/node/generate-pdf)                | ❌                 | ❌                    | ❌                  | ❌                   |
-| censor-with-redact          | ❌                 | ❌                  | ❌                  | ❌                    | ❌                  | ❌                    | [✅](/node/censor-with-redact)          | ❌                 | ❌                    | ❌                  | ❌                   |
-| analyze-with-perspectiveapi | ❌                 | ❌                  | ❌                  | ❌                    | ❌                  | ❌                    | [✅](/node/analyze-with-perspectiveapi) | ❌                 | ❌                    | ❌                  | ❌                   |
+
+<style>
+table th:first-of-type {
+    width: 200px;
+}
+</style>
+
+| Template                    | Node.js                                | C++               | Dart               | Deno               | .NET                 | Java               | Kotlin               | PHP               | Python               | Ruby               | Swift               |
+| --------------------------- | -------------------------------------- | ----------------- | ------------------ | ------------------ | -------------------- | ------------------ | -------------------- | ----------------- | -------------------- | ------------------ | ------------------- |
+| starter                     | [✅](/node/starter)                     | [✅](/cpp/starter) | [✅](/dart/starter) | [✅](/deno/starter) | [✅](/dotnet/starter) | [✅](/java/starter) | [✅](/kotlin/starter) | [✅](/php/starter) | [✅](/python/starter) | [✅](/ruby/starter) | [✅](/swift/starter) |
+| analyze-with-perspectiveapi | [✅](/node/analyze-with-perspectiveapi) | 🏗️               | 🏗️                | 🏗️                | 🏗️                  | 🏗️                | 🏗️                  | 🏗️               | 🏗️                  | 🏗️                | 🏗️                 |
+| censor-with-redact          | [✅](/node/censor-with-redact)          | 🏗️               | 🏗️                | 🏗️                | 🏗️                  | 🏗️                | 🏗️                  | 🏗️               | 🏗️                  | 🏗️                | 🏗️                 |
+| generate-pdf                | [✅](/node/generate-pdf)                | 🏗️               | 🏗️                | 🏗️                | 🏗️                  | 🏗️                | 🏗️                  | 🏗️               | 🏗️                  | 🏗️                | 🏗️                 |
+| prompt-chatgpt              | [✅](/node/prompt-chatgpt)              | 🏗️               | 🏗️                | 🏗️                | 🏗️                  | 🏗️                | 🏗️                  | 🏗️               | 🏗️                  | 🏗️                | 🏗️                 |
+| sync-with-algolia           | [✅](/node/sync-with-algolia)           | 🏗️               | 🏗️                | 🏗️                | 🏗️                  | 🏗️                | 🏗️                  | 🏗️               | 🏗️                  | 🏗️                | 🏗️                 |
+| sync-with-meilisearch       | [✅](/node/sync-with-meilisearch)       | 🏗️               | 🏗️                | 🏗️                | 🏗️                  | 🏗️                | 🏗️                  | 🏗️               | 🏗️                  | 🏗️                | 🏗️                 |
+| whatsapp-with-vonage        | [✅](/node/whatsapp-with-vonage)        | 🏗️               | 🏗️                | 🏗️                | 🏗️                  | 🏗️                | 🏗️                  | 🏗️               | 🏗️                  | 🏗️                | 🏗️                 |
 <!-- TABLE:END -->
 
 ✅ = Done - Function is implemented in this runtime.
