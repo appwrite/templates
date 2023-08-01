@@ -2,7 +2,7 @@ import { OpenAIApi, Configuration } from 'openai';
 import { getStaticFile, throwIfMissing } from './utils.js';
 
 export default async ({ req, res, error }) => {
-  throwIfMissing(process.env, ['OPENAI_API_KEY', 'OPENAI_MAX_TOKENS']);
+  throwIfMissing(process.env, ['OPENAI_API_KEY']);
 
   if (req.method === 'GET') {
     return res.send(getStaticFile('index.html'), 200, {
@@ -16,9 +16,11 @@ export default async ({ req, res, error }) => {
     return res.json({ ok: false, error: err.message }, 400);
   }
 
-  const openai = new OpenAIApi(new Configuration({
-    apiKey: process.env.OPENAI_API_KEY,
-  }));
+  const openai = new OpenAIApi(
+    new Configuration({
+      apiKey: process.env.OPENAI_API_KEY,
+    })
+  );
 
   const response = await openai.createChatCompletion({
     model: 'gpt-3.5-turbo',
