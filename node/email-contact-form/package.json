@@ -1,0 +1,16 @@
+{
+  "name": "email-contact-form",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/main.js",
+  "type": "module",
+  "scripts": {
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "nodemailer": "^6.9.3"
+  },
+  "devDependencies": {
+    "prettier": "^3.0.0"
+  }
+}
