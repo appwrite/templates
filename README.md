@@ -24,7 +24,7 @@ Templates for [Appwrite](https://appwrite.io/) Functions. These templates can be
 
 ✅ = Done - Function is implemented in this runtime.
 
-❌ = Missing - Function isn't implemented in this runtime yet. Contributions are welcomed.
+🏗️ = Missing - Function isn't implemented in this runtime yet. Contributions are welcomed.
 
 ## Contributing
 

@@ -1,71 +1,116 @@
-import * as fs from "fs";
-import * as path from "path";
-import {markdownTable} from 'markdown-table';
+import fs from "node:fs";
+import path from "node:path";
+import { markdownTable } from "markdown-table";
 
 const verboseRuntimes = {
-    cpp: "C++",
-    dart: "Dart",
-    deno: "Deno",
-    dotnet: ".NET",
-    java: "Java",
-    kotlin: "Kotlin",
-    node: "Node.js",
-    php: "PHP",
-    python: "Python",
-    ruby: "Ruby",
-    swift: "Swift"
+  cpp: "C++",
+  dart: "Dart",
+  deno: "Deno",
+  dotnet: ".NET",
+  java: "Java",
+  kotlin: "Kotlin",
+  node: "Node.js",
+  php: "PHP",
+  python: "Python",
+  ruby: "Ruby",
+  swift: "Swift",
 };
 
-const folderDenylist = [ '.github', '.git' ];
+const folderDenylist = [".github", ".git"];
 
-const runtimes = fs.readdirSync(path.join('.', '../../../'), { withFileTypes: true })
-    .filter(dirent => dirent.isDirectory())
-    .map(dirent => dirent.name)
-    .filter((folder) => !folderDenylist.includes(folder))
-    .sort();
+const generateUniqueTemplates = (runtimes) => {
+  let templates = [];
 
-const templates = [];
+  for (const runtime of runtimes) {
+    const folders = fs
+      .readdirSync(path.join(".", `../../../${runtime}`), {
+        withFileTypes: true,
+      })
+      .filter((dirent) => dirent.isDirectory())
+      .map((dirent) => dirent.name);
 
-for(const runtime of runtimes) {
-    const folders = fs.readdirSync(path.join('.', `../../../${runtime}`), { withFileTypes: true })
-        .filter(dirent => dirent.isDirectory())
-        .map(dirent => dirent.name);
-        templates.push(...folders);
-}
+    templates.push(...folders);
+  }
 
-const uniqueTemplates = [...new Set(templates)];
+  return [...new Set(templates)];
+};
 
-const rows = uniqueTemplates.map((template) => {
+const generateTableRows = (templates, runtimes) => {
+  return templates.map((template) => {
     const languagesSupport = runtimes.map((runtime) => {
-        return fs.existsSync(path.join('.', `../../../${runtime}/${template}`)) ? `[✅](/${runtime}/${template})` : '❌';
-    })
+      return fs.existsSync(path.join(".", `../../../${runtime}/${template}`))
+        ? `[✅](/${runtime}/${template})`
+        : "🏗️";
+    });
 
     return [template, ...languagesSupport];
+  });
+};
+
+const sortRuntimesBySupport = (runtimes, uniqueTemplates) => {
+  return runtimes.sort((a, b) => {
+    const aTemplates = uniqueTemplates.filter((template) =>
+      fs.existsSync(path.join(".", `../../../${a}/${template}`))
+    );
+    const bTemplates = uniqueTemplates.filter((template) =>
+      fs.existsSync(path.join(".", `../../../${b}/${template}`))
+    );
+
+    return bTemplates.length - aTemplates.length;
+  });
+};
+
+const updateReadmeFile = (readmePath, table) => {
+  const readme = fs.readFileSync(readmePath).toString();
+
+  if (
+    readme.includes("<!-- TABLE:START -->") &&
+    readme.includes("<!-- TABLE:END -->")
+  ) {
+    const newReadme = `${
+      readme.split("<!-- TABLE:START -->")[0]
+    }<!-- TABLE:START -->\n${table}\n<!-- TABLE:END -->${
+      readme.split("<!-- TABLE:END -->")[1]
+    }`;
+
+    fs.writeFileSync(readmePath, newReadme);
+  }
+};
+
+let runtimes = fs
+  .readdirSync(path.join(".", "../../../"), { withFileTypes: true })
+  .filter((dirent) => dirent.isDirectory())
+  .map((dirent) => dirent.name)
+  .filter((folder) => !folderDenylist.includes(folder))
+  .sort();
+
+const uniqueTemplates = generateUniqueTemplates(runtimes);
+runtimes = sortRuntimesBySupport(runtimes, uniqueTemplates);
+const tableRows = generateTableRows(uniqueTemplates, runtimes);
+
+const sortedTableRows = tableRows.sort((a, b) => {
+  const aCount = a.filter((column) => column !== "").length;
+  const bCount = b.filter((column) => column !== "").length;
+
+  return aCount > bCount ? -1 : 1;
 });
 
-const table = markdownTable([
-    ['Template', ...runtimes.map((r) => verboseRuntimes[r] ? verboseRuntimes[r] : r)],
-    ...rows.sort((a, b) => {
-        const aCount = a.filter((column) => column !== '');
-        const bCount = b.filter((column) => column !== '');
-
-        return aCount > bCount ? -1 : 1;
-    })
-  ]);
-
-
-const readmePath = path.join('.', "../../../README.md");
-const readme = fs.readFileSync(readmePath).toString();
-let newReadme = '';
-
-if(readme.includes('<!-- TABLE:START -->') && readme.includes('<!-- TABLE:END -->')) {
-    newReadme += readme.split('<!-- TABLE:START -->')[0];
-    newReadme += '<!-- TABLE:START -->\n';
-
-    newReadme += table;
-
-    newReadme += '\n<!-- TABLE:END -->';
-    newReadme += readme.split('<!-- TABLE:END -->')[1];
+const styles = `
+<style>
+table th:first-of-type {
+    width: 200px;
 }
+</style>
+`;
 
-fs.writeFileSync(readmePath, newReadme);
+const table = markdownTable([
+  [
+    "Template",
+    ...runtimes.map((r) => (verboseRuntimes[r] ? verboseRuntimes[r] : r)),
+  ],
+  ...sortedTableRows,
+]);
+
+const tableWithStyles = `${styles}\n${table}`;
+const readmePath = path.join(".", "../../../README.md");
+updateReadmeFile(readmePath, tableWithStyles);
