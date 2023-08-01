@@ -1,0 +1,17 @@
+{
+  "name": "generate-pdf",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/main.js",
+  "type": "module",
+  "scripts": {
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "@faker-js/faker": "^8.0.2",
+    "pdf-lib": "^1.17.1"
+  },
+  "devDependencies": {
+    "prettier": "^3.0.0"
+  }
+}
