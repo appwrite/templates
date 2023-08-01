@@ -14,6 +14,7 @@ Webhook to receive Discord command events. To receive events, you must register 
 | --------------------- | -------------------------------- | -------- | ------ | --------------- |
 | x-signature-ed25519   | Signature of the request payload | Header   | string | `d1efb...aec35` |
 | x-signature-timestamp | Timestamp of the request payload | Header   | string | `1629837700`    |
+| JSON Body             | GitHub webhook payload           | Body     | Object | See [Discord docs](https://discord.com/developers/docs/interactions/receiving-and-responding) |
 
 **Response**
 
