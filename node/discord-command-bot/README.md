@@ -1,35 +1,61 @@
-# Discord Command Bot
+# 🤖 Discord Command Bot Function
 
-This function allows you to implement a simple command-interaction for a Discord bot using Discord Interactions. This bot is able to verify requests and handle them. In its current implementation, it responds to the '/hello' command with a message.
+Command-interaction bot for Discord. Responds to `/hello` command with a greeting.
 
-## Environment Variables
+## 🧰 Usage
 
-To ensure the function operates as intended, ensure the following variable is set:
+### `POST`
 
-- **DISCORD_PUBLIC_KEY**: This is the public key of your Discord bot.
+Webhook to receive Discord command events. To receive events, you must register your application as a [Discord bot](https://discord.com/developers/applications).
 
-## Discord Setup
+**Parameters**
 
-Before you can use this function, you need to have a bot set up on the Discord Developer Portal. You can create a new bot on the [Discord Developer Portal](https://discord.com/developers/applications) and navigate to the Bot section under the settings page of your application. Here, you can click the 'Add Bot' button.
+| Name                  | Description                      | Location | Type   | Sample Value    |
+| --------------------- | -------------------------------- | -------- | ------ | --------------- |
+| x-signature-ed25519   | Signature of the request payload | Header   | string | `d1efb...aec35` |
+| x-signature-timestamp | Timestamp of the request payload | Header   | string | `1629837700`    |
 
-## Discord API & Interactions
+**Response**
 
-This function utilizes the Discord Interactions API. Interactions are the foundation upon which commands, components, and future user-input features are built. Discord provides a range of interaction types like `APPLICATION_COMMAND` which we use for our '/hello' command.
+Sample `200` Response:
 
-To add an interaction to your bot, you need to define it first in the Discord Developer Portal under your application settings. Go to the 'Interactions' section and add a new command. In this case, you would add a command named 'hello'. 
+Returns a Discord message object.
 
-## Usage
+```json
+{
+  "type": 4,
+  "data": {
+    "content": "Hello from Appwrite 👋"
+  }
+}
+```
 
-This function supports the interaction of command type coming from Discord:
+Sample `401` Response:
 
-1. **Executing the '/hello' command**
+```json
+{
+  "error": "Invalid request signature"
+}
+```
 
-   - **Interaction Type:** APPLICATION_COMMAND
-   - **Command:** '/hello'
-   - **Response:** 
-     - On success, the function will respond with "Hello from Appwrite 👋".
-     - If the command is not '/hello', the function will respond with a simple acknowledgement (PONG).
+## ⚙️ Configuration
 
-## Error Handling
+| Setting           | Value         |
+| ----------------- | ------------- |
+| Runtime           | Node (18.0)   |
+| Entrypoint        | `src/main.js` |
+| Build Commands    | `npm install` |
+| Permissions       | `any`         |
+| Timeout (Seconds) | 15            |
 
-In case of any error during interaction handling, the function will return a 500 error with the message "Failed to process interaction".
+## 🔒 Environment Variables
+
+### DISCORD_PUBLIC_KEY
+
+Discord Public Key to verify request signature.
+
+| Question      | Answer                                                                                                                 |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| Required      | Yes                                                                                                                    |
+| Sample Value  | `d1efb...aec35`                                                                                                        |
+| Documentation | [Discord Docs](https://discord.com/developers/docs/tutorials/hosting-on-cloudflare-workers#creating-an-app-on-discord) |

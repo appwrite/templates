@@ -24,7 +24,7 @@ export function throwIfMissing(obj, keys) {
  */
 export async function verifyWebhookRequest(req) {
   return await verifyKey(
-    req.bodyString,
+    req.bodyRaw,
     req.headers['x-signature-ed25519'],
     req.headers['x-signature-timestamp'],
     process.env.DISCORD_PUBLIC_KEY

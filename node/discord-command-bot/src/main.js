@@ -6,7 +6,7 @@ export default async ({ req, res, error }) => {
 
   if (!(await verifyWebhookRequest(req))) {
     error('Invalid request.');
-    return res.send('Invalid request signature', 401);
+    return res.json({ error: 'Invalid request signature' }, 401);
   }
 
   const interaction = req.body;
@@ -22,5 +22,5 @@ export default async ({ req, res, error }) => {
     });
   }
 
-  return res.json(InteractionResponseType.PONG);
+  return res.json({ type: InteractionResponseType.PONG });
 };
