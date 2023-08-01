@@ -1,10 +1,9 @@
 declare global {
-    namespace NodeJS {
-      interface ProcessEnv {
-        PANGEA_REDACT_TOKEN?: string;
-      }
+  namespace NodeJS {
+    interface ProcessEnv {
+      PANGEA_REDACT_TOKEN: string;
     }
   }
-  
-  export {};
-  
+}
+
+export {};
