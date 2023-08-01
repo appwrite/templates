@@ -97,7 +97,7 @@ const sortedTableRows = tableRows.sort((a, b) => {
 
 const table = markdownTable([
   [
-    "Template &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;",
+    "Template",
     ...runtimes.map((r) => (verboseRuntimes[r] ? verboseRuntimes[r] : r)),
   ],
   ...sortedTableRows,
