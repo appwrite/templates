@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -9,7 +9,7 @@
     <script>
       async function onSubmit(text) {
         const response = await fetch('/', {
-          method: "POST",
+          method: 'POST',
           body: JSON.stringify({ text }),
           headers: {
             'Content-Type': 'application/json',
@@ -45,9 +45,9 @@
             class="body-text-1 u-normal u-margin-block-start-8"
             style="max-width: 50rem"
           >
-            This is demo application. You can ue this app to ensure
-            implementation with Redact API works properly. Use input below to
-            enter text and get censored message as response.
+            You can use this page to test your implementation with Redact API.
+            Use the input below to enter text and receive the censored message
+            as a response.
           </p>
         </div>
       </div>
