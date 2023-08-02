@@ -16,49 +16,93 @@ const verboseRuntimes = {
   swift: "Swift",
 };
 
+const verboseTemplates = {
+  "Analyze With Perspectiveapi": "Analyze With PerspectiveAPI",
+  "Generate Pdf": "Generate PDF",
+  "Prompt Chatgpt": "Prompt ChatGPT",
+  "Push Notifications With Fcm": "Push Notifications With FCM",
+  "Url Shortener": "URL Shortener",
+  "Whatsapp With Vonage": "WhatsApp With Vonage",
+};
+
+function toTitleCase(text) {
+  return text
+    .replace(/_/g, " ")
+    .replace(/-/g, " ")
+    .replace(/([a-z])([A-Z])/g, "$1 $2")
+    .replace(/\w\S*/g, (w) => w.replace(/^\w/, (c) => c.toUpperCase()));
+}
+
+function normalizeTemplate(template) {
+  const titleCase = toTitleCase(template);
+  return titleCase in verboseTemplates
+    ? verboseTemplates[titleCase]
+    : titleCase;
+}
+
 const folderDenylist = [".github", ".git"];
 
-const generateUniqueTemplates = (runtimes) => {
-  let templates = [];
+function getDirectories(dirPath) {
+  return fs
+    .readdirSync(dirPath, { withFileTypes: true })
+    .filter((dirent) => dirent.isDirectory())
+    .map((dirent) => dirent.name)
+    .filter((name) => !folderDenylist.includes(name));
+}
 
-  for (const runtime of runtimes) {
-    const folders = fs
-      .readdirSync(path.join(".", `../../../${runtime}`), {
-        withFileTypes: true,
-      })
-      .filter((dirent) => dirent.isDirectory())
-      .map((dirent) => dirent.name);
+const runtimeDirs = getDirectories(path.join(".", "../../../"));
+console.table(runtimeDirs);
 
-    templates.push(...folders);
-  }
+const runtimeToTemplate = {};
+for (const runtimeDir of runtimeDirs) {
+  const runtime = verboseRuntimes[runtimeDir] || runtimeDir;
 
-  return [...new Set(templates)];
-};
+  const templateDirs = getDirectories(path.join(".", "../../../", runtimeDir));
+  runtimeToTemplate[runtime] = [];
+  console.log(runtime, templateDirs);
 
-const generateTableRows = (templates, runtimes) => {
-  return templates.map((template) => {
-    const languagesSupport = runtimes.map((runtime) => {
-      return fs.existsSync(path.join(".", `../../../${runtime}/${template}`))
-        ? `[✅](/${runtime}/${template})`
-        : "🏗️";
+  for (const templateDir of templateDirs) {
+    const template = normalizeTemplate(templateDir);
+    runtimeToTemplate[runtime].push({
+      name: template,
+      dir: path.join(".", runtimeDir, templateDir),
     });
+  }
+}
 
-    return [template, ...languagesSupport];
+const templateToRuntimes = {};
+for (const runtime of Object.keys(runtimeToTemplate)) {
+  for (const template of runtimeToTemplate[runtime]) {
+    if (!(template.name in templateToRuntimes)) {
+      templateToRuntimes[template.name] = [];
+    }
+
+    templateToRuntimes[template.name].push({
+      name: runtime,
+      dir: template.dir,
+    });
+  }
+}
+
+const sortedRuntimes = Object.keys(runtimeToTemplate).sort((a, b) => {
+  return runtimeToTemplate[b].length - runtimeToTemplate[a].length;
+});
+
+const sortedTableRows = Object.keys(templateToRuntimes)
+  .sort((a, b) => {
+    return templateToRuntimes[b].length - templateToRuntimes[a].length;
+  })
+  .map((template) => {
+    return [
+      template,
+      ...sortedRuntimes.map((runtime) => {
+        const matchingRuntime = templateToRuntimes[template].find(
+          (r) => r.name === runtime
+        );
+        return matchingRuntime ? `[✅](${matchingRuntime.dir})` : "🏗️";
+      }),
+    ];
   });
-};
-
-const sortRuntimesBySupport = (runtimes, uniqueTemplates) => {
-  return runtimes.sort((a, b) => {
-    const aTemplates = uniqueTemplates.filter((template) =>
-      fs.existsSync(path.join(".", `../../../${a}/${template}`))
-    );
-    const bTemplates = uniqueTemplates.filter((template) =>
-      fs.existsSync(path.join(".", `../../../${b}/${template}`))
-    );
-
-    return bTemplates.length - aTemplates.length;
-  });
-};
 
 const updateReadmeFile = (readmePath, table) => {
   const readme = fs.readFileSync(readmePath).toString();
@@ -77,29 +121,8 @@ const updateReadmeFile = (readmePath, table) => {
   }
 };
 
-let runtimes = fs
-  .readdirSync(path.join(".", "../../../"), { withFileTypes: true })
-  .filter((dirent) => dirent.isDirectory())
-  .map((dirent) => dirent.name)
-  .filter((folder) => !folderDenylist.includes(folder))
-  .sort();
-
-const uniqueTemplates = generateUniqueTemplates(runtimes);
-runtimes = sortRuntimesBySupport(runtimes, uniqueTemplates);
-const tableRows = generateTableRows(uniqueTemplates, runtimes);
-
-const sortedTableRows = tableRows.sort((a, b) => {
-  const aCount = a.filter((column) => column !== "").length;
-  const bCount = b.filter((column) => column !== "").length;
-
-  return aCount > bCount ? -1 : 1;
-});
-
 const table = markdownTable([
-  [
-    "Template",
-    ...runtimes.map((r) => (verboseRuntimes[r] ? verboseRuntimes[r] : r)),
-  ],
+  ["Template", ...sortedRuntimes],
   ...sortedTableRows,
 ]);
 
