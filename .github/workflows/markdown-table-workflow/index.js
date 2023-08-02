@@ -25,6 +25,16 @@ const verboseTemplates = {
   "Whatsapp With Vonage": "WhatsApp With Vonage",
 };
 
+const folderDenylist = [".github", ".git"];
+
+function getDirectories(dirPath) {
+  return fs
+    .readdirSync(dirPath, { withFileTypes: true })
+    .filter((dirent) => dirent.isDirectory())
+    .map((dirent) => dirent.name)
+    .filter((name) => !folderDenylist.includes(name));
+}
+
 function toTitleCase(text) {
   return text
     .replace(/_/g, " ")
@@ -40,59 +50,47 @@ function normalizeTemplate(template) {
     : titleCase;
 }
 
-const folderDenylist = [".github", ".git"];
+function getRuntimeToTemplates() {
+  const runtimeDirs = getDirectories(path.join(".", "../../../"));
+  const runtimeToTemplates = {};
 
-function getDirectories(dirPath) {
-  return fs
-    .readdirSync(dirPath, { withFileTypes: true })
-    .filter((dirent) => dirent.isDirectory())
-    .map((dirent) => dirent.name)
-    .filter((name) => !folderDenylist.includes(name));
-}
+  for (const runtimeDir of runtimeDirs) {
+    const runtime = verboseRuntimes[runtimeDir] || runtimeDir;
+    const templateDirs = getDirectories(
+      path.join(".", "../../../", runtimeDir)
+    );
 
-const runtimeDirs = getDirectories(path.join(".", "../../../"));
-console.table(runtimeDirs);
-
-const runtimeToTemplate = {};
-for (const runtimeDir of runtimeDirs) {
-  const runtime = verboseRuntimes[runtimeDir] || runtimeDir;
-
-  const templateDirs = getDirectories(path.join(".", "../../../", runtimeDir));
-  runtimeToTemplate[runtime] = [];
-  console.log(runtime, templateDirs);
-
-  for (const templateDir of templateDirs) {
-    const template = normalizeTemplate(templateDir);
-    runtimeToTemplate[runtime].push({
-      name: template,
-      dir: path.join(".", runtimeDir, templateDir),
+    runtimeToTemplates[runtime] = templateDirs.map((templateDir) => {
+      const template = normalizeTemplate(templateDir);
+      return {
+        name: template,
+        dir: path.join(".", runtimeDir, templateDir),
+      };
     });
   }
+
+  return runtimeToTemplates;
 }
 
-const templateToRuntimes = {};
-for (const runtime of Object.keys(runtimeToTemplate)) {
-  for (const template of runtimeToTemplate[runtime]) {
-    if (!(template.name in templateToRuntimes)) {
-      templateToRuntimes[template.name] = [];
+function getTemplateToRuntimes(runtimeToTemplates) {
+  const templateToRuntimes = {};
+  for (const runtime of Object.keys(runtimeToTemplates)) {
+    for (const template of runtimeToTemplates[runtime]) {
+      if (!(template.name in templateToRuntimes)) {
+        templateToRuntimes[template.name] = [];
+      }
+
+      templateToRuntimes[template.name].push({
+        name: runtime,
+        dir: template.dir,
+      });
     }
-
-    templateToRuntimes[template.name].push({
-      name: runtime,
-      dir: template.dir,
-    });
   }
+  return templateToRuntimes;
 }
 
-const sortedRuntimes = Object.keys(runtimeToTemplate).sort((a, b) => {
-  return runtimeToTemplate[b].length - runtimeToTemplate[a].length;
-});
-
-const sortedTableRows = Object.keys(templateToRuntimes)
-  .sort((a, b) => {
-    return templateToRuntimes[b].length - templateToRuntimes[a].length;
-  })
-  .map((template) => {
+function generateTableRows(sortedTemplates) {
+  return sortedTemplates.map((template) => {
     return [
       template,
       ...sortedRuntimes.map((runtime) => {
@@ -103,8 +101,9 @@ const sortedTableRows = Object.keys(templateToRuntimes)
       }),
     ];
   });
+}
 
-const updateReadmeFile = (readmePath, table) => {
+function updateReadmeFile(readmePath, table) {
   const readme = fs.readFileSync(readmePath).toString();
 
   if (
@@ -119,11 +118,22 @@ const updateReadmeFile = (readmePath, table) => {
 
     fs.writeFileSync(readmePath, newReadme);
   }
-};
+}
+
+const runtimeToTemplate = getRuntimeToTemplates();
+const templateToRuntimes = getTemplateToRuntimes(runtimeToTemplate);
+
+const sortedRuntimes = Object.keys(runtimeToTemplate).sort((a, b) => {
+  return runtimeToTemplate[b].length - runtimeToTemplate[a].length;
+});
+
+const sortedTemplates = Object.keys(templateToRuntimes).sort((a, b) => {
+  return templateToRuntimes[b].length - templateToRuntimes[a].length;
+});
 
 const table = markdownTable([
   ["Template", ...sortedRuntimes],
-  ...sortedTableRows,
+  ...generateTableRows(sortedTemplates),
 ]);
 
 const readmePath = path.join(".", "../../../README.md");
