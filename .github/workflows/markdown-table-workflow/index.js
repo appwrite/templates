@@ -20,7 +20,7 @@ const verboseTemplates = {
   "Analyze With Perspectiveapi": "Analyze With PerspectiveAPI",
   "Generate Pdf": "Generate PDF",
   "Prompt Chatgpt": "Prompt ChatGPT",
-  "Push Notifications With Fcm": "Push Notifications With FCM",
+  "Push Notification With Fcm": "Push Notifications With FCM",
   "Url Shortener": "URL Shortener",
   "Whatsapp With Vonage": "WhatsApp With Vonage",
 };
