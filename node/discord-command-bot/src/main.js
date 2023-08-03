@@ -34,12 +34,16 @@ export default async ({ req, res, error, log }) => {
     interaction.data.name === 'hello'
   ) {
     log('Matched hello command - returning message');
-    return res.json({
+
+    const response = {
       type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
       data: {
-        content: 'Hello from Appwrite 👋',
+        content: 'Hello, World!',
       },
-    });
+    };
+
+    log(JSON.stringify(response));
+    return res.json(response);
   }
 
   log("Didn't match any known interaction - returning PONG");
