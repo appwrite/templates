@@ -114,13 +114,3 @@ The ID of the collection to store the short URLs.
 | ------------ | ----------------------------- |
 | Required     | Yes                           |
 | Sample Value | `urls`                        |
-
-
-### SHORT_BASE_URL
-
-The base URL for the short URLs. The short ID will be appended to this URL.
-
-| Question     | Answer                        |
-| ------------ | ----------------------------- |
-| Required     | Yes                           |
-| Sample Value | `https://mywebapp.com/short/` |

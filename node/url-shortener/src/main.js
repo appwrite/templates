@@ -6,7 +6,6 @@ export default async ({ res, req, log, error }) => {
     'APPWRITE_API_KEY',
     'APPWRITE_DATABASE_ID',
     'APPWRITE_COLLECTION_ID',
-    'SHORT_BASE_URL',
   ]);
 
   const appwrite = new AppwriteService();
@@ -20,7 +19,7 @@ export default async ({ res, req, log, error }) => {
       new URL(req.body.url);
     } catch (err) {
       error(err.message);
-      return res.send({ error: err.message }, 400);
+      return res.send({ ok: false, error: err.message }, 400);
     }
 
     const urlEntry = await appwrite.createURLEntry(
