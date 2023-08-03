@@ -16,51 +16,124 @@ const verboseRuntimes = {
   swift: "Swift",
 };
 
+const overrideWords = {
+  a: "a",
+  an: "an",
+  and: "and",
+  as: "as",
+  at: "at",
+  but: "but",
+  by: "by",
+  for: "for",
+  if: "if",
+  in: "in",
+  nor: "nor",
+  of: "of",
+  on: "on",
+  or: "or",
+  so: "so",
+  the: "the",
+  to: "to",
+  up: "up",
+  with: "with",
+  yet: "yet",
+  is: "is",
+  are: "are",
+  was: "was",
+  were: "were",
+  has: "has",
+  have: "have",
+  been: "been",
+  am: "am",
+  perspectiveapi: "PerspectiveAPI",
+  pdf: "PDF",
+  chatgpt: "ChatGPT",
+  fcm: "FCM",
+  url: "URL",
+  whatsapp: "WhatsApp",
+};
+
 const folderDenylist = [".github", ".git"];
 
-const generateUniqueTemplates = (runtimes) => {
-  let templates = [];
+function getDirectories(dirPath) {
+  return fs
+    .readdirSync(dirPath, { withFileTypes: true })
+    .filter((dirent) => dirent.isDirectory())
+    .map((dirent) => dirent.name)
+    .filter((name) => !folderDenylist.includes(name));
+}
 
-  for (const runtime of runtimes) {
-    const folders = fs
-      .readdirSync(path.join(".", `../../../${runtime}`), {
-        withFileTypes: true,
-      })
-      .filter((dirent) => dirent.isDirectory())
-      .map((dirent) => dirent.name);
+function normalizeTemplateName(template) {
+  return template
+    .replace(/[_-]|([a-z])([A-Z])/g, (_, p1, p2) => (p1 ? `${p1} ${p2}` : " "))
+    .toLowerCase()
+    .split(" ")
+    .map((word, i, words) => {
+      const overrideWord = overrideWords[word];
+      if (!overrideWord) {
+        return word.charAt(0).toUpperCase() + word.slice(1);
+      }
+      return i === 0 || i === words.length - 1
+        ? overrideWord.charAt(0).toUpperCase() + overrideWord.slice(1)
+        : overrideWord;
+    })
+    .join(" ");
+}
 
-    templates.push(...folders);
+function getRuntimeToTemplates() {
+  const runtimeDirs = getDirectories(path.join(".", "../../../"));
+  const runtimeToTemplates = {};
+
+  for (const runtimeDir of runtimeDirs) {
+    const runtime = verboseRuntimes[runtimeDir] || runtimeDir;
+    const templateDirs = getDirectories(
+      path.join(".", "../../../", runtimeDir)
+    );
+
+    runtimeToTemplates[runtime] = templateDirs.map((templateDir) => {
+      const name = normalizeTemplateName(templateDir);
+      return {
+        name: name,
+        dir: path.join(".", runtimeDir, templateDir),
+      };
+    });
   }
 
-  return [...new Set(templates)];
-};
+  return runtimeToTemplates;
+}
 
-const generateTableRows = (templates, runtimes) => {
-  return templates.map((template) => {
-    const languagesSupport = runtimes.map((runtime) => {
-      return fs.existsSync(path.join(".", `../../../${runtime}/${template}`))
-        ? `[✅](/${runtime}/${template})`
-        : "🏗️";
-    });
+function getTemplateToRuntimes(runtimeToTemplates) {
+  const templateToRuntimes = {};
+  for (const runtime of Object.keys(runtimeToTemplates)) {
+    for (const template of runtimeToTemplates[runtime]) {
+      if (!(template.name in templateToRuntimes)) {
+        templateToRuntimes[template.name] = [];
+      }
 
-    return [template, ...languagesSupport];
+      templateToRuntimes[template.name].push({
+        name: runtime,
+        dir: template.dir,
+      });
+    }
+  }
+  return templateToRuntimes;
+}
+
+function generateTableRows(sortedTemplates) {
+  return sortedTemplates.map((template) => {
+    return [
+      template,
+      ...sortedRuntimes.map((runtime) => {
+        const matchingRuntime = templateToRuntimes[template].find(
+          (r) => r.name === runtime
+        );
+        return matchingRuntime ? `[✅](${matchingRuntime.dir})` : "🏗️";
+      }),
+    ];
   });
-};
+}
 
-const sortRuntimesBySupport = (runtimes, uniqueTemplates) => {
-  return runtimes.sort((a, b) => {
-    const aTemplates = uniqueTemplates.filter((template) =>
-      fs.existsSync(path.join(".", `../../../${a}/${template}`))
-    );
-    const bTemplates = uniqueTemplates.filter((template) =>
-      fs.existsSync(path.join(".", `../../../${b}/${template}`))
-    );
-
-    return bTemplates.length - aTemplates.length;
-  });
-};
-
-const updateReadmeFile = (readmePath, table) => {
+function updateReadmeFile(readmePath, table) {
   const readme = fs.readFileSync(readmePath).toString();
 
   if (
@@ -75,32 +148,22 @@ const updateReadmeFile = (readmePath, table) => {
 
     fs.writeFileSync(readmePath, newReadme);
   }
-};
+}
 
-let runtimes = fs
-  .readdirSync(path.join(".", "../../../"), { withFileTypes: true })
-  .filter((dirent) => dirent.isDirectory())
-  .map((dirent) => dirent.name)
-  .filter((folder) => !folderDenylist.includes(folder))
-  .sort();
+const runtimeToTemplate = getRuntimeToTemplates();
+const templateToRuntimes = getTemplateToRuntimes(runtimeToTemplate);
 
-const uniqueTemplates = generateUniqueTemplates(runtimes);
-runtimes = sortRuntimesBySupport(runtimes, uniqueTemplates);
-const tableRows = generateTableRows(uniqueTemplates, runtimes);
+const sortedRuntimes = Object.keys(runtimeToTemplate).sort((a, b) => {
+  return runtimeToTemplate[b].length - runtimeToTemplate[a].length;
+});
 
-const sortedTableRows = tableRows.sort((a, b) => {
-  const aCount = a.filter((column) => column !== "").length;
-  const bCount = b.filter((column) => column !== "").length;
-
-  return aCount > bCount ? -1 : 1;
+const sortedTemplates = Object.keys(templateToRuntimes).sort((a, b) => {
+  return templateToRuntimes[b].length - templateToRuntimes[a].length;
 });
 
 const table = markdownTable([
-  [
-    "Template",
-    ...runtimes.map((r) => (verboseRuntimes[r] ? verboseRuntimes[r] : r)),
-  ],
-  ...sortedTableRows,
+  ["Template", ...sortedRuntimes],
+  ...generateTableRows(sortedTemplates),
 ]);
 
 const readmePath = path.join(".", "../../../README.md");
