@@ -1,0 +1,18 @@
+{
+  "name": "url-shortener",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/main.js",
+  "type": "module",
+  "scripts": {
+    "format": "prettier --write .",
+    "setup": "node src/setup.js"
+  },
+  "dependencies": {
+    "nanoid": "^3.3.6",
+    "node-appwrite": "^9.0.0"
+  },
+  "devDependencies": {
+    "prettier": "^3.0.0"
+  }
+}
