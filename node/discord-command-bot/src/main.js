@@ -5,12 +5,14 @@ import {
 } from 'discord-interactions';
 import { throwIfMissing } from './utils.js';
 
-export default async ({ req, res, error }) => {
+export default async ({ req, res, error, log }) => {
   throwIfMissing(process.env, [
     'DISCORD_PUBLIC_KEY',
     'DISCORD_APPLICATION_ID',
     'DISCORD_TOKEN',
   ]);
+
+  log(req.bodyRaw);
 
   const verified = await verifyKey(
     req.bodyRaw,
@@ -24,11 +26,14 @@ export default async ({ req, res, error }) => {
     return res.json({ error: 'Invalid request signature' }, 401);
   }
 
+  log('Valid request');
+
   const interaction = req.body;
   if (
     interaction.type === InteractionType.APPLICATION_COMMAND &&
     interaction.data.name === 'hello'
   ) {
+    log('Matched hello command - returning message');
     return res.json({
       type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
       data: {
@@ -36,6 +41,8 @@ export default async ({ req, res, error }) => {
       },
     });
   }
+
+  log("Didn't match any known interaction - returning PONG");
 
   return res.json({ type: InteractionResponseType.PONG });
 };
