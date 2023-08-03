@@ -98,14 +98,25 @@ The URL endpoint of the Appwrite server. If not provided, it defaults to the App
 | Required     | No                             |
 | Sample Value | `https://cloud.appwrite.io/v1` |
 
-### APPWRITE_PROJECT_ID
 
-The ID of the Appwrite project associated with the function.
+### APPWRITE_DATABASE_ID
 
-| Question     | Answer              |
-| ------------ | ------------------- |
-| Required     | Yes                 |
-| Sample Value | `builtWithAppwrite` |
+The ID of the database to store the short URLs.
+
+| Question     | Answer                        |
+| ------------ | ----------------------------- |
+| Required     | Yes                           |
+| Sample Value | `urlShortener`                 |
+
+### APPWRITE_COLLECTION_ID
+
+The ID of the collection to store the short URLs.
+
+| Question     | Answer                        |
+| ------------ | ----------------------------- |
+| Required     | Yes                           |
+| Sample Value | `urls`                        |
+
 
 ### SHORT_BASE_URL
 
@@ -115,3 +126,5 @@ The base URL for the short URLs. The short ID will be appended to this URL.
 | ------------ | ----------------------------- |
 | Required     | Yes                           |
 | Sample Value | `https://mywebapp.com/short/` |
+
+
