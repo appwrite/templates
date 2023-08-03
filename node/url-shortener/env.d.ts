@@ -6,7 +6,6 @@ declare global {
       APPWRITE_API_KEY: string;
       APPWRITE_DATABASE_ID: string;
       APPWRITE_COLLECTION_ID: string;
-      SHORT_BASE_URL: string;
     }
   }
 }

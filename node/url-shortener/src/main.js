@@ -29,25 +29,22 @@ export default async ({ res, req, log, error }) => {
     );
     if (!urlEntry) {
       error('Failed to create url entry.');
-      return res.json({ error: 'Failed to create url entry' }, 500);
+      return res.json({ ok: false, error: 'Failed to create url entry' }, 500);
     }
 
-    return res.json(
-      {
-        short: `${process.env.SHORT_BASE_URL}/${urlEntry.$id}`,
-        url: urlEntry.url,
-      },
-      201
-    );
+    return res.json({
+      url: `${req.host}/${urlEntry.$id}`,
+    });
   }
 
   const shortId = req.path.replace(/^\/|\/$/g, '');
   log(`Fetching document from with ID: ${shortId}`);
 
   const urlEntry = await appwrite.getURLEntry(shortId);
+
   if (!urlEntry) {
-    return res.send(`Not found.`, 404);
+    return res.send('Invalid link.', 404);
   }
 
-  return res.redirect(urlEntry.url, 302);
+  return res.redirect(urlEntry.url);
 };
