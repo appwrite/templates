@@ -43,6 +43,7 @@ export default async ({ req, res, error, log }) => {
     };
 
     log(JSON.stringify(response));
+    log(JSON.stringify(res.json(response)));
     return res.json(response);
   }
 
