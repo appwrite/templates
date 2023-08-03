@@ -6,7 +6,11 @@ import {
 import { throwIfMissing } from './utils.js';
 
 export default async ({ req, res, error }) => {
-  throwIfMissing(process.env, ['DISCORD_PUBLIC_KEY']);
+  throwIfMissing(process.env, [
+    'DISCORD_PUBLIC_KEY',
+    'DISCORD_APPLICATION_ID',
+    'DISCORD_TOKEN',
+  ]);
 
   const verified = await verifyKey(
     req.bodyRaw,
