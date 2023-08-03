@@ -16,13 +16,41 @@ const verboseRuntimes = {
   swift: "Swift",
 };
 
-const verboseTemplates = {
-  "Analyze With Perspectiveapi": "Analyze With PerspectiveAPI",
-  "Generate Pdf": "Generate PDF",
-  "Prompt Chatgpt": "Prompt ChatGPT",
-  "Push Notification With Fcm": "Push Notifications With FCM",
-  "Url Shortener": "URL Shortener",
-  "Whatsapp With Vonage": "WhatsApp With Vonage",
+const overrideWords = {
+  a: "a",
+  an: "an",
+  and: "and",
+  as: "as",
+  at: "at",
+  but: "but",
+  by: "by",
+  for: "for",
+  if: "if",
+  in: "in",
+  nor: "nor",
+  of: "of",
+  on: "on",
+  or: "or",
+  so: "so",
+  the: "the",
+  to: "to",
+  up: "up",
+  with: "with",
+  yet: "yet",
+  is: "is",
+  are: "are",
+  was: "was",
+  were: "were",
+  has: "has",
+  have: "have",
+  been: "been",
+  am: "am",
+  perspectiveapi: "PerspectiveAPI",
+  pdf: "PDF",
+  chatgpt: "ChatGPT",
+  fcm: "FCM",
+  url: "URL",
+  whatsapp: "WhatsApp",
 };
 
 const folderDenylist = [".github", ".git"];
@@ -35,19 +63,21 @@ function getDirectories(dirPath) {
     .filter((name) => !folderDenylist.includes(name));
 }
 
-function toTitleCase(text) {
-  return text
-    .replace(/_/g, " ")
-    .replace(/-/g, " ")
-    .replace(/([a-z])([A-Z])/g, "$1 $2")
-    .replace(/\w\S*/g, (w) => w.replace(/^\w/, (c) => c.toUpperCase()));
-}
-
-function normalizeTemplate(template) {
-  const titleCase = toTitleCase(template);
-  return titleCase in verboseTemplates
-    ? verboseTemplates[titleCase]
-    : titleCase;
+function normalizeTemplateName(template) {
+  return template
+    .replace(/[_-]|([a-z])([A-Z])/g, (_, p1, p2) => (p1 ? `${p1} ${p2}` : " "))
+    .toLowerCase()
+    .split(" ")
+    .map((word, i, words) => {
+      const overrideWord = overrideWords[word];
+      if (!overrideWord) {
+        return word.charAt(0).toUpperCase() + word.slice(1);
+      }
+      return i === 0 || i === words.length - 1
+        ? overrideWord.charAt(0).toUpperCase() + overrideWord.slice(1)
+        : overrideWord;
+    })
+    .join(" ");
 }
 
 function getRuntimeToTemplates() {
@@ -61,9 +91,9 @@ function getRuntimeToTemplates() {
     );
 
     runtimeToTemplates[runtime] = templateDirs.map((templateDir) => {
-      const template = normalizeTemplate(templateDir);
+      const name = normalizeTemplateName(templateDir);
       return {
-        name: template,
+        name: name,
         dir: path.join(".", runtimeDir, templateDir),
       };
     });
