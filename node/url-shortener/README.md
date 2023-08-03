@@ -1,6 +1,6 @@
-# ⚡ URL Shortener Function
+# 🔗 Node.js URL Shortener Function
 
-Stores a short ID in a database and redirect to the original URL when the short ID is visited.
+Generate URL with short ID and redirect to the original URL when visited.
 
 ## 🧰 Usage
 
@@ -12,7 +12,7 @@ Redirects to shortId's original URL.
 
 | Name    | Description                      | Location | Type   | Sample Value |
 | ------- | -------------------------------- | -------- | ------ | ------------ |
-| shortId | Short ID to lookup original URL. | Path     | String | `s63j2W`     |
+| shortId | Short ID to lookup original URL. | Path     | String | `discord`    |
 
 **Response**
 
@@ -21,7 +21,7 @@ Sample `302` Response:
 Redirects to the original URL.
 
 ```text
-Location: https://mywebapp.com/pages/hugelongurl?with=query&params=123
+Location: https://discord.com/invite/GSeTUeA
 ```
 
 Sample `404` Response:
@@ -29,7 +29,7 @@ Sample `404` Response:
 When no URL is found for the short ID.
 
 ```text
-Not Found.
+Invalid link.
 ```
 
 ### `POST /`
@@ -47,12 +47,11 @@ Create a new short ID for a URL.
 
 Sample `200` Response:
 
-Returns the short URL and the original URL. The short URL is constructed from the SHORT_BASE_URL variable and the short ID.
+Returns the short URL and the original URL. The short URL is constructed from the base URL (`host` header) and the short ID.
 
 ```json
 {
-  "short": "https://mywebapp.com/short/s63j2W",
-  "url": "https://mywebapp.com/pages/hugelongurl?with=query&params=123"
+  "url": "https://mywebapp.com/discord"
 }
 ```
 
@@ -62,20 +61,20 @@ When the URL parameter is missing.
 
 ```json
 {
+  "ok": false,
   "error": "Missing url parameter."
 }
 ```
 
 ## ⚙️ Configuration
 
-| Setting           | Value           |
-| ----------------- | --------------- |
-| Runtime           | Node (18.0)     |
-| Entrypoint        | `src/main.js`   |
-| Build Commands    | `npm install`   |
-|                   | `npm run setup` |
-| Permissions       | `any`           |
-| Timeout (Seconds) | 15              |
+| Setting           | Value                          |
+| ----------------- | ------------------------------ |
+| Runtime           | Node (18.0)                    |
+| Entrypoint        | `src/main.js`                  |
+| Build Commands    | `npm install && npm run setup` |
+| Permissions       | `any`                          |
+| Timeout (Seconds) | 15                             |
 
 ## 🔒 Environment Variables
 
@@ -98,20 +97,3 @@ The URL endpoint of the Appwrite server. If not provided, it defaults to the App
 | Required     | No                             |
 | Sample Value | `https://cloud.appwrite.io/v1` |
 
-### APPWRITE_PROJECT_ID
-
-The ID of the Appwrite project associated with the function.
-
-| Question     | Answer              |
-| ------------ | ------------------- |
-| Required     | Yes                 |
-| Sample Value | `builtWithAppwrite` |
-
-### SHORT_BASE_URL
-
-The base URL for the short URLs. The short ID will be appended to this URL.
-
-| Question     | Answer                        |
-| ------------ | ----------------------------- |
-| Required     | Yes                           |
-| Sample Value | `https://mywebapp.com/short/` |

@@ -4,29 +4,26 @@ import { isValidURL, generateShortCode } from './utils.js';
 export default async ({ res, req, log, error }) => {
   const appwrite = new AppwriteService();
 
-  if (
-    req.method === 'POST' &&
-    req.headers['content-type'] === 'application/json'
-  ) {
+  if (req.method === 'POST') {
     const { url } = req.body;
+
     if (!url || !isValidURL(url)) {
       error('Invalid url parameter.');
-      return res.json({ error: 'Invalid url parameter' }, 400);
+      return res.json({ ok: false, error: 'Invalid url parameter' }, 400);
     }
 
     const shortCode = generateShortCode();
     const urlEntry = await appwrite.createURLEntry(url, shortCode);
+
     if (!urlEntry) {
       error('Failed to create url entry.');
-      return res.json({ error: 'Failed to create url entry' }, 500);
+      return res.json({ ok: false, error: 'Failed to create url entry' }, 500);
     }
 
     return res.json(
       {
-        short: `${process.env.SHORT_BASE_URL}/${urlEntry.$id}`,
-        url: urlEntry.url,
-      },
-      201
+        url: `${req.host}/${urlEntry.$id}`
+      }
     );
   }
 
@@ -34,9 +31,10 @@ export default async ({ res, req, log, error }) => {
   log(`Fetching document from with ID: ${shortId}`);
 
   const urlEntry = await appwrite.getURLEntry(shortId);
+
   if (!urlEntry) {
-    return res.send(`Not found.`, 404);
+    return res.send('Invalid link.', 404);
   }
 
-  return res.redirect(urlEntry.url, 302);
+  return res.redirect(urlEntry.url);
 };
