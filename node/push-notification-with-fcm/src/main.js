@@ -2,18 +2,11 @@ import { throwIfMissing, sendPushNotification } from './utils.js';
 
 export default async ({ req, res, log, error }) => {
   throwIfMissing(process.env, [
-    'FIREBASE_PROJECT_ID',
-    'FIREBASE_PRIVATE_KEY',
-    'FIREBASE_CLIENT_EMAIL',
-    'FIREBASE_DATABASE_URL',
+    'FCM_PROJECT_ID',
+    'FCM_PRIVATE_KEY',
+    'FCM_CLIENT_EMAIL',
+    'FCM_DATABASE_URL',
   ]);
-
-  if (
-    req.method !== 'POST' ||
-    req.headers['content-type'] !== 'application/json'
-  ) {
-    return res.send('Invalid request.', 400);
-  }
 
   try {
     throwIfMissing(req.body, ['deviceToken', 'message']);
@@ -34,9 +27,9 @@ export default async ({ req, res, log, error }) => {
     });
     log(`Successfully sent message: ${response}`);
 
-    return res.json({ messageId: response });
+    return res.json({ ok: true, messageId: response });
   } catch (e) {
     error(e);
-    return res.send('Failed to send the message.', 500);
+    return res.json({ ok: false, error: 'Failed to send the message' }, 500);
   }
 };

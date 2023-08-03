@@ -25,11 +25,11 @@ export function throwIfMissing(obj, keys) {
 export async function sendPushNotification(payload) {
   admin.initializeApp({
     credential: admin.credential.cert({
-      projectId: process.env.FIREBASE_PROJECT_ID,
-      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-      privateKey: process.env.FIREBASE_PRIVATE_KEY,
+      projectId: process.env.FCM_PROJECT_ID,
+      clientEmail: process.env.FCM_CLIENT_EMAIL,
+      privateKey: process.env.FCM_PRIVATE_KEY,
     }),
-    databaseURL: process.env.FIREBASE_DATABASE_URL,
+    databaseURL: process.env.FCM_DATABASE_URL,
   });
   return await admin.messaging().send(payload);
 }
