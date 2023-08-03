@@ -1,5 +1,5 @@
-const { fetch } = require('undici');
-const { throwIfMissing } = require('./utils');
+import { fetch } from 'undici';
+import { throwIfMissing } from './utils.js';
 
 async function setup() {
   throwIfMissing(process.env, [
