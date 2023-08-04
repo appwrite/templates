@@ -1,8 +1,16 @@
-import { InteractionResponseType, InteractionType } from 'discord-interactions';
+import {
+  InteractionResponseType,
+  InteractionType,
+  verifyKey,
+} from 'discord-interactions';
 import { throwIfMissing } from './utils.js';
 
-export default async ({ req, res, error }) => {
-  throwIfMissing(process.env, ['DISCORD_PUBLIC_KEY']);
+export default async ({ req, res, error, log }) => {
+  throwIfMissing(process.env, [
+    'DISCORD_PUBLIC_KEY',
+    'DISCORD_APPLICATION_ID',
+    'DISCORD_TOKEN',
+  ]);
 
   const verified = await verifyKey(
     req.bodyRaw,
@@ -16,18 +24,26 @@ export default async ({ req, res, error }) => {
     return res.json({ error: 'Invalid request signature' }, 401);
   }
 
+  log('Valid request');
+
   const interaction = req.body;
   if (
     interaction.type === InteractionType.APPLICATION_COMMAND &&
     interaction.data.name === 'hello'
   ) {
-    return res.json({
+    log('Matched hello command - returning message');
+
+    const interactionResponse = {
       type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
       data: {
-        content: 'Hello from Appwrite 👋',
+        content: 'Hello, World!',
       },
-    });
+    };
+
+    return res.json(interactionResponse);
   }
+
+  log("Didn't match command - returning PONG");
 
   return res.json({ type: InteractionResponseType.PONG });
 };

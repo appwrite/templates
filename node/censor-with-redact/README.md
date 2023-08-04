@@ -1,12 +1,12 @@
 # 🤐 Node.js Censor with Redact Function
 
-Cesnor sensitive information from a provided text string using Redact API by Pangea.
+Automatically remove sensitive data from messages.
 
 ## 🧰 Usage
 
 ### `GET`
 
-HTML form for interacting with the model.
+HTML form for interacting with the function.
 
 ### `POST`
 

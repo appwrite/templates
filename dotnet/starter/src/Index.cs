@@ -14,7 +14,7 @@ public class Handler {
         //
         // var client = new Client()
         //     .SetEndpoint("http://cloud.appwrite.io/v1")  
-        //     .SetProject(Environment.GetEnvironmentVariable("APPWRITE_PROJECT_ID"))        
+        //     .SetProject(Environment.GetEnvironmentVariable("APPWRITE_FUNCTION_PROJECT_ID"))        
         //     .SetKey(Environment.GetEnvironmentVariable("APPWRITE_API_KEY"))
 
         // You can log messages to the console

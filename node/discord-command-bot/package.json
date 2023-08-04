@@ -5,10 +5,12 @@
   "main": "src/main.js",
   "type": "module",
   "scripts": {
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "setup": "node src/setup.js"
   },
   "dependencies": {
-    "discord-interactions": "^3.4.0"
+    "discord-interactions": "^3.4.0",
+    "undici": "^5.23.0"
   },
   "devDependencies": {
     "prettier": "^3.0.0"

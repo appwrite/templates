@@ -13,7 +13,7 @@ return function ($context) {
     // $client = new Client();
     // $client
     //     ->setEndpoint('https://cloud.appwrite.io/v1')
-    //     ->setProject(getenv('APPWRITE_PROJECT_ID'))
+    //     ->setProject(getenv('APPWRITE_FUNCTION_PROJECT_ID'))
     //      ->setKey(getenv('APPWRITE_API_KEY'));
 
     // You can log messages to the console

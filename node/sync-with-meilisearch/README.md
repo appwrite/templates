@@ -67,15 +67,6 @@ The URL endpoint of the Appwrite server. If not provided, it defaults to the App
 | Required     | No                             |
 | Sample Value | `https://cloud.appwrite.io/v1` |
 
-### APPWRITE_PROJECT_ID
-
-The ID of the Appwrite project associated with the function.
-
-| Question     | Answer              |
-| ------------ | ------------------- |
-| Required     | Yes                 |
-| Sample Value | `builtWithAppwrite` |
-
 ### MEILISEARCH_ENDPOINT
 
 The host URL of the Meilisearch server.

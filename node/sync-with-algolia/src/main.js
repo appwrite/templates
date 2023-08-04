@@ -27,16 +27,16 @@ export default async ({ req, res, log }) => {
     .setEndpoint(
       process.env.APPWRITE_ENDPOINT ?? 'https://cloud.appwrite.io/v1'
     )
-    .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID ?? '')
-    .setKey(process.env.APPWRITE_API_KEY ?? '');
+    .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
+    .setKey(process.env.APPWRITE_API_KEY);
 
   const databases = new Databases(client);
 
   const algolia = algoliasearch(
-    process.env.ALGOLIA_APP_ID ?? '',
-    process.env.ALGOLIA_ADMIN_API_KEY ?? ''
+    process.env.ALGOLIA_APP_ID,
+    process.env.ALGOLIA_ADMIN_API_KEY
   );
-  const algoliaIndex = algolia.initIndex(process.env.ALGOLIA_INDEX_ID ?? '');
+  const algoliaIndex = algolia.initIndex(process.env.ALGOLIA_INDEX_ID);
 
   let cursor = null;
 
@@ -48,8 +48,8 @@ export default async ({ req, res, log }) => {
     }
 
     const response = await databases.listDocuments(
-      process.env.APPWRITE_DATABASE_ID ?? '',
-      process.env.APPWRITE_COLLECTION_ID ?? '',
+      process.env.APPWRITE_DATABASE_ID,
+      process.env.APPWRITE_COLLECTION_ID,
       queries
     );
 
