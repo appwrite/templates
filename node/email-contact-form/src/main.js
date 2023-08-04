@@ -34,6 +34,8 @@ export default async ({ req, res, log, error }) => {
     });
   }
 
+  log(JSON.stringify(req, null, 2));
+
   throwIfMissing(req.headers, ['referer', 'origin']);
 
   if (req.headers['content-type'] !== 'application/x-www-form-urlencoded') {
