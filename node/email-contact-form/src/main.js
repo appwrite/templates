@@ -34,8 +34,6 @@ export default async ({ req, res, log, error }) => {
     });
   }
 
-  log(JSON.stringify(req, null, 2));
-
   if (req.headers['content-type'] !== 'application/x-www-form-urlencoded') {
     error('Incorrect content type.');
     return res.redirect(
@@ -84,6 +82,9 @@ export default async ({ req, res, log, error }) => {
   }
 
   const baseUrl = new URL(req.headers['referer']).origin;
+
+  log(`Redirecting to ${new URL(form._next, baseUrl).toString()}`);
+
   return res.redirect(
     new URL(form._next, baseUrl).toString(),
     301,
