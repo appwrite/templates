@@ -12,8 +12,6 @@ export default async ({ req, res, error, log }) => {
     'DISCORD_TOKEN',
   ]);
 
-  log(req.bodyRaw);
-
   const verified = await verifyKey(
     req.bodyRaw,
     req.headers['x-signature-ed25519'],
@@ -35,19 +33,17 @@ export default async ({ req, res, error, log }) => {
   ) {
     log('Matched hello command - returning message');
 
-    const response = {
+    const interactionResponse = {
       type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
       data: {
         content: 'Hello, World!',
       },
     };
 
-    log(JSON.stringify(response));
-    log(JSON.stringify(res.json(response)));
-    return res.json(response);
+    return res.json(interactionResponse);
   }
 
-  log("Didn't match any known interaction - returning PONG");
+  log("Didn't match command - returning PONG");
 
   return res.json({ type: InteractionResponseType.PONG });
 };
