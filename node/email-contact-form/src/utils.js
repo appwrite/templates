@@ -41,10 +41,10 @@ export function getStaticFile(fileName) {
  */
 export function templateFormMessage(form) {
   return `You've received a new message.\n
-  ${Object.entries(form)
-    .filter(([key]) => key !== '_next')
-    .map(([key, value]) => `${key}: ${value}`)
-    .join('\n')}`;
+${Object.entries(form)
+  .filter(([key]) => key !== '_next')
+  .map(([key, value]) => `${key}: ${value}`)
+  .join('\n')}`;
 }
 
 /**
@@ -63,7 +63,7 @@ export function urlWithCodeParam(baseUrl, codeParam) {
 export async function sendEmail(options) {
   const transport = nodemailer.createTransport({
     // @ts-ignore
-    // Not sure what's going on here.
+    // Bypass some weird type checks
     host: process.env.SMTP_HOST,
     port: process.env.SMTP_PORT || 587,
     auth: {
