@@ -65,7 +65,7 @@ export default async ({ req, res, log, error }) => {
     sendEmail({
       to: process.env.SUBMIT_EMAIL,
       from: /** @type {string} */ (form['email']),
-      subject: `New form submission: ${origin}`,
+      subject: `New form submission: ${req.headers['referer']}`,
       text: templateFormMessage(form),
     });
   } catch (err) {
@@ -83,8 +83,9 @@ export default async ({ req, res, log, error }) => {
     });
   }
 
+  const baseUrl = new URL(req.headers['referer']).origin;
   return res.redirect(
-    new URL(form._next, req.headers['origin']).toString(),
+    new URL(form._next, baseUrl).toString(),
     301,
     getCorsHeaders(req)
   );
