@@ -1,4 +1,4 @@
-# ⚡ Node (TypeScript) Starter Function
+# ⚡ Node.js (TypeScript) Starter Function
 
 A simple starter function. Edit `src/main.ts` to get started and create something awesome! 🚀
 
@@ -35,14 +35,13 @@ Sample `200` Response:
 
 ## ⚙️ Configuration
 
-| Setting           | Value           |
-| ----------------- | --------------- |
-| Runtime           | Node (18.0)     |
-| Entrypoint        | `dist/main.js`  |
-| Build Commands    | `npm install`   |
-|                   | `npm run build` |
-| Permissions       | `any`           |
-| Timeout (Seconds) | 15              |
+| Setting           | Value                          |
+| ----------------- | ------------------------------ |
+| Runtime           | Node (18.0)                    |
+| Entrypoint        | `dist/main.js`                 |
+| Build Commands    | `npm install && npm run build` |
+| Permissions       | `any`                          |
+| Timeout (Seconds) | 15                             |
 
 ## 🔒 Environment Variables
 

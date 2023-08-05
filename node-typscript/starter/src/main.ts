@@ -3,8 +3,8 @@ import { Client } from 'node-appwrite';
 type Context = {
   req: any;
   res: any;
-  log: (m: string) => void;
-  error: (m: string) => void;
+  log: (msg: any) => void;
+  error: (msg: any) => void;
 };
 
 // This is your Appwrite function
