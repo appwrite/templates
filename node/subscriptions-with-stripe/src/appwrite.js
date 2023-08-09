@@ -39,11 +39,21 @@ class AppwriteService {
         process.env.DATABASE_ID ?? 'stripe-subscriptions',
         'Stripe Subscriptions'
       );
+    } catch (err) {
+      // If resource already exists, we can ignore the error
+      if (err.code !== 409) throw err;
+    }
+    try {
       await this.databases.createCollection(
         process.env.DATABASE_ID ?? 'stripe-subscriptions',
         process.env.COLLECTION_ID ?? 'subscriptions',
         'Subscriptions'
       );
+    } catch (err) {
+      if (err.code !== 409) throw err;
+    }
+
+    try {
       await this.databases.createStringAttribute(
         process.env.DATABASE_ID ?? 'stripe-subscriptions',
         process.env.COLLECTION_ID ?? 'subscriptions',
@@ -51,6 +61,10 @@ class AppwriteService {
         255,
         true
       );
+    } catch (err) {
+      if (err.code !== 409) throw err;
+    }
+    try {
       await this.databases.createStringAttribute(
         process.env.DATABASE_ID ?? 'stripe-subscriptions',
         process.env.COLLECTION_ID ?? 'subscriptions',
@@ -59,7 +73,6 @@ class AppwriteService {
         true
       );
     } catch (err) {
-      // If resource already exists, we can ignore the error
       if (err.code !== 409) throw err;
     }
   }
