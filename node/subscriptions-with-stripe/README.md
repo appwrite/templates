@@ -87,16 +87,6 @@ The endpoint where your Appwrite server is located. If not provided, it defaults
 | Required     | No                             |
 | Sample Value | `https://cloud.appwrite.io/v1` |
 
-### APPWRITE_PROJECT_ID
-
-The ID of your Appwrite project.
-
-| Question      | Answer                                                                                    |
-| ------------- | ----------------------------------------------------------------------------------------- |
-| Required      | Yes                                                                                       |
-| Sample Value  | `builtWithAppwrite`                                                                       |
-| Documentation | [Appwrite: Getting Started](https://appwrite.io/docs/getting-started-for-web#addPlatform) |
-
 ### STRIPE_SECRET_KEY
 
 Secret for sending requests to the Stripe API.
