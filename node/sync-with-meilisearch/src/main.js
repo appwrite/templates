@@ -1,6 +1,6 @@
 import { Client, Databases, Query } from 'node-appwrite';
-import { fetch } from 'undici';
 import { getStaticFile, interpolate, throwIfMissing } from './utils.js';
+import { MeiliSearch } from 'meilisearch';
 
 export default async ({ req, res, log }) => {
   throwIfMissing(process.env, [
@@ -31,6 +31,13 @@ export default async ({ req, res, log }) => {
 
   const databases = new Databases(client);
 
+  const meilisearch = new MeiliSearch({
+    host: process.env.MEILISEARCH_ENDPOINT,
+    apiKey: process.env.MEILISEARCH_ADMIN_API_KEY,
+  });
+
+  const index = meilisearch.index(process.env.MEILISEARCH_INDEX_NAME);
+
   let cursor = null;
 
   do {
@@ -55,18 +62,7 @@ export default async ({ req, res, log }) => {
     }
 
     log(`Syncing chunk of ${documents.length} documents ...`);
-
-    await fetch(
-      `${process.env.MEILISEARCH_ENDPOINT}/indexes/${process.env.MEILISEARCH_INDEX_NAME}/documents?primaryKey=$id`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${process.env.MEILISEARCH_ADMIN_API_KEY}`,
-        },
-        body: JSON.stringify(documents),
-      }
-    );
+    index.addDocuments(documents);
   } while (cursor !== null);
 
   log('Sync finished.');

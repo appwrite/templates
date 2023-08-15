@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -6,23 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Meilisearch Search Demo</title>
 
-    <script>
-      async function onSearch(prompt) {
-        const response = await fetch(
-          "{{ALGOLIA_ENDPOINT}}/indexes/{{ALGOLIA_INDEX_NAME}}/search",
-          {
-            method: "POST",
-            body: JSON.stringify({
-              q: prompt,
-            }),
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer {{ALGOLIA_SEARCH_API_KEY}}",
-            },
-          }
-        );
+    <script type="module">
+      import meilisearch from 'https://cdn.jsdelivr.net/npm/meilisearch@0.34.1/+esm';
 
-        return (await response.json()).hits;
+      async function onSearch(prompt) {
+        const client = new meilisearch.MeiliSearch({
+          host: '{{MEILISEARCH_ENDPOINT}}',
+          apiKey: '{{MEILISEARCH_SEARCH_API_KEY}}',
+        });
+
+        const index = await client.index('{{MEILISEARCH_INDEX_NAME}}');
+
+        return await index.search(prompt);
       }
     </script>
     <script src="//unpkg.com/alpinejs" defer></script>
@@ -44,9 +39,9 @@
             class="body-text-1 u-normal u-margin-block-start-8"
             style="max-width: 50rem"
           >
-            This is demo application. You can ue this app to ensure sync between
-            Appwrite Databases and Meilisearch Seach was successful. Use search
-            input below to search your data.
+            Use this demo to verify that the sync between Appwrite Databases and
+            Meilisearch Seach was successful. Search your MeiliSearch index
+            using the input below.
           </p>
         </div>
       </div>
