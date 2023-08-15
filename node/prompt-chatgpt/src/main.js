@@ -28,9 +28,7 @@ export default async ({ req, res, log }) => {
     messages: [{ role: 'user', content: req.body.prompt }],
   });
 
-  log(JSON.stringify(response, null, 2));
-
-  const completion = response.data?.choices[0]?.message ?? '';
+  const completion = response.data?.choices[0]?.message?.content ?? '';
   if (!completion) {
     return res.json({ ok: false, error: 'Failed to query model.' }, 500);
   }
