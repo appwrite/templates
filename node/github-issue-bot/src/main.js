@@ -11,7 +11,10 @@ export default async ({ res, req, log, error }) => {
     return res.json({ ok: false, error: 'Invalid signature' }, 401);
   }
 
+  log(JSON.stringify(req.body, null, 2));
+
   await github.postComment(
+    req.body.repository,
     req.body.issue,
     `Thanks for the issue report @${req.body.issue.user.login}! We will look into it as soon as possible.`
   );

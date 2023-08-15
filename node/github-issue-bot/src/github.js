@@ -33,10 +33,10 @@ class GithubService {
    * @param {any} issue
    * @param {string} comment
    */
-  async postComment(issue, comment) {
+  async postComment(repository, issue, comment) {
     await this.octokit.issues.createComment({
-      owner: issue.repository.owner.login,
-      repo: issue.repository.name,
+      owner: repository.owner.login,
+      repo: repository.name,
       issue_number: issue.number,
       body: comment,
     });
