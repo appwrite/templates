@@ -1,7 +1,7 @@
 import { OpenAIApi, Configuration } from 'openai';
 import { getStaticFile, throwIfMissing } from './utils.js';
 
-export default async ({ req, res, error }) => {
+export default async ({ req, res, log }) => {
   throwIfMissing(process.env, ['OPENAI_API_KEY']);
 
   if (req.method === 'GET') {
@@ -27,6 +27,8 @@ export default async ({ req, res, error }) => {
     max_tokens: parseInt(process.env.OPENAI_MAX_TOKENS ?? '512'),
     messages: [{ role: 'user', content: req.body.prompt }],
   });
+
+  log(JSON.stringify(response, null, 2));
 
   const completion = response.data?.choices[0]?.message ?? '';
   if (!completion) {
