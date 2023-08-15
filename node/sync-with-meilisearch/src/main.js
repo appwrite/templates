@@ -62,7 +62,9 @@ export default async ({ req, res, log }) => {
     }
 
     log(`Syncing chunk of ${documents.length} documents ...`);
-    index.addDocuments(documents);
+    const result = await index.addDocuments(documents);
+
+    log(`Task ${result.taskUid} ${result.status} documents.`);
   } while (cursor !== null);
 
   log('Sync finished.');

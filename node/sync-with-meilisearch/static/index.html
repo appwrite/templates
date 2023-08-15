@@ -7,15 +7,15 @@
     <title>Meilisearch Demo</title>
 
     <script type="module">
-      import meilisearch from 'https://cdn.jsdelivr.net/npm/meilisearch@0.34.1/+esm';
+      import { MeiliSearch } from 'https://cdn.jsdelivr.net/npm/meilisearch@0.34.1/+esm';
 
       async function onSearch(prompt) {
-        const client = new meilisearch.MeiliSearch({
+        const meilisearch = new MeiliSearch({
           host: '{{MEILISEARCH_ENDPOINT}}',
           apiKey: '{{MEILISEARCH_SEARCH_API_KEY}}',
         });
 
-        const index = await client.index('{{MEILISEARCH_INDEX_NAME}}');
+        const index = meilisearch.index('{{MEILISEARCH_INDEX_NAME}}');
 
         return await index.search(prompt);
       }
