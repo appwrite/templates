@@ -8,17 +8,16 @@
 
     <script type="module">
       import { MeiliSearch } from 'https://cdn.jsdelivr.net/npm/meilisearch@0.34.1/+esm';
+      const meilisearch = new MeiliSearch({
+        host: '{{MEILISEARCH_ENDPOINT}}',
+        apiKey: '{{MEILISEARCH_SEARCH_API_KEY}}',
+      });
 
-      async function onSearch(prompt) {
-        const meilisearch = new MeiliSearch({
-          host: '{{MEILISEARCH_ENDPOINT}}',
-          apiKey: '{{MEILISEARCH_SEARCH_API_KEY}}',
-        });
+      const index = meilisearch.index('{{MEILISEARCH_INDEX_NAME}}');
 
-        const index = meilisearch.index('{{MEILISEARCH_INDEX_NAME}}');
-
+      window.onSearch = async function (prompt) {
         return await index.search(prompt);
-      }
+      };
     </script>
     <script src="//unpkg.com/alpinejs" defer></script>
 
