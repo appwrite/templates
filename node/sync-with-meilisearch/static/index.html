@@ -64,13 +64,12 @@
                 <div class="u-flex u-gap-12">
                   <h5
                     class="eyebrow-heading-2"
-                    x-text="result[Object.keys(result)[0]]"
+                    x-text="Object.values(result).join('\n')"
                   ></h5>
                   <div>
                     <code class="inline-code" x-text="result.$id"></code>
                   </div>
                 </div>
-
                 <div style="overflow-x: hidden; line-break: anywhere">
                   <p
                     class="u-color-text-gray"
