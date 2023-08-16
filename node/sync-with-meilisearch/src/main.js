@@ -62,18 +62,11 @@ export default async ({ req, res, log }) => {
       break;
     }
 
-    // Meilisearch documents must have an `id` field.
-    // Let's rename the `$id` field from Appwrite.
-    const meilisearchDocuments = documents.map(({ $id, ...rest }) => ({
-      id: $id,
-      ...rest,
-    }));
-
     log(`Syncing chunk of ${documents.length} documents ...`);
-    await index.addDocuments(documents);
+    await index.addDocuments(documents, { primaryKey: '$id' });
   } while (cursor !== null);
 
   log('Sync finished.');
 
-  return res.empty();
+  return res.send('Sync finished.', 200);
 };
