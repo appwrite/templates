@@ -4,13 +4,13 @@ import { getStaticFile, interpolate, throwIfMissing } from './utils.js';
 
 export default async ({ req, res, log }) => {
   throwIfMissing(process.env, [
-    'ALGOLIA_APP_ID',
-    'ALGOLIA_ADMIN_API_KEY',
-    'ALGOLIA_INDEX_ID',
-    'ALGOLIA_SEARCH_API_KEY',
     'APPWRITE_API_KEY',
     'APPWRITE_DATABASE_ID',
     'APPWRITE_COLLECTION_ID',
+    'ALGOLIA_APP_ID',
+    'ALGOLIA_INDEX_ID',
+    'ALGOLIA_ADMIN_API_KEY',
+    'ALGOLIA_SEARCH_API_KEY',
   ]);
 
   if (req.method === 'GET') {
@@ -36,10 +36,9 @@ export default async ({ req, res, log }) => {
     process.env.ALGOLIA_APP_ID,
     process.env.ALGOLIA_ADMIN_API_KEY
   );
-  const algoliaIndex = algolia.initIndex(process.env.ALGOLIA_INDEX_ID);
+  const index = algolia.initIndex(process.env.ALGOLIA_INDEX_ID);
 
   let cursor = null;
-
   do {
     const queries = [Query.limit(100)];
 
@@ -63,14 +62,15 @@ export default async ({ req, res, log }) => {
 
     log(`Syncing chunk of ${response.documents.length} documents ...`);
 
-    const records = response.documents.map((document) => ({
+    const records = response.documents.map(({ $id, ...document }) => ({
       ...document,
-      objectID: document.$id,
+      objectID: $id,
     }));
-    await algoliaIndex.saveObjects(records);
+
+    await index.saveObjects(records);
   } while (cursor !== null);
 
   log('Sync finished.');
 
-  return res.empty();
+  return res.send('Sync finished.', 200);
 };

@@ -8,18 +8,6 @@
 
     <script src="https://unpkg.com/meilisearch@0.34.1"></script>
     <script src="https://unpkg.com/alpinejs" defer></script>
-    <script>
-      var meilisearch = new MeiliSearch({
-        host: '{{MEILISEARCH_ENDPOINT}}',
-        apiKey: '{{MEILISEARCH_SEARCH_API_KEY}}',
-      });
-
-      var index = meilisearch.index('{{MEILISEARCH_INDEX_NAME}}');
-
-      window.onSearch = async function (prompt) {
-        return (await index.search(prompt)).hits;
-      };
-    </script>
 
     <link rel="stylesheet" href="https://unpkg.com/@appwrite.io/pink" />
     <link rel="stylesheet" href="https://unpkg.com/@appwrite.io/pink-icons" />
@@ -39,8 +27,8 @@
             style="max-width: 50rem"
           >
             Use this demo to verify that the sync between Appwrite Databases and
-            Meilisearch Seach was successful. Search your MeiliSearch index
-            using the input below.
+            Meilisearch was successful. Search your Meilisearch index using the
+            input below.
           </p>
         </div>
       </div>
@@ -60,7 +48,7 @@
           </div>
           <div id="hits" class="u-flex u-flex-vertical u-gap-12">
             <template x-for="result in results">
-              <div class="u-flex u-flex-vertical card">
+              <div class="card">
                 <pre x-text="JSON.stringify(result, null, '\t')"></pre>
               </div>
             </template>
@@ -68,5 +56,17 @@
         </div>
       </div>
     </main>
+    <script>
+      const meilisearch = new MeiliSearch({
+        host: '{{MEILISEARCH_ENDPOINT}}',
+        apiKey: '{{MEILISEARCH_SEARCH_API_KEY}}',
+      });
+
+      const index = meilisearch.index('{{MEILISEARCH_INDEX_NAME}}');
+
+      window.onSearch = async function (prompt) {
+        return (await index.search(prompt)).hits;
+      };
+    </script>
   </body>
 </html>

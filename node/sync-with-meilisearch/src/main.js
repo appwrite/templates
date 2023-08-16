@@ -9,8 +9,8 @@ export default async ({ req, res, log }) => {
     'APPWRITE_COLLECTION_ID',
     'MEILISEARCH_ENDPOINT',
     'MEILISEARCH_INDEX_NAME',
-    'MEILISEARCH_SEARCH_API_KEY',
     'MEILISEARCH_ADMIN_API_KEY',
+    'MEILISEARCH_SEARCH_API_KEY',
   ]);
 
   if (req.method === 'GET') {
