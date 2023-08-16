@@ -17,7 +17,7 @@
       var index = meilisearch.index('{{MEILISEARCH_INDEX_NAME}}');
 
       window.onSearch = async function (prompt) {
-        return await index.search(prompt);
+        return await index.search(prompt).hits;
       };
     </script>
 
