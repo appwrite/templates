@@ -10,6 +10,7 @@ export default async ({ req, res, log }) => {
     'MEILISEARCH_ENDPOINT',
     'MEILISEARCH_INDEX_NAME',
     'MEILISEARCH_SEARCH_API_KEY',
+    'MEILISEARCH_ADMIN_API_KEY',
   ]);
 
   if (req.method === 'GET') {
@@ -61,10 +62,15 @@ export default async ({ req, res, log }) => {
       break;
     }
 
-    log(`Syncing chunk of ${documents.length} documents ...`);
-    const result = await index.addDocuments(documents);
+    // Meilisearch documents must have an `id` field.
+    // Let's rename the `$id` field from Appwrite.
+    const meilisearchDocuments = documents.map(({ $id, ...rest }) => ({
+      id: $id,
+      ...rest,
+    }));
 
-    log(`Task ${result.taskUid} ${result.status} documents.`);
+    log(`Syncing chunk of ${documents.length} documents ...`);
+    await index.addDocuments(documents);
   } while (cursor !== null);
 
   log('Sync finished.');
