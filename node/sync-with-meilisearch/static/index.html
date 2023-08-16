@@ -17,7 +17,7 @@
       var index = meilisearch.index('{{MEILISEARCH_INDEX_NAME}}');
 
       window.onSearch = async function (prompt) {
-        return await index.search(prompt).hits;
+        return (await index.search(prompt)).hits;
       };
     </script>
 
@@ -60,22 +60,8 @@
           </div>
           <div id="hits" class="u-flex u-flex-vertical u-gap-12">
             <template x-for="result in results">
-              <div class="u-flex u-flex-vertical u-gap-12 card">
-                <div class="u-flex u-gap-12">
-                  <h5
-                    class="eyebrow-heading-2"
-                    x-text="Object.values(result).join('\n')"
-                  ></h5>
-                  <div>
-                    <code class="inline-code" x-text="result.$id"></code>
-                  </div>
-                </div>
-                <div style="overflow-x: hidden; line-break: anywhere">
-                  <p
-                    class="u-color-text-gray"
-                    x-text="JSON.stringify(result)"
-                  ></p>
-                </div>
+              <div class="u-flex u-flex-vertical card">
+                <pre x-text="JSON.stringify(result, null, '\t')"></pre>
               </div>
             </template>
           </div>
