@@ -57,9 +57,6 @@ export function urlWithCodeParam(baseUrl, codeParam) {
   return url.toString();
 }
 
-/**
- * @param {import('nodemailer').SendMailOptions} options
- */
 export async function sendEmail(options) {
   const transport = nodemailer.createTransport({
     // @ts-ignore
