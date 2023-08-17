@@ -6,8 +6,8 @@ import { getStaticFile, throwIfMissing } from './utils.js';
 export default async ({ req, res }) => {
   throwIfMissing(process.env, [
     'VONAGE_API_KEY',
-    'VONAGE_API_SECRET',
-    'VONAGE_API_SIGNATURE_SECRET',
+    'VONAGE_ACCOUNT_SECRET',
+    'VONAGE_SIGNATURE_SECRET',
     'VONAGE_WHATSAPP_NUMBER',
   ]);
 
