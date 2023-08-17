@@ -18,13 +18,9 @@ export default async ({ req, res }) => {
   }
 
   const token = (req.headers.authorization ?? '').split(' ')[1];
-  var decoded = jwt.verify(
-    token,
-    process.env.VONAGE_API_SIGNATURE_SECRET ?? '',
-    {
-      algorithms: ['HS256'],
-    }
-  );
+  var decoded = jwt.verify(token, process.env.VONAGE_SIGNATURE_SECRET, {
+    algorithms: ['HS256'],
+  });
 
   if (sha256(req.bodyRaw) != decoded['payload_hash']) {
     return res.json({ ok: false, error: 'Payload hash mismatch.' }, 401);
@@ -37,7 +33,7 @@ export default async ({ req, res }) => {
   }
 
   const basicAuthToken = btoa(
-    `${process.env.VONAGE_API_KEY}:${process.env.VONAGE_API_SECRET}`
+    `${process.env.VONAGE_API_KEY}:${process.env.VONAGE_ACCOUNT_SECRET}`
   );
   await fetch(`https://messages-sandbox.nexmo.com/v1/messages`, {
     method: 'POST',
