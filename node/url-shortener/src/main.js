@@ -6,6 +6,7 @@ export default async ({ res, req, log, error }) => {
     'APPWRITE_API_KEY',
     'APPWRITE_DATABASE_ID',
     'APPWRITE_COLLECTION_ID',
+    'SHORT_BASE_URL',
   ]);
 
   const appwrite = new AppwriteService();
@@ -24,7 +25,7 @@ export default async ({ res, req, log, error }) => {
 
     const urlEntry = await appwrite.createURLEntry(
       req.body.url,
-      generateShortCode()
+      req.body.shortCode ?? generateShortCode()
     );
     if (!urlEntry) {
       error('Failed to create url entry.');
@@ -32,7 +33,7 @@ export default async ({ res, req, log, error }) => {
     }
 
     return res.json({
-      url: `${req.host}/${urlEntry.$id}`,
+      short: new URL(urlEntry.$id, process.env.SHORT_BASE_URL).toString(),
     });
   }
 

@@ -38,20 +38,21 @@ Create a new short ID for a URL.
 
 **Parameters**
 
-| Name         | Description         | Location | Type               | Sample Value                                                   |
-| ------------ | ------------------- | -------- | ------------------ | -------------------------------------------------------------- |
-| Content-Type | Content type        | Header   | `application/json` |
-| url          | Long URL to shorten | Body     | String             | `https://mywebapp.com/pages/hugelongurl?with=query&params=123` |
+| Name         | Description                                           | Location | Type               | Sample Value                                                   |
+| ------------ | ----------------------------------------------------- | -------- | ------------------ | -------------------------------------------------------------- |
+| Content-Type | Content type                                          | Header   | `application/json` |
+| long         | Long URL to shorten                                   | Body     | String             | `https://mywebapp.com/pages/hugelongurl?with=query&params=123` |
+| shortCode    | Short ID to use, else will be automatically generated | Body     | Optional String    | `discord`                                                      |
 
 **Response**
 
 Sample `200` Response:
 
-Returns the short URL and the original URL. The short URL is constructed from the base URL (`host` header) and the short ID.
+Returns the short URL and the original URL. The short URL is constructed from the SHORT_DOMAIN and the short code.
 
 ```json
 {
-  "url": "https://mywebapp.com/discord"
+  "short": "https://short.app/s/discord"
 }
 ```
 
@@ -101,16 +102,25 @@ The URL endpoint of the Appwrite server. If not provided, it defaults to the App
 
 The ID of the database to store the short URLs.
 
-| Question     | Answer                        |
-| ------------ | ----------------------------- |
-| Required     | Yes                           |
-| Sample Value | `urlShortener`                 |
+| Question     | Answer         |
+| ------------ | -------------- |
+| Required     | Yes            |
+| Sample Value | `urlShortener` |
 
 ### APPWRITE_COLLECTION_ID
 
 The ID of the collection to store the short URLs.
 
-| Question     | Answer                        |
-| ------------ | ----------------------------- |
-| Required     | Yes                           |
-| Sample Value | `urls`                        |
+| Question     | Answer |
+| ------------ | ------ |
+| Required     | Yes    |
+| Sample Value | `urls` |
+
+### SHORT_BASE_URL
+
+The domain to use for the short URLs. You can use your functions subdomain or a custom domain.
+
+| Question     | Answer                |
+| ------------ | --------------------- |
+| Required     | Yes                   |
+| Sample Value | `https://short.app/s` |
