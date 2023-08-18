@@ -33,17 +33,18 @@ export default async ({ req, res, error, log }) => {
   ) {
     log('Matched hello command - returning message');
 
-    const interactionResponse = {
-      type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-      data: {
-        content: 'Hello, World!',
+    return res.json(
+      {
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          content: 'Hello, World!',
+        },
       },
-    };
-
-    return res.json(interactionResponse);
+      200
+    );
   }
 
   log("Didn't match command - returning PONG");
 
-  return res.json({ type: InteractionResponseType.PONG });
+  return res.json({ type: InteractionResponseType.PONG }, 200);
 };
