@@ -1,0 +1,15 @@
+{
+  "name": "templates/prompt-chatgpt",
+  "type": "library",
+  "require": {
+    "php": ">=8.0.0",
+    "openai-php/client": "^0.6.4",
+    "symfony/http-client": "^6.3",
+    "nyholm/psr7": "^1.8"
+  },
+  "config": {
+    "allow-plugins": {
+      "php-http/discovery": true
+    }
+  }
+}
