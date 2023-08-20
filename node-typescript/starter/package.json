@@ -1,0 +1,19 @@
+{
+  "name": "starter-template",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/main.js",
+  "type": "module",
+  "scripts": {
+    "format": "prettier --write .",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "node-appwrite": "^9.0.0",
+    "typescript": "^5.1.6"
+  },
+  "devDependencies": {
+    "@types/node": "^20.4.7",
+    "prettier": "^3.0.0"
+  }
+}
