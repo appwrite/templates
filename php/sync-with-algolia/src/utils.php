@@ -39,9 +39,10 @@ function throw_if_missing(mixed $obj, array $keys): void
  * @param array<string, string|null> $values An associative array with keys and values to replace in the template.
  * @return string The interpolated string with placeholders replaced by corresponding values.
  */
-function (string $template, array $values): string {
+function interpolate(string $template, array $values): string
+{
     return preg_replace_callback('/{{([^}]+)}}/', function ($matches) use ($values) {
         $key = $matches[1];
         return isset($values[$key]) ? $values[$key] : '';
     }, $template);
-};
+}

@@ -33,8 +33,8 @@ return function ($context) {
     $client = new Client();
     $client
         ->setEndpoint('https://cloud.appwrite.io/v1')
-        ->setProject(getenv('APPWRITE_FUNCTION_PROJECT_ID'))
-        ->setKey(getenv('APPWRITE_API_KEY'));
+        ->setProject($_ENV['APPWRITE_FUNCTION_PROJECT_ID'])
+        ->setKey($_ENV['APPWRITE_API_KEY']);
 
     $databases = new Databases($client);
 
@@ -79,7 +79,5 @@ return function ($context) {
 
     $context->log('Sync finished.');
 
-    return $context->res->send('Sync finished.', 200, [
-        'Content-Type' => 'text/plain',
-    ]);
+    return $context->res->send('Sync finished.', 200);
 };
