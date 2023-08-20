@@ -20,7 +20,7 @@ function get_static_file(string $fileName): string
  * @param string[] $keys
  * @throws Exception
  */
-function throw_if_missing($obj, array $keys)
+function throw_if_missing(mixed $obj, array $keys): void
 {
     $missing = [];
     foreach ($keys as $key) {
