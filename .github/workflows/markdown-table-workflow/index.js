@@ -10,6 +10,7 @@ const verboseRuntimes = {
   java: "Java",
   kotlin: "Kotlin",
   node: "Node.js",
+  "node-typescript": "Node.js (TypeScript)",
   php: "PHP",
   python: "Python",
   ruby: "Ruby",
