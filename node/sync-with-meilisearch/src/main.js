@@ -1,6 +1,6 @@
 import { Client, Databases, Query } from 'node-appwrite';
-import { fetch } from 'undici';
 import { getStaticFile, interpolate, throwIfMissing } from './utils.js';
+import { MeiliSearch } from 'meilisearch';
 
 export default async ({ req, res, log }) => {
   throwIfMissing(process.env, [
@@ -9,6 +9,7 @@ export default async ({ req, res, log }) => {
     'APPWRITE_COLLECTION_ID',
     'MEILISEARCH_ENDPOINT',
     'MEILISEARCH_INDEX_NAME',
+    'MEILISEARCH_ADMIN_API_KEY',
     'MEILISEARCH_SEARCH_API_KEY',
   ]);
 
@@ -30,6 +31,13 @@ export default async ({ req, res, log }) => {
     .setKey(process.env.APPWRITE_API_KEY);
 
   const databases = new Databases(client);
+
+  const meilisearch = new MeiliSearch({
+    host: process.env.MEILISEARCH_ENDPOINT,
+    apiKey: process.env.MEILISEARCH_ADMIN_API_KEY,
+  });
+
+  const index = meilisearch.index(process.env.MEILISEARCH_INDEX_NAME);
 
   let cursor = null;
 
@@ -55,21 +63,10 @@ export default async ({ req, res, log }) => {
     }
 
     log(`Syncing chunk of ${documents.length} documents ...`);
-
-    await fetch(
-      `${process.env.MEILISEARCH_ENDPOINT}/indexes/${process.env.MEILISEARCH_INDEX_NAME}/documents?primaryKey=$id`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${process.env.MEILISEARCH_ADMIN_API_KEY}`,
-        },
-        body: JSON.stringify(documents),
-      }
-    );
+    await index.addDocuments(documents, { primaryKey: '$id' });
   } while (cursor !== null);
 
   log('Sync finished.');
 
-  return res.empty();
+  return res.send('Sync finished.', 200);
 };

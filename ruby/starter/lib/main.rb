@@ -8,8 +8,8 @@ def main(context)
   # client = Appwrite::Client.new
   # client
   #   .set_endpoint('https://cloud.appwrite.io/v1')
-  #   .set_project(req.variables['APPWRITE_FUNCTION_PROJECT_ID'])
-  #   .set_key(req.variables['APPWRITE_API_KEY'])
+  #   .set_project(ENV['APPWRITE_FUNCTION_PROJECT_ID'])
+  #   .set_key(ENV['APPWRITE_API_KEY'])
 
   # You can log messages to the console
   context.log("Hello, Logs!")

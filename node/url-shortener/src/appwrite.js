@@ -85,11 +85,20 @@ class AppwriteService {
         process.env.APPWRITE_DATABASE_ID,
         'URL Shortener'
       );
+    } catch (err) {
+      // If resource already exists, we can ignore the error
+      if (err.code !== 409) throw err;
+    }
+    try {
       await this.databases.createCollection(
         process.env.APPWRITE_DATABASE_ID,
         process.env.APPWRITE_COLLECTION_ID,
         'URLs'
       );
+    } catch (err) {
+      if (err.code !== 409) throw err;
+    }
+    try {
       await this.databases.createUrlAttribute(
         process.env.APPWRITE_DATABASE_ID,
         process.env.APPWRITE_COLLECTION_ID,
@@ -97,7 +106,6 @@ class AppwriteService {
         true
       );
     } catch (err) {
-      // If resource already exists, we can ignore the error
       if (err.code !== 409) throw err;
     }
   }

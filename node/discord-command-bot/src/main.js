@@ -12,14 +12,14 @@ export default async ({ req, res, error, log }) => {
     'DISCORD_TOKEN',
   ]);
 
-  const verified = await verifyKey(
-    req.bodyRaw,
-    req.headers['x-signature-ed25519'],
-    req.headers['x-signature-timestamp'],
-    process.env.DISCORD_PUBLIC_KEY
-  );
-
-  if (!verified) {
+  if (
+    !verifyKey(
+      req.bodyRaw,
+      req.headers['x-signature-ed25519'],
+      req.headers['x-signature-timestamp'],
+      process.env.DISCORD_PUBLIC_KEY
+    )
+  ) {
     error('Invalid request.');
     return res.json({ error: 'Invalid request signature' }, 401);
   }

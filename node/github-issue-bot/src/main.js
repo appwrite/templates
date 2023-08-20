@@ -11,12 +11,16 @@ export default async ({ res, req, log, error }) => {
     return res.json({ ok: false, error: 'Invalid signature' }, 401);
   }
 
+  if (!github.isIssueOpenedEvent(req)) {
+    log('Received non-issue event - ignoring');
+    return res.json({ ok: true });
+  }
+
   await github.postComment(
+    req.body.repository,
     req.body.issue,
     `Thanks for the issue report @${req.body.issue.user.login}! We will look into it as soon as possible.`
   );
 
-  if (!github.isIssueOpenedEvent(req)) {
-    return res.json({ ok: true });
-  }
+  return res.json({ ok: true });
 };

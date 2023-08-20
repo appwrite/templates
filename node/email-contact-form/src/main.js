@@ -34,8 +34,6 @@ export default async ({ req, res, log, error }) => {
     });
   }
 
-  throwIfMissing(req.headers, ['referer', 'origin']);
-
   if (req.headers['content-type'] !== 'application/x-www-form-urlencoded') {
     error('Incorrect content type.');
     return res.redirect(
@@ -43,7 +41,7 @@ export default async ({ req, res, log, error }) => {
     );
   }
 
-  if (!isOriginPermitted(req.headers['origin'])) {
+  if (!isOriginPermitted(req)) {
     error('Origin not permitted.');
     return res.redirect(
       urlWithCodeParam(req.headers['referer'], ErrorCode.INVALID_REQUEST)
@@ -57,7 +55,7 @@ export default async ({ req, res, log, error }) => {
     return res.redirect(
       urlWithCodeParam(req.headers['referer'], err.message),
       301,
-      getCorsHeaders(req.headers['origin'])
+      getCorsHeaders(req)
     );
   }
 
@@ -65,7 +63,7 @@ export default async ({ req, res, log, error }) => {
     sendEmail({
       to: process.env.SUBMIT_EMAIL,
       from: /** @type {string} */ (form['email']),
-      subject: `New form submission: ${origin}`,
+      subject: `New form submission: ${req.headers['referer']}`,
       text: templateFormMessage(form),
     });
   } catch (err) {
@@ -73,7 +71,7 @@ export default async ({ req, res, log, error }) => {
     return res.redirect(
       urlWithCodeParam(req.headers['referer'], ErrorCode.SERVER_ERROR),
       301,
-      getCorsHeaders(req.headers['origin'])
+      getCorsHeaders(req)
     );
   }
 
@@ -83,9 +81,13 @@ export default async ({ req, res, log, error }) => {
     });
   }
 
+  const baseUrl = new URL(req.headers['referer']).origin;
+
+  log(`Redirecting to ${new URL(form._next, baseUrl).toString()}`);
+
   return res.redirect(
-    new URL(form._next, req.headers['origin']).toString(),
+    new URL(form._next, baseUrl).toString(),
     301,
-    getCorsHeaders(req.headers['origin'])
+    getCorsHeaders(req)
   );
 };
