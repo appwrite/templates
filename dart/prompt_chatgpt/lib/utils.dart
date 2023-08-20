@@ -1,5 +1,8 @@
 import 'dart:io';
 
+final String _dirname = Platform.script.toFilePath();
+final String staticFolder = '${Uri.file(_dirname).resolve('../static')}';
+
 /// Throws an error if any of the keys are missing from the object
 /// @param obj - The object to check
 /// @param keys - The list of keys to check for
@@ -16,12 +19,9 @@ void throwIfMissing(Map<String, dynamic> obj, List<String> keys) {
   }
 }
 
-final String _dirname = Platform.script.toFilePath();
-final String staticFolder = '${Uri.file(_dirname).resolve('../static')}';
-
 /// Returns the contents of a file in the static folder
 /// @param fileName - The name of the file to read
 /// @returns Contents of static/{fileName}
 String getStaticFile(String fileName) {
-  return File('${staticFolder}/$fileName').readAsStringSync();
+  return File('$staticFolder/$fileName').readAsStringSync();
 }

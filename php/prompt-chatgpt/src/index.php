@@ -1,20 +1,21 @@
 <?php
 
 require(__DIR__ . '/../vendor/autoload.php');
+require(__DIR__ . '/utils.php');
 
 return function ($context) {
     throw_if_missing($_ENV, ['OPENAI_API_KEY']);
 
     if ($context->req->method === 'GET') {
         return $context->res->send(get_static_file('index.html'), 200, [
-            'Content-Type' => 'text/html',
+            'Content-Type' => 'text/html; charset=utf-8',
         ]);
     }
 
     try {
         throw_if_missing($context->req->body, ['prompt']);
     } catch (Exception $e) {
-        return $context->res->json(['ok' => False, 'error' => $e->getMessage()], 400);
+        return $context->res->json(['ok' => false, 'error' => $e->getMessage()], 400);
     }
 
     $openai = OpenAI::client($_ENV['OPENAI_API_KEY']);
@@ -29,10 +30,8 @@ return function ($context) {
         ]);
 
         $completion = $response['choices'][0]['message']['content'];
-        return $context->res->json(['ok' => True, 'completion' => $completion], 200, [
-            'Content-Type' => 'text/plain',
-        ]);
+        return $context->res->json(['ok' => true, 'completion' => $completion], 200);
     } catch (Exception $e) {
-        return $context->res->json(['ok' => False, 'error' => 'Failed to query model.'], 500);
+        return $context->res->json(['ok' => false, 'error' => 'Failed to query model.'], 500);
     }
 };
