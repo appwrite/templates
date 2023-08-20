@@ -41,14 +41,13 @@ Sample `401` Response:
 
 ## ⚙️ Configuration
 
-| Setting           | Value                             |
-| ----------------- | --------------------------------- |
-| Runtime           | Python (3.9)                      |
-| Entrypoint        | `src/main.py`                     |
-| Build Commands    | `pip install -r requirements.txt` |
-|                   | `python src/setup.py`             |
-| Permissions       | `any`                             |
-| Timeout (Seconds) | 15                                |
+| Setting           | Value                                                    |
+| ----------------- | -------------------------------------------------------- |
+| Runtime           | Python (3.9)                                             |
+| Entrypoint        | `src/main.py`                                            |
+| Build Commands    | `pip install -r requirements.txt && python src/setup.py` |
+| Permissions       | `any`                                                    |
+| Timeout (Seconds) | 15                                                       |
 
 ## 🔒 Environment Variables
 
