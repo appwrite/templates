@@ -23,8 +23,6 @@ Returns the supplied text string with sensitive information redacted.
 
 Sample `200` Response:
 
-Content-Type: ``
-
 ```json
 {
     "ok": true,
