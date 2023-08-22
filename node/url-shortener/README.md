@@ -4,7 +4,7 @@ Generate URL with short ID and redirect to the original URL when visited.
 
 ## 🧰 Usage
 
-### `GET /:shortId`
+### GET /:shortId
 
 Redirects to shortId's original URL.
 
@@ -32,7 +32,7 @@ When no URL is found for the short ID.
 Invalid link.
 ```
 
-### `POST /`
+### POST /
 
 Create a new short ID for a URL.
 

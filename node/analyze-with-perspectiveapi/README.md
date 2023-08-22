@@ -4,11 +4,11 @@ Automate moderation by getting toxicity of messages.
 
 ## 🧰 Usage
 
-### `GET`
+### GET /
 
 HTML form for interacting with the function.
 
-### `POST`
+### POST /
 
 Returns toxicity score of the provided text, as determined by Google's Perspective API
 

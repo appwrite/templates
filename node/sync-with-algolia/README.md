@@ -4,11 +4,11 @@ Intuitive search bar for any data in Appwrite Databases.
 
 ## 🧰 Usage
 
-### `GET /`
+### GET /
 
 HTML form for interacting with the function.
 
-### `POST /`
+### POST /
 
 Triggers indexing of the Appwrite database collection to Algolia.
 

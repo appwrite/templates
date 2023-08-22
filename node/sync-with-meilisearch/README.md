@@ -4,11 +4,11 @@ Syncs documents in an Appwrite database collection to a Meilisearch index.
 
 ## 🧰 Usage
 
-### `GET /`
+### GET /
 
 Returns HTML page where search can be performed to test the indexing.
 
-### `POST /`
+### POST /
 
 Triggers indexing of the Appwrite database collection to Meilisearch.
 

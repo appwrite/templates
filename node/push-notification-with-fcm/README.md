@@ -4,7 +4,7 @@ Send push notifications to your users using Firebase Cloud Messaging (FCM).
 
 ## 🧰 Usage
 
-### `POST`
+### POST /
 
 Send a push notification to a user.
 

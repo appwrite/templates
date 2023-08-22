@@ -4,11 +4,11 @@ Sends an email with the contents of a HTML form.
 
 ## 🧰 Usage
 
-### `GET`
+### GET /
 
 HTML form for interacting with the function.
 
-### `POST`
+### POST /
 
 Submit form data to send an email
 

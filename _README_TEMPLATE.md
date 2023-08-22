@@ -8,7 +8,7 @@ Your function's description goes here.
 
 <!-- Copy section for each endpoint -->
 <!-- Document endpoint method and url  -->
-### `GET /`
+### GET /
 
 <!-- Describe the endpoint -->
 Your endpoint description goes here.
