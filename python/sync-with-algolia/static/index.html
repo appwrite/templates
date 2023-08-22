@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Algolia Search Demo</title>
+
+    <script src="https://unpkg.com/algoliasearch@4.17.2/dist/algoliasearch-lite.umd.js"></script>
+    <script src="https://unpkg.com/instantsearch.js@4.56.3/dist/instantsearch.production.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/instantsearch.css@8.0.0/themes/satellite-min.css"
+    />
+    <link rel="stylesheet" href="https://unpkg.com/@appwrite.io/pink" />
+    <link rel="stylesheet" href="https://unpkg.com/@appwrite.io/pink-icons" />
+  </head>
+  <body>
+    <main class="main-content">
+      <div class="top-cover u-padding-block-end-56">
+        <div class="container">
+          <div
+            class="u-flex u-gap-16 u-flex-justify-center u-margin-block-start-16"
+          >
+            <h1 class="heading-level-1">Algolia Search Demo</h1>
+            <code class="u-un-break-text"></code>
+          </div>
+          <p
+            class="body-text-1 u-normal u-margin-block-start-8"
+            style="max-width: 50rem"
+          >
+            Use this demo to verify that the sync between Appwrite Databases and
+            Algolia was successful. Search your Algolia index using the input
+            below.
+          </p>
+        </div>
+      </div>
+      <div class="container u-margin-block-start-negative-56">
+        <div class="card u-flex u-gap-24 u-flex-vertical">
+          <div id="searchbox"></div>
+          <div id="hits"></div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      const algolia = algoliasearch(
+        '{{ALGOLIA_APP_ID}}',
+        '{{ALGOLIA_SEARCH_API_KEY}}'
+      );
+
+      const search = instantsearch({
+        indexName: '{{ALGOLIA_INDEX_ID}}',
+        searchClient: algolia,
+      });
+
+      const searchBox = instantsearch.widgets.searchBox({
+        container: '#searchbox',
+      });
+
+      const hits = instantsearch.widgets.hits({
+        container: '#hits',
+        templates: {
+          item(hit, { html, components }) {
+            return html`
+              <div class="card">
+                <pre>${JSON.stringify(hit, null, '\t')}</pre>
+              </div>
+            `;
+          },
+        },
+      });
+
+      search.addWidgets([searchBox, hits]);
+      search.start();
+    </script>
+  </body>
+</html>

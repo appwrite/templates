@@ -60,7 +60,7 @@ export default async ({ req, res, log }) => {
       break;
     }
 
-    log(`Syncing chunk of ${response.documents.length} documents ...`);
+    log(`Syncing chunk of ${response.documents.length} documents...`);
 
     const records = response.documents.map(({ $id, ...document }) => ({
       ...document,
