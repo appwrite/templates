@@ -4,7 +4,7 @@ A simple starter function. Edit `src/main.js` to get started and create somethin
 
 ## 🧰 Usage
 
-### `GET`
+### GET /
 
 - Returns a "Hello, World!" message.
 
@@ -16,7 +16,7 @@ Sample `200` Response:
 Hello, World!
 ```
 
-### `POST`, `PUT`, `PATCH`, `DELETE`
+### POST, PUT, PATCH, DELETE /
 
 - Returns a "Learn More" JSON response.
 

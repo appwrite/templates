@@ -4,11 +4,11 @@ Simple bot to answer WhatsApp messages.
 
 ## 🧰 Usage
 
-### `GET`
+### GET /
 
 HTML form for interacting with the function.
 
-### `POST`
+### POST /
 
 Receives a message, validates its signature, and sends a response back to the sender.
 

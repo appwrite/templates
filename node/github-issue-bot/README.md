@@ -4,7 +4,7 @@ Automate the process of responding to newly opened issues on a GitHub repository
 
 ## 🧰 Usage
 
-### `POST`
+### POST /
 
 Handles webhook and returns a verification response.
 

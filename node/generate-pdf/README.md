@@ -4,7 +4,7 @@ Document containing sample invoice in PDF format
 
 ## 🧰 Usage
 
-### `GET`
+### GET /
 
 Returns a PDF invoice
 

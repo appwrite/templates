@@ -4,11 +4,11 @@ Automatically remove sensitive data from messages.
 
 ## 🧰 Usage
 
-### `GET`
+### GET /
 
 HTML form for interacting with the function.
 
-### `POST`
+### POST /
 
 Returns the supplied text string with sensitive information redacted.
 

@@ -4,11 +4,11 @@ Ask question, and let OpenAI GPT-3.5-turbo answer.
 
 ## 🧰 Usage
 
-### `GET`
+### GET /
 
 HTML form for interacting with the function.
 
-### `POST`
+### POST /
 
 Query the model for a completion.
 
