@@ -56,7 +56,7 @@ The ID of the collection in the Appwrite database to sync.
 | ------------- | ------------------------------------------------------------- |
 | Required      | Yes                                                           |
 | Sample Value  | `7c3e8...2a9f1`                                               |
-| Documentation | [Appwrite: Collections](https://appwrite.io/docs/collections) |
+| Documentation | [Appwrite: Collections](https://appwrite.io/docs/databases#collection) |
 
 ### APPWRITE_ENDPOINT
 
