@@ -14,10 +14,10 @@ Returns the supplied text string with sensitive information redacted.
 
 **Parameters**
 
-| Name         | Description                 | Location | Type               | Sample Value                                 |
-| ------------ | --------------------------- | -------- | ------------------ | -------------------------------------------- |
-| Content-Type | Content type of the request | Header   | `application/json` | N/A                                          |
-| text         | Text to redact              | Body     | String             | `My email address is myname2000@gmail.com`   |
+| Name         | Description                 | Location | Type               | Sample Value                               |
+| ------------ | --------------------------- | -------- | ------------------ | ------------------------------------------ |
+| Content-Type | Content type of the request | Header   | `application/json` | N/A                                        |
+| text         | Text to redact              | Body     | String             | `My email address is myname2000@gmail.com` |
 
 **Response**
 
@@ -25,8 +25,8 @@ Sample `200` Response:
 
 ```json
 {
-    "ok": true,
-    "redacted": "My email address is <EMAIL_ADDRESS>"
+  "ok": true,
+  "redacted": "My email address is <EMAIL_ADDRESS>"
 }
 ```
 
@@ -34,21 +34,20 @@ Sample `400` Response:
 
 ```json
 {
-    "ok": false,
-    "error": "Missing required field: text."
+  "ok": false,
+  "error": "Missing required field: text."
 }
-
 ```
 
 ## ⚙️ Configuration
 
-| Setting           | Value         |
-| ----------------- | ------------- |
-| Runtime           | Node (18.0)   |
-| Entrypoint        | `src/main.js` |
-| Build Commands    | `npm install` |
-| Permissions       | `any`         |
-| Timeout (Seconds) | 15            |
+| Setting           | Value                             |
+| ----------------- | --------------------------------- |
+| Runtime           | Python (3.9)                      |
+| Entrypoint        | `src/main.py`                     |
+| Build Commands    | `pip install -r requirements.txt` |
+| Permissions       | `any`                             |
+| Timeout (Seconds) | 15                                |
 
 ## 🔒 Environment Variables
 
