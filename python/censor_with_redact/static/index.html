@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Censor with Redact API Demo</title>
+
+    <script>
+      async function onSubmit(text) {
+        const response = await fetch('/', {
+          method: 'POST',
+          body: JSON.stringify({ text }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        const json = await response.json();
+
+        if (!json.ok || json.error) {
+          alert(json.error);
+        }
+
+        return json.redacted;
+      }
+    </script>
+
+    <script src="//unpkg.com/alpinejs" defer></script>
+
+    <link rel="stylesheet" href="https://unpkg.com/@appwrite.io/pink" />
+    <link rel="stylesheet" href="https://unpkg.com/@appwrite.io/pink-icons" />
+  </head>
+  <body>
+    <main class="main-content">
+      <div class="top-cover u-padding-block-end-56">
+        <div class="container">
+          <div
+            class="u-flex u-gap-16 u-flex-justify-center u-margin-block-start-16"
+          >
+            <h1 class="heading-level-1">Censor with Redact API Demo</h1>
+            <code class="u-un-break-text"></code>
+          </div>
+          <p
+            class="body-text-1 u-normal u-margin-block-start-8"
+            style="max-width: 50rem"
+          >
+            Use this page to test your implementation with Redact API. Enter
+            text and receive the censored message as a response.
+          </p>
+        </div>
+      </div>
+      <div
+        class="container u-margin-block-start-negative-56"
+        x-data="{ message: '', censoredMessage: '', loading: false }"
+      >
+        <div class="card u-flex u-gap-24 u-flex-vertical">
+          <div class="u-flex u-cross-center u-gap-8">
+            <div
+              class="input-text-wrapper is-with-end-button u-width-full-line"
+            >
+              <input x-model="message" type="search" placeholder="Message" />
+              <div class="icon-search" aria-hidden="true"></div>
+            </div>
+
+            <button
+              class="button"
+              x-bind:disabled="loading"
+              x-on:click="async () => { loading = true; censoredMessage = ''; try { censoredMessage = await onSubmit(message) } catch(err) { console.error(err); } finally { loading = false; } }"
+            >
+              <span class="text">Censor</span>
+            </button>
+          </div>
+          <template x-if="censoredMessage">
+            <div class="u-flex u-flex-vertical u-gap-12">
+              <div class="u-flex u-flex-vertical u-gap-12 card">
+                <div class="u-flex u-gap-12">
+                  <h5 class="eyebrow-heading-2">Redact API:</h5>
+                </div>
+
+                <div style="overflow-x: hidden; line-break: anywhere">
+                  <p class="u-color-text-gray" x-text="censoredMessage"></p>
+                </div>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
