@@ -49,6 +49,7 @@ def main(context):
         )
 
     form = parse_qs(context.req.body)
+    form = {key: value[0] for key, value in form.items()}
 
     try:
         throw_if_missing(form, ["email"])
