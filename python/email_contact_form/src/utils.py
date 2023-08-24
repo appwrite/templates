@@ -40,7 +40,7 @@ def throw_if_missing(obj: object, keys: list[str]) -> None:
 
 def template_form_message(form):
     return "You've received a new message:\n" + "\n".join(
-        [f"{key}: {value}" for key, value in form.items()]
+        [f"{key}: {value}" for key, value in form.items() if key != "_next"]
     )
 
 
