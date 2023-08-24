@@ -1,4 +1,4 @@
-# 🤐 Node.js Censor with Redact Function
+# 🤐 Python Censor with Redact Function
 
 Automatically remove sensitive data from messages.
 
