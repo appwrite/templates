@@ -37,7 +37,7 @@ export function getStaticFile(fileName) {
 /**
  * Build a message from the form data.
  * @param {import("node:querystring").ParsedUrlQuery} form
- * @returns  {string}
+ * @returns {string}
  */
 export function templateFormMessage(form) {
   return `You've received a new message.\n
@@ -50,6 +50,7 @@ ${Object.entries(form)
 /**
  * @param {string} baseUrl
  * @param {string} codeParam
+ * @returns {string}
  */
 export function urlWithCodeParam(baseUrl, codeParam) {
   const url = new URL(baseUrl);
@@ -57,6 +58,11 @@ export function urlWithCodeParam(baseUrl, codeParam) {
   return url.toString();
 }
 
+/**
+ * Send an email using the SMTP credentials in the environment
+ * @param {any} options
+ * @returns {Promise<void>}
+ */
 export async function sendEmail(options) {
   const transport = nodemailer.createTransport({
     // @ts-ignore
