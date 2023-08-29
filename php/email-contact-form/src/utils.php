@@ -36,7 +36,12 @@ function throw_if_missing(mixed $obj, array $keys): void
     }
 }
 
-function send_email(mixed $options): void
+/**
+ * Sends an email using the SMTP credentials in the environment
+ * @param array $options
+ * @throws \PHPMailer\PHPMailer\Exception
+ */
+function send_email(array $options): void
 {
     $mail = new PHPMailer(true);
     $mail->isSMTP();
@@ -54,16 +59,12 @@ function send_email(mixed $options): void
     $mail->send();
 }
 
-
-// export function templateFormMessage(form) {
-//     return `You've received a new message.\n
-//   ${Object.entries(form)
-//     .filter(([key]) => key !== '_next')
-//     .map(([key, value]) => `${key}: ${value}`)
-//     .join('\n')}`;
-//   }
-
-function template_form_message(mixed $form)
+/**
+ * Builds a string message body from a form submission
+ * @param array $form
+ * @return string
+ */
+function template_form_message(array $form)
 {
     return "You've received a new message.\n" .
         implode("\n", array_map(function ($key, $value) {

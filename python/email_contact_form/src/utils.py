@@ -38,13 +38,13 @@ def throw_if_missing(obj: object, keys: list[str]) -> None:
         raise ValueError(f"Missing required fields: {', '.join(missing)}")
 
 
-def template_form_message(form):
-    return "You've received a new message:\n" + "\n".join(
-        [f"{key}: {value}" for key, value in form.items() if key != "_next"]
-    )
-
-
 def send_email(options):
+    """
+    Sends an email using the SMTP credentials in the environment
+
+    Parameters:
+        options (dict): Email options
+    """
     transport = SMTP(
         host=os.environ["SMTP_HOST"],
         port=os.environ.get("SMTP_PORT", 587),
@@ -59,3 +59,18 @@ def send_email(options):
     message["To"] = options["to"]
 
     transport.send_message(message)
+
+
+def template_form_message(form):
+    """
+    Builds a string message body from a form submission
+
+    Parameters:
+        form (dict): Form submission
+
+    Returns:
+        (str): Message body
+    """
+    return "You've received a new message:\n" + "\n".join(
+        [f"{key}: {value}" for key, value in form.items() if key != "_next"]
+    )

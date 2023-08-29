@@ -1,5 +1,5 @@
 {
-  "name": "templates/starter",
+  "name": "templates/sync-with-algolia",
   "type": "library",
   "require": {
     "php": ">=8.0.0",

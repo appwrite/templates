@@ -1,5 +1,5 @@
 {
-  "name": "templates/starter",
+  "name": "templates/email-contact-form",
   "type": "library",
   "require": {
     "php": ">=8.0.0",
