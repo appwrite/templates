@@ -3,7 +3,7 @@ from algoliasearch.search_client import SearchClient
 from appwrite.client import Client
 from appwrite.services.databases import Databases
 from appwrite.query import Query
-from utils import get_static_file, throw_if_missing, interpolate
+from .utils import get_static_file, throw_if_missing, interpolate
 
 
 def main(context):

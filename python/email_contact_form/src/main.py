@@ -1,7 +1,7 @@
 import os
 
-from utils import get_static_file, throw_if_missing, send_email, template_form_message
-from cors import is_origin_permitted, get_cors_headers
+from .utils import get_static_file, throw_if_missing, send_email, template_form_message
+from .cors import is_origin_permitted, get_cors_headers
 from urllib.parse import parse_qs, urljoin
 
 
