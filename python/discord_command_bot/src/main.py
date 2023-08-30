@@ -1,5 +1,5 @@
 import os
-from utils import throw_if_missing
+from .utils import throw_if_missing
 from discord_interactions import verify_key, InteractionResponseType, InteractionType
 
 

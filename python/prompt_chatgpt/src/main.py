@@ -1,5 +1,5 @@
 import openai
-from utils import get_static_file, throw_if_missing
+from .utils import get_static_file, throw_if_missing
 import os
 
 
