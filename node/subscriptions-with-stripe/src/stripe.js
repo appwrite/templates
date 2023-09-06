@@ -13,7 +13,7 @@ class StripeService {
   /**
    * @param {string} userId
    */
-  async checkoutSubscription(userId) {
+  async checkoutSubscription(context, userId) {
     /** @type {import('stripe').Stripe.Checkout.SessionCreateParams.LineItem} */
     const lineItem = {
       price_data: {
@@ -42,6 +42,7 @@ class StripeService {
         mode: 'subscription',
       });
     } catch (err) {
+      context.error(err);
       return null;
     }
   }
@@ -49,7 +50,7 @@ class StripeService {
   /**
    * @returns {import("stripe").Stripe.DiscriminatedEvent | null}
    */
-  validateWebhook(req) {
+  validateWebhook(context, req) {
     try {
       const event = this.client.webhooks.constructEvent(
         req.bodyRaw,
@@ -58,6 +59,7 @@ class StripeService {
       );
       return /** @type {import("stripe").Stripe.DiscriminatedEvent} */ (event);
     } catch (err) {
+      context.error(err);
       return null;
     }
   }

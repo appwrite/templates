@@ -13,6 +13,7 @@ export default async ({ req, res, log, error }) => {
     const html = interpolate(getStaticFile('index.html'), {
       APPWRITE_ENDPOINT: process.env.APPWRITE_ENDPOINT ?? 'https://cloud.appwrite.io/v1',
       APPWRITE_FUNCTION_PROJECT_ID: process.env.APPWRITE_FUNCTION_PROJECT_ID,
+      APPWRITE_FUNCTION_ID: process.env.APPWRITE_FUNCTION_ID
     });
 
     return res.send(html, 200, { 'Content-Type': 'text/html; charset=utf-8' });
@@ -29,7 +30,7 @@ export default async ({ req, res, log, error }) => {
         return res.redirect(process.env.FAILURE_URL ?? '/', 303);
       }
 
-      const session = await stripe.checkoutSubscription(userId);
+      const session = await stripe.checkoutSubscription(context, userId);
       if (!session) {
         error('Failed to create Stripe checkout session.');
         return res.redirect(process.env.FAILURE_URL ?? '/', 303);
@@ -39,7 +40,7 @@ export default async ({ req, res, log, error }) => {
       return res.redirect(session.url, 303);
 
     case '/webhook':
-      const event = stripe.validateWebhook(req);
+      const event = stripe.validateWebhook(context, req);
       if (!event) {
         return res.json({ success: false }, 401);
       }
