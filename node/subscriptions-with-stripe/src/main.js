@@ -6,8 +6,7 @@ export default async ({ req, res, log, error }) => {
   throwIfMissing(process.env, [
     'STRIPE_SECRET_KEY',
     'STRIPE_WEBHOOK_SECRET',
-    'SUCCESS_URL',
-    'FAILURE_URL',
+    'APPWRITE_API_KEY'
   ]);
 
   const appwrite = new AppwriteService();
