@@ -100,17 +100,15 @@
     <script>
       const { Client, Account, Functions } = Appwrite;
       const client = new Client()
-        .setEndpoint('https://qa.appwrite.org/v1') // APPWRITE_ENDPOINT
-        .setProject('64f60ab61bf1305f4d3e'); // APPWRITE_FUNCTION_PROJECT_ID
+        .setEndpoint('{{APPWRITE_ENDPOINT}}')
+        .setProject('{{APPWRITE_FUNCTION_PROJECT_ID}}');
       const account = new Account(client);
       const functions = new Functions(client);
 
       async function subscribe() {
-        // APPWRITE_FUNCTION_ID
-        const execution = await functions.createExecution('64f8788d7a472e48885f', '', false, '/subscribe', 'POST');
+        const execution = await functions.createExecution('{{APPWRITE_FUNCTION_ID}}', '', false, '/subscribe', 'POST');
         const url = execution.responseHeaders.find((header) => header.name === 'location');
-        console.log(url);
-        // window.location.replace(url);
+        window.location.replace(url);
       }
 
       document.addEventListener('alpine:init', async () => {
