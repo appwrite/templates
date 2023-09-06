@@ -2,7 +2,9 @@ import StripeService from './stripe.js';
 import AppwriteService from './appwrite.js';
 import { getStaticFile, interpolate, throwIfMissing } from './utils.js';
 
-export default async ({ req, res, log, error }) => {
+export default async (context) => {
+  const { req, res, log, error } = context;
+
   throwIfMissing(process.env, [
     'STRIPE_SECRET_KEY',
     'STRIPE_WEBHOOK_SECRET',
