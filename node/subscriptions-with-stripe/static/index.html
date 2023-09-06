@@ -38,7 +38,8 @@
           </template>
           <template x-if="$store.auth.user === false">
             <div>
-              <p class="text">
+              <p class="heading-level-4">Subscription status</p>
+              <p class="text u-margin-block-start-8">
                 Only registered users can create subscriptions.
               </p>
 
@@ -52,7 +53,7 @@
           </template>
           <template x-if="$store.auth.user">
             <div>
-              <p>Subscription status:</p>
+              <p class="heading-level-4">Subscription status</p>
 
               <div class="u-margin-block-start-8">
                 <template x-if="$store.auth.user.labels.includes('subscriber')">
@@ -64,9 +65,28 @@
                 <template
                   x-if="!$store.auth.user.labels.includes('subscriber')"
                 >
-                  <div class="status is-failed">
-                    <span class="status-icon"></span>
-                    <span class="text">Not subscibed</span>
+                  <div>
+                    <div class="status is-failed">
+                      <span class="status-icon"></span>
+                      <span class="text">Not subscibed</span>
+                    </div>
+
+                    <section
+                      class="alert is-standalone is-info u-margin-block-start-16"
+                    >
+                      <div class="alert-grid">
+                        <span class="icon-info" aria-hidden="true"></span>
+                        <div class="alert-content">
+                          <h6 class="alert-title">
+                            Payment processing can take some time.
+                          </h6>
+                          <p class="alert-message">
+                            If you paid, please wait a few minutes and refresh
+                            the page.
+                          </p>
+                        </div>
+                      </div>
+                    </section>
                   </div>
                 </template>
               </div>
