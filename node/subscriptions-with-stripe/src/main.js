@@ -9,6 +9,15 @@ export default async ({ req, res, log, error }) => {
     'APPWRITE_API_KEY'
   ]);
 
+  if (req.method === 'GET') {
+    const html = interpolate(getStaticFile('index.html'), {
+      APPWRITE_ENDPOINT: process.env.APPWRITE_ENDPOINT ?? 'https://cloud.appwrite.io/v1',
+      APPWRITE_FUNCTION_PROJECT_ID: process.env.APPWRITE_FUNCTION_PROJECT_ID,
+    });
+
+    return res.send(html, 200, { 'Content-Type': 'text/html; charset=utf-8' });
+  }
+
   const appwrite = new AppwriteService();
   const stripe = new StripeService();
 
