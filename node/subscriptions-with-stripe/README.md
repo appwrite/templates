@@ -112,7 +112,7 @@ The URL to redirect to after a successful payment.
 
 | Question      | Answer                                                                  |
 | ------------- | ----------------------------------------------------------------------- |
-| Required      | Yes                                                                     |
+| Required      | No                                                                      |
 | Sample Value  | `https://example.com/success`                                           |
 | Documentation | [Stripe: Redirects](https://stripe.com/docs/payments/checkout/redirect) |
 
@@ -122,26 +122,6 @@ The URL to redirect to after a cancelled payment attempt.
 
 | Question      | Answer                                                                  |
 | ------------- | ----------------------------------------------------------------------- |
-| Required      | Yes                                                                     |
+| Required      | No                                                                      |
 | Sample Value  | `https://example.com/failure`                                           |
 | Documentation | [Stripe: Redirects](https://stripe.com/docs/payments/checkout/redirect) |
-
-### DATABASE_ID
-
-The ID for the database where subscriptions will be stored. If not provided, it defaults to "stripe-subscriptions".
-
-| Question      | Answer                                                    |
-| ------------- | --------------------------------------------------------- |
-| Required      | No                                                        |
-| Sample Value  | `stripe-subscriptions`                                    |
-| Documentation | [Appwrite: Databases](https://appwrite.io/docs/databases) |
-
-### COLLECTION_ID
-
-The ID for the collection within the database. If not provided, it defaults to "subscriptions".
-
-| Question      | Answer                                                        |
-| ------------- | ------------------------------------------------------------- |
-| Required      | No                                                            |
-| Sample Value  | `subscriptions`                                               |
-| Documentation | [Appwrite: Collections](https://appwrite.io/docs/collections) |

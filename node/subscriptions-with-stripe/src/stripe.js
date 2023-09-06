@@ -33,8 +33,8 @@ class StripeService {
       return await this.client.checkout.sessions.create({
         payment_method_types: ['card'],
         line_items: [lineItem],
-        success_url: process.env.SUCCESS_URL,
-        cancel_url: process.env.CANCEL_URL,
+        success_url: process.env.SUCCESS_URL ?? '/',
+        cancel_url: process.env.FAILURE_URL ?? '/',
         client_reference_id: userId,
         metadata: {
           userId,

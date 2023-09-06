@@ -18,13 +18,13 @@ export default async ({ req, res, log, error }) => {
       const userId = req.headers['x-appwrite-user-id'];
       if (!userId) {
         error('User ID not found in request.');
-        return res.redirect(process.env.FAILURE_URL, 303);
+        return res.redirect(process.env.FAILURE_URL ?? '/', 303);
       }
 
       const session = await stripe.checkoutSubscription(userId);
       if (!session) {
         error('Failed to create Stripe checkout session.');
-        return res.redirect(process.env.FAILURE_URL, 303);
+        return res.redirect(process.env.FAILURE_URL ?? '/', 303);
       }
 
       log(`Created Stripe checkout session for user ${userId}.`);
