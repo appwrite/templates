@@ -39,6 +39,9 @@ export default async (context) => {
         error('Failed to create Stripe checkout session.');
         return res.redirect(process.env.FAILURE_URL ?? fallbackUrl, 303);
       }
+      
+      context.log("Session:");
+      context.log(session);
 
       log(`Created Stripe checkout session for user ${userId}.`);
       return res.redirect(session.url, 303);
@@ -48,6 +51,9 @@ export default async (context) => {
       if (!event) {
         return res.json({ success: false }, 401);
       }
+
+      context.log("Event:");
+      context.log(event);
 
       if (event.type === 'customer.subscription.created') {
         const session = event.data.object;
