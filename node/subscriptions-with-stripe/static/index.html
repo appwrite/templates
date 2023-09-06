@@ -107,8 +107,8 @@
 
       async function subscribe() {
         const execution = await functions.createExecution('{{APPWRITE_FUNCTION_ID}}', '', false, '/subscribe', 'POST');
-        const url = execution.responseHeaders.find((header) => header.name === 'location');
-        window.location.replace(url);
+        const url = execution.responseHeaders.find((header) => header.name === 'location') ?? {};
+        window.location.replace(url.value ?? '/');
       }
 
       document.addEventListener('alpine:init', async () => {
