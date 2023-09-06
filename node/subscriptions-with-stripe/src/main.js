@@ -1,6 +1,6 @@
 import StripeService from './stripe.js';
 import AppwriteService from './appwrite.js';
-import { throwIfMissing } from './utils.js';
+import { getStaticFile, interpolate, throwIfMissing } from './utils.js';
 
 export default async ({ req, res, log, error }) => {
   throwIfMissing(process.env, [
