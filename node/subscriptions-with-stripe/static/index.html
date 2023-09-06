@@ -106,8 +106,23 @@
       const functions = new Functions(client);
 
       async function subscribe() {
-        const execution = await functions.createExecution('{{APPWRITE_FUNCTION_ID}}', '', false, '/subscribe', 'POST');
-        const url = execution.responseHeaders.find((header) => header.name === 'location') ?? {};
+        const execution = await functions.createExecution(
+          '{{APPWRITE_FUNCTION_ID}}',
+          JSON.stringify({
+            failureUrl: window.location.href,
+            successUrl: window.location.href,
+          }),
+          false,
+          '/subscribe',
+          'POST',
+          {
+            'Content-Type': 'application/json',
+          }
+        );
+        const url =
+          execution.responseHeaders.find(
+            (header) => header.name === 'location'
+          ) ?? {};
         window.location.replace(url.value ?? '/');
       }
 

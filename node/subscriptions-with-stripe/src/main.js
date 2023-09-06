@@ -28,16 +28,19 @@ export default async (context) => {
     case '/subscribe':
       const fallbackUrl = req.scheme + '://' + req.headers['host'] + '/';
 
+      const successUrl = req.body?.successUrl ?? fallbackUrl;
+      const failureUrl = req.body?.failureUrl ?? fallbackUrl;
+
       const userId = req.headers['x-appwrite-user-id'];
       if (!userId) {
         error('User ID not found in request.');
-        return res.redirect(process.env.FAILURE_URL ?? fallbackUrl, 303);
+        return res.redirect(failureUrl, 303);
       }
 
-      const session = await stripe.checkoutSubscription(context, userId, fallbackUrl);
+      const session = await stripe.checkoutSubscription(context, userId, successUrl, failureUrl);
       if (!session) {
         error('Failed to create Stripe checkout session.');
-        return res.redirect(process.env.FAILURE_URL ?? fallbackUrl, 303);
+        return res.redirect(failureUrl, 303);
       }
       
       context.log("Session:");

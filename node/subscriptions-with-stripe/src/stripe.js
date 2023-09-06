@@ -12,9 +12,10 @@ class StripeService {
 
   /**
    * @param {string} userId
-   * @param {string} fallbackUrl
+   * @param {string} successUrl
+   * @param {string} failureUrl
    */
-  async checkoutSubscription(context, userId, fallbackUrl) {
+  async checkoutSubscription(context, userId, successUrl, failureUrl) {
     /** @type {import('stripe').Stripe.Checkout.SessionCreateParams.LineItem} */
     const lineItem = {
       price_data: {
@@ -34,11 +35,13 @@ class StripeService {
       return await this.client.checkout.sessions.create({
         payment_method_types: ['card'],
         line_items: [lineItem],
-        success_url: process.env.SUCCESS_URL ?? fallbackUrl,
-        cancel_url: process.env.FAILURE_URL ?? fallbackUrl,
+        success_url: successUrl,
+        cancel_url: failureUrl,
         client_reference_id: userId,
-        metadata: {
-          userId,
+        subscription_data: {
+          metadata: {
+            userId,
+          },
         },
         mode: 'subscription',
       });

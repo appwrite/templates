@@ -6,8 +6,6 @@ declare global {
       APPWRITE_API_KEY: string;
       STRIPE_SECRET_KEY: string;
       STRIPE_WEBHOOK_SECRET: string;
-      SUCCESS_URL: string;
-      FAILURE_URL: string;
     }
   }
 }

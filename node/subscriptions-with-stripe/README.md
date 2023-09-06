@@ -13,6 +13,9 @@ This endpoint initiates a Stripe checkout session for a subscription. The user I
 | Name               | Description            | Location | Type   | Sample Value |
 | ------------------ | ---------------------- | -------- | ------ | ------------ |
 | x-appwrite-user-id | User ID from Appwrite. | Header   | String | 642...7cd    |
+| Content-Type       | The content type of the request body | Header   | `application/json` | N/A |
+| successUrl         | The URL to redirect to after a successful payment. | Body   | String | https://example.com/success    |
+| failureUrl         | The URL to redirect to after a cancelled payment attempt. | Body   | String | https://example.com/failure    |
 
 **Response**
 
@@ -105,23 +108,3 @@ Secret used to validate the Stripe Webhook signature.
 | Required      | Yes                                                  |
 | Sample Value  | `whsec_...`                                          |
 | Documentation | [Stripe: Webhooks](https://stripe.com/docs/webhooks) |
-
-### SUCCESS_URL
-
-The URL to redirect to after a successful payment.
-
-| Question      | Answer                                                                  |
-| ------------- | ----------------------------------------------------------------------- |
-| Required      | No                                                                      |
-| Sample Value  | `https://example.com/success`                                           |
-| Documentation | [Stripe: Redirects](https://stripe.com/docs/payments/checkout/redirect) |
-
-### FAILURE_URL
-
-The URL to redirect to after a cancelled payment attempt.
-
-| Question      | Answer                                                                  |
-| ------------- | ----------------------------------------------------------------------- |
-| Required      | No                                                                      |
-| Sample Value  | `https://example.com/failure`                                           |
-| Documentation | [Stripe: Redirects](https://stripe.com/docs/payments/checkout/redirect) |
