@@ -1,8 +1,6 @@
-import { Client, Databases } from 'node-appwrite';
+import { Client, Users } from 'node-appwrite';
 
-const Subscriptions = {
-  PREMIUM: 'premium',
-};
+const LabelsSubscriber = 'subscriber';
 
 class AppwriteService {
   constructor() {
@@ -14,122 +12,28 @@ class AppwriteService {
       .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
       .setKey(process.env.APPWRITE_API_KEY);
 
-    const databases = new Databases(client);
-    this.databases = databases;
-  }
-
-  /**
-   * @returns {Promise<boolean>}
-   */
-  async doesSubscribersDatabaseExist() {
-    try {
-      await this.databases.get(
-        process.env.DATABASE_ID ?? 'stripe-subscriptions'
-      );
-      return true;
-    } catch (err) {
-      if (err.code === 404) return false;
-      throw err;
-    }
-  }
-
-  async setupSubscribersDatabase() {
-    try {
-      await this.databases.create(
-        process.env.DATABASE_ID ?? 'stripe-subscriptions',
-        'Stripe Subscriptions'
-      );
-    } catch (err) {
-      // If resource already exists, we can ignore the error
-      if (err.code !== 409) throw err;
-    }
-    try {
-      await this.databases.createCollection(
-        process.env.DATABASE_ID ?? 'stripe-subscriptions',
-        process.env.COLLECTION_ID ?? 'subscriptions',
-        'Subscriptions'
-      );
-    } catch (err) {
-      if (err.code !== 409) throw err;
-    }
-
-    try {
-      await this.databases.createStringAttribute(
-        process.env.DATABASE_ID ?? 'stripe-subscriptions',
-        process.env.COLLECTION_ID ?? 'subscriptions',
-        'userId',
-        255,
-        true
-      );
-    } catch (err) {
-      if (err.code !== 409) throw err;
-    }
-    try {
-      await this.databases.createStringAttribute(
-        process.env.DATABASE_ID ?? 'stripe-subscriptions',
-        process.env.COLLECTION_ID ?? 'subscriptions',
-        'subscriptionType',
-        255,
-        true
-      );
-    } catch (err) {
-      if (err.code !== 409) throw err;
-    }
+    this.users = new Users(client);
   }
 
   /**
    * @param {string} userId
-   * @returns {Promise<boolean>}
-   */
-  async hasSubscription(userId) {
-    try {
-      await this.databases.getDocument(
-        process.env.DATABASE_ID ?? 'stripe-subscriptions',
-        process.env.COLLECTION_ID ?? 'subscriptions',
-        userId
-      );
-      return true;
-    } catch (err) {
-      if (err.code !== 404) throw err;
-      return false;
-    }
-  }
-
-  /**
-   * @param {string} userId
-   * @returns {Promise<boolean>}
+   * @returns {Promise<void>}
    */
   async deleteSubscription(userId) {
-    try {
-      await this.databases.deleteDocument(
-        process.env.DATABASE_ID ?? 'stripe-subscriptions',
-        process.env.COLLECTION_ID ?? 'subscriptions',
-        userId
-      );
-      return true;
-    } catch (err) {
-      return false;
-    }
+    const labels = (await this.users.get(userId)).labels.filter((label) => label !== LabelsSubscriber);
+
+    await this.users.updateLabels(userId, labels);
   }
 
   /**
    * @param {string} userId
-   * @returns {Promise<boolean>}
+   * @returns {Promise<void>}
    */
   async createSubscription(userId) {
-    try {
-      await this.databases.createDocument(
-        process.env.DATABASE_ID ?? 'stripe-subscriptions',
-        process.env.COLLECTION_ID ?? 'subscriptions',
-        userId,
-        {
-          subscriptionType: Subscriptions.PREMIUM,
-        }
-      );
-      return true;
-    } catch (err) {
-      return false;
-    }
+    const labels = (await this.users.get(userId)).labels;
+    labels.push(LabelsSubscriber);
+
+    await this.users.updateLabels(userId, labels);
   }
 }
 

@@ -7,7 +7,7 @@ declare global {
       STRIPE_SECRET_KEY: string;
       STRIPE_WEBHOOK_SECRET: string;
       SUCCESS_URL: string;
-      CANCEL_URL: string;
+      FAILURE_URL: string;
     }
   }
 }

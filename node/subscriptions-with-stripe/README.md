@@ -1,10 +1,10 @@
-# ⚡ Stripe Subscriptions Function
+# 💳 Node.js Stripe Subscriptions Function
 
 Integrates Stripe subscriptions into your Appwrite project. Collect card payment with the `/checkout` endpoint and check the status of a user subscription using the `Subscriptions` collection.
 
 ## 🧰 Usage
 
-### `POST /checkout`
+### `POST /subscribe`
 
 This endpoint initiates a Stripe checkout session for a subscription. The user ID is fetched from the headers of the request. If the user ID is not found or a Stripe checkout session could not be created, the request will be redirected to a cancel URL.
 
@@ -62,7 +62,6 @@ Sample `401` Response:
 | Runtime           | Node (18.0)     |
 | Entrypoint        | `src/main.js`   |
 | Build Commands    | `npm install`   |
-|                   | `npm run setup` |
 | Permissions       | `any`           |
 | Timeout (Seconds) | 15              |
 
@@ -117,14 +116,14 @@ The URL to redirect to after a successful payment.
 | Sample Value  | `https://example.com/success`                                           |
 | Documentation | [Stripe: Redirects](https://stripe.com/docs/payments/checkout/redirect) |
 
-### CANCEL_URL
+### FAILURE_URL
 
 The URL to redirect to after a cancelled payment attempt.
 
 | Question      | Answer                                                                  |
 | ------------- | ----------------------------------------------------------------------- |
 | Required      | Yes                                                                     |
-| Sample Value  | `https://example.com/cancel`                                            |
+| Sample Value  | `https://example.com/failure`                                           |
 | Documentation | [Stripe: Redirects](https://stripe.com/docs/payments/checkout/redirect) |
 
 ### DATABASE_ID

@@ -3,11 +3,11 @@
 import stripe from 'stripe';
 
 class StripeService {
-  constructor(env) {
+  constructor() {
     // Note: stripe cjs API types are faulty
     /** @type {import('stripe').Stripe} */
     // @ts-ignore
-    this.client = stripe(env.STRIPE_SECRET_KEY);
+    this.client = stripe(process.env.STRIPE_SECRET_KEY);
   }
 
   /**
@@ -17,13 +17,13 @@ class StripeService {
     /** @type {import('stripe').Stripe.Checkout.SessionCreateParams.LineItem} */
     const lineItem = {
       price_data: {
+        unit_amount: 1000, // $10.00
         currency: 'usd',
+        recurring: {
+          interval: 'month',
+        },
         product_data: {
           name: 'Premium Subscription',
-        },
-        unit_amount: 1000,
-        recurring: {
-          interval: 'year',
         },
       },
       quantity: 1,
@@ -52,7 +52,7 @@ class StripeService {
   validateWebhook(req) {
     try {
       const event = this.client.webhooks.constructEvent(
-        req.body,
+        req.bodyRaw,
         req.headers['stripe-signature'],
         process.env.STRIPE_WEBHOOK_SECRET
       );

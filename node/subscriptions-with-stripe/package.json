@@ -5,11 +5,10 @@
   "main": "src/main.js",
   "type": "module",
   "scripts": {
-    "setup": "node src/setup.js",
     "format": "prettier --write ."
   },
   "dependencies": {
-    "node-appwrite": "^9.0.0",
+    "node-appwrite": "^10.0.0",
     "stripe": "^12.12.0"
   },
   "devDependencies": {
