@@ -1,6 +1,6 @@
 # 💳 Node.js Stripe Subscriptions Function
 
-Integrates Stripe subscriptions into your Appwrite project. Collect card payment with the `/checkout` endpoint and check the status of a user subscription using the `Subscriptions` collection.
+Integrates Stripe subscriptions into your Appwrite project. Collect card payment with the `/subscribe` endpoint and check the status of a user subscription using the `Subscriptions` collection.
 
 ## 🧰 Usage
 
@@ -45,8 +45,8 @@ This endpoint is a webhook that handles two types of events from Stripe: `custom
 
 Sample `200` Response:
 
-In case of `customer.subscription.created` event, it creates a new subscription for the user.
-In case of `customer.subscription.deleted` event, it deletes the subscription for the user.
+In case of `customer.subscription.created` event, it gives user `subscriber` label.
+In case of `customer.subscription.deleted` event, it takes `subscriber` label away from user.
 
 ```json
 { "success": true }
@@ -67,6 +67,8 @@ Sample `401` Response:
 | Build Commands    | `npm install`   |
 | Permissions       | `any`           |
 | Timeout (Seconds) | 15              |
+
+> If using a demo web app to subscribe, make sure to add your function domain as a web platform to your Appwrite project. Doing this fixes CORS errors and allows proper functionality.
 
 ## 🔒 Environment Variables
 
