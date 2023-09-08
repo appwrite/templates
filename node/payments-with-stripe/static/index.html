@@ -57,7 +57,7 @@
               <div class="u-flex u-gap-16 u-cross-center">
                 <p class="heading-level-4">Orders</p>
                 <button
-                  class="button is-text is-only-icon"
+                  class="button is-secondary is-only-icon"
                   style="--button-size: 2.5rem"
                   x-on:click="$store.eshop.init()"
                 >
@@ -69,22 +69,43 @@
                 <p>Loading orders..</p>
               </template>
               <template x-if="$store.eshop.orders !== null">
-                <ul class="list">
-                  <template x-for="order in $store.eshop.orders">
-                    <li class="list-item">
-                      <span class="icon-check" aria-hidden="true"></span>
-                      <span class="text"
-                        >Order
-                        <code class="inline-code" x-text="order.orderId"></code>
-                        completed on
-                        <span
-                          class="u-bold"
-                          x-text="new Date(order.$createdAt).toLocaleString()"
-                        ></span
-                      ></span>
-                    </li>
-                  </template>
-                </ul>
+                <div>
+                  <ul class="list u-margin-block-start-16">
+                    <template x-for="order in $store.eshop.orders">
+                      <li class="list-item">
+                        <span class="icon-check" aria-hidden="true"></span>
+                        <span class="text"
+                          >Order
+                          <code
+                            class="inline-code"
+                            x-text="order.orderId"
+                          ></code>
+                          completed on
+                          <span
+                            class="u-bold"
+                            x-text="new Date(order.$createdAt).toLocaleString()"
+                          ></span
+                        ></span>
+                      </li>
+                    </template>
+                  </ul>
+                  <section
+                    class="alert is-standalone is-info u-margin-block-start-16"
+                  >
+                    <div class="alert-grid">
+                      <span class="icon-info" aria-hidden="true"></span>
+                      <div class="alert-content">
+                        <h6 class="alert-title">
+                          Payment processing can take some time.
+                        </h6>
+                        <p class="alert-message">
+                          If you paid and can't see new order, please wait a few
+                          minutes and refresh the page.
+                        </p>
+                      </div>
+                    </div>
+                  </section>
+                </div>
               </template>
 
               <div class="u-flex u-gap-16">
