@@ -11,12 +11,17 @@ export default async (context) => {
     'APPWRITE_API_KEY',
   ]);
 
+  const databaseId = process.env.APPWRITE_DATABASE_ID ?? 'orders';
+  const collectionId = process.env.APPWRITE_COLLECTION_ID ?? 'orders';
+
   if (req.method === 'GET') {
     const html = interpolate(getStaticFile('index.html'), {
       APPWRITE_ENDPOINT:
         process.env.APPWRITE_ENDPOINT ?? 'https://cloud.appwrite.io/v1',
       APPWRITE_FUNCTION_PROJECT_ID: process.env.APPWRITE_FUNCTION_PROJECT_ID,
       APPWRITE_FUNCTION_ID: process.env.APPWRITE_FUNCTION_ID,
+      APPWRITE_DATABASE_ID: databaseId,
+      APPWRITE_COLLECTION_ID: collectionId,
     });
 
     return res.send(html, 200, { 'Content-Type': 'text/html; charset=utf-8' });
@@ -68,9 +73,6 @@ export default async (context) => {
         const session = event.data.object;
         const userId = session.metadata.userId;
         const orderId = session.id;
-
-        const databaseId = process.env.APPWRITE_DATABASE_ID ?? 'orders';
-        const collectionId = process.env.APPWRITE_COLLECTION_ID ?? 'orders';
 
         await appwrite.createOrder(databaseId, collectionId, userId, orderId);
         log(

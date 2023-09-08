@@ -31,8 +31,6 @@ Location: https://checkout.stripe.com/pay/cs_test_...#fidkdWxOYHwnP
 Location: https://mywebapp.com/cancel
 ```
 
---- TODO: Update from here below
-
 ### `POST /webhook`
 
 This endpoint is a webhook that handles Stripe event `checkout.session.completed`. It validates the incoming request using the Stripe's validateWebhook method. If the validation fails, a `401` response is sent.
