@@ -20,7 +20,9 @@ class AppwriteService {
    * @returns {Promise<void>}
    */
   async deleteSubscription(userId) {
-    const labels = (await this.users.get(userId)).labels.filter((label) => label !== LabelsSubscriber);
+    const labels = (await this.users.get(userId)).labels.filter(
+      (label) => label !== LabelsSubscriber
+    );
 
     await this.users.updateLabels(userId, labels);
   }

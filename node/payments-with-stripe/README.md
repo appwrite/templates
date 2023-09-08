@@ -1,12 +1,12 @@
-# 💳 Node.js Stripe Subscriptions Function
+# 💳 Node.js Stripe Payments Function
 
-Integrates Stripe subscriptions into your Appwrite project. Collect card payment with the `/subscribe` endpoint and check the status of a user subscription using the `Subscriptions` collection.
+Integrates Stripe payments into your Appwrite project. Collect card payment with the `/checkout` endpoint, and create order document in Appwrite Database for every successful payment.
 
 ## 🧰 Usage
 
-### `POST /subscribe`
+### `POST /checkout`
 
-This endpoint initiates a Stripe checkout session for a subscription. The user ID is fetched from the headers of the request. If the user ID is not found or a Stripe checkout session could not be created, the request will be redirected to a cancel URL.
+This endpoint initiates a Stripe checkout session. The user ID is fetched from the headers of the request. If the user ID is not found or a Stripe checkout session could not be created, the request will be redirected to a cancel URL.
 
 **Parameters**
 
@@ -31,9 +31,11 @@ Location: https://checkout.stripe.com/pay/cs_test_...#fidkdWxOYHwnP
 Location: https://mywebapp.com/cancel
 ```
 
+--- TODO: Update from here below
+
 ### `POST /webhook`
 
-This endpoint is a webhook that handles two types of events from Stripe: `customer.subscription.created` and `customer.subscription.deleted`. It validates the incoming request using the Stripe's validateWebhook method. If the validation fails, a `401` response is sent.
+This endpoint is a webhook that handles Stripe event `checkout.session.completed`. It validates the incoming request using the Stripe's validateWebhook method. If the validation fails, a `401` response is sent.
 
 **Parameters**
 
@@ -45,8 +47,7 @@ This endpoint is a webhook that handles two types of events from Stripe: `custom
 
 Sample `200` Response:
 
-In case of `customer.subscription.created` event, it gives user `subscriber` label.
-In case of `customer.subscription.deleted` event, it takes `subscriber` label away from user.
+In case of `checkout.session.completed` event, document for the order is created in Appwrite Database.
 
 ```json
 { "success": true }
@@ -60,15 +61,15 @@ Sample `401` Response:
 
 ## ⚙️ Configuration
 
-| Setting           | Value         |
-| ----------------- | ------------- |
-| Runtime           | Node (18.0)   |
-| Entrypoint        | `src/main.js` |
-| Build Commands    | `npm install` |
-| Permissions       | `any`         |
-| Timeout (Seconds) | 15            |
+| Setting           | Value                          |
+| ----------------- | ------------------------------ |
+| Runtime           | Node (18.0)                    |
+| Entrypoint        | `src/main.js`                  |
+| Build Commands    | `npm install && npm run setup` |
+| Permissions       | `any`                          |
+| Timeout (Seconds) | 15                             |
 
-> If using a demo web app to subscribe, make sure to add your function domain as a web platform to your Appwrite project. Doing this fixes CORS errors and allows proper functionality.
+> If using a demo web app to create order, make sure to add your function domain as a web platform to your Appwrite project. Doing this fixes CORS errors and allows proper functionality.
 
 ## 🔒 Environment Variables
 
@@ -90,6 +91,24 @@ The endpoint where your Appwrite server is located. If not provided, it defaults
 | ------------ | ------------------------------ |
 | Required     | No                             |
 | Sample Value | `https://cloud.appwrite.io/v1` |
+
+### APPWRITE_DATABASE_ID
+
+The ID of the database to store the orders.
+
+| Question     | Answer |
+| ------------ | ------ |
+| Required     | No     |
+| Sample Value | `main` |
+
+### APPWRITE_COLLECTION_ID
+
+The ID of the collection to store the orders.
+
+| Question     | Answer   |
+| ------------ | -------- |
+| Required     | No       |
+| Sample Value | `orders` |
 
 ### STRIPE_SECRET_KEY
 

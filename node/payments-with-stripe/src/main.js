@@ -26,7 +26,7 @@ export default async (context) => {
   const stripe = new StripeService();
 
   switch (req.path) {
-    case '/subscribe':
+    case '/checkout':
       const fallbackUrl = req.scheme + '://' + req.headers['host'] + '/';
 
       const successUrl = req.body?.successUrl ?? fallbackUrl;
@@ -38,7 +38,7 @@ export default async (context) => {
         return res.redirect(failureUrl, 303);
       }
 
-      const session = await stripe.checkoutSubscription(
+      const session = await stripe.checkoutPayment(
         context,
         userId,
         successUrl,
@@ -64,21 +64,18 @@ export default async (context) => {
       context.log('Event:');
       context.log(event);
 
-      if (event.type === 'customer.subscription.created') {
+      if (event.type === 'checkout.session.completed') {
         const session = event.data.object;
         const userId = session.metadata.userId;
+        const orderId = session.id;
 
-        await appwrite.createSubscription(userId);
-        log(`Created subscription for user ${userId}`);
-        return res.json({ success: true });
-      }
+        const databaseId = process.env.APPWRITE_DATABASE_ID ?? 'orders';
+        const collectionId = process.env.APPWRITE_COLLECTION_ID ?? 'orders';
 
-      if (event.type === 'customer.subscription.deleted') {
-        const session = event.data.object;
-        const userId = session.metadata.userId;
-
-        await appwrite.deleteSubscription(userId);
-        log(`Deleted subscription for user ${userId}`);
+        await appwrite.createOrder(databaseId, collectionId, userId, orderId);
+        log(
+          `Created order document for user ${userId} with Stripe order ID ${orderId}`
+        );
         return res.json({ success: true });
       }
 
