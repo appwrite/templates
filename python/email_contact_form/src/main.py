@@ -63,7 +63,7 @@ def main(context):
     try:
         send_email(
             {
-                "from": os.getenv("SUBMIT_EMAIL"),
+                "from": os.getenv("SMTP_USERNAME"),
                 "to": os.getenv("SUBMIT_EMAIL"),
                 "subject": "New Contact Form Submission",
                 "text": template_form_message(form),
