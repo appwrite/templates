@@ -1,6 +1,6 @@
 # 💳 Node.js Stripe Payments Function
 
-Integrates Stripe payments into your Appwrite project. Collect card payment with the `/checkout` endpoint, and create order document in Appwrite Database for every successful payment.
+Receive card payments and store paid orders.
 
 ## 🧰 Usage
 

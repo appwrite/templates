@@ -1,6 +1,6 @@
 # 💳 Node.js Stripe Subscriptions Function
 
-Integrates Stripe subscriptions into your Appwrite project. Collect card payment with the `/subscribe` endpoint and check the status of a user subscription using the `Subscriptions` collection.
+Receive recurring card payments and grant subscribers extra permissions.
 
 ## 🧰 Usage
 
