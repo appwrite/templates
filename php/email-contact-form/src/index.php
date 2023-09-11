@@ -60,7 +60,7 @@ return function ($context) {
     try {
         send_email([
             'to' => $_ENV['SUBMIT_EMAIL'],
-            'from' => $form['email'],
+            'from' => $_ENV['SMTP_USERNAME'],
             'subject' => 'New form submission: ' . $context->req->headers['referer'],
             'text' => template_form_message($form),
         ]);

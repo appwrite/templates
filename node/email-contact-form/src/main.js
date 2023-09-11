@@ -62,7 +62,7 @@ export default async ({ req, res, log, error }) => {
   try {
     sendEmail({
       to: process.env.SUBMIT_EMAIL,
-      from: /** @type {string} */ (form['email']),
+      from: /** @type {string} */ (process.env.SMTP_USERNAME),
       subject: `New form submission: ${req.headers['referer']}`,
       text: templateFormMessage(form),
     });
