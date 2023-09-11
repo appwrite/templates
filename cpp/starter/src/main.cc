@@ -13,7 +13,7 @@ namespace runtime {
         context.log("Hello, Logs!");
 
         // If something goes wrong, log an error
-        context.log("Hello, Errors!");
+        context.error("Hello, Errors!");
 
         // The `req` object contains the request data
         if (context.req.method == "GET") {
