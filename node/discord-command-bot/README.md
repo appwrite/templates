@@ -53,10 +53,30 @@ Sample `401` Response:
 
 ### DISCORD_PUBLIC_KEY
 
-Discord Public Key to verify request signature.
+Public Key of your application in Discord Developer Portal.
 
 | Question      | Answer                                                                                                                 |
 | ------------- | ---------------------------------------------------------------------------------------------------------------------- |
 | Required      | Yes                                                                                                                    |
-| Sample Value  | `d1efb...aec35`                                                                                                        |
+| Sample Value  | `db9...980`                                                                                                        |
+| Documentation | [Discord Docs](https://discord.com/developers/docs/tutorials/hosting-on-cloudflare-workers#creating-an-app-on-discord) |
+
+### DISCORD_APPLICATION_ID
+
+ID of your application in Discord Developer Portal.
+
+| Question      | Answer                                                                                                                 |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| Required      | Yes                                                                                                                    |
+| Sample Value  | `427...169`                                                                                                        |
+| Documentation | [Discord Docs](https://discord.com/developers/docs/tutorials/hosting-on-cloudflare-workers#creating-an-app-on-discord) |
+
+### DISCORD_TOKEN
+
+Bot token of your application in Discord Developer Portal.
+
+| Question      | Answer                                                                                                                 |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| Required      | Yes                                                                                                                    |
+| Sample Value  | `NDI...LUfg`                                                                                                        |
 | Documentation | [Discord Docs](https://discord.com/developers/docs/tutorials/hosting-on-cloudflare-workers#creating-an-app-on-discord) |
