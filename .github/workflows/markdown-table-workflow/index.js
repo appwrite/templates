@@ -11,6 +11,7 @@ const verboseRuntimes = {
   kotlin: "Kotlin",
   node: "Node.js",
   "node-typescript": "Node.js (TypeScript)",
+  "bun": "Bun",
   php: "PHP",
   python: "Python",
   ruby: "Ruby",
