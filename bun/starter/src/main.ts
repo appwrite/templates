@@ -2,7 +2,7 @@ import { Client } from 'node-appwrite';
 
 // This is your Appwrite function
 // It's executed each time we get a request
-export default ({ req, res, log, error }: any) => {
+export default async ({ req, res, log, error }: any) => {
   // Why not try the Appwrite SDK?
   //
   // const client = new Client()
