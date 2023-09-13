@@ -1,0 +1,18 @@
+{
+  "name": "subscriptions-with-stripe",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/main.js",
+  "type": "module",
+  "scripts": {
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "node-appwrite": "^10.0.0",
+    "stripe": "^12.12.0"
+  },
+  "devDependencies": {
+    "prettier": "^3.0.0",
+    "stripe-event-types": "^2.3.0"
+  }
+}

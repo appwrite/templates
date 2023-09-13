@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stripe Payments Demo</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/@appwrite.io/pink" />
+    <link rel="stylesheet" href="https://unpkg.com/@appwrite.io/pink-icons" />
+
+    <script src="//unpkg.com/alpinejs" defer></script>
+  </head>
+  <body>
+    <main class="main-content">
+      <div class="top-cover u-padding-block-end-56">
+        <div class="container">
+          <div
+            class="u-flex u-gap-16 u-flex-justify-center u-margin-block-start-16"
+          >
+            <h1 class="heading-level-1">Stripe Payments Demo</h1>
+            <code class="u-un-break-text"></code>
+          </div>
+          <p
+            class="body-text-1 u-normal u-margin-block-start-8"
+            style="max-width: 50rem"
+          >
+            Use this demo to create Stripe payment. Once paid, document is
+            created in Appwrite Database. You can then use this to ship
+            packages, send PDF books, give access to video courses, or anything
+            else your business needs.
+          </p>
+        </div>
+      </div>
+      <div x-data="{}" class="container u-margin-block-start-negative-56">
+        <div class="card u-flex u-gap-24 u-flex-vertical">
+          <template x-if="$store.auth.user === null">
+            <p>Loading..</p>
+          </template>
+          <template x-if="$store.auth.user === false">
+            <div>
+              <p class="heading-level-4">Orders</p>
+              <p class="text u-margin-block-start-8">
+                Only registered users can create orders.
+              </p>
+
+              <button
+                x-on:click="$store.auth.register()"
+                class="button u-margin-block-start-16"
+              >
+                <span class="text">Register as anonymous</span>
+              </button>
+            </div>
+          </template>
+          <template x-if="$store.auth.user">
+            <div>
+              <div class="u-flex u-gap-16 u-cross-center">
+                <p class="heading-level-4">Orders</p>
+                <button
+                  class="button is-secondary is-only-icon"
+                  style="--button-size: 2.5rem"
+                  x-on:click="$store.eshop.init()"
+                >
+                  <span class="icon-refresh" aria-hidden="true"></span>
+                </button>
+              </div>
+
+              <template x-if="$store.eshop.orders === null">
+                <p>Loading orders..</p>
+              </template>
+              <template x-if="$store.eshop.orders !== null">
+                <div>
+                  <ul class="list u-margin-block-start-16">
+                    <template x-for="order in $store.eshop.orders">
+                      <li class="list-item">
+                        <span class="icon-check" aria-hidden="true"></span>
+                        <span class="text"
+                          >Order
+                          <code
+                            class="inline-code"
+                            x-text="order.orderId"
+                          ></code>
+                          completed on
+                          <span
+                            class="u-bold"
+                            x-text="new Date(order.$createdAt).toLocaleString()"
+                          ></span
+                        ></span>
+                      </li>
+                    </template>
+                  </ul>
+                  <section
+                    class="alert is-standalone is-info u-margin-block-start-16"
+                  >
+                    <div class="alert-grid">
+                      <span class="icon-info" aria-hidden="true"></span>
+                      <div class="alert-content">
+                        <h6 class="alert-title">
+                          Payment processing can take some time.
+                        </h6>
+                        <p class="alert-message">
+                          If you paid and can't see new order, please wait a few
+                          minutes and refresh the page.
+                        </p>
+                      </div>
+                    </div>
+                  </section>
+                </div>
+              </template>
+
+              <div class="u-flex u-gap-16">
+                <button
+                  x-on:click="order()"
+                  class="button u-margin-block-start-16"
+                >
+                  <span class="text">Create order with Stripe</span>
+                </button>
+
+                <button
+                  x-on:click="$store.auth.signOut()"
+                  class="button is-secondary u-margin-block-start-16"
+                >
+                  <span class="text">Sign out</span>
+                </button>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/appwrite@12.0.0"></script>
+    <script>
+      const { Client, Account, Functions, Databases } = Appwrite;
+      const client = new Client()
+        .setEndpoint('{{APPWRITE_ENDPOINT}}')
+        .setProject('{{APPWRITE_FUNCTION_PROJECT_ID}}');
+      const account = new Account(client);
+      const functions = new Functions(client);
+      const databases = new Databases(client);
+
+      async function order() {
+        const execution = await functions.createExecution(
+          '{{APPWRITE_FUNCTION_ID}}',
+          JSON.stringify({
+            failureUrl: window.location.href,
+            successUrl: window.location.href,
+          }),
+          false,
+          '/checkout',
+          'POST',
+          {
+            'Content-Type': 'application/json',
+          }
+        );
+        const url =
+          execution.responseHeaders.find(
+            (header) => header.name === 'location'
+          ) ?? {};
+        window.location.replace(url.value ?? '/');
+      }
+
+      document.addEventListener('alpine:init', async () => {
+        Alpine.store('auth', {
+          user: null, // null = loading, false = not logged in, object = logged in
+
+          async init() {
+            try {
+              this.user = await account.get();
+            } catch (err) {
+              console.warn(err);
+              this.user = false;
+            }
+          },
+
+          async register() {
+            await account.createAnonymousSession();
+            this.user = await account.get();
+          },
+          async signOut() {
+            await account.deleteSession('current');
+            this.user = false;
+          },
+        });
+
+        Alpine.store('eshop', {
+          orders: null, // null = loading, array = orders list
+
+          async init() {
+            this.orders = null;
+            try {
+              this.orders = (
+                await databases.listDocuments(
+                  '{{APPWRITE_DATABASE_ID}}',
+                  '{{APPWRITE_COLLECTION_ID}}'
+                )
+              ).documents;
+            } catch (err) {
+              console.warn(err);
+            }
+          },
+        });
+      });
+    </script>
+  </body>
+</html>

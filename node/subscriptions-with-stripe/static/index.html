@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stripe Subscriptions Demo</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/@appwrite.io/pink" />
+    <link rel="stylesheet" href="https://unpkg.com/@appwrite.io/pink-icons" />
+
+    <script src="//unpkg.com/alpinejs" defer></script>
+  </head>
+  <body>
+    <main class="main-content">
+      <div class="top-cover u-padding-block-end-56">
+        <div class="container">
+          <div
+            class="u-flex u-gap-16 u-flex-justify-center u-margin-block-start-16"
+          >
+            <h1 class="heading-level-1">Stripe Subscriptions Demo</h1>
+            <code class="u-un-break-text"></code>
+          </div>
+          <p
+            class="body-text-1 u-normal u-margin-block-start-8"
+            style="max-width: 50rem"
+          >
+            Use this demo to create Stripe subscription. Once subscribed, label
+            is added to an user. You can then use this to give permissions to
+            subscribers only.
+          </p>
+        </div>
+      </div>
+      <div x-data="{}" class="container u-margin-block-start-negative-56">
+        <div class="card u-flex u-gap-24 u-flex-vertical">
+          <template x-if="$store.auth.user === null">
+            <p>Loading..</p>
+          </template>
+          <template x-if="$store.auth.user === false">
+            <div>
+              <p class="heading-level-4">Subscription status</p>
+              <p class="text u-margin-block-start-8">
+                Only registered users can create subscriptions.
+              </p>
+
+              <button
+                x-on:click="$store.auth.register()"
+                class="button u-margin-block-start-16"
+              >
+                <span class="text">Register as anonymous</span>
+              </button>
+            </div>
+          </template>
+          <template x-if="$store.auth.user">
+            <div>
+              <p class="heading-level-4">Subscription status</p>
+
+              <div class="u-margin-block-start-8">
+                <template x-if="$store.auth.user.labels.includes('subscriber')">
+                  <div class="status is-complete">
+                    <span class="status-icon"></span>
+                    <span class="text">Subscribed</span>
+                  </div>
+                </template>
+                <template
+                  x-if="!$store.auth.user.labels.includes('subscriber')"
+                >
+                  <div>
+                    <div class="status is-failed">
+                      <span class="status-icon"></span>
+                      <span class="text">Not subscibed</span>
+                    </div>
+
+                    <section
+                      class="alert is-standalone is-info u-margin-block-start-16"
+                    >
+                      <div class="alert-grid">
+                        <span class="icon-info" aria-hidden="true"></span>
+                        <div class="alert-content">
+                          <h6 class="alert-title">
+                            Payment processing can take some time.
+                          </h6>
+                          <p class="alert-message">
+                            If you paid, please wait a few minutes and refresh
+                            the page.
+                          </p>
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </template>
+              </div>
+
+              <div class="u-flex u-gap-16">
+                <template
+                  x-if="!$store.auth.user.labels.includes('subscriber')"
+                >
+                  <button
+                    x-on:click="subscribe()"
+                    class="button u-margin-block-start-16"
+                  >
+                    <span class="text">Subscribe with Stripe</span>
+                  </button>
+                </template>
+
+                <button
+                  x-on:click="$store.auth.signOut()"
+                  class="button is-secondary u-margin-block-start-16"
+                >
+                  <span class="text">Sign out</span>
+                </button>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/appwrite@12.0.0"></script>
+    <script>
+      const { Client, Account, Functions } = Appwrite;
+      const client = new Client()
+        .setEndpoint('{{APPWRITE_ENDPOINT}}')
+        .setProject('{{APPWRITE_FUNCTION_PROJECT_ID}}');
+      const account = new Account(client);
+      const functions = new Functions(client);
+
+      async function subscribe() {
+        const execution = await functions.createExecution(
+          '{{APPWRITE_FUNCTION_ID}}',
+          JSON.stringify({
+            failureUrl: window.location.href,
+            successUrl: window.location.href,
+          }),
+          false,
+          '/subscribe',
+          'POST',
+          {
+            'Content-Type': 'application/json',
+          }
+        );
+        const url =
+          execution.responseHeaders.find(
+            (header) => header.name === 'location'
+          ) ?? {};
+        window.location.replace(url.value ?? '/');
+      }
+
+      document.addEventListener('alpine:init', async () => {
+        Alpine.store('auth', {
+          user: null, // null = loading, false = not logged in, object = logged in
+
+          async init() {
+            try {
+              this.user = await account.get();
+            } catch (err) {
+              console.warn(err);
+              this.user = false;
+            }
+          },
+
+          async register() {
+            await account.createAnonymousSession();
+            this.user = await account.get();
+          },
+          async signOut() {
+            await account.deleteSession('current');
+            this.user = false;
+          },
+        });
+      });
+    </script>
+  </body>
+</html>
