@@ -1,7 +1,7 @@
 {
     "name": "whatsapp-with-vonage",
     "version": "1.0.0",
-    "description": "Simple bot to answer WhatsApp messages",
+    "description": "Whatsapp bot with Vonage",
     "type": "module",
     "main": "dist/main.js",
     "scripts": {
