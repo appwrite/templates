@@ -9,7 +9,7 @@ type Context = {
   error: (msg: any) => void;
 };
 
-export default async ({ req, res, log } : Context) => {
+export default async ({ req, res, log }: Context) => {
   throwIfMissing(process.env, [
     'APPWRITE_API_KEY',
     'APPWRITE_DATABASE_ID',

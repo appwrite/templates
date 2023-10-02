@@ -58,11 +58,11 @@
     </main>
     <script>
       const meilisearch = new MeiliSearch({
-        host:'http://127.0.0.1:7700',
-        apiKey:'aSampleMasterKey',
+        host: '{{MEILISEARCH_ENDPOINT}}',
+        apiKey: '{{MEILISEARCH_SEARCH_API_KEY}}',
       });
 
-      const index = meilisearch.index('movies');
+      const index = meilisearch.index('{{MEILISEARCH_INDEX_NAME}}');
 
       window.onSearch = async function (prompt) {
         return (await index.search(prompt)).hits;
