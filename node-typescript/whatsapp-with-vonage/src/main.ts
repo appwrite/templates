@@ -40,7 +40,7 @@ export default async ({ req, res, log, error }: Context) => {
 
     /*
      * Compare SHA-256 hash of the request payload to the payload_hash field found in the JWT claims
-     * (verifies the request payload has not been tampered with)
+     * (verifies that the request payload has not been tampered with)
      */
     try {
         throwIfMissing(decoded, ['payload_hash']);

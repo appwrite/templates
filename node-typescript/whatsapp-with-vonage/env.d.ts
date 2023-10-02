@@ -11,10 +11,4 @@ declare global {
     }
 }
 
-declare module 'jsonwebtoken' {
-    export interface JwtPayload {
-        payload_hash: string;
-    }
-}
-
 export {};
