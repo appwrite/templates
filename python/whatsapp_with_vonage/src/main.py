@@ -18,9 +18,7 @@ def main(context):
         return context.res.send(
             get_static_file("index.html"),
             200,
-            {
-                "Content-Type": "text/html",
-            },
+            {"Content-Type": "text/html; charset=utf-8"},
         )
 
     body = context.req.body
