@@ -13,14 +13,14 @@ jobs:
 
     steps:
     - name: Prepare repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         ref: ${{ github.event.pull_request.base.ref }}
 
     - name: Prepare Node.js
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v3
       with:
-        node-version: "16"
+        node-version: 18
 
     - name: Prepare function
       run: |
@@ -28,7 +28,9 @@ jobs:
         npm install
 
     - name: Run function
-      run: cd .github/workflows/markdown-table-workflow && node index.js
+      run: | 
+        cd .github/workflows/markdown-table-workflow
+        node index.js
 
     - name: Push changes
       run: |
