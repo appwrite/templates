@@ -1,4 +1,4 @@
-# ⚡ Sync Appwrite to Meilisearch Function
+# ⚡ Node.js (TypeScript) Sync with Meilisearch Function
 
 Syncs documents in an Appwrite database collection to a Meilisearch index.
 
@@ -21,8 +21,8 @@ Sample `204` Response: No content.
 | Setting           | Value         |
 | ----------------- | ------------- |
 | Runtime           | Node (18.0)   |
-| Entrypoint        | `src/main.ts` |
-| Build Commands    | `npm install` |
+| Entrypoint        | `dist/main.js` |
+| Build Commands    | `npm install && npm build` |
 | Permissions       | `any`         |
 | Timeout (Seconds) | 15            |
 
