@@ -25,10 +25,6 @@ export default async ({ req, res, log, error }: Context) => {
         });
     }
 
-    /*
-     * Extract and verify the JWT token in the authorization header which is signed with your Vonage signature secret
-     * (verifies the authenticity of the request)
-     */
     const token: string = (req.headers.authorization ?? '').split(' ')[1];
     const decoded: string | JwtPayload = jwt.verify(
         token,
@@ -38,10 +34,6 @@ export default async ({ req, res, log, error }: Context) => {
         }
     );
 
-    /*
-     * Compare SHA-256 hash of the request payload to the payload_hash field found in the JWT claims
-     * (verifies that the request payload has not been tampered with)
-     */
     try {
         throwIfMissing(decoded, ['payload_hash']);
     } catch (err) {
@@ -53,7 +45,6 @@ export default async ({ req, res, log, error }: Context) => {
         return res.json({ ok: false, error: 'Payload hash mismatch.' }, 401);
     }
 
-    // Send a response message through Whatsapp
     try {
         throwIfMissing(req.body, ['from', 'text']);
     } catch (err) {
