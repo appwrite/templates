@@ -2,20 +2,12 @@ import { Client, Databases, Query } from 'node-appwrite';
 import { getStaticFile, interpolate, throwIfMissing } from './utils.js';
 import { MeiliSearch } from 'meilisearch';
 
-/**
- * Type definitions for request, response and error
- */
-
 type Context = {
   req: any;
   res: any;
   log: (msg: any) => void;
   error: (msg: any) => void;
 };
-
-/**
- * Throws an error if any of the given environment variables are missing.
- */
 
 export default async ({ req, res, log }: Context) => {
   throwIfMissing(process.env, [
