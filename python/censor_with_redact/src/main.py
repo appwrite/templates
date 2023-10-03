@@ -1,6 +1,6 @@
 import requests
 
-from utils import throw_if_missing, get_static_file
+from .utils import throw_if_missing, get_static_file
 
 
 def main(context):
