@@ -73,7 +73,7 @@ API Key to use the Vonage API.
 | Sample Value  | `62...97`                                                                                                                |
 | Documentation | [Vonage: Q&A](https://api.support.vonage.com/hc/en-us/articles/204014493-How-do-I-find-my-Voice-API-key-and-API-secret-) |
 
-### VONAGE_ACCOUNT_SECRET
+### VONAGE_API_SECRET
 
 Secret to use the Vonage API.
 
@@ -83,7 +83,7 @@ Secret to use the Vonage API.
 | Sample Value  | `Zjc...5PH`                                                                                                              |
 | Documentation | [Vonage: Q&A](https://api.support.vonage.com/hc/en-us/articles/204014493-How-do-I-find-my-Voice-API-key-and-API-secret-) |
 
-### VONAGE_SIGNATURE_SECRET
+### VONAGE_API_SIGNATURE_SECRET
 
 Secret to verify the webhooks sent by Vonage.
 
