@@ -1,19 +1,20 @@
 from .utils import get_static_file, throw_if_missing
-from os import environ
+import os
 from jwt import decode
 from requests import post
 
 
 def main(context):
     throw_if_missing(
-        dict(environ),
+        dict(os.environ),
         [
             "VONAGE_API_KEY",
-            "VONAGE_ACCOUNT_SECRET",
-            "VONAGE_SIGNATURE_SECRET",
+            "VONAGE_API_SECRET",
+            "VONAGE_API_SIGNATURE_SECRET",
             "VONAGE_WHATSAPP_NUMBER",
         ],
     )
+
     if context.req.method == "GET":
         return context.res.send(
             get_static_file("index.html"),
@@ -25,7 +26,7 @@ def main(context):
     headers = context.req.headers
     token = (headers["authorization"] or "").split(" ")[1]
     try:
-        decode(token, environ["VONAGE_SIGNATURE_SECRET"], ["HS256"])
+        decode(token, os.environ["VONAGE_API_SIGNATURE_SECRET"], ["HS256"])
     except Exception as e:
         return context.res.json({"ok": False, "error": "Invalid token!"}, 403)
 
@@ -40,7 +41,7 @@ def main(context):
     }
 
     data = {
-        "from": environ["VONAGE_WHATSAPP_NUMBER"],
+        "from": os.environ["VONAGE_WHATSAPP_NUMBER"],
         "to": body["from"],
         "message_type": "text",
         "text": f'you sent: {body["text"]}',
@@ -52,7 +53,7 @@ def main(context):
         url,
         headers=headers,
         json=data,
-        auth=(environ["VONAGE_API_KEY"], environ["VONAGE_ACCOUNT_SECRET"]),
+        auth=(os.environ["VONAGE_API_KEY"], os.environ["VONAGE_API_SECRET"]),
     )
 
     if response.ok:
