@@ -2,6 +2,7 @@ from .utils import get_static_file, throw_if_missing
 import os
 from jwt import decode
 from requests import post
+from hashlib import sha256
 
 
 def main(context):
@@ -25,14 +26,15 @@ def main(context):
     body = context.req.body
     headers = context.req.headers
     token = (headers["authorization"] or "").split(" ")[1]
-    try:
-        decode(token, os.environ["VONAGE_API_SIGNATURE_SECRET"], ["HS256"])
-    except Exception as e:
-        return context.res.json({"ok": False, "error": "Invalid token!"}, 403)
+
+    decoded = decode(token, os.environ["VONAGE_API_SIGNATURE_SECRET"], ["HS256"])
+
+    if sha256(context.req.bodyRaw).hexdigest() != decoded["payload_hash"]:
+        return context.res.json({"ok": False, "error": "Payload hash mismatch."}, 401)
 
     try:
         throw_if_missing(body, ["from", "text"])
-    except ValueError as e:
+    except Exception as e:
         return context.res.json({"ok": False, "error": e}, 400)
 
     headers = {
@@ -44,7 +46,7 @@ def main(context):
         "from": os.environ["VONAGE_WHATSAPP_NUMBER"],
         "to": body["from"],
         "message_type": "text",
-        "text": f'you sent: {body["text"]}',
+        "text": f'Hi there! You sent me: {body["text"]}',
         "channel": "whatsapp",
     }
 
@@ -58,7 +60,6 @@ def main(context):
 
     if response.ok:
         result = response.json()
-        context.log(result)
         return context.res.json({"ok": True})
     else:
         context.error(f"Error {response.text}")

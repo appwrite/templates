@@ -42,6 +42,16 @@ Sample `400` Response:
 }
 ```
 
+Sample `401` Response:
+
+```json
+{
+  "ok": false,
+  "error": "Payload hash mismatch."
+}
+```
+
+
 ## ⚙️ Configuration
 
 | Setting           | Value         |
