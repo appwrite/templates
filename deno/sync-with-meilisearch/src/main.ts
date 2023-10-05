@@ -1,11 +1,9 @@
-import { Client, Databases, Query } from 'https://deno.land/x/appwrite/mod.ts';
-import { getStaticFile, interpolate, throwIfMissing } from './utils.js';
-import { MeiliSearch } from "https://esm.sh/meilisearch";
-import { config as dotEnvConfig } from 'https://deno.land/x/dotenv@v1.0.1/mod.ts';
+import { Client, Databases, Query } from "https://deno.land/x/appwrite@9.0.0/mod.ts";
+import { getStaticFile, interpolate, throwIfMissing } from './utils.ts';
+import { MeiliSearch } from "https://esm.sh/meilisearch@0.35.0";
+import { serve } from "https://deno.land/std@0.154.0/http/server.ts";
 
-dotEnvConfig({ export: true });
-
-export default async ({ req, res, log }) => {
+const handler =  async (req : any, log : any) => {
   throwIfMissing(Deno.env.toObject(), [
     'APPWRITE_API_KEY',
     'APPWRITE_DATABASE_ID',
@@ -23,15 +21,15 @@ export default async ({ req, res, log }) => {
       MEILISEARCH_SEARCH_API_KEY: Deno.env.get('MEILISEARCH_SEARCH_API_KEY'),
     });
 
-    return res.send(html, 200, { 'Content-Type': 'text/html; charset=utf-8' });
+    return new Response(html,{ status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8' } });
   }
 
   const client = new Client()
     .setEndpoint(
       Deno.env.get('APPWRITE_ENDPOINT') ?? 'https://cloud.appwrite.io/v1'
     )
-    .setProject(Deno.env.get('APPWRITE_FUNCTION_PROJECT_ID'))
-    .setKey(Deno.env.get('APPWRITE_API_KEY'));
+    .setProject(Deno.env.get('APPWRITE_FUNCTION_PROJECT_ID') ?? '')
+    .setKey(Deno.env.get('APPWRITE_API_KEY') ?? '');
 
   const databases = new Databases(client);
 
@@ -52,8 +50,8 @@ export default async ({ req, res, log }) => {
     }
 
     const { documents } = await databases.listDocuments(
-      Deno.env.get('APPWRITE_DATABASE_ID'),
-      Deno.env.get('APPWRITE_COLLECTION_ID'),
+      Deno.env.get('APPWRITE_DATABASE_ID') ?? '',
+      Deno.env.get('APPWRITE_COLLECTION_ID') ?? '',
       queries
     );
 
@@ -71,6 +69,7 @@ export default async ({ req, res, log }) => {
 
   log('Sync finished.');
 
-  return res.send('Sync finished.', 200);
-};
+  return new Response('Sync finished.', {status: 200});
+}
 
+serve(handler);
