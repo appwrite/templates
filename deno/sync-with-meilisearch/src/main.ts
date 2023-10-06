@@ -1,44 +1,49 @@
-import { Client, Databases, Query } from "https://deno.land/x/appwrite@9.0.0/mod.ts";
-import { getStaticFile, interpolate, throwIfMissing } from './utils.ts';
+import {
+  Client,
+  Databases,
+  Query,
+} from "https://deno.land/x/appwrite@9.0.0/mod.ts";
+import { getStaticFile, interpolate, throwIfMissing } from "./utils.ts";
 import { MeiliSearch } from "https://esm.sh/meilisearch@0.35.0";
-import { serve } from "https://deno.land/std@0.154.0/http/server.ts";
 
-const handler =  async (req : any, log : any) => {
+export default async ({ req, res, log, error }: any) => {
   throwIfMissing(Deno.env.toObject(), [
-    'APPWRITE_API_KEY',
-    'APPWRITE_DATABASE_ID',
-    'APPWRITE_COLLECTION_ID',
-    'MEILISEARCH_ENDPOINT',
-    'MEILISEARCH_INDEX_NAME',
-    'MEILISEARCH_ADMIN_API_KEY',
-    'MEILISEARCH_SEARCH_API_KEY',
+    "APPWRITE_API_KEY",
+    "APPWRITE_DATABASE_ID",
+    "APPWRITE_COLLECTION_ID",
+    "MEILISEARCH_ENDPOINT",
+    "MEILISEARCH_INDEX_NAME",
+    "MEILISEARCH_ADMIN_API_KEY",
+    "MEILISEARCH_SEARCH_API_KEY",
   ]);
 
-  if (req.method === 'GET') {
-    const html = interpolate(await getStaticFile('index.html'), {
-      MEILISEARCH_ENDPOINT: Deno.env.get('MEILISEARCH_ENDPOINT'),
-      MEILISEARCH_INDEX_NAME: Deno.env.get('MEILISEARCH_INDEX_NAME'),
-      MEILISEARCH_SEARCH_API_KEY: Deno.env.get('MEILISEARCH_SEARCH_API_KEY'),
+  if (req.method === "GET") {
+    const html = interpolate(await getStaticFile("index.html"), {
+      MEILISEARCH_ENDPOINT: Deno.env.get("MEILISEARCH_ENDPOINT"),
+      MEILISEARCH_INDEX_NAME: Deno.env.get("MEILISEARCH_INDEX_NAME"),
+      MEILISEARCH_SEARCH_API_KEY: Deno.env.get("MEILISEARCH_SEARCH_API_KEY"),
     });
 
-    return new Response(html,{ status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8' } });
+    return new res.send(html, 200, {
+      "Content-Type": "text/html; charset=utf-8",
+    });
   }
 
   const client = new Client()
     .setEndpoint(
-      Deno.env.get('APPWRITE_ENDPOINT') ?? 'https://cloud.appwrite.io/v1'
+      Deno.env.get("APPWRITE_ENDPOINT") ?? "https://cloud.appwrite.io/v1",
     )
-    .setProject(Deno.env.get('APPWRITE_FUNCTION_PROJECT_ID') ?? '')
-    .setKey(Deno.env.get('APPWRITE_API_KEY') ?? '');
+    .setProject(Deno.env.get("APPWRITE_FUNCTION_PROJECT_ID") ?? "")
+    .setKey(Deno.env.get("APPWRITE_API_KEY") ?? "");
 
   const databases = new Databases(client);
 
   const meilisearch = new MeiliSearch({
-    host: Deno.env.get('MEILISEARCH_ENDPOINT'),
-    apiKey: Deno.env.get('MEILISEARCH_ADMIN_API_KEY'),
+    host: Deno.env.get("MEILISEARCH_ENDPOINT") ?? "",
+    apiKey: Deno.env.get("MEILISEARCH_ADMIN_API_KEY") ?? "",
   });
 
-  const index = meilisearch.index(Deno.env.get('MEILISEARCH_INDEX_NAME'));
+  const index = meilisearch.index(Deno.env.get("MEILISEARCH_INDEX_NAME") ?? "");
 
   let cursor = null;
 
@@ -50,9 +55,9 @@ const handler =  async (req : any, log : any) => {
     }
 
     const { documents } = await databases.listDocuments(
-      Deno.env.get('APPWRITE_DATABASE_ID') ?? '',
-      Deno.env.get('APPWRITE_COLLECTION_ID') ?? '',
-      queries
+      Deno.env.get("APPWRITE_DATABASE_ID") ?? "",
+      Deno.env.get("APPWRITE_COLLECTION_ID") ?? "",
+      queries,
     );
 
     if (documents.length > 0) {
@@ -64,12 +69,10 @@ const handler =  async (req : any, log : any) => {
     }
 
     log(`Syncing chunk of ${documents.length} documents ...`);
-    await index.addDocuments(documents, { primaryKey: '$id' });
+    await index.addDocuments(documents, { primaryKey: "$id" });
   } while (cursor !== null);
 
-  log('Sync finished.');
+  log("Sync finished.");
 
-  return new Response('Sync finished.', {status: 200});
-}
-
-serve(handler);
+  return res.send("Sync finished.", 200);
+};

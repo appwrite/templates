@@ -9,24 +9,21 @@ export function throwIfMissing(obj: any, keys: string[]) {
     }
   }
   if (missing.length > 0) {
-    throw new Error(`Missing required fields: ${missing.join(', ')}`);
+    throw new Error(`Missing required fields: ${missing.join(", ")}`);
   }
 }
 
 /**
  * Returns the contents of a file in the static folder
  */
-export async function getStaticFile(fileName: string): Promise<string> {
-    const staticFolder = "../static/"
-    const filePath = new URL(fileName, `${import.meta.url}/../${staticFolder}`);
-    try {
-        const data = await Deno.readFile(filePath);
-        return new TextDecoder().decode(data);
-    } catch (error) {
-        throw new Error(`Error reading file: ${error.message}`);
-    }
+export function getStaticFile(fileName: string): string {
+  return Deno.readTextFileSync(
+    new URL(import.meta.resolve(`../static/${fileName}`)),
+  );
 }
-
-export function interpolate(template: string, values: Record<string, string | undefined>) : string {
-  return template.replace(/{{([^}]+)}}/g, (_, key) => values[key] || '');
+export function interpolate(
+  template: string,
+  values: Record<string, string | undefined>,
+): string {
+  return template.replace(/{{([^}]+)}}/g, (_, key) => values[key] || "");
 }
