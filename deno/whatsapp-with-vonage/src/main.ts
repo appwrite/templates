@@ -1,10 +1,7 @@
 import { crypto } from "https://deno.land/std@0.203.0/crypto/mod.ts";
 import { encodeHex } from "https://deno.land/std@0.203.0/encoding/hex.ts";
 
-import {
-    jwtVerify,
-    JWTVerifyResult,
-} from "https://deno.land/x/jose@v4.15.2/index.ts";
+import { jwtVerify } from "https://deno.land/x/jose@v4.15.2/index.ts";
 
 import { throwIfMissing, getStaticFile } from "./utils.ts";
 
@@ -33,7 +30,7 @@ export default async ({ req, res, log, error }: Context) => {
     const secret: Uint8Array = new TextEncoder().encode(
         Deno.env.get("VONAGE_SIGNATURE_SECRET")
     );
-    const { payload }: JWTVerifyResult = await jwtVerify(token, secret, {
+    const { payload } = await jwtVerify(token, secret, {
         algorithms: ["HS256"],
     });
 
