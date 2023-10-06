@@ -1,8 +1,6 @@
 import { crypto } from "https://deno.land/std@0.203.0/crypto/mod.ts";
 import { encodeHex } from "https://deno.land/std@0.203.0/encoding/hex.ts";
-
 import { jwtVerify } from "https://deno.land/x/jose@v4.15.2/index.ts";
-
 import { throwIfMissing, getStaticFile } from "./utils.ts";
 
 type Context = {
@@ -15,8 +13,8 @@ type Context = {
 export default async ({ req, res, log, error }: Context) => {
     throwIfMissing(Deno.env.toObject(), [
         "VONAGE_API_KEY",
-        "VONAGE_ACCOUNT_SECRET",
-        "VONAGE_SIGNATURE_SECRET",
+        "VONAGE_API_SECRET",
+        "VONAGE_API_SIGNATURE_SECRET",
         "VONAGE_WHATSAPP_NUMBER",
     ]);
 
@@ -28,7 +26,7 @@ export default async ({ req, res, log, error }: Context) => {
 
     const token: string = (req.headers.authorization ?? "").split(" ")[1];
     const secret: Uint8Array = new TextEncoder().encode(
-        Deno.env.get("VONAGE_SIGNATURE_SECRET")
+        Deno.env.get("VONAGE_API_SIGNATURE_SECRET")
     );
     const { payload } = await jwtVerify(token, secret, {
         algorithms: ["HS256"],
@@ -37,8 +35,7 @@ export default async ({ req, res, log, error }: Context) => {
     try {
         throwIfMissing(payload, ["payload_hash"]);
     } catch (err) {
-        if (err instanceof Error)
-            return res.json({ ok: false, error: err.message }, 400);
+        return res.json({ ok: false, error: err.message }, 400);
     }
 
     const hash = crypto.subtle.digestSync(
@@ -53,14 +50,11 @@ export default async ({ req, res, log, error }: Context) => {
     try {
         throwIfMissing(req.body, ["from", "text"]);
     } catch (err) {
-        if (err instanceof Error)
-            return res.json({ ok: false, error: err.message }, 400);
+        return res.json({ ok: false, error: err.message }, 400);
     }
 
     const basicAuthToken: string = btoa(
-        `${Deno.env.get("VONAGE_API_KEY")}:${Deno.env.get(
-            "VONAGE_ACCOUNT_SECRET"
-        )}`
+        `${Deno.env.get("VONAGE_API_KEY")}:${Deno.env.get("VONAGE_API_SECRET")}`
     );
 
     await fetch(`https://messages-sandbox.nexmo.com/v1/messages`, {
