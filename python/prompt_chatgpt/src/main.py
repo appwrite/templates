@@ -11,7 +11,7 @@ def main(context):
             get_static_file("index.html"),
             200,
             {
-                "Content-Type": "text/html; charset=utf-8",
+                "content-type": "text/html; charset=utf-8"
             },
         )
 
