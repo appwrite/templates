@@ -1,14 +1,8 @@
 import { Env } from 'bun';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
-// import { fileURLToPath } from 'url';
 
-/**
- * Throws an error if any of the keys are missing from the object
- * @param {*} obj
- * @param {string[]} keys
- * @throws {Error}
- */
+// Throws an error if any of the keys are missing from the object
 export function throwIfMissing(obj: Env, keys: string[]) {
   const missing = [];
   for (let key of keys) {
@@ -25,20 +19,12 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const staticFolder = join(__dirname, '../static');
 
-/**
- * Returns the contents of a file in the static folder
- * @param {string} fileName
- * @returns {Promise<string>} Contents of static/{fileName}
- */
+//  Returns the contents of a file in the static folder
 export async function getStaticFile(fileName: string): Promise<string> {
   return await Bun.file(join(staticFolder, fileName)).text();
 }
 
-/**
- * @param {string} template
- * @param {Record<string, string | undefined>} values
- * @returns {string}
- */
+// Inserts the values into the template
 export function interpolate(template: string, values: Record<string, string | undefined>): string {
   return template.replace(/{{([^}]+)}}/g, (_, key) => values[key] || '');
 }

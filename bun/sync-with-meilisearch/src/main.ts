@@ -3,7 +3,7 @@ import { getStaticFile, interpolate, throwIfMissing } from './utils';
 import { MeiliSearch } from 'meilisearch';
 
 export default async ({ req, res, log }) => {
-  throwIfMissing(process.env, [
+  throwIfMissing(Bun.env, [
     'APPWRITE_API_KEY',
     'APPWRITE_DATABASE_ID',
     'APPWRITE_COLLECTION_ID',
