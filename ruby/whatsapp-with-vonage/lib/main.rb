@@ -2,7 +2,6 @@ require 'jwt'
 require 'httparty'
 require 'json'
 require 'digest/sha2'
-require 'dotenv/load'
 require_relative 'utils'
 
 def main(context)
