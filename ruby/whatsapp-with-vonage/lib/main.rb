@@ -57,7 +57,7 @@ def main(context)
   response = HTTParty.post(
     url,
     headers: headers,
-    body: data.to_json,
+    body: data,
     basic_auth: { username: ENV["VONAGE_API_KEY"], password: ENV["VONAGE_API_SECRET"] }
   )
 
@@ -68,4 +68,3 @@ def main(context)
     return context.res.json({ "ok" => false }, 500)
   end
 end
-
