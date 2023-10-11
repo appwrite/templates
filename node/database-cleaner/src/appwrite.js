@@ -22,7 +22,7 @@ class AppwriteService {
     const queries = [Query.orderAsc('$createdAt')];
     let done = false;
 
-    while (!done) {
+    while (true) {
       const documents = await this.databases.listDocuments(
         databaseId,
         collectionId,
@@ -51,6 +51,10 @@ class AppwriteService {
           done = true;
           break;
         }
+      }
+
+      if (done) {
+        break;
       }
     }
   }
