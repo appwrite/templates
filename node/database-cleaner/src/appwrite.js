@@ -29,6 +29,10 @@ class AppwriteService {
         queries
       );
 
+      if (documents.documents.length === 0) {
+        break;
+      }
+
       for (const document of documents.documents) {
         const retention = process.env.RETENTION_PERIOD_DAYS ?? 30;
         const expirationDate = new Date(document.$createdAt);
