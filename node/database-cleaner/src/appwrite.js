@@ -19,7 +19,7 @@ class AppwriteService {
    * @returns {Promise<void>}
    */
   async cleanCollection(databaseId, collectionId) {
-    const queries = [Query.orderAsc('$createdAt')];
+    const queries = [Query.orderAsc('$createdAt'), Query.limit(1)];
     let done = false;
 
     while (true) {
