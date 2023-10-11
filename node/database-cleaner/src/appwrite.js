@@ -49,6 +49,7 @@ class AppwriteService {
           }
         } else {
           done = true;
+          break;
         }
       }
     }
