@@ -16,11 +16,12 @@ class AppwriteService {
   /**
    * @param {string} databaseId
    * @param {string} collectionId
-   * @returns {Promise<void>}
+   * @returns {Promise<number>}
    */
   async cleanCollection(databaseId, collectionId) {
     const queries = [Query.orderAsc('$createdAt'), Query.limit(1)];
     let done = false;
+    let cleanedCount = 0;
 
     while (true) {
       const documents = await this.databases.listDocuments(
@@ -49,6 +50,8 @@ class AppwriteService {
           } catch (err) {
             throw new Error(err.message);
           }
+
+          cleanedCount++;
         } else {
           done = true;
           break;
@@ -59,6 +62,8 @@ class AppwriteService {
         break;
       }
     }
+
+    return cleanedCount;
   }
 }
 
