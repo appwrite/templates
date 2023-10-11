@@ -20,7 +20,7 @@ Sample `204` Response: No content.
 
 | Setting           | Value         |
 | ----------------- | ------------- |
-| Runtime           | Bun (1.35)   |
+| Runtime           | Deno (1.35)   |
 | Entrypoint        | `src/main.ts` |
 | Build Commands    | `deno cache src/main.ts` |
 | Permissions       | `any`         |

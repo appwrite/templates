@@ -21,6 +21,10 @@ export function getStaticFile(fileName: string): string {
     new URL(import.meta.resolve(`../static/${fileName}`)),
   );
 }
+
+/**
+ * Returns the template with the values interpolated.
+ */
 export function interpolate(
   template: string,
   values: Record<string, string | undefined>,
