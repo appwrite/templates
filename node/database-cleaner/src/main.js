@@ -1,4 +1,4 @@
-import AppwriteService from './appwrite';
+import AppwriteService from './appwrite.js';
 
 export default async ({ req, res, log, error }) => {
   const appwrite = new AppwriteService();
