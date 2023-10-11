@@ -47,6 +47,8 @@ class AppwriteService {
           } catch (err) {
             throw new Error(err.message);
           }
+        } else {
+          done = true;
         }
       }
     }
