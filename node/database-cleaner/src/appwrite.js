@@ -39,8 +39,6 @@ class AppwriteService {
         expirationDate.setDate(expirationDate.getDate() + retention);
         const today = new Date();
 
-        console.log(`Expiration date: ${expirationDate}`);
-
         if (expirationDate < today) {
           try {
             await this.databases.deleteDocument(
