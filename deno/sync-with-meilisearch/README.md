@@ -20,9 +20,9 @@ Sample `204` Response: No content.
 
 | Setting           | Value         |
 | ----------------- | ------------- |
-| Runtime           | Node (18.0)   |
-| Entrypoint        | `src/main.js` |
-| Build Commands    | `npm install` |
+| Runtime           | Bun (1.35)   |
+| Entrypoint        | `src/main.ts` |
+| Build Commands    | `deno cache src/main.ts` |
 | Permissions       | `any`         |
 | Timeout (Seconds) | 15            |
 
