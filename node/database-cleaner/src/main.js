@@ -6,7 +6,7 @@ export default async ({ req, res, log, error }) => {
   const databaseId = process.env.APPWRITE_DATABASE_ID;
   const collectionId = process.env.APPWRITE_COLLECTION_ID;
 
-  appwrite.cleanCollection(databaseId, collectionId);
+  await appwrite.cleanCollection(databaseId, collectionId);
 
   // `res.json()` is a handy helper for sending JSON
   return res.json({
