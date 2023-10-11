@@ -31,9 +31,8 @@ class AppwriteService {
 
       for (const document of documents.documents) {
         const retention = process.env.RETENTION_PERIOD_DAYS ?? 30;
-        const expirationDate = new Date(
-          document.$createdAt.getTime() + retention * 24 * 60 * 60 * 1000
-        );
+        const expirationDate = new Date(document.$createdAt);
+        expirationDate.setDate(expirationDate.getDate() + retention);
         const today = new Date();
 
         console.log(`Expiration date: ${expirationDate}`);
