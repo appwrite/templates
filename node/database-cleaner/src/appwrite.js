@@ -15,13 +15,42 @@ class AppwriteService {
 
   /**
    * @param {string} databaseId
+   * @returns {Promise<Models.CollectionList>}
+   */
+  async listAllCollections(databaseId) {
+    const totalCollections = [];
+
+    while (true) {
+      const collections = await this.databases.listCollections(databaseId);
+
+      totalCollections.push(...collections.collections);
+
+      if (totalCollections.length === collections.total) {
+        break;
+      }
+    }
+
+    return totalCollections;
+  }
+
+  /**
+   * @param {string} databaseId
+   */
+  async cleanAllCollections(databaseId) {
+    const collections = await this.listAllCollections(databaseId);
+
+    for (const collection of collections) {
+      await this.cleanCollection(databaseId, collection.$id);
+    }
+  }
+
+  /**
+   * @param {string} databaseId
    * @param {string} collectionId
-   * @returns {Promise<number>}
    */
   async cleanCollection(databaseId, collectionId) {
     const queries = [Query.orderAsc('$createdAt'), Query.limit(1)];
     let done = false;
-    let cleanedCount = 0;
 
     while (true) {
       const documents = await this.databases.listDocuments(
@@ -50,8 +79,6 @@ class AppwriteService {
           } catch (err) {
             throw new Error(err.message);
           }
-
-          cleanedCount++;
         } else {
           done = true;
           break;
@@ -62,8 +89,6 @@ class AppwriteService {
         break;
       }
     }
-
-    return cleanedCount;
   }
 }
 
