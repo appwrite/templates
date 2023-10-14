@@ -11,5 +11,5 @@ export default async ({ req, res, log, error }) => {
     error(err.message);
   }
 
-  return res.empty();
+  return res.send('Cleaning finished.', 200);
 };

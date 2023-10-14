@@ -4,11 +4,13 @@ Deletes documents in a database after a specified retention period.
 
 ## 🧰 Usage
 
-### SCHEDULE
+### GET /
+
+- Deletes all documents within a database that are older than the retention period.
 
 **Response**
 
-Sample `204` Response: No content.
+Sample `200` Response: Cleaning Finished.
 
 ## ⚙️ Configuration
 
