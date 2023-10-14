@@ -52,6 +52,7 @@ class AppwriteService {
     const collections = await this.listAllCollections(databaseId);
 
     for (const collection of collections) {
+      console.log(collection.$id);
       await this.cleanCollection(databaseId, collection.$id);
     }
   }
