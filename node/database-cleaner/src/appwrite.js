@@ -21,20 +21,18 @@ class AppwriteService {
     const totalCollections = [];
     const queries = [Query.limit(1), Query.orderAsc('$id')];
 
-    let lastCollectionId = null;
-
     while (true) {
-      if (lastCollectionId) {
-        queries = [...queries, Query.cursorAfter(lastCollectionId)];
-      }
-
       const collections = await this.databases.listCollections(
         databaseId,
         queries
       );
 
-      lastCollectionId =
+      const lastCollectionId =
         collections.collections[collections.collections.length - 1].$id;
+
+      queries.push(Query.cursorAfter(lastCollectionId));
+
+      console.log(queries);
 
       totalCollections.push(...collections.collections);
 
