@@ -30,7 +30,12 @@ class AppwriteService {
       const lastCollectionId =
         collections.collections[collections.collections.length - 1].$id;
 
+      console.log(queries);
+
       const cursorPos = queries.findIndex((x) => x.includes('cursorAfter'));
+
+      console.log(cursorPos);
+
       queries.splice(cursorPos, 1);
       queries.push(Query.cursorAfter(lastCollectionId));
 
