@@ -37,12 +37,16 @@ class AppwriteService {
         queries.push(Query.cursorAfter(lastCollectionId));
       }
 
+      console.log(queries);
+
       totalCollections.push(...collections.collections);
 
       if (totalCollections.length === collections.total) {
         break;
       }
     }
+
+    console.log(totalCollections);
 
     return totalCollections;
   }
