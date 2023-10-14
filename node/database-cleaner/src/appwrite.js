@@ -35,7 +35,7 @@ class AppwriteService {
       lastCollectionId =
         collections.collections[collections.collections.length - 1].$id;
 
-      totalCollections.push(...collections.collections);
+      totalCollections.push(...collections.collections.$id);
 
       if (totalCollections.length === collections.total) {
         break;
@@ -52,7 +52,7 @@ class AppwriteService {
     const collections = await this.listAllCollections(databaseId);
 
     for (const collection of collections) {
-      await this.cleanCollection(databaseId, collection.$id);
+      await this.cleanCollection(databaseId, collection);
     }
   }
 
