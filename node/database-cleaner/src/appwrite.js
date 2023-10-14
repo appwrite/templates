@@ -42,8 +42,6 @@ class AppwriteService {
       }
     }
 
-    console.log(totalCollections);
-
     return totalCollections;
   }
 
@@ -72,6 +70,8 @@ class AppwriteService {
         collectionId,
         queries
       );
+
+      console.log(documents);
 
       if (documents.documents.length === 0) {
         break;
