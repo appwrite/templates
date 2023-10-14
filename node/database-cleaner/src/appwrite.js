@@ -42,6 +42,8 @@ class AppwriteService {
       }
     }
 
+    console.log(totalCollections);
+
     return totalCollections;
   }
 
