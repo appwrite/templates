@@ -34,10 +34,9 @@ class AppwriteService {
 
       if (cursorPos !== -1) {
         queries.splice(cursorPos, 1);
-        queries.push(Query.cursorAfter(lastCollectionId));
       }
 
-      console.log(queries);
+      queries.push(Query.cursorAfter(lastCollectionId));
 
       totalCollections.push(...collections.collections);
 
@@ -45,8 +44,6 @@ class AppwriteService {
         break;
       }
     }
-
-    console.log(totalCollections);
 
     return totalCollections;
   }
