@@ -22,16 +22,16 @@ class AppwriteService {
     const queries = [Query.limit(1), Query.orderAsc('$id')];
 
     let lastCollectionId = null;
-    if (lastCollectionId) {
-      queries = [...queries, Query.cursorAfter(lastCollectionId)];
-    }
 
     while (true) {
+      if (lastCollectionId) {
+        queries = [...queries, Query.cursorAfter(lastCollectionId)];
+      }
+
       const collections = await this.databases.listCollections(
         databaseId,
         queries
       );
-      console.log(collections.collections);
 
       lastCollectionId =
         collections.collections[collections.collections.length - 1].$id;
@@ -43,8 +43,6 @@ class AppwriteService {
       }
     }
 
-    console.log(totalCollections);
-
     return totalCollections;
   }
 
@@ -55,7 +53,6 @@ class AppwriteService {
     const collections = await this.listAllCollections(databaseId);
 
     for (const collection of collections) {
-      console.log(collection.$id);
       await this.cleanCollection(databaseId, collection.$id);
     }
   }
@@ -74,8 +71,6 @@ class AppwriteService {
         collectionId,
         queries
       );
-
-      console.log(documents);
 
       if (documents.documents.length === 0) {
         break;
