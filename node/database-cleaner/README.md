@@ -1,42 +1,19 @@
 # ⚡ Node.js Starter Function
 
-A simple starter function. Edit `src/main.js` to get started and create something awesome! 🚀
+Deletes documents in a database after a specified retention period.
 
 ## 🧰 Usage
 
-### GET /
-
-- Returns a "Hello, World!" message.
+### SCHEDULE
 
 **Response**
 
-Sample `200` Response:
-
-```text
-Hello, World!
-```
-
-### POST, PUT, PATCH, DELETE /
-
-- Returns a "Learn More" JSON response.
-
-**Response**
-
-Sample `200` Response:
-
-```json
-{
-  "motto": "Build Fast. Scale Big. All in One Place.",
-  "learn": "https://appwrite.io/docs",
-  "connect": "https://appwrite.io/discord",
-  "getInspired": "https://builtwith.appwrite.io"
-}
-```
+Sample `204` Response: No content.
 
 ## ⚙️ Configuration
 
 | Setting           | Value         |
-|-------------------|---------------|
+| ----------------- | ------------- |
 | Runtime           | Node (18.0)   |
 | Entrypoint        | `src/main.js` |
 | Build Commands    | `npm install` |
@@ -45,4 +22,22 @@ Sample `200` Response:
 
 ## 🔒 Environment Variables
 
-No environment variables required.
+### APPWRITE_API_KEY
+
+API Key to talk to Appwrite backend APIs.
+
+| Question      | Answer                                                                                             |
+| ------------- | -------------------------------------------------------------------------------------------------- |
+| Required      | Yes                                                                                                |
+| Sample Value  | `d1efb...aec35`                                                                                    |
+| Documentation | [Appwrite: Getting Started for Server](https://appwrite.io/docs/getting-started-for-server#apiKey) |
+
+### APPWRITE_DATABASE_ID
+
+The ID of the Appwrite database that contains the collection to sync.
+
+| Question      | Answer                                                    |
+| ------------- | --------------------------------------------------------- |
+| Required      | Yes                                                       |
+| Sample Value  | `612a3...5b6c9`                                           |
+| Documentation | [Appwrite: Databases](https://appwrite.io/docs/databases) |
