@@ -35,12 +35,14 @@ class AppwriteService {
       lastCollectionId =
         collections.collections[collections.collections.length - 1].$id;
 
-      totalCollections.push(...collections.collections.$id);
+      totalCollections.push(...collections.collections);
 
       if (totalCollections.length === collections.total) {
         break;
       }
     }
+
+    console.log(totalCollections);
 
     return totalCollections;
   }
@@ -52,7 +54,7 @@ class AppwriteService {
     const collections = await this.listAllCollections(databaseId);
 
     for (const collection of collections) {
-      await this.cleanCollection(databaseId, collection);
+      await this.cleanCollection(databaseId, collection.$id);
     }
   }
 
