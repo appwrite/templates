@@ -19,9 +19,21 @@ class AppwriteService {
    */
   async listAllCollections(databaseId) {
     const totalCollections = [];
+    const queries = [Query.limit(25)];
+
+    let lastCollectionId = null;
+    if (lastCollectionId) {
+      queries = [...queries, Query.cursorAfter(lastCollectionId)];
+    }
 
     while (true) {
-      const collections = await this.databases.listCollections(databaseId);
+      const collections = await this.databases.listCollections(
+        databaseId,
+        queries
+      );
+
+      lastCollectionId =
+        collections.collections[collections.collections.length - 1].$id;
 
       totalCollections.push(...collections.collections);
 
@@ -49,7 +61,7 @@ class AppwriteService {
    * @param {string} collectionId
    */
   async cleanCollection(databaseId, collectionId) {
-    const queries = [Query.orderAsc('$createdAt'), Query.limit(1)];
+    const queries = [Query.orderAsc('$createdAt'), Query.limit(25)];
     let done = false;
 
     while (true) {
