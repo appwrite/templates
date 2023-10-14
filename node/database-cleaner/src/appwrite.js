@@ -27,12 +27,11 @@ class AppwriteService {
     }
 
     while (true) {
-      console.log(queries);
-
       const collections = await this.databases.listCollections(
         databaseId,
         queries
       );
+      console.log(collections.collections);
 
       lastCollectionId =
         collections.collections[collections.collections.length - 1].$id;
