@@ -19,7 +19,7 @@ class AppwriteService {
    */
   async listAllCollections(databaseId) {
     const totalCollections = [];
-    const queries = [Query.limit(1)];
+    const queries = [Query.limit(1), Query.orderAsc('$id')];
 
     let lastCollectionId = null;
     if (lastCollectionId) {
@@ -27,6 +27,8 @@ class AppwriteService {
     }
 
     while (true) {
+      console.log(queries);
+
       const collections = await this.databases.listCollections(
         databaseId,
         queries
