@@ -19,7 +19,7 @@ class AppwriteService {
    */
   async listAllCollections(databaseId) {
     const totalCollections = [];
-    const queries = [Query.limit(25)];
+    const queries = [Query.limit(1)];
 
     let lastCollectionId = null;
     if (lastCollectionId) {
@@ -61,7 +61,7 @@ class AppwriteService {
    * @param {string} collectionId
    */
   async cleanCollection(databaseId, collectionId) {
-    const queries = [Query.orderAsc('$createdAt'), Query.limit(25)];
+    const queries = [Query.orderAsc('$createdAt'), Query.limit(1)];
     let done = false;
 
     while (true) {
