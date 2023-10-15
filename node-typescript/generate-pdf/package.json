@@ -1,0 +1,22 @@
+{
+    "name": "generate-pdf",
+    "version": "1.0.0",
+    "description": "",
+    "main": "dist/main.js",
+    "type": "module",
+    "scripts": {
+        "format": "prettier --write .",
+        "build": "tsc"
+    },
+    "dependencies": {
+        "@types/faker": "^6.6.9",
+        "faker": "^6.6.6",
+        "node-appwrite": "^9.0.0",
+        "pdf-lib": "^1.17.1",
+        "typescript": "^5.1.6"
+    },
+    "devDependencies": {
+        "@types/node": "^20.8.6",
+        "prettier": "^3.0.0"
+    }
+}
