@@ -53,13 +53,13 @@ Sample `401` Response:
 
 ## ⚙️ Configuration
 
-| Setting           | Value         |
-| ----------------- | ------------- |
-| Runtime           | Node (18.0)   |
-| Entrypoint        | `src/main.js` |
-| Build Commands    | `npm install` |
-| Permissions       | `any`         |
-| Timeout (Seconds) | 15            |
+| Setting           | Value              |
+| ----------------- |--------------------|
+| Runtime           |  PHP (8.0)         |
+| Entrypoint        | `src/index.php`    |
+| Build Commands    | `composer install` |
+| Permissions       | `any`              |
+| Timeout (Seconds) | 15                 |
 
 ## 🔒 Environment Variables
 
