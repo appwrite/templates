@@ -11,8 +11,8 @@ export default async ({ req, res, log, error }) => {
 
   try {
     await appwrite.cleanAllBuckets();
-  } catch (error) {
-    error(error.message);
+  } catch (exception) {
+    error(exception.message);
   }
 
   return res.send('Buckets cleaned', 200);
