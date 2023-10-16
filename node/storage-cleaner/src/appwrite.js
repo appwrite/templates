@@ -66,7 +66,7 @@ class AppwriteService {
    */
   async cleanBucket(bucketId) {
     const queries = [Query.orderAsc('$createdAt'), Query.limit(100)];
-
+    const batchPromises = []; // will use batchPromises to send multiple delete request simultaneously
     outerLoop: while (true) {
       const fileList = await this.storage.listFiles(bucketId, queries);
       const files = fileList.files;
@@ -75,26 +75,16 @@ class AppwriteService {
       }
       const expiryDate = getExpiryDate(); // get the expiryDate using the RETENTION_PERIOD
 
-      const batchPromises = []; // will use batchPromises to send multiple delete request simultaneously
-      const batchSize = 50;
-
       for (const file of files) {
         if (new Date(file.$createdAt) < expiryDate) {
           batchPromises.push(this.storage.deleteFile(bucketId, file.$id));
         } else {
           break outerLoop; // this will break out of both the loops
         }
-
-        if (batchPromises.length >= batchSize) {
-          await Promise.all(batchPromises);
-          batchPromises.length = 0;
-        }
       }
-
-      // Delete any remaining files in the batch.
-      if (batchPromises.length > 0) {
-        await Promise.all(batchPromises);
-      }
+    }
+    if (batchPromises.length > 0) {
+      await Promise.all(batchPromises);
     }
   }
 }
