@@ -14,6 +14,15 @@ class AppwriteService {
     this.storage = new Storage(client);
   }
 
+  /**
+   * Clean up all storage buckets by removing files older than a specified retention period.
+   *
+   * This function retrieves a list of all storage buckets, and for each bucket,
+   * it calls the cleanBucket function to remove files that are older than the calculated expiry date
+   * based on the retention period.
+   *
+   * @returns {Promise<void>} A Promise that resolves when all buckets are cleaned.
+   */
   async cleanAllBuckets() {
     const buckets = await this.getBuckets();
     for (const bucket of buckets) {
@@ -21,6 +30,13 @@ class AppwriteService {
     }
   }
 
+  /**
+   * Retrieves the list of buckets.
+   *
+   * @param {Query[]} queries - An array of queries to filter and sort the results. Defaults to this.defaultQuery.
+   * @param {Cursor|null} cursor - A cursor for pagination. Pass null to start from the beginning.
+   * @returns {Promise<Object[]>} An array of buckets.
+   */
   async getBuckets(queries = this.defaultQuery, cursor = null) {
     const currentQueries = [...queries, Query.limit(100)];
 
@@ -39,6 +55,15 @@ class AppwriteService {
     ];
   }
 
+  /**
+   * Clean up files from the storage bucket by removing files older than a specified retention period.
+   *
+   * This function retrieves files from the specified bucket, ordered by creation date in ascending order,
+   * and deletes files that are older than the calculated expiry date based on the retention period.
+   *
+   * @param {string} bucketId - The ID of the storage bucket to clean.
+   * @returns {Promise<void>} A Promise that resolves when the bucket is cleaned.
+   */
   async cleanBucket(bucketId) {
     const queries = [Query.orderAsc('$createdAt'), Query.limit(100)];
     outerLoop: while (true) {
