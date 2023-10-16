@@ -49,7 +49,10 @@ class AppwriteService {
     }
 
     const nextCursor = response.buckets[response.buckets.length - 1];
-    return [...response.buckets, ...(await getBuckets(queries, nextCursor))];
+    return [
+      ...response.buckets,
+      ...(await this.getBuckets(queries, nextCursor)),
+    ];
   }
 
   /**
