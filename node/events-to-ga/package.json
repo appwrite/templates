@@ -1,0 +1,17 @@
+{
+  "name": "events-to-ga",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/main.js",
+  "type": "module",
+  "scripts": {
+    "format": "prettier --write ."
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "node-appwrite": "^11.0.0",
+    "node-fetch": "^3.3.2",
+    "prettier": "^3.0.3"
+  }
+}
