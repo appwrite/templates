@@ -43,16 +43,13 @@ class AppwriteService {
     if (cursor) {
       currentQueries.push(Query.cursorAfter(cursor.$id));
     }
-    const response = await this.storage.listBuckets(queries);
+    const response = await this.storage.listBuckets(currentQueries);
     if (response.buckets.length < 100) {
       return response.buckets;
     }
 
     const nextCursor = response.buckets[response.buckets.length - 1];
-    return [
-      ...response.buckets,
-      ...(await getBuckets(collectionId, queries, nextCursor)),
-    ];
+    return [...response.buckets, ...(await getBuckets(queries, nextCursor))];
   }
 
   /**
