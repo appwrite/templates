@@ -81,8 +81,14 @@ class AppwriteService {
         } else {
           break outerLoop; // this will break out of both the loops
         }
+        if (batchPromises.length > 0) {
+          await Promise.all(batchPromises);
+          batchPromises.length = 0;
+        }
       }
     }
+    // remove the remaining files if any there in batchPromises
+    // this is for the case when we get out of loop using outerloop
     if (batchPromises.length > 0) {
       await Promise.all(batchPromises);
     }

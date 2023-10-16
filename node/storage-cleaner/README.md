@@ -21,7 +21,7 @@ Sample `200` Response: Buckets cleaned
 | Build Commands    | `npm install` |
 | Permissions       | `any`         |
 | CRON              | `0 1 * * *`   |
-| Timeout (Seconds) | 15            |
+| Timeout (Seconds) | 900           |
 
 ## 🔒 Environment Variables
 
