@@ -27,7 +27,7 @@ func main(context: RuntimeContext) async throws -> RuntimeOutput {
 
     // `context.res.json()` is a handy helper for sending JSON
     return try context.res.json([
-        "motto": "Build Fast. Scale Big. All in One Place.",
+        "motto": "Build like a team of hundreds_",
         "learn": "https://appwrite.io/docs",
         "connect": "https://appwrite.io/discord",
         "getInspired": "https://builtwith.appwrite.io",
