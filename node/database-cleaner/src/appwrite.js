@@ -1,4 +1,5 @@
 import { Client, Databases, Query } from 'node-appwrite';
+import { getExpiryDate } from './utils.js'
 
 class AppwriteService {
   constructor() {
@@ -20,8 +21,9 @@ class AppwriteService {
   async listAllCollections(databaseId) {
     const totalCollections = [];
     const queries = [Query.orderAsc('$createdAt'), Query.limit(25)];
+    let done = false;
 
-    while (true) {
+    do {
       const collections = await this.databases.listCollections(
         databaseId,
         queries
@@ -41,9 +43,9 @@ class AppwriteService {
       totalCollections.push(...collections.collections);
 
       if (totalCollections.length === collections.total) {
-        break;
+        done = true;
       }
-    }
+    } while (!done)
 
     return totalCollections;
   }
@@ -64,46 +66,31 @@ class AppwriteService {
    * @param {string} collectionId
    */
   async cleanCollection(databaseId, collectionId) {
-    const queries = [Query.orderAsc('$createdAt'), Query.limit(25)];
+    const expiryDate = getExpiryDate()
+    const queries = [Query.orderAsc('$createdAt'), Query.lessThan('$createdAt', expiryDate), Query.limit(25)];
     let done = false;
 
-    while (true) {
+    do {
       const documents = await this.databases.listDocuments(
         databaseId,
         collectionId,
         queries
       );
 
-      if (documents.documents.length === 0) {
-        break;
-      }
+      done = documents.documents.length > 0;
 
       for (const document of documents.documents) {
-        const retention = process.env.RETENTION_PERIOD_DAYS ?? 30;
-        const expirationDate = new Date(document.$createdAt);
-        expirationDate.setDate(expirationDate.getDate() + retention);
-        const today = new Date();
-
-        if (expirationDate < today) {
-          try {
-            await this.databases.deleteDocument(
-              databaseId,
-              collectionId,
-              document.$id
-            );
-          } catch (err) {
-            throw new Error(err.message);
-          }
-        } else {
-          done = true;
-          break;
+        try {
+          await this.databases.deleteDocument(
+            databaseId,
+            collectionId,
+            document.$id
+          );
+        } catch (err) {
+          throw new Error(err.message);
         }
       }
-
-      if (done) {
-        break;
-      }
-    }
+    } while (!done)
   }
 }
 

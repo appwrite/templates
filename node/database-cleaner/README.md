@@ -1,4 +1,4 @@
-# ⚡ Node.js Starter Function
+# 🧹 Database Cleaner Function
 
 Deletes documents in a database after a specified retention period.
 
