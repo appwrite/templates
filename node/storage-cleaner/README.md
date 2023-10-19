@@ -1,4 +1,4 @@
-# Node.js Storage Cleaner Function
+# 🧹 Node.js Storage Cleaner Function
 
 Storage cleaner function to remove all files from the buckets older than X number of days.
 
@@ -33,6 +33,15 @@ The number of days you want to retain a file.
 | ------------ | ------ |
 | Required     | Yes    |
 | Sample Value | `1`    |
+
+### APPWRITE_BUCKET_ID
+
+The ID of the bucket from which the files are to be deleted.
+
+| Question     | Answer         |
+| ------------ | -------------- |
+| Required     | Yes            |
+| Sample Value | `652d...b4daf` |
 
 ### APPWRITE_API_KEY
 

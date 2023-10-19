@@ -3,17 +3,14 @@ import { throwIfMissing } from './util.js';
 
 export default async ({ req, res, log, error }) => {
   throwIfMissing(process.env, [
-    'APPWRITE_FUNCTION_PROJECT_ID',
     'APPWRITE_API_KEY',
+    'RETENTION_PERIOD_DAYS',
+    'APPWRITE_BUCKET_ID',
   ]);
 
   const appwrite = new AppwriteService();
 
-  try {
-    await appwrite.cleanAllBuckets();
-  } catch (exception) {
-    error(exception.message);
-  }
+  await appwrite.cleanBucket(process.env.APPWRITE_BUCKET_ID);
 
   return res.send('Buckets cleaned', 200);
 };
