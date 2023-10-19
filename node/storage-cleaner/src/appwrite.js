@@ -15,16 +15,13 @@ class AppwriteService {
   /**
    * Clean up files from the storage bucket by removing files older than a specified retention period.
    *
-   * This function retrieves files from the specified bucket, ordered by creation date in ascending order,
-   * and deletes files that are older than the calculated expiry date based on the retention period.
-   *
    * @param {string} bucketId - The ID of the storage bucket to clean.
    * @returns {Promise<void>} A Promise that resolves when the bucket is cleaned.
    */
   async cleanBucket(bucketId) {
     let hasNextPage = true;
     const queries = [
-      Query.smallerThan('$createdAt', getExpiryDate()),
+      Query.lessThan('$createdAt', getExpiryDate()),
       Query.limit(100),
     ];
     do {

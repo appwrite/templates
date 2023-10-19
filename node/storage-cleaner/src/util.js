@@ -18,7 +18,8 @@ export function getExpiryDate() {
 export function throwIfMissing(obj, keys) {
   const missing = [];
   for (let key of keys) {
-    if (!(key in obj) || !obj[key]) {
+    // using obj[key] != 0 for case when the value of key will be 0
+    if (!(key in obj) || (!obj[key] && obj[key] != 0)) {
       missing.push(key);
     }
   }
