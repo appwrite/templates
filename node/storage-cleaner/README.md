@@ -1,12 +1,12 @@
 # 🧹 Node.js Storage Cleaner Function
 
-Storage cleaner function to remove all files from the buckets older than X number of days.
+Storage cleaner function to remove all files older than X number of days from the specified bucket.
 
 ## 🧰 Usage
 
 ### GET /
 
-Remove the files older than X number of days from all buckets.
+Remove files older than X days from the specified bucket
 
 **Response**
 
