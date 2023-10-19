@@ -22,7 +22,7 @@ class AppwriteService {
     let hasNextPage = true;
     const queries = [
       Query.lessThan('$createdAt', getExpiryDate()),
-      Query.limit(100),
+      Query.limit(25),
     ];
     do {
       const response = await this.storage.listFiles(bucketId, queries);
