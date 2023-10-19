@@ -1,4 +1,4 @@
-# ⚡ Node.js Slack Command Bot Function
+# 🤖 Node.js Slack Command Bot Function
 
 Simple command bot using Slack API
 
