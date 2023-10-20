@@ -94,7 +94,10 @@ return function ($context) {
 
     curl_close($ch);
 
-    return $context->res->json([
-        "ok" => true,
-    ]);
+    return $context->res->json(
+        [
+            "ok" => true,
+        ],
+        200
+    );
 };
