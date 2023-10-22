@@ -1,0 +1,21 @@
+{
+  "name": "prompt-chatgpt",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/main.js",
+  "type": "module",
+  "scripts": {
+    "format": "prettier --write .",
+    "build": "tsc"
+  },
+  "keywords": [],
+  "dependencies": {
+    "node-appwrite": "^11.0.0",
+    "openai": "^3.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.7",
+    "prettier": "^3.0.0",
+    "typescript": "^5.2.2"
+  }
+}
