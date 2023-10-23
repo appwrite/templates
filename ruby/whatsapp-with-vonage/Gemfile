@@ -1,0 +1,7 @@
+source "https://rubygems.org"
+
+gem 'json'
+gem 'dotenv'
+gem 'digest'
+gem 'jwt'
+gem 'httparty'
