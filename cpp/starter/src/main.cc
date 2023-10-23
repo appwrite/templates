@@ -24,7 +24,7 @@ namespace runtime {
 
         // `context.res.json()` is a handy helper for sending JSON
         Json::Value response;
-        response["motto"] = "Build Fast. Scale Big. All in One Place.";
+        response["motto"] = "Build like a team of hundreds_";
         response["learn"] = "https://appwrite.io/docs";
         response["connect"] = "https://appwrite.io/discord";
         response["getInspired"] = "https://builtwith.appwrite.io";

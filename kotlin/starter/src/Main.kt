@@ -31,7 +31,7 @@ class Main {
 
         // `context.res.json()` is a handy helper for sending JSON
         return context.res.json(mutableMapOf(
-            "motto" to "Build Fast. Scale Big. All in One Place.",
+            "motto" to "Build like a team of hundreds_",
             "learn" to "https://appwrite.io/docs",
             "connect" to "https://appwrite.io/discord",
             "getInspired" to "https://builtwith.appwrite.io"
