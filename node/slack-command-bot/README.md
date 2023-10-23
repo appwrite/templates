@@ -6,7 +6,7 @@ Simple command bot using Slack API
 
 ### POST /
 
-A Endpoint for you Slack Command That Returns a Hello World! Message as Response.
+A endpoint for you slack command that returns a hello world! message as response.
 
 #### Parameters
 
@@ -38,7 +38,7 @@ Hello, World!
 
 ### SLACK_SIGNING_SECRET
 
-Signing Secret of You Slack App.
+Signing secret of you slack app.
 
 | Question      | Answer                                                                             |
 | ------------- | ---------------------------------------------------------------------------------- |
