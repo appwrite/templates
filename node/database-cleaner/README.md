@@ -24,43 +24,33 @@ Sample `200` Response: Cleaning Finished.
 
 ## 🔒 Environment Variables
 
-### RETENTION_PERIOD_DAYS
+### APPWRITE_API_KEY
 
-The number of days you want to retain a document.
+Your Appwrite project's API key.
+
+| Question      | Answer                                                                                                                                    |
+| ------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| Required      | Yes                                                                                                                                       |
+| Sample Value  | `083d341ee48...`                                                                                                                          |
+| Documentation | [Appwrite: Create an API key](https://appwrite.io/docs/keys#:~:text=To%20create%20a%20new%20API,scope%20to%20grant%20your%20application.) |
+
+### APPWRITE_ENDPOINT
+
+The endpoint where your Appwrite server is located. If not provided, it defaults to the Appwrite Cloud server: `https://cloud.appwrite.io/v1`.
+
+| Question     | Answer                         |
+| ------------ | ------------------------------ |
+| Required     | No                             |
+| Sample Value | `https://cloud.appwrite.io/v1` |
+
+### APPWRITE_DATABASE_ID
+
+The ID of the database to store the orders.
 
 | Question     | Answer |
 | ------------ | ------ |
 | Required     | Yes    |
-| Sample Value | `1`    |
-
-### APPWRITE_DATABASE_ID
-
-The ID of the Appwrite database that contains the collection to clean.
-
-| Question      | Answer                                                    |
-| ------------- | --------------------------------------------------------- |
-| Required      | Yes                                                       |
-| Sample Value  | `612a3...5b6c9`                                           |
-| Documentation | [Appwrite: Databases](https://appwrite.io/docs/databases) |
-
-### APPWRITE_API_KEY
-
-API Key to talk to Appwrite backend APIs.
-
-| Question      | Answer                                                                                             |
-| ------------- | -------------------------------------------------------------------------------------------------- |
-| Required      | Yes                                                                                                |
-| Sample Value  | `d1efb...aec35`                                                                                    |
-| Documentation | [Appwrite: Getting Started for Server](https://appwrite.io/docs/getting-started-for-server#apiKey) |
-
-### APPWRITE_ENDPOINT
-
-The URL endpoint of the Appwrite server. If not provided, it defaults to the Appwrite Cloud server: `https://cloud.appwrite.io/v1`.
-
-| Question     | Answer                         |
-| ------------ | ------------------------------ |
-| Required     | Yes                            |
-| Sample Value | `https://cloud.appwrite.io/v1` |
+| Sample Value | `main` |
 
 ### APPWRITE_FUNCTION_PROJECT_ID
 
@@ -70,3 +60,12 @@ The ID of the Appwrite project.
 | ------------ | --------------- |
 | Required     | Yes             |
 | Sample Value | `6525e...d44e3` |
+
+### RETENTION_PERIOD_DAYS
+
+The number of days you want to retain a document. If not provided, it defaults to 30 days.
+
+| Question     | Answer |
+| ------------ | ------ |
+| Required     | No     |
+| Sample Value | `1`    |
