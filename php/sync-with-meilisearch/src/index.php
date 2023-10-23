@@ -3,10 +3,10 @@
 require(__DIR__ . '/../vendor/autoload.php');
 require(__DIR__ . '/utils.php');
 
-use Appwrite\Client as AppwriteClient;
+use Appwrite\Client;
 use Appwrite\Services\Databases;
 use Appwrite\Query;
-use MeiliSearch\Client;
+use MeiliSearch\Client as MeiliSearch;
 
 return function ($context) {
     throw_if_missing($_ENV, [
@@ -31,17 +31,17 @@ return function ($context) {
         ]);
     }
 
-    $appwriteClient = new AppwriteClient();
-    $appwriteClient
+    $client = new Client();
+    $client
         ->setEndpoint('https://cloud.appwrite.io/v1')
         ->setProject($_ENV['APPWRITE_PROJECT_ID'])
         ->setKey($_ENV['APPWRITE_API_KEY']);
 
-    $databases = new Databases($appwriteClient);
+    $databases = new Databases($client);
 
-    $meiliSearchClient = new Client($_ENV['MEILISEARCH_ENDPOINT'], $_ENV['MEILISEARCH_ADMIN_API_KEY']);
+    $meilisearch = new MeiliSearch($_ENV['MEILISEARCH_ENDPOINT'], $_ENV['MEILISEARCH_ADMIN_API_KEY']);
 
-    $index = $meiliSearchClient->index($_ENV['MEILISEARCH_INDEX_NAME']);
+    $index = $meilisearch->index($_ENV['MEILISEARCH_INDEX_NAME']);
 
     $cursor = null;
 
