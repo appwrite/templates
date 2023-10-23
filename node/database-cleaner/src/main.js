@@ -1,17 +1,19 @@
 import AppwriteService from './appwrite.js';
 
 export default async ({ req, res, log, error }) => {
-  const appwrite = new AppwriteService();
-
   throwIfMissing(process.env, [
     'APPWRITE_DATABASE_ID',
     'APPWRITE_API_KEY',
     'RETENTION_PERIOD_DAYS'
   ]);
 
-  const databaseId = process.env.APPWRITE_DATABASE_ID;
+  const appwrite = new AppwriteService();
 
-  await appwrite.cleanAllCollections(databaseId);
+  const collections = await this.listAllCollections(process.env.APPWRITE_DATABASE_ID);
+
+  for (const collection of collections) {
+    await this.cleanCollection(process.env.APPWRITE_DATABASE_ID, collection.$id);
+  }
 
   return res.send('Cleaning finished.', 200);
 };

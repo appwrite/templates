@@ -52,17 +52,6 @@ class AppwriteService {
 
   /**
    * @param {string} databaseId
-   */
-  async cleanAllCollections(databaseId) {
-    const collections = await this.listAllCollections(databaseId);
-
-    for (const collection of collections) {
-      await this.cleanCollection(databaseId, collection.$id);
-    }
-  }
-
-  /**
-   * @param {string} databaseId
    * @param {string} collectionId
    */
   async cleanCollection(databaseId, collectionId) {
