@@ -8,7 +8,7 @@
     "format": "prettier --write ."
   },
   "dependencies": {
-    "bun-types": "^1.0.4-canary.20231003T140149",
+    "bun-types": "^1.0.7",
     "meilisearch": "^0.35.0",
     "node-appwrite": "^11.0.0",
     "path": "^0.12.7",
