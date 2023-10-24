@@ -8,7 +8,6 @@ final staticFolder = p.join(p.dirname(Platform.script.toFilePath()), '../static'
 ///   obj - The object to check
 ///   keys - The list of keys to check for
 /// throws Exception
-
 void throwIfMissing(Map<String, String> obj, List<String> keys) {
   final missing = <String>[];
   for (final key in keys) {
@@ -26,7 +25,6 @@ void throwIfMissing(Map<String, String> obj, List<String> keys) {
 /// Parameters:
 ///    fileName - The name of the file to read
 /// returns Contents of static/{fileName}
-
 String getStaticFile(String fileName) {
   final file = File(p.join(staticFolder, fileName));
   return file.readAsStringSync();
