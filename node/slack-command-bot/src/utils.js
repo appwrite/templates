@@ -25,20 +25,17 @@ export function throwIfMissing(obj, keys) {
  */
 export function throwIfRequestNotValid(req) {
   const timestamp = req.headers['x-slack-request-timestamp'];
-  const bodyRaw = req.bodyRaw;
   const signature = req.headers['x-slack-signature'];
 
   if (Math.abs(Date.now() / 1000 - timestamp) > 60 * 5) {
-    error('Invalid request : replay attack');
-    throw new Error('Invalid request : replay attack');
+    throw new Error('Invalid request: replay attack');
   }
 
-  const sig_basestring = 'v0:' + timestamp + ':' + bodyRaw;
+  const sig_basestring = `v0:${timestamp}:${req.bodyRaw}`;
   const hmac = crypto.createHmac('sha256', process.env['SLACK_SIGNING_SECRET']);
   hmac.update(sig_basestring);
-  const mySignature = 'v0=' + hmac.digest('hex');
+  const mySignature = `v0=${hmac.digest('hex')}`;
   if (!mySignature === signature) {
-    error('Invalid request : signature not matched');
-    throw new Error('Invalid request : signature not matched');
+    throw new Error('Invalid request: incorrect signature');
   }
 }
