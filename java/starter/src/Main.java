@@ -33,7 +33,7 @@ public class Main {
         }
 
         Map<String, Object> json = new HashMap<>();
-        json.put("motto", "Build Fast. Scale Big. All in One Place.");
+        json.put("motto", "Build like a team of hundreds_");
         json.put("learn", "https://appwrite.io/docs");
         json.put("connect", "https://appwrite.io/discord");
         json.put("getInspired", "https://builtwith.appwrite.io");
