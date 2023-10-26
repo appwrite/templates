@@ -6,10 +6,7 @@
  * @returns {Date} The calculated expiry date.
  */
 export function getExpiryDate() {
-  const retentionPeriod = parseInt(process.env.RETENTION_PERIOD_DAYS ?? 30);
-
-  console.log(retentionPeriod)
-  console.log(process.env.RETENTION_PERIOD_DAYS)
+  const retentionPeriod = Number(process.env.RETENTION_PERIOD_DAYS ?? 30);
 
   return new Date(Date.now() - (retentionPeriod * 24 * 60 * 60 * 1000))
 }
@@ -23,7 +20,7 @@ export function getExpiryDate() {
 export function throwIfMissing(obj, keys) {
   const missing = [];
   for (let key of keys) {
-    if (!(key in obj) || !obj[key]) {
+    if (!(key in obj) || obj[key] == null || obj[key] == undefined) {
       missing.push(key);
     }
   }
