@@ -2,6 +2,8 @@ import AppwriteService from './appwrite.js';
 import { throwIfMissing } from './utils.js'
 
 export default async ({ req, res, log, error }) => {
+  console.log(process.env)
+
   throwIfMissing(process.env, [
     'APPWRITE_DATABASE_ID',
     'APPWRITE_API_KEY',
