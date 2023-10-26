@@ -2,6 +2,8 @@ import AppwriteService from './appwrite.js';
 import { throwIfMissing } from './utils.js'
 
 export default async ({ req, res, log, error }) => {
+  log(process.env)
+
   throwIfMissing(process.env, [
     'APPWRITE_DATABASE_ID',
     'APPWRITE_API_KEY',
@@ -11,7 +13,7 @@ export default async ({ req, res, log, error }) => {
   const appwrite = new AppwriteService();
 
   const collections = await appwrite.listAllCollections(process.env.APPWRITE_DATABASE_ID);
-  
+
   log(collections)
 
   for (const collection of collections) {
