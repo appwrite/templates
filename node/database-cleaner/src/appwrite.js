@@ -60,8 +60,6 @@ class AppwriteService {
     const queries = [Query.orderAsc('$createdAt'), Query.lessThan('$createdAt', expiryDate), Query.limit(10)];
     let done = false;
 
-    console.log(databaseId, collectionId, queries)
-
     do {
       const documents = await this.databases.listDocuments(
         databaseId,
@@ -73,7 +71,7 @@ class AppwriteService {
 
       try {
         await Promise.all(
-          documents.documents.map((file) =>
+          documents.documents.map((document) =>
             this.databases.deleteDocument(
               databaseId,
               collectionId,
