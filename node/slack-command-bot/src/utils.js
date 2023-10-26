@@ -31,11 +31,11 @@ export function throwIfRequestNotValid(req) {
     throw new Error('Invalid request: replay attack');
   }
 
-  const sig_basestring = `v0:${timestamp}:${req.bodyRaw}`;
+  const signatureBaseString = `v0:${timestamp}:${req.bodyRaw}`;
   const hmac = crypto.createHmac('sha256', process.env['SLACK_SIGNING_SECRET']);
-  hmac.update(sig_basestring);
-  const mySignature = `v0=${hmac.digest('hex')}`;
-  if (!mySignature === signature) {
+  hmac.update(signatureBaseString);
+  const expectedSignature = `v0=${hmac.digest('hex')}`;
+  if (!expectedSignature === signature) {
     throw new Error('Invalid request: incorrect signature');
   }
 }
