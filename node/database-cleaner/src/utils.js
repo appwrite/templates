@@ -8,6 +8,8 @@
 export function getExpiryDate() {
   const retentionPeriod = Number(process.env.RETENTION_PERIOD_DAYS ?? 30);
 
+  console.log(process.env.RETENTION_PERIOD_DAYS)
+
   console.log(retentionPeriod);
 
   return new Date(Date.now() - (retentionPeriod * 24 * 60 * 60 * 1000))
