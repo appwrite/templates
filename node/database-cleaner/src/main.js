@@ -15,7 +15,7 @@ export default async ({ req, res, log, error }) => {
   const collections = await appwrite.listAllCollections(process.env.APPWRITE_DATABASE_ID);
 
   for (const collection of collections) {
-    await this.cleanCollection(process.env.APPWRITE_DATABASE_ID, collection.$id);
+    await appwrite.cleanCollection(process.env.APPWRITE_DATABASE_ID, collection.$id);
   }
 
   log('Cleaning finished!')
