@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.lang.*;
 import io.appwrite.Client;
 import jakarta.mail.MessagingException;
 
@@ -43,18 +42,16 @@ public class Main {
         if(!context.getReq().getHeaders().get("content-type").equals("application/x-www-form-urlencoded")){
             context.error("Incorrect content type");
             String referer = context.getReq().getHeaders().get("referer");
-            String errorCode = ErrorCode.INVALID_REQUEST;
             return context.getRes().redirect(
-                    String.format("%s?code=%s", referer, errorCode)
+                    String.format("%s?code=%s", referer, ErrorCode.INVALID_REQUEST)
             );
         }
 
         if(!Cors.isOriginPermitted(context)){
             context.error("Origin not permitted");
             String referer = context.getReq().getHeaders().get("referer");
-            String errorCode = ErrorCode.INVALID_REQUEST;
             return context.getRes().redirect(
-                    String.format("%s?code=%s", referer, errorCode)
+                    String.format("%s?code=%s", referer, ErrorCode.INVALID_REQUEST)
             );
         }
 
@@ -80,9 +77,8 @@ public class Main {
             Utils.throwIfMissing(form, Collections.singletonList("email"));
         } catch (IllegalArgumentException ex) {
             String referer = context.getReq().getHeaders().get("referer");
-            String errorCode = ErrorCode.MISSING_FORM_FIELDS;
             return context.getRes().redirect(
-                    String.format("%s?code=%s", referer, errorCode),
+                    String.format("%s?code=%s", referer, ErrorCode.MISSING_FORM_FIELDS),
                     301,
                     Cors.getCorsHeaders(context)
             );
@@ -99,18 +95,16 @@ public class Main {
         } catch (MessagingException ex) {
             context.log("MessagingException: " + ex.getMessage());
             String referer = context.getReq().getHeaders().get("referer");
-            String errorCode = ErrorCode.SERVER_ERROR;
             return context.getRes().redirect(
-                    String.format("%s?code=%s", referer, errorCode),
+                    String.format("%s?code=%s", referer, ErrorCode.SERVER_ERROR),
                     301,
                     Cors.getCorsHeaders(context)
             );
         } catch (Exception ex) {
             context.log("Exception: " + ex.getMessage());
             String referer = context.getReq().getHeaders().get("referer");
-            String errorCode = ErrorCode.SERVER_ERROR;
             return context.getRes().redirect(
-                    String.format("%s?code=%s", referer, errorCode),
+                    String.format("%s?code=%s", referer, ErrorCode.SERVER_ERROR),
                     301,
                     Cors.getCorsHeaders(context)
             );

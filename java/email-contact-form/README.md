@@ -1,4 +1,4 @@
-# 📬 JAVA Email Contact Form Function
+# 📬 Java Email Contact Form Function
 
 Sends an email with the contents of a HTML form.
 

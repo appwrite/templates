@@ -1,6 +1,5 @@
 package io.openruntimes.java.src;
 
-import java.lang.*;
 import java.io.File;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -25,7 +24,7 @@ public class Utils {
     static String INDEX_HTML = "<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\" /><meta http-equiv=\"X-UA-Compatible\" content=\"IE\" /><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" /><title>Email Contact Form</title><link rel=\"stylesheet\" href=\"https://unpkg.com/@appwrite.io/pink\" /><link rel=\"stylesheet\" href=\"https://unpkg.com/@appwrite.io/pink-icons\" /></head><body><main class=\"main-content\"><div class=\"top-cover u-padding-block-end-56\"><div class=\"container\"><div class=\"u-flex u-gap-16 u-flex-justify-center u-margin-block-start-16\"><h1 class=\"heading-level-1\">Contact</h1><code class=\"u-un-break-text\"></code></div><p class=\"body-text-1 u-normal u-margin-block-start-16\" style=\"max-width: 50rem\">Fill the form below to send us a message.</p><form class=\"u-flex-vertical u-gap-16 u-margin-block-start-16\" style=\"max-width: 50rem\" method=\"post\"><input type=\"email\" name=\"email\" placeholder=\"Email\" required /><textarea name=\"message\" placeholder=\"Your Message\" required></textarea><button class=\"button\" type=\"submit\">Submit</button></form></div></div></main></body></html>";
     static String SUCCESS_HTML = "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n    <title>Email Contact Form</title>\n    <link rel=\"stylesheet\" href=\"https://unpkg.com/@appwrite.io/pink\" />\n    <link rel=\"stylesheet\" href=\"https://unpkg.com/@appwrite.io/pink-icons\" />\n  </head>\n  <body>\n    <main class=\"main-content\">\n      <div class=\"top-cover u-padding-block-end-56\">\n        <div class=\"container\">\n          <div\n            class=\"u-flex u-gap-16 u-flex-justify-center u-margin-block-start-16\"\n          >\n            <h1 class=\"heading-level-1\">Success</h1>\n            <code class=\"u-un-break-text\"></code>\n          </div>\n          <p\n            class=\"body-text-1 u-normal u-margin-block-start-8\"\n            style=\"max-width: 50rem\"\n          >\n            Your message has been sent!\n          </p>\n        </div>\n      </div>\n    </main>\n  </body>\n</html>";
 
-    /*
+    /**
      * Returns the html contents of index and sucess page
      *
      * Parameters:
@@ -41,7 +40,7 @@ public class Utils {
         return SUCCESS_HTML;
     }
 
-    /*
+    /**
      * Throws an error if any of the keys are missing from the object
      *
      * Parameters:
@@ -60,7 +59,7 @@ public class Utils {
     }
 
 
-    /*
+    /**
      * Sends an email using the SMTP credentials in the environment
      *
      * Parameters:
@@ -100,7 +99,7 @@ public class Utils {
         transport.close();
     }
 
-    /*
+    /**
      * Builds a string message body from a form submission
      *
      * Parameters:

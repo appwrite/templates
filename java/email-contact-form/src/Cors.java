@@ -5,16 +5,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
-import java.lang.*;
 
 
 public class Cors {
 
-    /*
+    /**
      * Returns true if the origin is allowed to make requests to this endpoint
      *
      * Parameters:
-     *   req: Request object
+     *   context: Context object
      *
      * Returns:
      *   (boolean): True if the origin is allowed, False otherwise
@@ -26,15 +25,15 @@ public class Cors {
         }
 
         List<String> allowedOriginsList = Arrays.asList(allowedOrigins.split(","));
-        String originHeader = context.getReq().getHeaders().get("Origin");
+        String originHeader = context.getReq().getHeaders().get("origin");
         return originHeader != null && allowedOriginsList.contains(originHeader);
     }
 
-    /*
+    /**
      * Returns the CORS headers for the request
      *
      * Parameters:
-     *   req: Request object
+     *   context: Context object
      *
      * Returns:
      *   (Map<String, String>): CORS headers
