@@ -15,5 +15,7 @@ export default async ({ req, res, log, error }) => {
     await this.cleanCollection(process.env.APPWRITE_DATABASE_ID, collection.$id);
   }
 
-  return res.send('Cleaning finished.', 200);
+  log('Cleaning finished!')
+
+  return res.empty();
 };
