@@ -56,7 +56,7 @@ class AppwriteService {
    */
   async cleanCollection(databaseId, collectionId) {
     const expiryDate = getExpiryDate()
-    const queries = [Query.orderAsc('$createdAt'), Query.lessThan('$createdAt', expiryDate), Query.limit(25)];
+    const queries = [Query.orderAsc('$createdAt'), Query.lessThan('$createdAt', expiryDate), Query.limit(10)];
     let done = false;
 
     do {
@@ -68,16 +68,18 @@ class AppwriteService {
 
       done = documents.documents.length > 0;
 
-      for (const document of documents.documents) {
-        try {
-          await this.databases.deleteDocument(
-            databaseId,
-            collectionId,
-            document.$id
-          );
-        } catch (err) {
-          throw new Error(err.message);
-        }
+      try {
+        await Promise.all(
+          documents.documents.map((file) =>
+            this.databases.deleteDocument(
+              databaseId,
+              collectionId,
+              document.$id
+            )
+          )
+        );
+      } catch (err) {
+        throw new Error(err.message);
       }
     } while (!done)
   }
