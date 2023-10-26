@@ -57,10 +57,10 @@ class AppwriteService {
   async cleanCollection(databaseId, collectionId) {
     const expiryDate = getExpiryDate()
 
-    console.log(expiryDate);
-
     const queries = [Query.orderAsc('$createdAt'), Query.lessThan('$createdAt', expiryDate), Query.limit(10)];
     let done = false;
+
+    console.log(databaseId, collectionId, queries)
 
     do {
       const documents = await this.databases.listDocuments(
