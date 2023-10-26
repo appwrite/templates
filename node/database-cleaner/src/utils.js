@@ -6,7 +6,7 @@
  * @returns {Date} The calculated expiry date.
  */
 export function getExpiryDate() {
-  const retentionPeriod = Number(process.env.RETENTION_PERIOD_DAYS ?? 30);
+  const retentionPeriod = (process.env.RETENTION_PERIOD_DAYS ?? 30);
 
   console.log(process.env.RETENTION_PERIOD_DAYS)
 
