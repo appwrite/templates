@@ -1,0 +1,21 @@
+{
+  "name": "github-issue-bot-template",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/main.js",
+  "scripts": {
+    "build": "tsc",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "@octokit/core": "^5.0.1",
+    "@octokit/rest": "^20.0.2",
+    "@octokit/webhooks-methods": "^4.0.0",
+    "node-appwrite": "^11.0.0",
+    "typescript": "^5.2.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.6",
+    "prettier": "^3.0.3"
+  }
+}
