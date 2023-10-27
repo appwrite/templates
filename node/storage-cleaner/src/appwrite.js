@@ -19,20 +19,19 @@ class AppwriteService {
    * @returns {Promise<void>} A Promise that resolves when the bucket is cleaned.
    */
   async cleanBucket(bucketId) {
-    let hasNextPage = true;
+    let response;
     const queries = [
       Query.lessThan('$createdAt', getExpiryDate()),
       Query.limit(25),
     ];
     do {
-      const response = await this.storage.listFiles(bucketId, queries);
+      response = await this.storage.listFiles(bucketId, queries);
       await Promise.all(
         response.files.map((file) =>
           this.storage.deleteFile(bucketId, file.$id)
         )
       );
-      hasNextPage = response.files.length > 0;
-    } while (hasNextPage);
+    } while (response.files.length > 0);
   }
 }
 

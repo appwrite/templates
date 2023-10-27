@@ -1,12 +1,14 @@
 /**
- * Calculate and return the expiry date based on the retention period.
- * @returns {string} The calculated expiry date in ISO format
+ * Returns a date subtracted by the retention period from the current date.
+ * The retention period is fetched from the RETENTION_PERIOD_DAYS environment variable.
+ * Defaults to 30 days if the environment variable is not set or invalid.
+ * @returns {Date} The calculated expiry date.
  */
 export function getExpiryDate() {
-  const retentionPeriod = +(process.env.RETENTION_PERIOD_DAYS ?? 30);
-  const expiryDate = new Date();
-  expiryDate.setDate(expiryDate.getDate() - retentionPeriod);
-  return expiryDate.toISOString();
+  const retentionPeriod = Number(process.env.RETENTION_PERIOD_DAYS ?? 30);
+  return new Date(
+    Date.now() - retentionPeriod * 24 * 60 * 60 * 1000
+  ).toISOString();
 }
 
 /**
@@ -18,8 +20,7 @@ export function getExpiryDate() {
 export function throwIfMissing(obj, keys) {
   const missing = [];
   for (let key of keys) {
-    // using obj[key] != 0 for case when the value of key will be 0
-    if (!(key in obj) || (!obj[key] && obj[key] != 0)) {
+    if (!(key in obj && obj[key] !== 0)) {
       missing.push(key);
     }
   }
