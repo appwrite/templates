@@ -1,7 +1,19 @@
 require 'appwrite'
 require 'meilisearch'
+require_relative 'utils'
 
 def main(context)
+  required_env_variables = [
+    'APPWRITE_API_KEY',
+    'APPWRITE_DATABASE_ID',
+    'APPWRITE_COLLECTION_ID',
+    'MEILISEARCH_ENDPOINT',
+    'MEILISEARCH_INDEX_NAME',
+    'MEILISEARCH_ADMIN_API_KEY',
+    'MEILISEARCH_SEARCH_API_KEY',
+  ]
+
+  throw_if_missing(ENV, required_env_variables)
 
   client = Appwrite::Client.new
   client
@@ -52,6 +64,7 @@ def main(context)
   }
 
   context.response.set_body(response.to_json)
+  context.response.set_status(200)
 
   return context.response
 end
