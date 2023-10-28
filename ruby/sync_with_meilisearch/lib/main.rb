@@ -3,23 +3,36 @@ require 'meilisearch'
 require_relative 'utils'
 
 def main(context)
-  required_env_variables = [
+  throw_if_missing(ENV, [
     'APPWRITE_API_KEY',
     'APPWRITE_DATABASE_ID',
     'APPWRITE_COLLECTION_ID',
     'MEILISEARCH_ENDPOINT',
     'MEILISEARCH_INDEX_NAME',
     'MEILISEARCH_ADMIN_API_KEY',
-    'MEILISEARCH_SEARCH_API_KEY',
-  ]
+    'MEILISEARCH_SEARCH_API_KEY'
+  ])
 
-  throw_if_missing(ENV, required_env_variables)
+  if context.req.method == 'GET'
+    html = interpolate(get_static_file('index.html'), {
+      'MEILISEARCH_ENDPOINT' => ENV['MEILISEARCH_ENDPOINT'],
+      'MEILISEARCH_INDEX_NAME' => ENV['MEILISEARCH_INDEX_NAME'],
+      'MEILISEARCH_SEARCH_API_KEY' => ENV['MEILISEARCH_SEARCH_API_KEY']
+    })
+
+    context.response.set_body(html)
+    context.response.set_status(200)
+    context.response.set_headers('Content-Type' => 'text/html; charset=utf-8')
+    return
+  end
 
   client = Appwrite::Client.new
   client
-    .set_endpoint('https://cloud.appwrite.io/v1')
+    .set_endpoint(ENV['APPWRITE_ENDPOINT'] || 'https://cloud.appwrite.io/v1')
     .set_project(ENV['APPWRITE_FUNCTION_PROJECT_ID'])
     .set_key(ENV['APPWRITE_API_KEY'])
+
+  databases = Appwrite::Databases.new(client)
 
   meilisearch = MeiliSearch::Client.new(ENV['MEILISEARCH_ENDPOINT'], ENV['MEILISEARCH_ADMIN_API_KEY'])
 
@@ -65,6 +78,4 @@ def main(context)
 
   context.response.set_body(response.to_json)
   context.response.set_status(200)
-
-  return context.response
 end
