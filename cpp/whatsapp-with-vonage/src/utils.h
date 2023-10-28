@@ -56,51 +56,66 @@ static Json::Value stringToJson(const std::string& jsonStr) {
     return res;
 }
 
-static std::vector<std::string> listFiles(std::string path) {
-    // recurisve traverse
-    std::vector<std::string> files;
-    for (const auto& entry : std::filesystem::directory_iterator(path)) {
-        if (entry.is_directory()) {
-            std::vector<std::string> subFiles = listFiles(entry.path());
-            files.insert(files.end(), subFiles.begin(), subFiles.end());
-        } else {
-            files.push_back(entry.path());
-        }
-    }
-    return files;
-}
+static const char* getStaticFile(std::string filename) {
+    // Serving string directly because of the issue with serving static assets
+    // in cpp template
+    const char* content = R"(
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WhatsApp Bot with Vonage</title>
 
-static std::string getStaticFile(std::string filename) {
-    std::string staticPath = "/usr/local/static/" + filename;
-    std::ifstream file;
-    file.open(staticPath);
-    if (!file.is_open()) {
-        throw std::runtime_error("File not found.");
-    }
-    std::string content((std::istreambuf_iterator<char>(file)),
-                        (std::istreambuf_iterator<char>()));
+    <link rel="stylesheet" href="https://unpkg.com/@appwrite.io/pink" />
+    <link rel="stylesheet" href="https://unpkg.com/@appwrite.io/pink-icons" />
+  </head>
+  <body>
+    <main class="main-content">
+      <div class="top-cover u-padding-block-end-56">
+        <div class="container">
+          <div
+            class="u-flex u-gap-16 u-flex-justify-center u-margin-block-start-16"
+          >
+            <h1 class="heading-level-1">WhatsApp Bot with Vonage</h1>
+            <code class="u-un-break-text"></code>
+          </div>
+          <p
+            class="body-text-1 u-normal u-margin-block-start-8"
+            style="max-width: 50rem"
+          >
+            This function listens to incoming webhooks from Vonage regarding
+            WhatsApp messages, and responds to them. To use the function, send
+            message to the WhatsApp user provided by Vonage.
+          </p>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
+    )";
     return content;
 }
 
-// static std::string serveStaticFile(runtime::RuntimeContext& context,
-//                                        std::string filename) {
-//         std::ifstream file;
-//         // std::string path = std::filesystem::current_path();
-//         std::string path = "/usr/local/server/src/function";
-//         context.log(path);
-//         context.log("........");
-//         // for (const auto& entry :
-//         std::filesystem::directory_iterator(path))
-//         //     context.log(entry.path());
-//         std::vector<std::string> files = listFiles(path);
-//         for (const std::string& file : files) context.log(file);
-//         file.open(filename);
-//         if (!file.is_open()) {
-//             throw std::runtime_error("File not found.");
-//         }
-//         std::string content((std::istreambuf_iterator<char>(file)),
-//                             (std::istreambuf_iterator<char>()));
-//         return content;
-//     }
+static std::string checkEnvVars(const std::vector<std::string>& envVarNames) {
+    std::vector<std::string> missingVars;
+    for (const std::string& varName : envVarNames) {
+        const char* varValue = std::getenv(varName.c_str());
+        if (varValue == nullptr) {
+            missingVars.push_back(varName);
+        }
+    }
+    if (!missingVars.empty()) {
+        std::string error = "Missing environment variables: ";
+        for (const std::string& missingVar : missingVars) {
+            error += missingVar;
+            error += ", ";
+        }
+        error = error.substr(0, error.length() - 2);
+        return error;
+    }
+    return "";
+}
 
 #endif

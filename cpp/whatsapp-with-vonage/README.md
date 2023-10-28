@@ -53,13 +53,13 @@ Sample `401` Response:
 
 ## ⚙️ Configuration
 
-| Setting           | Value         |
-| ----------------- | ------------- |
-| Runtime           | Node (18.0)   |
-| Entrypoint        | `src/main.js` |
-| Build Commands    | `npm install` |
-| Permissions       | `any`         |
-| Timeout (Seconds) | 15            |
+| Setting           | Value                                                                                                                                             |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Runtime           | C++ (cpp-20)                                                                                                                                      |
+| Entrypoint        | `src/main.cc`                                                                                                                                     |
+| Build Commands    | `git clone https://github.com/Thalhammer/jwt-cpp.git && cd jwt-cpp && mkdir build && cd build && cmake .. && make -j\"$(nproc)\" && make install` |
+| Permissions       | `any`                                                                                                                                             |
+| Timeout (Seconds) | 15                                                                                                                                                |
 
 ## 🔒 Environment Variables
 
