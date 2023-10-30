@@ -20,10 +20,7 @@ def main(context)
       'MEILISEARCH_SEARCH_API_KEY' => ENV['MEILISEARCH_SEARCH_API_KEY']
     })
 
-    context.response.set_body(html)
-    context.response.set_status(200)
-    context.response.set_headers('Content-Type' => 'text/html; charset=utf-8')
-    return
+    return context.res.send(html, 200, { 'Content-Type' => 'text/html; charset=utf-8' })
   end
 
   client = Appwrite::Client.new
@@ -71,11 +68,5 @@ def main(context)
 
   context.log('Sync finished.')
 
-  response = {
-    'message' => 'Sync finished.',
-    'status' => 'success'
-  }
-
-  context.response.set_body(response.to_json)
-  context.response.set_status(200)
+  return context.res.send('Sync finished.', 200)
 end
