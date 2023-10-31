@@ -12,7 +12,7 @@ app.get("/", (req, res) => {
 })
 
 
-const secret = `${Bun.env.VONAGE_API_KEY}:${Bun.env.VONAGE_API_SECRET}`;
+const secret = `${Bun.env.VONAGE_API_KEY}:${Bun.env.VONAGE_ACCOUNT_SECRET}`;
 const basicAuthToken = btoa(secret);
 
 
