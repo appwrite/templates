@@ -24,7 +24,7 @@ function verify(req, res, next) {
     if (err) {
        return response.json({
                 status:'400',
-                status:"couldn't verify"
+                message:"couldn't verify"
             });
     }
 
