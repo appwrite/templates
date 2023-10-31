@@ -1,5 +1,5 @@
-## 💬 Bun Whatsapp bot with Vonage api
-Receiving whatsapp messages and answering it. 
+## 💬 Bun Whatsapp bot with Vonage Function
+Simple bot to answer WhatsApp messages.
 
 
 ## 🧰 Usage
