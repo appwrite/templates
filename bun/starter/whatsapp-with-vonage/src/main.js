@@ -38,11 +38,11 @@ app.post("/", verify, async (req, res) => {
   myHeaders.append("Authorization", `Basic ${basicAuthToken}`);
 
   const raw = JSON.stringify({
-    "from": `${Bun.env.FROM_NUMBER}`,
-    "to": `${Bun.env.TO_NUMBER}`,
-    "message_type": "text",
-    "text": `you send me: ${req.body.text}`,
-    "channel": "whatsapp"
+    from: `${Bun.env.FROM_NUMBER}`,
+    to: `${req.body.from}`,
+    message_type: "text",
+    text: `you send me: ${req.body.text}`,
+    channel: "whatsapp"
   });
 
   const requestOptions = {
