@@ -22,7 +22,10 @@ function verify(req, res, next) {
   jwt.verify(authHeader, Bun.env.SIGNATURE_SECRET, { algorithms: ['HS256'] }, (err, response) => {
 
     if (err) {
-      return response.send(201);
+       return response.json({
+                status:'400',
+                status:"couldn't verify"
+            });
     }
 
     next();
