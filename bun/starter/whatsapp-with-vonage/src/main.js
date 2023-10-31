@@ -4,12 +4,14 @@ import path from "path"
 
 const app = express();
 app.use(express.json())
-app.listen(3000, () => console.log("ready"))
+app.listen(PORT, () => console.log("ready"))
 
 app.get("/", (req, res) => {
   res.sendFile(path.resolve("public/index.html"))
 
 })
+
+
 const secret = `${Bun.env.VONAGE_API_KEY}:${Bun.env.VONAGE_API_SECRET}`;
 const basicAuthToken = btoa(secret);
 
@@ -26,17 +28,10 @@ function verify(req, res, next) {
     next();
   })
 
-
-
 }
 
 
-
 app.post("/", verify, async (req, res) => {
-
-
-
-
   const myHeaders = new Headers();
   myHeaders.append("Accept", "application/json");
   myHeaders.append("Content-Type", "application/json");
@@ -62,10 +57,5 @@ app.post("/", verify, async (req, res) => {
   res.json({
       status:'200',
       message: req.body.status
-
-
-
-  })
-
-
+ })
 })
