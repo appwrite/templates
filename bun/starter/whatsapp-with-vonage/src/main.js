@@ -57,6 +57,7 @@ export default async ({ req, res, log, error }) => {
         }
         res.json({
             ok: true
+            status:req.body.status
 
 
 
