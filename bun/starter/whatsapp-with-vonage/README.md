@@ -1,10 +1,11 @@
-# Bun Whatsapp bot with Vonage api
+## 💬 Bun Whatsapp bot with Vonage api
 Receiving whatsapp messages and answering it. 
 
 
-## GET
+## 🧰 Usage
+## GET/
 HTML form interacting with the function.
-## POST
+## POST/
 Receives a message, validates its signature, and sends a response back to the sender.
 
 | Name          | Description                        | Location | Type                | Sample Value         |
@@ -14,8 +15,6 @@ Receives a message, validates its signature, and sends a response back to the se
 | from          | Sender's identifier.               | Body     | String              | `user`              |
 | text          | Text content of the message.       | Body     | String              | `Hello World`             |
 
-
-
 **Response:**
 
 
@@ -23,7 +22,7 @@ Sample `200` Response:
 
 ```json
 {
-    "status": 200,
+    "ok": true,
     
 }
 ```
@@ -32,12 +31,12 @@ Sample `400` Response:
 
 ```json
 {
-    "status": 400,
-    "message": "couldn't verify"
+    "ok": false,
+    "error": "can't verify"
 }
 ```
 
-## POST
+## POST/
 
 Webhooks sent by vonage to update about the status of message
 
@@ -52,8 +51,8 @@ Webhooks sent by vonage to update about the status of message
 
 ```json
 {
-    "status": 200,
-    "message":"delievered/submitted/read"
+    "ok": 200,
+    "status":"delievered/submitted/read"
 }
 ```
 
@@ -104,7 +103,7 @@ Secret to verify the webhooks sent by Vonage.
 | ----------------- | ------------------------ |
 | Runtime           | Bun (1.0)              |
 | Entrypoint        | `src/main.js`            |
-| Build Commands    | `Bun run src/main.js` |
+| Build Commands    | `Bun install src/main.js` |
 | Permissions       | `any`                    |
 | Timeout (Seconds) | 15                       |
 
@@ -120,56 +119,6 @@ Following environment variables are required :
 `VONAGE_SIGNATURE_SECRET`
 
 `VONAGE_WHATSAPP_NUMBER`
-
-`PORT`
-## Run Locally
-
-
-
-
-
-**1.Go to the project directory**
-```bash
-  mkdir my-project
-```
-
-```bash
-  cd my-project
-```
-**2.Clone the project**
-
-***Install dependencies***
-
-
-
-
-```bash
-  Bun install express
-```
-
-```bash
-  Bun install jsonwebtoken
-```
-
-**3.Install and setup ngrok**
-
-**4.Start the server**
-
-```bash
-  Bun run src/main.js
-```
-
-
-## POST
-Receives a message, validates its signature, and sends a response back to the sender.
-
-| Name          | Description                        | Location | Type                | Sample Value         |
-| ------------- | ---------------------------------- | -------- | ------------------- | -------------------- |
-| Content-Type  | Content type of the request        | Header   | `application/json ` | N/A                  |
-| Authorization | Webhook signature for verification | Header   | String              | `Bearer <signature>` |
-| from          | Sender's identifier.               | Body     | String              | `user`              |
-| text          | Text content of the message.       | Body     | String              | `Hello World`             |
-
 
 ## Documentation
 
