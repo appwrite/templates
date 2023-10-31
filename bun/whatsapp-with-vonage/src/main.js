@@ -17,10 +17,10 @@ export default async ({ req, res, log, error }) => {
 
 
    if (req.method === "POST") {
-        const secret = `${Bun.env.VONAGE_API_KEY}:${Bun.env.VONAGE_API_SECRET}`;
+        const secret = `${Bun.env.VONAGE_API_KEY}:${Bun.env.VONAGE_ACCOUNT_SECRET}`;
         const basicAuthToken = btoa(secret);
         const authHeader = req.headers.authorization.split(' ')[1];
-        jwt.verify(authHeader, process.env.SIGNATURE_SECRET, { algorithms: ['HS256'] }, (error, response) => {
+        jwt.verify(authHeader, Bun.env.SIGNATURE_SECRET, { algorithms: ['HS256'] }, (error, response) => {
 
             if (error) {
                 return response.json({
