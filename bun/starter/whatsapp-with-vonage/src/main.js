@@ -56,7 +56,7 @@ export default async ({ req, res, log, error }) => {
             await fetch("https://messages-sandbox.nexmo.com/v1/messages", requestOptions)
         }
         res.json({
-            ok: true
+            ok: true,
             status:req.body.status
 
 
