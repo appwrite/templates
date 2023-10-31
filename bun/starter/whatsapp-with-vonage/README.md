@@ -24,7 +24,7 @@ Sample `200` Response:
 ```json
 {
     "status": 200,
-    "message":delievered/submitted/read
+    
 }
 ```
 
@@ -53,7 +53,7 @@ Webhooks sent by vonage to update about the status of message
 ```json
 {
     "status": 200,
-    "message":delievered/submitted/read
+    "message":"delievered/submitted/read"
 }
 ```
 
