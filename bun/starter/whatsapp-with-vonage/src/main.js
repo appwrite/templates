@@ -41,7 +41,7 @@ app.post("/", verify, async (req, res) => {
     from: `${Bun.env.FROM_NUMBER}`,
     to: `${req.body.from}`,
     message_type: "text",
-    text: `you send me: ${req.body.text}`,
+    text: `you sent me: ${req.body.text}`,
     channel: "whatsapp"
   });
 
