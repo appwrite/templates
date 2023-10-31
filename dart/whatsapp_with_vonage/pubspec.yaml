@@ -1,0 +1,16 @@
+name: whatsapp_with_vonage
+version: 1.0.0
+
+environment:
+  sdk: ^2.17.0
+
+dependencies:
+  crypto: ^3.0.2
+  http: ^0.13.5
+  path: ^1.8.3
+  convert: ^3.1.0
+  dart_jsonwebtoken: ^2.12.0
+
+
+dev_dependencies:
+  lints: ^2.0.0
