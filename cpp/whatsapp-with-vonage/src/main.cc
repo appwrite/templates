@@ -67,9 +67,12 @@ class Handler {
         std::string token = req.headers["authorization"].asString();
         int space = token.find(" ");
         token = token.substr(space + 1);
-        auto verifier = jwt::verify().allow_algorithm(
-            jwt::algorithm::hs256(std::getenv("VONAGE_API_SIGNATURE_SECRET")));
-        auto decoded = jwt::decode(token);
+        jwt::verifier<jwt::default_clock, jwt::traits::kazuho_picojson>
+            verifier = jwt::verify().allow_algorithm(jwt::algorithm::hs256(
+                std::getenv("VONAGE_API_SIGNATURE_SECRET")));
+
+        jwt::decoded_jwt<jwt::traits::kazuho_picojson> decoded =
+            jwt::decode(token);
         verifier.verify(decoded);
 
         std::string bodyHash = sha256(req.bodyRaw.c_str());
