@@ -57,26 +57,7 @@ Webhooks sent by vonage to update about the status of message
 }
 ```
 
-**Response:**
 
-
-Sample `200` Response:
-
-```json
-{
-    "status": 200,
-    "message":delievered/submitted/read
-}
-```
-
-Sample `400` Response:
-
-```json
-{
-    "status": 400,
-    "message": "couldn't verify"
-}
-```
 
 ## VONAGE_API_KEY
 
