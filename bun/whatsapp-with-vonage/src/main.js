@@ -1,70 +1,77 @@
-import jwt from 'jsonwebtoken';
-
+import jwt from "jsonwebtoken";
+import { fetch, Headers } from "fetch-undici";
 
 export default async ({ req, res, log, error }) => {
+     if (req.method === "GET") {
+          const fileName = Bun.resolveSync("../index.html", import.meta.dir);
+          const html = await Bun.file(fileName).text();
 
-    const html = file("public/index.html")
-    if (req.method === "GET") {
-        return res.send(html, {
-            satus: 200,
-            headers: {
-                "Content-Type": "text/html",
-            },
-        });
+          return res.send(html, 200, {
+               "Content-Type": "text/html; charset=utf-8",
+          });
+     }
 
-    }
+     if (req.method === "POST") {
+          const secret = `${Bun.env.VONAGE_API_KEY}:${Bun.env.VONAGE_ACCOUNT_SECRET}`;
+          const basicAuthToken = btoa(secret);
+          const authHeader = req.headers.authorization.split(" ")[1];
+          await jwt.verify(
+               authHeader,
+               Bun.env.SIGNATURE_SECRET,
+               { algorithms: ["HS256"] },
+               (error, decodedToken) => {
+                    if (error) {
+                         return res.json(
+                              {
+                                   ok: false,
+                                   error: "can't verify",
+                              },
+                              400,
+                         );
+                    }
+               },
+          );
 
+          const myHeaders = new Headers();
+          myHeaders.append("Accept", "application/json");
+          myHeaders.append("Content-Type", "application/json");
+          myHeaders.append("Authorization", `Basic ${basicAuthToken}`);
 
+          const bodyContent = JSON.stringify({
+               from: `${Bun.env.FROM_NUMBER}`,
+               to: `${req.body.from}`,
+               message_type: "text",
+               text: `you sent me: ${req.body.text}`,
+               channel: "whatsapp",
+          });
 
-   if (req.method === "POST") {
-        const secret = `${Bun.env.VONAGE_API_KEY}:${Bun.env.VONAGE_ACCOUNT_SECRET}`;
-        const basicAuthToken = btoa(secret);
-        const authHeader = req.headers.authorization.split(' ')[1];
-        jwt.verify(authHeader, Bun.env.SIGNATURE_SECRET, { algorithms: ['HS256'] }, (error, response) => {
+          const requestOptions = {
+               method: "POST",
+               headers: myHeaders,
+               body: bodyContent,
+          };
+          if (!(req.body.text == null)) {
+               await fetch(
+                    "https://messages-sandbox.nexmo.com/v1/messages",
+                    requestOptions,
+               );
+          }
 
-            if (error) {
-                return response.json({
-                    ok: false,
-                    error: "can't verify"
+          return res.json(
+               {
+                    ok: true,
+                    status: req.body.status,
+               },
+               200,
+          );
+     }
 
-                }, 400);
-            }
+     return res.json({
+          motto: "Build like a team of hundreds_",
+          learn: "https://appwrite.io/docs",
+          connect: "https://appwrite.io/discord",
+          getInspired: "https://builtwith.appwrite.io",
+     });
+};
 
-
-        })
-
-        const myHeaders = new Headers();
-        myHeaders.append("Accept", "application/json");
-        myHeaders.append("Content-Type", "application/json");
-        myHeaders.append("Authorization", `Basic ${basicAuthToken}`);
-
-        const raw = JSON.stringify({
-            from: `${Bun.env.FROM_NUMBER}`,
-            to: `${req.body.from}`,
-            message_type: "text",
-            text: `you sent me: ${req.body.text}`,
-            channel: "whatsapp"
-        });
-
-        const requestOptions = {
-            method: 'POST',
-            headers: myHeaders,
-            body: raw,
-
-        };
-        if (!(req.body.text == null)) {
-            await fetch("https://messages-sandbox.nexmo.com/v1/messages", requestOptions)
-        }
-        res.json({
-            ok: true,
-            status:req.body.status
-
-
-
-        }, 200)
-    }
-
-
-
-}
 
