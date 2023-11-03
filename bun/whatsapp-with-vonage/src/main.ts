@@ -3,7 +3,7 @@ import { fetch, Headers } from "fetch-undici";
 
 export default async ({ req, res, log, error }) => {
      if (req.method === "GET") {
-          const fileName = Bun.resolveSync("../index.html", import.meta.dir);
+          const fileName = Bun.resolveSync("../static/index.html", import.meta.dir);
           const html = await Bun.file(fileName).text();
 
           return res.send(html, 200, {
