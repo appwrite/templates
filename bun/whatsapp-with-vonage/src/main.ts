@@ -37,7 +37,7 @@ export default async ({ req, res, log, error }) => {
     myHeaders.append("Authorization", `Basic ${basicAuthToken}`);
 
     const bodyContent = JSON.stringify({
-      from: `${Bun.env.FROM_NUMBER}`,
+      from: `${Bun.env.VONAGE_WHATSAPP_NUMBER}`,
       to: `${req.body.from}`,
       message_type: "text",
       text: `you sent me: ${req.body.text}`,
