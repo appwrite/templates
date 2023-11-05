@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:typed_data';
 import 'package:generate_pdf/pdf.dart';
-import 'faker_order.dart';
+import 'fake_order.dart';
 
 Future<dynamic> main(final context) async {
   final pdf = PDF();
