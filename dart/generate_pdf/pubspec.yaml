@@ -1,11 +1,11 @@
-name: starter_template
+name: generate_pdf
 version: 1.0.0
 
 environment:
-  sdk: ^2.17.0
+  sdk: ^3.0.0
 
 dependencies:
-  dart_appwrite: 8.0.0
+  dart_appwrite: ^10.0.0
   pdf: ^3.10.4
   faker: ^2.1.0
 

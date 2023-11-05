@@ -1,7 +1,4 @@
-import 'dart:ffi';
-
 import 'package:faker/faker.dart';
-
 import 'models/models.dart';
 
 class FakeOrder {

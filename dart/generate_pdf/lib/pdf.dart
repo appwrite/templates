@@ -1,8 +1,5 @@
-import 'dart:io';
 import 'dart:typed_data';
-
 import 'package:pdf/widgets.dart';
-
 import 'models/models.dart';
 
 class PDF {
@@ -40,10 +37,7 @@ class PDF {
   }
 
   Future<Uint8List> _save(String name) async {
-    // File file = File('$name.pdf');
     var x = await pdf.save();
-
-    /// await file.writeAsBytes(x);
     return x;
   }
 }

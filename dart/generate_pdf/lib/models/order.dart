@@ -1,4 +1,4 @@
-import 'package:starter_template/models/item.dart';
+import 'item.dart';
 
 class Order {
   String id;
