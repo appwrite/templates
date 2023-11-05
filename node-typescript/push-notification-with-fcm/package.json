@@ -1,0 +1,22 @@
+{
+  "name": "push-notification-with-fcm",
+  "version": "1.0.0",
+  "description": "Push Notifications with FCM",
+  "type": "module",
+  "main": "dist/main.js",
+  "scripts": {
+    "build": "tsc",
+    "format": "prettier --write ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "firebase-admin": "^11.11.0",
+    "typescript": "^5.2.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.10",
+    "prettier": "^3.0.3"
+  }
+}
