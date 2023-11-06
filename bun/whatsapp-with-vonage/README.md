@@ -38,6 +38,15 @@ Sample `400` Response:
 }
 ```
 
+Sample `401` Response:
+
+```json
+{
+  "ok": false,
+  "error": "Payload hash mismatch."
+}
+```
+
 ## POST/
 
 Webhooks sent by vonage to update about the status of message
