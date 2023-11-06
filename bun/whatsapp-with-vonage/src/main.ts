@@ -11,33 +11,30 @@ export default async ({ req, res, log, error }) => {
     });
   }
 
-  const secret = `${Bun.env.VONAGE_API_KEY}:${Bun.env.VONAGE_ACCOUNT_SECRET}`;
-  const basicAuthToken = btoa(secret);
-  const authHeader = req.headers.authorization.split(" ")[1];
-  const decodedToken = await jwt.verify(
-    authHeader,
-    Bun.env.SIGNATURE_SECRET,
-    { algorithms: ["HS256"] },
-    (error, decodedToken) => {
-      if (error) {
-        return res.json(
-          {
-            ok: false,
-            error: "can't verify",
-          },
-          400
-        );
-      }
-    }
-  );
-
   const hasher = new Bun.CryptoHasher("sha256");
-  hasher.update(req.bodyRaw);
+  const buffer = hasher.update(JSON.stringify(req.body)).digest();
+  const hashed_value = buffer.toString("hex");
 
-  if (hasher.digest("hex") != decodedToken["payload_hash"]) {
-    return res.json({ ok: false, error: "Payload hash mismatch." }, 401);
+  try {
+    const authHeader = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwt.verify(authHeader, Bun.env.SIGNATURE_SECRET, {
+      algorithms: ["HS256"],
+    });
+    if (hashed_value != decodedToken["payload_hash"]) {
+      return res.json({
+        ok: false,
+        error: "Payload mismatched",
+      });
+    }
+  } catch (err) {
+    return res.json({
+      ok: false,
+      error: "can't verify",
+    });
   }
 
+  const secret = `${Bun.env.VONAGE_API_KEY}:${Bun.env.VONAGE_ACCOUNT_SECRET}`;
+  const basicAuthToken = btoa(secret);
   if (!(req.body.text == null)) {
     await fetch(`https://messages-sandbox.nexmo.com/v1/messages`, {
       method: "POST",
