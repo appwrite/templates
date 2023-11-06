@@ -11,16 +11,20 @@ export default async ({ req, res, log, error }) => {
     });
   }
 
-  const hasher = new Bun.CryptoHasher("sha256");
-  const buffer = hasher.update(JSON.stringify(req.body)).digest();
-  const hashed_value = buffer.toString("hex");
-
   try {
+    const hasher = new Bun.CryptoHasher("sha256");
+    const hashedBuffer = hasher.update(JSON.stringify(req.body)).digest("hex");
+    const hashedValue = hashedBuffer.toString();
+
     const authHeader = req.headers.authorization.split(" ")[1];
-    const decodedToken = jwt.verify(authHeader, Bun.env.SIGNATURE_SECRET, {
-      algorithms: ["HS256"],
-    });
-    if (hashed_value != decodedToken["payload_hash"]) {
+    const decodedToken = jwt.verify(
+      authHeader,
+      Bun.env.VONAGE_SIGNATURE_SECRET,
+      {
+        algorithms: ["HS256"],
+      }
+    );
+    if (hashedValue != decodedToken["payload_hash"]) {
       return res.json({
         ok: false,
         error: "Payload mismatched",
@@ -35,6 +39,7 @@ export default async ({ req, res, log, error }) => {
 
   const secret = `${Bun.env.VONAGE_API_KEY}:${Bun.env.VONAGE_ACCOUNT_SECRET}`;
   const basicAuthToken = btoa(secret);
+
   if (!(req.body.text == null)) {
     await fetch(`https://messages-sandbox.nexmo.com/v1/messages`, {
       method: "POST",
