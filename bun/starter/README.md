@@ -26,7 +26,7 @@ Sample `200` Response:
 
 ```json
 {
-  "motto": "Build like a team of hundreds_",
+  "motto": "Build Fast. Scale Big. All in One Place.",
   "learn": "https://appwrite.io/docs",
   "connect": "https://appwrite.io/discord",
   "getInspired": "https://builtwith.appwrite.io"
@@ -44,5 +44,4 @@ Sample `200` Response:
 | Timeout (Seconds) | 15            |
 
 ## 🔒 Environment Variables
-
 No environment variables required.
