@@ -106,6 +106,6 @@ Secret to verify the webhooks sent by Vonage.
 | ----------------- | -------------- |
 | Runtime           | Bun (1.0)      |
 | Entrypoint        | `src/main.ts`  |
-| Build Commands    | `Bun install ` |
+| Build Commands    | `bun install ` |
 | Permissions       | `any`          |
 | Timeout (Seconds) | 15             |
