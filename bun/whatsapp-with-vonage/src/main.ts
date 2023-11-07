@@ -19,10 +19,13 @@ export default async ({ req, res, log, error }) => {
   });
 
   if (hashedValue != decodedToken["payload_hash"]) {
-    return res.json({
-      ok: false,
-      error: "Payload mismatched",
-    });
+    return res.json(
+      {
+        ok: false,
+        error: "Payload hash mismatched",
+      },
+      401
+    );
   }
 
   const secret = `${Bun.env.VONAGE_API_KEY}:${Bun.env.VONAGE_ACCOUNT_SECRET}`;
