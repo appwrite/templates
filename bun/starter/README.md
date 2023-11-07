@@ -44,4 +44,5 @@ Sample `200` Response:
 | Timeout (Seconds) | 15            |
 
 ## 🔒 Environment Variables
+
 No environment variables required.
