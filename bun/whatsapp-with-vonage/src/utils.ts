@@ -1,4 +1,4 @@
-// Throws an error if any of the keys are missing from the object
+//  Returns the contents of a file in the static folder
 
 export async function getStaticFiles(fileName: string) {
   const filePath = Bun.resolveSync(`../static/${fileName}`, import.meta.dir);
@@ -6,7 +6,7 @@ export async function getStaticFiles(fileName: string) {
   return html;
 }
 
-//  Returns the contents of a file in the static folder
+// Throws an error if any of the keys are missing from the object
 
 export function throwIfMissing(object: any, keys: string[]) {
   const missing: string[] = [];
