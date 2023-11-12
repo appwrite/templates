@@ -2,7 +2,14 @@ import jwt from "jsonwebtoken";
 import { fetch } from "undici";
 import { getStaticFiles, throwIfMissing } from "./utils.ts";
 
-export default async ({ req, res, log, error }: any) => {
+type Context = {
+  req: any;
+  res: any;
+  log: (msg: any) => void;
+  error: (msg: any) => void;
+};
+
+export default async ({ req, res, log, error }: Context) => {
   throwIfMissing(Bun.env, [
     "VONAGE_API_KEY",
     "VONAGE_ACCOUNT_SECRET",
@@ -15,8 +22,9 @@ export default async ({ req, res, log, error }: any) => {
       "Content-Type": "text/html; charset=utf-8",
     });
   }
-  const authHeader: string = (req.headers.authorization ?? "").split(" ")[1];
-  const decodedToken = jwt.verify(authHeader, Bun.env.VONAGE_SIGNATURE_SECRET, {
+
+  const token: string = (req.headers.authorization ?? "").split(" ")[1];
+  const decodedToken = jwt.verify(token, Bun.env.VONAGE_SIGNATURE_SECRET, {
     algorithms: ["HS256"],
   });
 
@@ -34,18 +42,18 @@ export default async ({ req, res, log, error }: any) => {
   }
 
   try {
-    throwIfMissing(req.body, ["from", "text"]);
+    throwIfMissing(req.body, ["from", "to"]);
   } catch (err) {
     return res.json({ ok: false, error: err.message }, 400);
+  }
+
+  if (req.body.text == null) {
+    return res.json({ ok: true, status: req.body.status }, 200);
   }
 
   const basicAuthToken: string = btoa(
     `${Bun.env.VONAGE_API_KEY}:${Bun.env.VONAGE_ACCOUNT_SECRET}`
   );
-
-  if (req.body.text == null) {
-    return res.json({ ok: true, status: req.body.status }, 200);
-  }
 
   await fetch(`https://messages-sandbox.nexmo.com/v1/messages`, {
     method: "POST",

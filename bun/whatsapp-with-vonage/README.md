@@ -34,7 +34,14 @@ Sample `400` Response:
 ```json
 {
   "ok": false,
-  "error": "can't verify"
+  "error": "Missing required parameter: from"
+}
+```
+
+```json
+{
+  "ok": false,
+  "error": "Missing required parameter: payload_hash"
 }
 ```
 
@@ -49,7 +56,7 @@ Sample `401` Response:
 
 ## POST/
 
-Webhooks sent by vonage to update about the status of message
+Event webhooks sent by vonage to update about the status of message
 
 | Name   | Description                   | Location | Type   | Sample Value              |
 | ------ | ----------------------------- | -------- | ------ | ------------------------- |
@@ -60,7 +67,7 @@ Webhooks sent by vonage to update about the status of message
 ```json
 {
   "ok": 200,
-  "status": "delievered/submitted/read"
+  "status": "delievered"
 }
 ```
 
