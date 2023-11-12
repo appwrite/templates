@@ -13,6 +13,7 @@ export function throwIfMissing(object: any, keys: string[]) {
   }
 }
 
+
 /*
  * Returns the contents of a file in the static folder
  */
