@@ -47,10 +47,6 @@ export default async ({ req, res, log, error }: Context) => {
     return res.json({ ok: false, error: err.message }, 400);
   }
 
-  if (req.body.text == null) {
-    return res.json({ ok: true, status: req.body.status }, 200);
-  }
-
   const basicAuthToken: string = btoa(
     `${Bun.env.VONAGE_API_KEY}:${Bun.env.VONAGE_ACCOUNT_SECRET}`
   );
