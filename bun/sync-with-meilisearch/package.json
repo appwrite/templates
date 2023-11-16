@@ -1,0 +1,20 @@
+{
+  "name": "sync-with-meilisearch",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/main.ts",
+  "type": "module",
+  "scripts": {
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "bun-types": "^1.0.7",
+    "meilisearch": "^0.35.0",
+    "node-appwrite": "^11.0.0",
+    "path": "^0.12.7",
+    "url": "^0.11.3"
+  },
+  "devDependencies": {
+    "prettier": "^3.0.0"
+  }
+}
