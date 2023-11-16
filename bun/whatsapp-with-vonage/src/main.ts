@@ -8,6 +8,7 @@ type Context = {
   log: (msg: any) => void;
   error: (msg: any) => void;
 };
+
 export default async ({ req, res, log, error }: Context) => {
   throwIfMissing(Bun.env, [
     "VONAGE_API_KEY",
