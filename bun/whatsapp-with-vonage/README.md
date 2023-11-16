@@ -4,11 +4,11 @@ Simple bot to answer WhatsApp messages.
 
 ## 🧰 Usage
 
-## GET/
+## GET /
 
 HTML form interacting with the function.
 
-## POST/
+## POST /
 
 Receives a message, validates its signature, and sends a response back to the sender.
 
@@ -38,36 +38,12 @@ Sample `400` Response:
 }
 ```
 
-```json
-{
-  "ok": false,
-  "error": "Missing required parameter: payload_hash"
-}
-```
-
 Sample `401` Response:
 
 ```json
 {
   "ok": false,
   "error": "Payload hash mismatch."
-}
-```
-
-## POST/
-
-Event webhooks sent by vonage to update about the status of message
-
-| Name   | Description                   | Location | Type   | Sample Value              |
-| ------ | ----------------------------- | -------- | ------ | ------------------------- |
-| Status | showing the status of message | body     | string | submitted/read/delievered |
-
-**Response:**
-
-```json
-{
-  "ok": 200,
-  "status": "delievered"
 }
 ```
 

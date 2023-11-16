@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import { fetch } from "undici";
-import { getStaticFiles, throwIfMissing } from "./utils.ts";
+import { getStaticFile, throwIfMissing } from "./utils.ts";
 
 type Context = {
   req: any;
@@ -8,19 +8,16 @@ type Context = {
   log: (msg: any) => void;
   error: (msg: any) => void;
 };
-
 export default async ({ req, res, log, error }: Context) => {
-  
   throwIfMissing(Bun.env, [
     "VONAGE_API_KEY",
     "VONAGE_ACCOUNT_SECRET",
     "VONAGE_WHATSAPP_NUMBER",
     "VONAGE_SIGNATURE_SECRET",
   ]);
-  
-  
+
   if (req.method === "GET") {
-    return res.send(getStaticFiles("index.html"), 200, {
+    return res.send(getStaticFile("index.html"), 200, {
       "Content-Type": "text/html; charset=utf-8",
     });
   }
@@ -29,34 +26,29 @@ export default async ({ req, res, log, error }: Context) => {
   const decodedToken = jwt.verify(token, Bun.env.VONAGE_SIGNATURE_SECRET, {
     algorithms: ["HS256"],
   });
-  
 
   try {
     throwIfMissing(decodedToken, ["payload_hash"]);
   } catch (err) {
     return res.json({ ok: false, error: err.message }, 400);
   }
-  
+
   const hasher = new Bun.CryptoHasher("sha256");
   const hashedValue = hasher.update(req.bodyRaw).digest("hex").toString();
-  
 
   if (hashedValue != decodedToken["payload_hash"]) {
     return res.json({ ok: false, error: "Payload hash mismatched" }, 401);
   }
-  
 
   try {
     throwIfMissing(req.body, ["from", "to"]);
   } catch (err) {
     return res.json({ ok: false, error: err.message }, 400);
   }
-  
 
   if (req.body.text == null) {
     return res.json({ ok: true, status: req.body.status }, 200);
   }
-  
 
   const basicAuthToken: string = btoa(
     `${Bun.env.VONAGE_API_KEY}:${Bun.env.VONAGE_ACCOUNT_SECRET}`

@@ -13,13 +13,10 @@ export function throwIfMissing(object: any, keys: string[]) {
   }
 }
 
-
 /*
  * Returns the contents of a file in the static folder
  */
-
-export async function getStaticFiles(fileName: string) {
+export async function getStaticFile(fileName: string) {
   const filePath = Bun.resolveSync(`../static/${fileName}`, import.meta.dir);
-  const html = await Bun.file(filePath).text();
-  return html;
+  return await Bun.file(filePath).text();
 }
