@@ -42,7 +42,7 @@ export default async ({ req, res, log, error }: Context) => {
   }
 
   try {
-    throwIfMissing(req.body, ["from", "to"]);
+    throwIfMissing(req.body, ["from", "text"]);
   } catch (err) {
     return res.json({ ok: false, error: err.message }, 400);
   }
