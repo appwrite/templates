@@ -24,6 +24,15 @@ Sample `200` Response:
 Hello, World!
 ```
 
+Sample `400` Response:
+
+```json
+{
+  "ok": false,
+  "error": "Missing required fields: x-slack-signature"
+}
+```
+
 ## ⚙️ Configuration
 
 | Setting           | Value         |

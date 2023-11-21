@@ -34,7 +34,7 @@ export function throwIfRequestNotValid(req) {
   const signatureBaseString = `v0:${timestamp}:${req.bodyRaw}`;
   const hmac = crypto.createHmac('sha256', process.env['SLACK_SIGNING_SECRET']);
   hmac.update(signatureBaseString);
-  
+
   const expectedSignature = `v0=${hmac.digest('hex')}`;
   if (expectedSignature !== signature) {
     throw new Error('Invalid request: incorrect signature');
