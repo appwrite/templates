@@ -45,25 +45,25 @@ The endpoint where your Appwrite server is located. If not provided, it defaults
 
 ### APPWRITE_DATABASE_ID
 
-The ID of the database to store the orders.
+The ID of the database to wipe documents from.
 
 | Question     | Answer |
 | ------------ | ------ |
 | Required     | Yes    |
 | Sample Value | `main` |
 
-### APPWRITE_FUNCTION_PROJECT_ID
+### APPWRITE_COLLECTION_ID
 
-The ID of the Appwrite project.
+The ID of the collection to wipe documents from.
 
-| Question     | Answer          |
-| ------------ | --------------- |
-| Required     | Yes             |
-| Sample Value | `6525e...d44e3` |
+| Question     | Answer     |
+| ------------ | ---------- |
+| Required     | Yes        |
+| Sample Value | `profiles` |
 
 ### RETENTION_PERIOD_DAYS
 
-The number of days you want to retain a document. If not provided, it defaults to 30 days.
+The number of days you want to retain a document. If not provided, it defaults to 30 days. Only documents older than this period will be deleted.
 
 | Question     | Answer |
 | ------------ | ------ |

@@ -1,4 +1,3 @@
-
 /**
  * Returns a date subtracted by the retention period from the current date.
  * The retention period is fetched from the RETENTION_PERIOD_DAYS environment variable.
@@ -7,7 +6,9 @@
  */
 export function getExpiryDate() {
   const retentionPeriod = Number(process.env.RETENTION_PERIOD_DAYS ?? 30);
-  return new Date(Date.now() - (retentionPeriod * 24 * 60 * 60 * 1000)).toISOString()
+  return new Date(
+    Date.now() - retentionPeriod * 24 * 60 * 60 * 1000
+  ).toISOString();
 }
 
 /**
