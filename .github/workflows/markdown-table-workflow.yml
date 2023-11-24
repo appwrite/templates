@@ -1,14 +1,11 @@
 name: "Generate README markdown table"
 
 on:
-  pull_request:
+  push:
     branches:
       - main
-    types:
-      - closed
 jobs:
   readme-generator:
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     permissions:
@@ -17,8 +14,6 @@ jobs:
     steps:
     - name: Prepare repository
       uses: actions/checkout@v4
-      with:
-        ref: ${{ github.event.pull_request.base.ref }}
 
     - name: Prepare Node.js
       uses: actions/setup-node@v3
@@ -35,3 +30,4 @@ jobs:
       uses: stefanzweifel/git-auto-commit-action@v5
       with:
         commit_message: "docs: update README table"
+
