@@ -8,8 +8,8 @@ Future<dynamic> main(final context) async {
   //
   // final client = Client()
   //    .setEndpoint('https://cloud.appwrite.io/v1')
-  //    .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
-  //    .setKey(process.env.APPWRITE_API_KEY);
+  //    .setProject(Platform.environment['APPWRITE_FUNCTION_PROJECT_ID'])
+  //    .setKey(Platform.environment['APPWRITE_API_KEY']);
 
   // You can log messages to the console
   context.log('Hello, Logs!');
