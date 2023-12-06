@@ -3,6 +3,8 @@
 Storage cleaner function to remove all files older than X number of days from the specified bucket.
 
 ## 🧰 Usage
+Make sure Entrypoint is pointing to main.js eg:(src/main.js)
+and "npm install" is in the build commands if done manually
 
 ### GET /
 
