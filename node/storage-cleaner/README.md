@@ -51,7 +51,7 @@ API Key to talk to Appwrite backend APIs.
 | ------------- | -------------------------------------------------------------------------------------------------- |
 | Required      | Yes                                                                                                |
 | Sample Value  | `d1efb...aec35`                                                                                    |
-| Documentation | [Appwrite: Getting Started for Server](https://appwrite.io/docs/getting-started-for-server#apiKey) |
+| Documentation | [Appwrite: Getting Started for Server](https://appwrite.io/docs/advanced/platform/api-keys) |
 
 ### APPWRITE_ENDPOINT
 

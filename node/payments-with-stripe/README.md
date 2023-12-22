@@ -79,7 +79,7 @@ Your Appwrite project's API key.
 | ------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
 | Required      | Yes                                                                                                                                       |
 | Sample Value  | `083d341ee48...`                                                                                                                          |
-| Documentation | [Appwrite: Create an API key](https://appwrite.io/docs/keys#:~:text=To%20create%20a%20new%20API,scope%20to%20grant%20your%20application.) |
+| Documentation | [Appwrite: Create an API key](https://appwrite.io/docs/advanced/platform/api-keys#:~:text=To%20create%20a%20new%20API,scope%20to%20grant%20your%20application.) |
 
 ### APPWRITE_ENDPOINT
 
