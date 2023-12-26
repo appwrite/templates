@@ -29,6 +29,7 @@ Templates for [Appwrite](https://appwrite.io/) Functions. These templates can be
 | Storage Cleaner             | [✅](node/storage-cleaner)             | 🏗️                               | 🏗️                            | 🏗️                            | 🏗️                                        | 🏗️                            | 🏗️                             | 🏗️                             | 🏗️                               | 🏗️              | 🏗️                 | 🏗️               | 🏗️                |
 | Subscriptions with Stripe   | [✅](node/subscriptions-with-stripe)   | 🏗️                               | 🏗️                            | 🏗️                            | 🏗️                                        | 🏗️                            | 🏗️                             | 🏗️                             | 🏗️                               | 🏗️              | 🏗️                 | 🏗️               | 🏗️                |
 | URL Shortener               | [✅](node/url-shortener)               | 🏗️                               | 🏗️                            | 🏗️                            | 🏗️                                        | 🏗️                            | 🏗️                             | 🏗️                             | 🏗️                               | 🏗️              | 🏗️                 | 🏗️               | 🏗️                |
+
 <!-- TABLE:END -->
 
 ✅ = Done - Function is implemented in this runtime.
@@ -42,7 +43,6 @@ All code contributions - including those of people having commit access - must g
 All functions should have the exactly same functionality as their other language counterparts and if possible you should avoid using any third-party libraries to keep the functions simple and secure.
 
 We truly ❤️ pull requests! If you wish to help, you can learn more about how you can contribute to this project in the [contribution guide](https://github.com/open-runtimes/.github/blob/main/CONTRIBUTING.md).
-
 
 ## Security
 
