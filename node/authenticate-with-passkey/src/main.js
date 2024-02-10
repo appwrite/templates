@@ -42,7 +42,6 @@ export default async ({ req, res, log }) => {
     const user = await appwrite.prepareUser(req.body.email);
 
     const credential = await appwrite.getCredential(user.$id);
-
     if (credential) {
       return res.send('You already have passkey. Please sign in.', 400, corsHeaders);
     }
@@ -131,11 +130,8 @@ export default async ({ req, res, log }) => {
 
     const user = await appwrite.prepareUser(req.body.email);
 
-    let credential;
-    try {
-      credential = await appwrite.getCredential(user.$id);
-    } catch (error) {
-      log(error);
+    const credential = await appwrite.getCredential(user.$id);
+    if(!credential) {
       return res.send('You do not have passkey yet. Please sign up.', 400, corsHeaders);
     }
 
@@ -177,11 +173,8 @@ export default async ({ req, res, log }) => {
       return res.send('Challenge not found. Please start over.', 400, corsHeaders);
     }
 
-    let credential;
-    try {
-      credential = await appwrite.getCredential(challenge.userId);
-    } catch (error) {
-      log(error);
+    const credential = await appwrite.getCredential(challenge.userId);
+    if(!credential) {
       return res.send('You do not have passkey yet. Please sign up.', 400, corsHeaders);
     }
 
@@ -215,7 +208,8 @@ export default async ({ req, res, log }) => {
     const token = await appwrite.createSessionToken(challenge.userId);
 
     return res.json({
-      secret: token.secret
+      secret: token.secret,
+      userId: challenge.userId
     }, 200, corsHeaders);
   }
 
