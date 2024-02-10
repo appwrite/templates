@@ -1,3 +1,12 @@
+TODO: Finish based on:
+- https://www.passkeys.com/guides
+- https://developer.mozilla.org/en-US/docs/Web/API/Web_Authentication_API
+
+- Implement regsitration on frontend
+- Ensure /register/finish works
+- Implement login
+- Fix all `TODO`
+
 # 📬 Node.js Authenticate with Passkey
 
 Sign-in with passkey into Appwrite Account.

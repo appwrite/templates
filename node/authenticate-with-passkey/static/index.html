@@ -13,16 +13,17 @@
   <script>
     document.addEventListener('alpine:init', () => {
       Alpine.data('app', () => ({
+        // TODO: Disable form button if submitting
         email: '',
         tab: 'signup',
         goToTab: function (tab) {
           this.tab = tab;
         },
         onSignUp: function() {
-          
+          // TODO: Implement
         },
         onSignIn: function() {
-
+          // TODO: Implement
         }
       }))
     })
