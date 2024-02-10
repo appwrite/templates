@@ -43,7 +43,7 @@ export default async ({ req, res, log }) => {
 
     const credential = await appwrite.getCredential(user.$id);
 
-    if(credential) {
+    if (credential) {
       return res.send('You already have passkey. Please sign in.', 400, corsHeaders);
     }
 
@@ -131,20 +131,24 @@ export default async ({ req, res, log }) => {
 
     const user = await appwrite.prepareUser(req.body.email);
 
+    let credential;
+    try {
+      credential = await appwrite.getCredential(user.$id);
+    } catch (error) {
+      log(error);
+      return res.send('You do not have passkey yet. Please sign up.', 400, corsHeaders);
+    }
+
+    const authenticator = JSON.parse(credential.credentials);
+
     const options = await SimpleWebAuthnServer.generateAuthenticationOptions({
       rpID: process.env.ALLOWED_HOSTNAME,
       userVerification: 'preferred',
-      // TODO: Suggest with allowCredentials
-      /*
-      allowCredentials: credentials.map(credential => {
-        const json = JSON.parse(credential.credentials);
-        return {
-          id: atob(json.credentialID),
-          type: 'public-key',
-          transports: json.transports
-        }
-      }),
-      */
+      allowCredentials: [{
+        id: SimpleWebAuthnServerHelpers.isoUint8Array.fromHex(authenticator.credentialID),
+        type: 'public-key',
+        transports: authenticator.transports
+      }]
     });
 
     const challenge = await appwrite.createChallenge(user.$id, options.challenge);
