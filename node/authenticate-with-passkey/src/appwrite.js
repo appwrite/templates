@@ -25,6 +25,10 @@ class AppwriteService {
     return user;
   }
 
+  async createSessionToken(userId) {
+    return await this.users.createToken(userId, 64, 60);
+  }
+
   async createChallenge(userId, token) {
     return await this.databases.createDocument('main', 'challenges', ID.unique(), {
       userId: userId,
@@ -43,8 +47,17 @@ class AppwriteService {
   async createCredentials(userId, credentials) {
     return await this.databases.createDocument('main', 'credentials', ID.unique(), {
       userId,
-      credentials
+      credentials: JSON.stringify(credentials)
     });
+  }
+
+  async getCredential(userId) {
+    const documents = (await this.databases.listDocuments('main', 'credentials', [
+      Query.equal('userId', userId),
+      Query.limit(1)
+    ])).documents;
+
+    return documents[0];
   }
 }
 

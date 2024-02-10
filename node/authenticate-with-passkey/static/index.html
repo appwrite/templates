@@ -9,21 +9,108 @@
   <link rel="stylesheet" href="https://unpkg.com/@appwrite.io/pink" />
   <link rel="stylesheet" href="https://unpkg.com/@appwrite.io/pink-icons" />
   <script src="//unpkg.com/alpinejs" defer></script>
+  <script src="https://unpkg.com/@simplewebauthn/browser/dist/bundle/index.umd.min.js"></script>
 
   <script>
     document.addEventListener('alpine:init', () => {
       Alpine.data('app', () => ({
-        // TODO: Disable form button if submitting
+        submitting: false,
         email: '',
-        tab: 'signup',
+        tab: 'signin',
         goToTab: function (tab) {
           this.tab = tab;
         },
-        onSignUp: function() {
-          // TODO: Implement
+        onSignUp: async function () {
+          if (this.submitting) {
+            return;
+          }
+
+          this.submitting = true;
+
+          try {
+            const responseStart = await fetch('https://passkey.functions.qa.appwrite.org/v1/challenges', {
+              method: 'POST',
+              body: JSON.stringify({ email: this.email }),
+              headers: {
+                'Content-type': 'application/json'
+              }
+            });
+
+            if (!responseStart.ok) {
+              throw new Error(await responseStart.text());
+            }
+
+            const body = await responseStart.json();
+
+            const registration = await SimpleWebAuthnBrowser.startRegistration(body.options);
+
+            const responseFinish = await fetch('https://passkey.functions.qa.appwrite.org/v1/challenges', {
+              method: 'PUT',
+              body: JSON.stringify({ challengeId: body.challengeId, registration }),
+              headers: {
+                'Content-type': 'application/json'
+              }
+            });
+
+            if (!responseFinish.ok) {
+              throw new Error(await responseFinish.text());
+            }
+
+            this.tab = 'signin';
+          } catch (err) {
+            console.log(err);
+            alert(err.message);
+          } finally {
+            this.submitting = false;
+          }
         },
-        onSignIn: function() {
-          // TODO: Implement
+        onSignIn: async function () {
+          if (this.submitting) {
+            return;
+          }
+
+          this.submitting = true;
+
+          try {
+            const responseStart = await fetch('https://passkey.functions.qa.appwrite.org/v1/tokens', {
+              method: 'POST',
+              body: JSON.stringify({ email: this.email }),
+              headers: {
+                'Content-type': 'application/json'
+              }
+            });
+
+            if (!responseStart.ok) {
+              throw new Error(await responseStart.text());
+            }
+
+            const body = await responseStart.json();
+
+            const authentication = await SimpleWebAuthnBrowser.startAuthentication(body.options);
+
+            const responseFinish = await fetch('https://passkey.functions.qa.appwrite.org/v1/tokens', {
+              method: 'PUT',
+              body: JSON.stringify({ challengeId: body.challengeId, authentication }),
+              headers: {
+                'Content-type': 'application/json'
+              }
+            });
+
+            if (!responseFinish.ok) {
+              throw new Error(await responseFinish.text());
+            }
+
+            const token = await responseFinish.json();
+
+            // TODO: Create session
+            console.log(token.secret);
+            
+          } catch (err) {
+            console.log(err);
+            alert(err.message);
+          } finally {
+            this.submitting = false;
+          }
         }
       }))
     })
@@ -45,10 +132,10 @@
     </header>
 
     <main class="main-content u-margin-block-start-24">
-      <div class="container hero-top-container u-max-width-650">
+      <div class="container hero-top-container u-max-width-650" style="padding-top: 0px;">
         <div class="hero u-text-center">
           <section class="u-margin-inline-auto">
-            <svg style="width: 10rem; opacity: 0.5;" class="u-margin-block-start-16" xmlns="http://www.w3.org/2000/svg"
+            <svg style="width: 10rem; opacity: 0.5;" class="u-margin-block-start-0" xmlns="http://www.w3.org/2000/svg"
               fill="none" viewBox="0 -1 158 160" stroke-width="0.5" stroke="currentColor">
               <g filter="url(#filter0_b_6_2371)">
                 <circle cx="78.871" cy="78.871" r="78.871" transform="matrix(1 0 0 -1 0.257996 157.742)"
@@ -93,9 +180,8 @@
                 </linearGradient>
               </defs>
             </svg>
-            <h1 class="eyebrow-heading-3 u-margin-block-start-52 u-color-text-pink">Biometric authentication</h1>
             <h2 class="heading-level-1 u-margin-block-start-16">
-              Get started with passkeys
+              Biometric authentication
             </h2>
             <p class="body-text-1 u-small u-margin-block-start-16">
               Passkeys provide authentication method that does not require users to remember something. Instead, a
@@ -130,7 +216,7 @@
                 </li>
 
                 <li class="form-item">
-                  <button class="button is-primary" type="submit">
+                  <button :disabled="submitting" class="button is-primary" type="submit">
                     <span class="icon-finger-print" aria-hidden="true"></span>
                     <span class="text">Sign in</span>
                   </button>
@@ -144,7 +230,7 @@
               <ul class="form-list">
                 <li class="form-item">
                   <h2 class="heading-level-6 u-margin-block-start-16">
-                    Create new account
+                    Create a new account
                   </h2>
                 </li>
                 <li class="form-item">
@@ -155,7 +241,7 @@
                 </li>
 
                 <li class="form-item">
-                  <button class="button is-primary" type="submit">
+                  <button :disabled="submitting" class="button is-primary" type="submit">
                     <span class="icon-finger-print" aria-hidden="true"></span>
                     <span class="text">Sign Up</span>
                   </button>
