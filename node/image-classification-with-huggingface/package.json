@@ -1,0 +1,17 @@
+{
+  "name": "image-classification",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/main.js",
+  "type": "module",
+  "scripts": {
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "@huggingface/inference": "^2.6.4",
+    "node-appwrite": "^9.0.0"
+  },
+  "devDependencies": {
+    "prettier": "^3.0.0"
+  }
+}
