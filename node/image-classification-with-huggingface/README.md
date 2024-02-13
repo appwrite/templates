@@ -9,7 +9,7 @@ This function uses the Hugging Face API to classify images. It takes an image fi
 **Parameters**
 | Name | Description | Location | Type | Sample Value |
 |------------|-------------|----------|--------|--------------|
-| image | Appwrite File ID of Image | Body | String | `65c6319c5f34dc9638ec` |
+| imageId | Appwrite File ID of Image | Body | String | `65c6319c5f34dc9638ec` |
 
 This function also accepts body of a file event from Appwrite Storage.
 
