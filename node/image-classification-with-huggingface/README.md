@@ -61,7 +61,7 @@ Sample `404` Response:
 | Build Commands    | `npm install`              |
 | Permissions       | `any`                      |
 | Timeout (Seconds) | 15                         |
-| Event Triggers    | `buckets.*.files.*.create` |
+| Events            | `buckets.*.files.*.create` |
 
 ## 🔒 Environment Variables
 
