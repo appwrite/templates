@@ -54,13 +54,14 @@ Sample `404` Response:
 
 ## ⚙️ Configuration
 
-| Setting           | Value         |
-| ----------------- | ------------- |
-| Runtime           | Node (18.0)   |
-| Entrypoint        | `src/main.js` |
-| Build Commands    | `npm install` |
-| Permissions       | `any`         |
-| Timeout (Seconds) | 15            |
+| Setting           | Value                      |
+| ----------------- | -------------------------- |
+| Runtime           | Node (18.0)                |
+| Entrypoint        | `src/main.js`              |
+| Build Commands    | `npm install`              |
+| Permissions       | `any`                      |
+| Timeout (Seconds) | 15                         |
+| Event Triggers    | `buckets.*.files.*.create` |
 
 ## 🔒 Environment Variables
 
