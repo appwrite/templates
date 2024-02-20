@@ -63,6 +63,14 @@ Sample `404` Response:
 | Timeout (Seconds) | 15                         |
 | Events            | `buckets.*.files.*.create` |
 
+## 🏗️ Setup
+This function has a script that will setup the databases, collections and storage buckets for you, you just need to add the environment variables to the `.env` file, run `npm install` and finally run the following command:
+```
+npm run setup
+```
+
+You do not need anything to be created before running the setup script, it will create everything for you.
+
 ## 🔒 Environment Variables
 
 ### APPWRITE_API_KEY
@@ -74,6 +82,8 @@ Your Appwrite project's API key.
 | Required      | Yes                                                                                               |
 | Sample Value  | `083d341ee48...`                                                                                  |
 | Documentation | [Appwrite: Create an API key](https://appwrite.io/docs/advanced/platform/api-keys#create-api-key) |
+
+This key should have all permissions in the `Databases` scope aswell as all permissions in the `Storage` scope.
 
 ### APPWRITE_ENDPOINT
 

@@ -5,10 +5,12 @@
   "main": "src/main.js",
   "type": "module",
   "scripts": {
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "setup": "node src/setup.js"
   },
   "dependencies": {
     "@huggingface/inference": "^2.6.4",
+    "dotenv": "^16.4.5",
     "node-appwrite": "^9.0.0"
   },
   "devDependencies": {
