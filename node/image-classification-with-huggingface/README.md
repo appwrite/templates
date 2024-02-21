@@ -54,22 +54,14 @@ Sample `404` Response:
 
 ## ⚙️ Configuration
 
-| Setting           | Value                      |
-| ----------------- | -------------------------- |
-| Runtime           | Node (18.0)                |
-| Entrypoint        | `src/main.js`              |
-| Build Commands    | `npm install`              |
-| Permissions       | `any`                      |
-| Timeout (Seconds) | 15                         |
-| Events            | `buckets.*.files.*.create` |
-
-## 🏗️ Setup
-This function has a script that will setup the databases, collections and storage buckets for you, you just need to add the environment variables to the `.env` file, run `npm install` and finally run the following command:
-```
-npm run setup
-```
-
-You do not need anything to be created before running the setup script, it will create everything for you.
+| Setting           | Value                          |
+| ----------------- | ------------------------------ |
+| Runtime           | Node (18.0)                    |
+| Entrypoint        | `src/main.js`                  |
+| Build Commands    | `npm install && npm run setup` |
+| Permissions       | `any`                          |
+| Timeout (Seconds) | 15                             |
+| Events            | `buckets.*.files.*.create`     |
 
 ## 🔒 Environment Variables
 
@@ -100,7 +92,7 @@ The ID of the storage bucket where the images are stored.
 
 | Question     | Answer                 |
 | ------------ | ---------------------- |
-| Required     | Yes                    |
+| Required     | No                     |
 | Sample Value | `image_classification` |
 
 ### APPWRITE_DATABASE_ID
@@ -109,19 +101,19 @@ The ID of the database where the responses are stored.
 
 | Question     | Answer          |
 | ------------ | --------------- |
-| Required     | Yes             |
-| Sample Value | `616f3e3e5f34d` |
+| Required     | No              |
+| Sample Value | `ai`            |
 
 ### APPWRITE_COLLECTION_ID
 
 The ID of the collection where the responses are stored.
 
-| Question     | Answer         |
-| ------------ | -------------- |
-| Required     | Yes            |
-| Sample Value | `616f3e2f10sd` |
+| Question     | Answer                 |
+| ------------ | ---------------------- |
+| Required     | No                     |
+| Sample Value | `image_classification` |
 
-### HF_API_KEY
+### HUGGING_FACE_API_KEY
 
 Secret for sending requests to the Hugging Face API.
 

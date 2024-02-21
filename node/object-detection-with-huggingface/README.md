@@ -1,6 +1,6 @@
 # Object Detection with Hugging Face
 
-This function uses the Hugging Face API to detect objects. It takes an image file from Appwrite storage and sends it to the Hugging Face API for classification. The API returns a list of labels and their scores and records it in the database. This function also supports receiving file events from Appwrite Storage.
+This function uses the Hugging Face API to detect objects. It takes an image file from Appwrite storage and sends it to the Hugging Face API for object detection. The API returns a list of labels and their scores and records it in the database. This function also supports receiving file events from Appwrite Storage.
 
 ## 🧰 Usage
 
@@ -114,22 +114,14 @@ Sample `404` Response:
 
 ## ⚙️ Configuration
 
-| Setting           | Value                      |
-| ----------------- | -------------------------- |
-| Runtime           | Node (18.0)                |
-| Entrypoint        | `src/main.js`              |
-| Build Commands    | `npm install`              |
-| Permissions       | `any`                      |
-| Timeout (Seconds) | 15                         |
-| Events            | `buckets.*.files.*.create` |
-
-## 🏗️ Setup
-This function has a script that will setup the databases, collections and storage buckets for you, you just need to add the environment variables to the `.env` file, run `npm install` and finally run the following command:
-```
-npm run setup
-```
-
-You do not need anything to be created before running the setup script, it will create everything for you.
+| Setting           | Value                          |
+| ----------------- | ------------------------------ |
+| Runtime           | Node (18.0)                    |
+| Entrypoint        | `src/main.js`                  |
+| Build Commands    | `npm install && npm run setup` |
+| Permissions       | `any`                          |
+| Timeout (Seconds) | 15                             |
+| Events            | `buckets.*.files.*.create`     |
 
 ## 🔒 Environment Variables
 
@@ -158,10 +150,10 @@ The endpoint where your Appwrite server is located. If not provided, it defaults
 
 The ID of the storage bucket where the images are stored.
 
-| Question     | Answer                 |
-| ------------ | ---------------------- |
-| Required     | Yes                    |
-| Sample Value | `image_classification` |
+| Question     | Answer             |
+| ------------ | ------------------ |
+| Required     | No                 |
+| Sample Value | `object_detection` |
 
 ### APPWRITE_DATABASE_ID
 
@@ -169,19 +161,19 @@ The ID of the database where the responses are stored.
 
 | Question     | Answer          |
 | ------------ | --------------- |
-| Required     | Yes             |
-| Sample Value | `616f3e3e5f34d` |
+| Required     | No              |
+| Sample Value | `ai`            |
 
 ### APPWRITE_COLLECTION_ID
 
 The ID of the collection where the responses are stored.
 
-| Question     | Answer         |
-| ------------ | -------------- |
-| Required     | Yes            |
-| Sample Value | `616f3e2f10sd` |
+| Question     | Answer             |
+| ------------ | ------------------ |
+| Required     | No                 |
+| Sample Value | `object_detection` |
 
-### HF_API_KEY
+### HUGGING_FACE_API_KEY
 
 Secret for sending requests to the Hugging Face API.
 

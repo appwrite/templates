@@ -1,15 +1,16 @@
-import { Client, Databases, ID, Storage } from 'node-appwrite';
 import { HfInference } from '@huggingface/inference';
 import { throwIfMissing } from './utils.js';
+import AppwriteService from './appwrite.js';
 
 export default async ({ req, res, log, error }) => {
   throwIfMissing(process.env, [
-    'HF_API_KEY',
-    'APPWRITE_BUCKET_ID',
-    'APPWRITE_DATABASE_ID',
-    'APPWRITE_COLLECTION_ID',
+    'HUGGING_FACE_API_KEY',
     'APPWRITE_API_KEY',
   ]);
+
+  const databaseId = process.env.APPWRITE_DATABASE_ID ?? 'ai';
+  const collectionId = process.env.APPWRITE_COLLECTION_ID ?? 'image_classification';
+  const bucketId = process.env.APPWRITE_BUCKET_ID ?? 'image_classification';
 
   if (req.method !== 'POST') {
     return res.send('Method Not Allowed', 405);
@@ -24,29 +25,17 @@ export default async ({ req, res, log, error }) => {
 
   if (
     req.body.bucketId &&
-    req.body.bucketId != process.env.APPWRITE_BUCKET_ID
+    req.body.bucketId != bucketId
   ) {
     error('Invalid bucketId');
     return res.send('Bad Request', 400);
   }
 
-  const client = new Client();
-  client
-    .setEndpoint(
-      process.env.APPWRITE_ENDPOINT ?? 'https://cloud.appwrite.io/v1'
-    )
-    .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
-    .setKey(process.env.APPWRITE_API_KEY);
-
-  const storage = new Storage(client);
-  const database = new Databases(client);
+  const appwrite = new AppwriteService();
 
   let file;
   try {
-    file = await storage.getFileDownload(
-      process.env.APPWRITE_BUCKET_ID,
-      fileId
-    );
+    file = await appwrite.getFile(bucketId, fileId);
   } catch (err) {
     if (err.code === 404) {
       error(err);
@@ -57,7 +46,7 @@ export default async ({ req, res, log, error }) => {
     return res.send('Bad Request', 400);
   }
 
-  const hf = new HfInference(process.env.HF_API_KEY);
+  const hf = new HfInference(process.env.HUGGING_FACE_API_KEY);
 
   const result = await hf.imageClassification({
     data: file,
@@ -65,15 +54,7 @@ export default async ({ req, res, log, error }) => {
   });
 
   try {
-    await database.createDocument(
-      process.env.APPWRITE_DATABASE_ID,
-      process.env.APPWRITE_COLLECTION_ID,
-      ID.unique(),
-      {
-        image: fileId,
-        labels: JSON.stringify(result),
-      }
-    );
+    await appwrite.createImageLabels(databaseId, collectionId, fileId, result);
   } catch (err) {
     error(err);
     return res.send('Internal Server Error', 500);
