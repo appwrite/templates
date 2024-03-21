@@ -1,0 +1,19 @@
+{
+  "name": "sync-with-pinecone",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/main.js",
+  "type": "module",
+  "scripts": {
+    "format": "prettier --write ."
+  },
+  "keywords": [],
+  "dependencies": {
+    "@pinecone-database/pinecone": "^2.1.0",
+    "node-appwrite": "^9.0.0",
+    "openai": "^4.29.2"
+  },
+  "devDependencies": {
+    "prettier": "^3.0.0"
+  }
+}
