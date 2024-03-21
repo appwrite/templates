@@ -37,11 +37,9 @@ export default async ({ req, res, log }) => {
   });
 
   if (req.path === '/search') {
-    const searchQuery = req.query.q; // Assuming the query parameter is 'q'
-
     const queryEmbedding = await openai.embeddings.create({
       model: 'text-embedding-ada-002',
-      input: searchQuery,
+      input: req.body.prompt,
     });
 
     const searchResults = await index.query({
