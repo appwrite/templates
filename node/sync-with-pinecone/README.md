@@ -77,6 +77,16 @@ The admin API key for Meilisearch. Used to create the index and sync the documen
 | Sample Value  | `masterKey1234`                                                                      |
 | Documentation | [Pinecone: API Keys](https://docs.pinecone.io/guides/getting-started/authentication) |
 
+### PINECONE_INDEX_ID
+
+The ID of the Pinecone index to sync the documents to.
+
+| Question      | Answer                                                                       |
+| ------------- | ---------------------------------------------------------------------------- |
+| Required      | Yes                                                                          |
+| Sample Value  | `index1234`                                                                  |
+| Documentation | [Pinecone: Indexes](https://docs.pinecone.io/guides/indexes/create-an-index) |
+
 ### OPENAI_API_KEY
 
 API Key for OpenAI API. Used to generate the embeddings for the documents.
