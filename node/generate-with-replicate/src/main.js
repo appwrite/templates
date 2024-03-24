@@ -13,7 +13,7 @@ export default async ({ req, res, error }) => {
   const models = {
     'audio': 'meta/musicgen:b05b1dff1d8c6dc63d14b0cdb42135378dcb87f6373b0d3d341ede46e59e2b38',
     'text': 'meta/llama-2-70b-chat',
-    'image': 'playgroundai/playground-v2.5-1024px-aesthetic:a45f82a1382bed5c7aeb861dac7c7d191b0fdf74d8d57c4a0e6ed7d4d0bf7d24'
+    'image': 'stability-ai/sdxl:39ed52f2a78e934b3ba6e2a89f5b1c712de7dfea535525255b1aa35c5565e08b'
   };
 
   try {
@@ -22,11 +22,11 @@ export default async ({ req, res, error }) => {
     return res.json({ ok: false, error: err.message }, 400);
   }
 
-  const replicate = new Replicate();
-
   if (req.body.type !== 'audio' && req.body.type !== 'text' && req.body.type !== 'image') {
     return res.json({ ok: false, error: 'Invalid type' }, 400);
   }
+
+  const replicate = new Replicate();
 
   let request = {
     input: {
@@ -36,7 +36,7 @@ export default async ({ req, res, error }) => {
 
   // Allows you to tinker parameters for individual output types
   switch (req.body.type) {
-    case 'audio': 
+    case 'audio':
       request.input = {
         ...request.input,
         length: 30,
@@ -53,7 +53,7 @@ export default async ({ req, res, error }) => {
         ...request.input,
         width: 512,
         height: 512,
-        negative_prompt: "ugly, deformed, noisy, blurry, distorted",
+        negative_prompt: "deformed, noisy, blurry, distorted",
       }
     break;
   };
