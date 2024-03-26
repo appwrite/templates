@@ -15,8 +15,10 @@ export default async ({ req, res, error }) => {
     });
   }
 
+  const endpoint = process.env.APPWRITE_ENDPOINT || "https://cloud.appwrite.io/v1";
+
   const client = new Client()
-    .setEndpoint(process.env.APPWRITE_ENDPOINT || "https://cloud.appwrite.io/v1")
+    .setEndpoint(endpoint)
     .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
     .setKey(process.env.APPWRITE_API_KEY);
 
@@ -60,5 +62,5 @@ export default async ({ req, res, error }) => {
     [Permission.read(Role.any())],
   );
 
-  return res.json({ ok: true, response: `${process.env.APPWRITE_ENDPOINT || 'https://cloud.appwrite.io/v1'}/storage/buckets/${process.env.APPWRITE_BUCKET_ID}/files/${file['$id']}/view?project=${process.env.APPWRITE_FUNCTION_PROJECT_ID}` }, 200);
+  return res.json({ ok: true, response: `${endpoint}/storage/buckets/${process.env.APPWRITE_BUCKET_ID}/files/${file['$id']}/view?project=${process.env.APPWRITE_FUNCTION_PROJECT_ID}` }, 200);
 };
