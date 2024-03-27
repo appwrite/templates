@@ -1,6 +1,6 @@
-# 🤖 Node Translate with HuggingFace Function
+# 🤖 Node Languague Translation Function
 
-Translate text using the HuggingFace API. Enter English text and get the French translation.
+Translate text using the Hugging Face API. Enter English text and get the French translation.
 
 ## 🧰 Usage
 
