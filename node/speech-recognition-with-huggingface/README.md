@@ -1,6 +1,6 @@
 # Speech Recognition with Hugging Face
 
-This function uses the Hugging Face API to perform speech recognition. It takes an flac file from Appwrite storage and sends it to the Hugging Face API for speech recognition. The API returns the text and records it in the database. This function also supports receiving document events from the Appwrite Database.
+This function uses the Hugging Face API to perform speech recognition. It takes an audio file from Appwrite storage and sends it to the Hugging Face API for speech recognition. The API returns the text and records it in the database. This function also supports receiving document events from the Appwrite Database.
 
 ## 🧰 Usage
 
@@ -9,7 +9,7 @@ This function uses the Hugging Face API to perform speech recognition. It takes 
 **Parameters**
 | Name | Description | Location | Type | Sample Value |
 |------------|-------------|----------|--------|--------------|
-| fileId | Appwrite File ID of Flac file | Body | String | `65c6319c5f34dc9638ec` |
+| fileId | Appwrite File ID of audio file | Body | String | `65c6319c5f34dc9638ec` |
 
 This function also accepts body of a file event from Appwrite Storage.
 
@@ -17,7 +17,7 @@ This function also accepts body of a file event from Appwrite Storage.
 
 Sample `200` Response:
 
-Image of a dog on Appwrite Storage is sent as input and is recognized.
+Text from the audio file is recognized and stored in the database.
 
 ```json
 {
