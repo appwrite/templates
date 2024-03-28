@@ -36,14 +36,14 @@ Sample `404` Response:
 
 ## ⚙️ Configuration
 
-| Setting           | Value                                              |
-| ----------------- | -------------------------------------------------- |
-| Runtime           | Node (18.0)                                        |
-| Entrypoint        | `src/main.js`                                      |
-| Build Commands    | `npm install && npm run setup`                     |
-| Permissions       | `any`                                              |
-| Timeout (Seconds) | 15                                                 |
-| Events            | `databases.*.collections.*.documents.*.create`     |
+| Setting           | Value                                          |
+| ----------------- | ---------------------------------------------- |
+| Runtime           | Node (18.0)                                    |
+| Entrypoint        | `src/main.js`                                  |
+| Build Commands    | `npm install && npm run setup`                 |
+| Permissions       | `any`                                          |
+| Timeout (Seconds) | 15                                             |
+| Events            | `databases.*.collections.*.documents.*.create` |
 
 ## 🔒 Environment Variables
 
@@ -72,27 +72,27 @@ The endpoint where your Appwrite server is located. If not provided, it defaults
 
 The ID of the storage bucket where the images are stored.
 
-| Question     | Answer                 |
-| ------------ | ---------------------- |
-| Required     | No                    |
-| Sample Value | `text_to_speech`       |
+| Question     | Answer           |
+| ------------ | ---------------- |
+| Required     | No               |
+| Sample Value | `text_to_speech` |
 
 ### APPWRITE_DATABASE_ID
 
 The ID of the database where the responses are stored.
 
-| Question     | Answer          |
-| ------------ | --------------- |
-| Required     | No              |
-| Sample Value | `ai`            |
+| Question     | Answer |
+| ------------ | ------ |
+| Required     | No     |
+| Sample Value | `ai`   |
 
 ### APPWRITE_COLLECTION_ID
 
 The ID of the collection where the responses are stored.
 
-| Question     | Answer                 |
-| ------------ | ---------------------- |
-| Required     | No                     |
+| Question     | Answer           |
+| ------------ | ---------------- |
+| Required     | No               |
 | Sample Value | `text_to_speech` |
 
 ### HUGGING_FACE_API_KEY
