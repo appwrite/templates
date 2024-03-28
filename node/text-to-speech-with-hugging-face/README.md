@@ -57,7 +57,7 @@ Your Appwrite project's API key.
 | Sample Value  | `083d341ee48...`                                                                                  |
 | Documentation | [Appwrite: Create an API key](https://appwrite.io/docs/advanced/platform/api-keys#create-api-key) |
 
-This key should have all permissions in the `Databases` scope aswell as all permissions in the `Storage` scope.
+This key should have all permissions in the `Databases` scope as well as all permissions in the `Storage` scope.
 
 ### APPWRITE_ENDPOINT
 
