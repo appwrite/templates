@@ -1,6 +1,6 @@
 # Text to Speech with Hugging Face
 
-This function uses the Hugging Face API to perform text to speech. It takes an document from the Appwrite Database and sends it to the Hugging Face API for text to speech. The API returns a ID to the audio in the Appwrite bucket.
+This function uses the Hugging Face API to perform text to speech conversion. It takes an document from the Appwrite Database and sends it to the Hugging Face API for text to speech. The API returns a ID to the audio in the Appwrite bucket.
 
 ## 🧰 Usage
 
