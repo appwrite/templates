@@ -21,7 +21,7 @@ Image of a dog on Appwrite Storage is sent as input and is recognized.
 
 ```json
 {
-  text: " going along slushy country roads and speaking to damp audiences in draughty schoolrooms day after day for a fortnight he'll have to put in an appearance at some place of worship on sunday morning and he can come to us immediately afterwards"
+  "text": " going along slushy country roads and speaking to damp audiences in draughty schoolrooms day after day for a fortnight he'll have to put in an appearance at some place of worship on sunday morning and he can come to us immediately afterwards"
 }
 ```
 
@@ -71,27 +71,27 @@ The endpoint where your Appwrite server is located. If not provided, it defaults
 
 The ID of the storage bucket where the images are stored.
 
-| Question     | Answer                 |
-| ------------ | ---------------------- |
-| Required     | No                     |
+| Question     | Answer              |
+| ------------ | ------------------- |
+| Required     | No                  |
 | Sample Value | `speech_recogition` |
 
 ### APPWRITE_DATABASE_ID
 
 The ID of the database where the responses are stored.
 
-| Question     | Answer          |
-| ------------ | --------------- |
-| Required     | No              |
-| Sample Value | `ai`            |
+| Question     | Answer |
+| ------------ | ------ |
+| Required     | No     |
+| Sample Value | `ai`   |
 
 ### APPWRITE_COLLECTION_ID
 
 The ID of the collection where the responses are stored.
 
-| Question     | Answer                 |
-| ------------ | ---------------------- |
-| Required     | No                     |
+| Question     | Answer              |
+| ------------ | ------------------- |
+| Required     | No                  |
 | Sample Value | `speech_recogition` |
 
 ### HUGGING_FACE_API_KEY
