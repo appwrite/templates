@@ -10,6 +10,10 @@ export default async ({ req, res }) => {
     });
   }
 
+  if (req.method !== 'POST') {
+    return res.json({ ok: false, error: 'Method not allowed.' }, 405);
+  }
+
   if (!req.body.source || typeof req.body.source !== 'string') {
     return res.json({ ok: false, error: 'source is required.' }, 400);
   }

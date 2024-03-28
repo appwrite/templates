@@ -1,5 +1,5 @@
 {
-  "name": "language-translation-with-huggingface",
+  "name": "huggingface-language-translation",
   "version": "1.0.0",
   "description": "",
   "main": "src/main.js",
