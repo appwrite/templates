@@ -4,6 +4,7 @@ declare global {
       ELEVENLABS_API_KEY: string;
       APPWRITE_BUCKET_ID: string;
       APPWRITE_API_KEY: string;
+      APPWRITE_ENDPOINT: string;
     }
   }
 }

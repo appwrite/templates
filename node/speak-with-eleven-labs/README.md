@@ -14,14 +14,13 @@ Query the model for a completion.
 
 **Parameters**
 
-| Name         | Description                          | Location | Type               | Sample Value                  | Required |
-| ------------ | ------------------------------------ | -------- | ------------------ | ----------------------------- | -------- |
-| Content-Type | The content type of the request body | Header   | `application/json` | N/A                           | Yes      |
-| text       | Text for the model to say             | Body     | String             | ` Appwrite is a secure backend server for web, mobile, and Flutter apps, providing easy setup for database, authentication, storage, and more.` | Yes      |
-| accent       | Voice's Accent, can be `american`, `british`, `african`, `australian` or `indian`               | Body     | String             | `british`                       | No       |
-| age          | Voice's Age, can be `young`, `middle_aged` or `old`                  | Body     | String             | `young`                         | No       |
-| gender       | Voice's gender, can be `male` or `female`                  | Body     | String             | `female`                          | No       |
-
+| Name         | Description                                                                       | Location | Type               | Sample Value                                                                                                                                    | Required |
+| ------------ | --------------------------------------------------------------------------------- | -------- | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| Content-Type | The content type of the request body                                              | Header   | `application/json` | N/A                                                                                                                                             | Yes      |
+| text         | Text for the model to say                                                         | Body     | String             | ` Appwrite is a secure backend server for web, mobile, and Flutter apps, providing easy setup for database, authentication, storage, and more.` | Yes      |
+| accent       | Voice's Accent, can be `american`, `british`, `african`, `australian` or `indian` | Body     | String             | `british`                                                                                                                                       | No       |
+| age          | Voice's Age, can be `young`, `middle_aged` or `old`                               | Body     | String             | `young`                                                                                                                                         | No       |
+| gender       | Voice's gender, can be `male` or `female`                                         | Body     | String             | `female`                                                                                                                                        | No       |
 
 Sample `200` Response:
 
@@ -29,8 +28,8 @@ Response from the model.
 
 ```json
 {
-    "ok": true,
-    "response": "https://cloud.appwrite.io/v1/storage/buckets/text_to_speech/files/66019da664270f02c20c/view?project=project_id"
+  "ok": true,
+  "response": "https://cloud.appwrite.io/v1/storage/buckets/text_to_speech/files/66019da664270f02c20c/view?project=project_id"
 }
 ```
 
@@ -75,35 +74,34 @@ A unique key used to authenticate with the ElevenLabs API. You can find your API
 | Question      | Answer                                                                      |
 | ------------- | --------------------------------------------------------------------------- |
 | Required      | Yes                                                                         |
-| Sample Value  | `d03xxxxxxxx26`                                                              |
+| Sample Value  | `d03xxxxxxxx26`                                                             |
 | Documentation | [ElevenLabs Docs](https://elevenlabs.io/docs/api-reference/getting-started) |
 
 ### APPWRITE_ENDPOINT
 
 The endpoint of the Appwrite API.
 
-| Question      | Answer                                                                      |
-| ------------- | --------------------------------------------------------------------------- |
-| Required      | No                                                                         |
-| Default Value  | `https://cloud.appwrite.io/v1`                                                    |
+| Question      | Answer                         |
+| ------------- | ------------------------------ |
+| Required      | No                             |
+| Default Value | `https://cloud.appwrite.io/v1` |
 
-
-### APPWRITE_API_KEY
+### APPWRITE_API_KEY
 
 A unique key used to authenticate with the Appwrite API. You can generate your API key in the Appwrite dashboard. It must have the `files.read` and `files.write` permissions.
 
-| Question      | Answer                                                                      |
-| ------------- | --------------------------------------------------------------------------- |
-| Required      | Yes                                                                         |
-| Sample Value  | `631xxxxxxxx8a`                                                              |
-| Documentation | [Appwrite Docs](https://appwrite.io/docs/advanced/platform/api-keys)                                   |
+| Question      | Answer                                                               |
+| ------------- | -------------------------------------------------------------------- |
+| Required      | Yes                                                                  |
+| Sample Value  | `631xxxxxxxx8a`                                                      |
+| Documentation | [Appwrite Docs](https://appwrite.io/docs/advanced/platform/api-keys) |
 
 ### APPWRITE_BUCKET_ID
 
 The ID of the Appwrite storage bucket where the audio files will be saved.
 
-| Question      | Answer                                                                      |
-| ------------- | --------------------------------------------------------------------------- |
-| Required      | Yes                                                                         |
-| Sample Value  | `66019da664270f02c20c`                                                      |
-| Documentation | [Appwrite Docs](https://appwrite.io/docs/products/storage/buckets)                                   |
+| Question      | Answer                                                             |
+| ------------- | ------------------------------------------------------------------ |
+| Required      | Yes                                                                |
+| Sample Value  | `66019da664270f02c20c`                                             |
+| Documentation | [Appwrite Docs](https://appwrite.io/docs/products/storage/buckets) |
