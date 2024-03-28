@@ -1,4 +1,4 @@
-# 🤖 Node Languague Translation Function
+# 🤖 Node Languague Translation with Hugging Face Function
 
 Translate text using the Hugging Face API. Enter English text and get the French translation.
 
@@ -17,7 +17,7 @@ Query the model for a translation.
 | Name         | Description                          | Location | Type               | Sample Value        |
 | ------------ | ------------------------------------ | -------- | ------------------ | ------------------- |
 | Content-Type | The content type of the request body | Header   | `application/json` | N/A                 |
-| sourceText   | Text to translate                    | Body     | String             | `My name is Walter` |
+| source   | Text to translate                    | Body     | String             | `My name is Walter` |
 
 Sample `200` Response:
 
@@ -26,18 +26,18 @@ Response from the model.
 ```json
 {
   "ok": true,
-  "outputText": "Je m'appelle Walter"
+  "output": "Je m'appelle Walter"
 }
 ```
 
 Sample `400` Response:
 
-Response when the request sourceText is missing.
+Response when the request source is missing.
 
 ```json
 {
   "ok": false,
-  "error": "sourceText is required."
+  "error": "source is required."
 }
 ```
 

@@ -7,10 +7,10 @@
     <title>Languague translation demo</title>
 
     <script>
-      async function onSubmit(sourceText) {
+      async function onSubmit(source) {
         const response = await fetch('/', {
           method: 'POST',
-          body: JSON.stringify({ sourceText }),
+          body: JSON.stringify({ source }),
           headers: {
             'Content-Type': 'application/json',
           },
@@ -22,7 +22,7 @@
           alert(json.error);
         }
 
-        return json.outputText;
+        return json.output;
       }
     </script>
 
@@ -61,7 +61,7 @@
               class="input-text-wrapper is-with-end-button u-width-full-line"
             >
               <input
-                x-model="sourceText"
+                x-model="source"
                 type="search"
                 placeholder="English sentence to translate"
               />
@@ -71,7 +71,7 @@
             <button
               class="button"
               x-bind:disabled="loading"
-              x-on:click="async () => { loading = true; answer = ''; try { answer = await onSubmit(sourceText) } catch(err) { console.error(err); } finally { loading = false; } }"
+              x-on:click="async () => { loading = true; answer = ''; try { answer = await onSubmit(source) } catch(err) { console.error(err); } finally { loading = false; } }"
             >
               <span class="text">Submit</span>
             </button>

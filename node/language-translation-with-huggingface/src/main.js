@@ -10,15 +10,15 @@ export default async ({ req, res }) => {
     });
   }
 
-  if (!req.body.sourceText && typeof req.body.sourceText !== 'string') {
-    return res.json({ ok: false, error: 'sourceText is required.' }, 400);
+  if (!req.body.source || typeof req.body.source !== 'string') {
+    return res.json({ ok: false, error: 'source is required.' }, 400);
   }
 
   const hf = new HfInference(process.env.HUGGINGFACE_ACCESS_TOKEN);
   try {
-    const response = await hf.translation({
+    const translation = await hf.translation({
       model: 'facebook/mbart-large-50-many-to-many-mmt',
-      inputs: req.body.sourceText,
+      inputs: req.body.source,
       // @ts-ignore
       parameters: {
         src_lang: 'en_XX',
@@ -27,13 +27,13 @@ export default async ({ req, res }) => {
     });
 
     if (
-      Array.isArray(response) ||
-      typeof response.translation_text !== 'string'
+      Array.isArray(translation) ||
+      typeof translation.translation_text !== 'string'
     ) {
       return res.json({ ok: false, error: 'Failed to translate text.' }, 500);
     }
 
-    return res.json({ ok: true, outputText: response.translation_text }, 200);
+    return res.json({ ok: true, output: translation.translation_text }, 200);
   } catch (err) {
     return res.json({ ok: false, error: 'Failed to query model.' }, 500);
   }
