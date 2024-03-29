@@ -1,0 +1,17 @@
+{
+  "name": "text-generation-with-hugging-face",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/main.js",
+  "type": "module",
+  "scripts": {
+    "format": "prettier --write ."
+  },
+  "keywords": [],
+  "dependencies": {
+    "@huggingface/inference": "^2.6.6"
+  },
+  "devDependencies": {
+    "prettier": "^3.0.0"
+  }
+}
