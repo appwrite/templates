@@ -4,7 +4,7 @@ import AppwriteService from './appwrite.js';
 
 export default async ({ req, res, log, error }) => {
   throwIfMissing(process.env, [
-    'HUGGINGFACE_API_TOKEN',
+    'HUGGINGFACE_ACCESS_TOKEN',
     'APPWRITE_API_KEY',
   ]);
 
@@ -13,7 +13,7 @@ export default async ({ req, res, log, error }) => {
   const bucketId = process.env.APPWRITE_BUCKET_ID ?? 'object_detection';
 
   if (req.method !== 'POST') {
-    return res.send('Method Not Allowed', 405);
+    return res.send('Method not allowed', 405);
   }
 
   let fileId = req.body.$id || req.body.imageId;
@@ -46,7 +46,7 @@ export default async ({ req, res, log, error }) => {
     return res.send('Bad request', 400);
   }
 
-  const hf = new HfInference(process.env.HUGGINGFACE_API_TOKEN);
+  const hf = new HfInference(process.env.HUGGINGFACE_ACCESS_TOKEN);
 
   const result = await hf.objectDetection({
     data: file,

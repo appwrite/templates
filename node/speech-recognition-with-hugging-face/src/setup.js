@@ -1,6 +1,5 @@
 import AppwriteService from './appwrite.js';
 import { throwIfMissing } from './utils.js';
-import 'dotenv/config';
 
 async function setup() {
   throwIfMissing(process.env, ['APPWRITE_API_KEY']);
