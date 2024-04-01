@@ -4,7 +4,7 @@ import AppwriteService from './appwrite.js';
 
 export default async ({ req, res, log, error }) => {
   throwIfMissing(process.env, [
-    'HUGGING_FACE_API_KEY',
+    'HUGGINGFACE_API_TOKEN',
     'APPWRITE_API_KEY',
   ]);
 
@@ -20,7 +20,7 @@ export default async ({ req, res, log, error }) => {
 
   if (!fileId) {
     error('Missing fileId');
-    return res.send('Bad Request', 400);
+    return res.send('Bad request', 400);
   }
 
   if (
@@ -28,7 +28,7 @@ export default async ({ req, res, log, error }) => {
     req.body.bucketId != bucketId
   ) {
     error('Invalid bucketId');
-    return res.send('Bad Request', 400);
+    return res.send('Bad request', 400);
   }
 
   const appwrite = new AppwriteService();
@@ -39,14 +39,14 @@ export default async ({ req, res, log, error }) => {
   } catch (err) {
     if (err.code === 404) {
       error(err);
-      return res.send('File Not Found', 404);
+      return res.send('File not found', 404);
     }
 
     error(err);
-    return res.send('Bad Request', 400);
+    return res.send('Bad request', 400);
   }
 
-  const hf = new HfInference(process.env.HUGGING_FACE_API_KEY);
+  const hf = new HfInference(process.env.HUGGINGFACE_API_TOKEN);
 
   const result = await hf.imageClassification({
     data: file,
@@ -57,7 +57,7 @@ export default async ({ req, res, log, error }) => {
     await appwrite.createImageLabels(databaseId, collectionId, fileId, result);
   } catch (err) {
     error(err);
-    return res.send('Internal Server Error', 500);
+    return res.send('Internal server error', 500);
   }
 
   log('Image ' + fileId + ' classified', result);

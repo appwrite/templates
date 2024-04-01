@@ -12,19 +12,18 @@ export default async ({ req, res, error }) => {
 
   const model = process.env['PERPLEXITY_MODEL'] || 'mistral-7b-instruct';
 
-  try {
-    throwIfMissing(req.body, ['prompt']);
-  } catch (err) {
-    return res.json({ ok: false, error: err.message }, 400);
+
+  if (!req.body.prompt || typeof req.body.prompt !== 'string') {
+    return res.send({ ok: false, error: 'Missing required field `prompt`' }, 400)
   }
 
-  const openai = new OpenAI({
+  const perplexity = new OpenAI({
     apiKey: process.env.PERPLEXITY_API_KEY,
     baseURL: 'https://api.perplexity.ai',
   });
 
   try {
-    const response = await openai.chat.completions.create({
+    const response = await perplexity.chat.completions.create({
       model: model,
       max_tokens: parseInt(process.env.PERPLEXITY_MAX_TOKENS ?? '512'),
       messages: [{ role: 'user', content: req.body.prompt }],

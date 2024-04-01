@@ -35,8 +35,8 @@ export default async ({ req, res, log }) => {
   const pineconeIndex = pinecone.index(process.env.PINECONE_INDEX_ID);
 
   if (req.path === '/prompt') {
-    if (!req.body.prompt && typeof req.body.prompt !== 'string') {
-      return res.send('Prompt is required.', 400);
+    if (!req.body.prompt || typeof req.body.prompt !== 'string') {
+      return res.send('Missing required field `prompt`', 400);
     }
 
     const model = new ChatOpenAI();

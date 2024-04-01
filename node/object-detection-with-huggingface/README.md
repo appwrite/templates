@@ -173,7 +173,7 @@ The ID of the collection where the responses are stored.
 | Required     | No                 |
 | Sample Value | `object_detection` |
 
-### HUGGING_FACE_API_KEY
+### HUGGINGFACE_API_TOKEN
 
 Secret for sending requests to the Hugging Face API.
 
@@ -181,4 +181,4 @@ Secret for sending requests to the Hugging Face API.
 | ------------- | --------------------------------------------------------------------------------------------------- |
 | Required      | Yes                                                                                                 |
 | Sample Value  | `hf_x2a...`                                                                                         |
-| Documentation | [Hugging Face: API Keys](https://huggingface.co/docs/api-inference/en/quicktour#get-your-api-token) |
+| Documentation | [Hugging Face: API tokens](https://huggingface.co/docs/api-inference/en/quicktour#get-your-api-token) |

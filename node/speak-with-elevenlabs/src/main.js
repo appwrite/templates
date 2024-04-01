@@ -15,20 +15,16 @@ export default async ({ req, res, error }) => {
     });
   }
 
-  const endpoint = process.env.APPWRITE_ENDPOINT || "https://cloud.appwrite.io/v1";
-
   const client = new Client()
-    .setEndpoint(endpoint)
+    .setEndpoint(process.env.APPWRITE_ENDPOINT ?? "https://cloud.appwrite.io/v1")
     .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
     .setKey(process.env.APPWRITE_API_KEY);
 
-  try {
-    throwIfMissing(req.body, ["text"]);
-  } catch (err) {
-    return res.json({ ok: false, error: err.message }, 400);
+  if (!req.body.text || typeof req.body.text !== "string") {
+    return res.json({ ok: false, error: "Missing required field `text`" }, 400);
   }
 
-  let body = {
+  const body = {
     accent: req.body.accent || "british",
     accent_strength: 1.0,
     age: req.body.age || "young",

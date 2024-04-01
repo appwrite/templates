@@ -4,7 +4,7 @@ import AppwriteService from './appwrite.js';
 import { ID } from 'node-appwrite';
 
 export default async ({ req, res, log, error }) => {
-  throwIfMissing(process.env, ['HUGGING_FACE_API_KEY', 'APPWRITE_API_KEY', 'APPWRITE_FUNCTION_PROJECT_ID']);
+  throwIfMissing(process.env, ['HUGGINGFACE_API_TOKEN', 'APPWRITE_API_KEY', 'APPWRITE_FUNCTION_PROJECT_ID']);
 
   const databaseId = process.env.APPWRITE_DATABASE_ID ?? 'ai';
   const collectionId = process.env.APPWRITE_COLLECTION_ID ?? 'text_to_speech';
@@ -19,14 +19,14 @@ export default async ({ req, res, log, error }) => {
   const data = req.body;
 
   if (!data.text) {
-    return res.send('Bad Request', 400);
+    return res.send('Bad request', 400);
   }
 
   const response = await fetch(
     'https://api-inference.huggingface.co/models/espnet/kan-bayashi_ljspeech_vits',
     {
       headers: {
-        Authorization: 'Bearer ' + process.env.HUGGING_FACE_API_KEY,
+        Authorization: 'Bearer ' + process.env.HUGGINGFACE_API_TOKEN,
       },
       method: 'POST',
       body: JSON.stringify({
@@ -37,7 +37,7 @@ export default async ({ req, res, log, error }) => {
 
   if (!response.ok) {
     error(await response.text());
-    return res.send('Internal Server Error', 500);
+    return res.send('Internal server error', 500);
   }
 
   const result = await response.blob();
@@ -47,7 +47,7 @@ export default async ({ req, res, log, error }) => {
     file = await appwrite.createFile(bucketId, ID.unique(), result);
   } catch (err) {
     error(err);
-    return res.send('Internal Server Error', 500);
+    return res.send('Internal server error', 500);
   }
 
   let document;
@@ -61,7 +61,7 @@ export default async ({ req, res, log, error }) => {
     );
   } catch (err) {
     error(err);
-    return res.send('Internal Server Error', 500);
+    return res.send('Internal server error', 500);
   }
 
   log('Document ' + document.$id + ' processed');

@@ -16,14 +16,12 @@ export default async ({ req, res, error }) => {
     'image': 'stability-ai/sdxl:39ed52f2a78e934b3ba6e2a89f5b1c712de7dfea535525255b1aa35c5565e08b'
   };
 
-  try {
-    throwIfMissing(req.body, ['prompt', 'type']);
-  } catch (err) {
-    return res.json({ ok: false, error: err.message }, 400);
+  if (!req.body.prompt || typeof req.body.prompt !== 'string') {
+    return res.json({ ok: false, error: 'Missing required field `prompt`' }, 400);
   }
 
   if (req.body.type !== 'audio' && req.body.type !== 'text' && req.body.type !== 'image') {
-    return res.json({ ok: false, error: 'Invalid type' }, 400);
+    return res.json({ ok: false, error: 'Invalid field `type`' }, 400);
   }
 
   const replicate = new Replicate();
