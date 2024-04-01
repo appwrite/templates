@@ -16,11 +16,7 @@ export default async ({ req, res }) => {
     return res.json({ ok: false, error: err.message }, 400);
   }
 
-  const openai = new OpenAIApi(
-    new Configuration({
-      apiKey: process.env.OPENAI_API_KEY,
-    })
-  );
+  const openai = new OpenAIApi();
 
   try {
     const response = await openai.createChatCompletion({

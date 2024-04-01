@@ -31,10 +31,7 @@ export default async ({ req, res, log }) => {
     return res.send('Method not allowed', 405);
   }
 
-  const pinecone = new Pinecone({
-    apiKey: process.env.PINECONE_API_KEY,
-  });
-
+  const pinecone = new Pinecone();
   const pineconeIndex = pinecone.index(process.env.PINECONE_INDEX_ID);
 
   if (req.path === '/prompt') {
@@ -42,19 +39,11 @@ export default async ({ req, res, log }) => {
       return res.send('Prompt is required.', 400);
     }
 
-    const model = new ChatOpenAI({
-      configuration: {
-        apiKey: process.env.OPENAI_API_KEY,
-      },
-    });
-
+    const model = new ChatOpenAI();
     const vectorStore = await PineconeStore.fromExistingIndex(
       new OpenAIEmbeddings(),
-      {
-        pineconeIndex,
-      }
+      { pineconeIndex }
     );
-
     const retriever = vectorStore.asRetriever();
 
     const prompt =
@@ -82,23 +71,24 @@ export default async ({ req, res, log }) => {
 
   log('Fetching documents from Appwrite database...');
 
-  const rawDocuments = await appwrite.getAllDocuments(
+  const appwriteDocuments = await appwrite.getAllDocuments(
     process.env.APPWRITE_DATABASE_ID,
     process.env.APPWRITE_COLLECTION_ID
   );
 
-  const documents = rawDocuments.map(
+  log(`Fetched ${appwriteDocuments.length} documents.`);
+
+  const documents = appwriteDocuments.map(
     (document) =>
       new Document({
         metadata: { id: document.$id },
         pageContent: Object.entries(document)
           .filter(([key, _]) => !key.startsWith('$'))
-          .map(([_, value]) => value)
-          .join(' '),
+          .map(([key, value]) => `${key}: ${value}`)
+          .join('\n'),
       })
   );
 
-  log(`Fetched ${rawDocuments.length} documents.`);
   log('Indexing documents in Pinecone...');
 
   await PineconeStore.fromDocuments(documents, new OpenAIEmbeddings(), {

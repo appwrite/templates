@@ -18,9 +18,7 @@ export default async ({ req, res, log }) => {
     return res.send(html, 200, { 'Content-Type': 'text/html; charset=utf-8' });
   }
 
-  const pinecone = new Pinecone({
-    apiKey: process.env.PINECONE_API_KEY,
-  });
+  const pinecone = new Pinecone();
   const index = pinecone.index(process.env.PINECONE_INDEX_ID);
 
   const client = new Client()
@@ -32,9 +30,7 @@ export default async ({ req, res, log }) => {
 
   const databases = new Databases(client);
 
-  const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-  });
+  const openai = new OpenAI();
 
   if (req.path === '/search') {
     const queryEmbedding = await openai.embeddings.create({
