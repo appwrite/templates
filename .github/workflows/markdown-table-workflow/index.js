@@ -11,7 +11,7 @@ const verboseRuntimes = {
   kotlin: "Kotlin",
   node: "Node.js",
   "node-typescript": "Node.js (TypeScript)",
-  "bun": "Bun",
+  bun: "Bun",
   php: "PHP",
   python: "Python",
   ruby: "Ruby",
@@ -53,6 +53,10 @@ const overrideWords = {
   fcm: "FCM",
   url: "URL",
   whatsapp: "WhatsApp",
+  rag: "RAG",
+  openai: "OpenAI",
+  elevenlabs: "ElevenLabs",
+  langchain: "LangChain",
 };
 
 const folderDenylist = [".github", ".git"];
