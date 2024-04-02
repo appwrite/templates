@@ -57,6 +57,7 @@ const overrideWords = {
   openai: "OpenAI",
   elevenlabs: "ElevenLabs",
   langchain: "LangChain",
+  huggingface: "Hugging Face",
 };
 
 const folderDenylist = [".github", ".git"];
