@@ -1,7 +1,7 @@
-import { Client, Databases, Query } from 'node-appwrite';
 import { getStaticFile, throwIfMissing } from './utils.js';
 import { Pinecone } from '@pinecone-database/pinecone';
 import OpenAI from 'openai';
+import AppwriteService from './appwrite.js';
 
 export default async ({ req, res, log }) => {
   throwIfMissing(process.env, [
@@ -18,17 +18,12 @@ export default async ({ req, res, log }) => {
     return res.send(html, 200, { 'Content-Type': 'text/html; charset=utf-8' });
   }
 
+  if (req.method !== 'POST') {
+    return res.send('Method not allowed', 405);
+  }
+
   const pinecone = new Pinecone();
-  const index = pinecone.index(process.env.PINECONE_INDEX_ID);
-
-  const client = new Client()
-    .setEndpoint(
-      process.env.APPWRITE_ENDPOINT ?? 'https://cloud.appwrite.io/v1'
-    )
-    .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
-    .setKey(process.env.APPWRITE_API_KEY);
-
-  const databases = new Databases(client);
+  const pineconeIndex = pinecone.index(process.env.PINECONE_INDEX_ID);
 
   const openai = new OpenAI();
 
@@ -38,7 +33,7 @@ export default async ({ req, res, log }) => {
       input: req.body.prompt,
     });
 
-    const searchResults = await index.query({
+    const searchResults = await pineconeIndex.query({
       vector: queryEmbedding.data[0].embedding,
       topK: 5,
     });
@@ -46,47 +41,31 @@ export default async ({ req, res, log }) => {
     return res.json(searchResults);
   }
 
-  let cursor = null;
-  do {
-    const queries = [Query.limit(100)];
+  log('Fetching documents from Appwrite...');
+  const appwrite = new AppwriteService();
+  const documents = await appwrite.getAllDocuments(
+    process.env.APPWRITE_DATABASE_ID,
+    process.env.APPWRITE_COLLECTION_ID
+  );
+  log(`Fetched ${documents.length} documents.`);
 
-    if (cursor) {
-      queries.push(Query.cursorAfter(cursor));
-    }
+  log('Create embeddings...');
+  const embeddings = await Promise.all(
+    documents.map(async (document) => {
+      const record = await openai.embeddings.create({
+        model: 'text-embedding-ada-002',
+        input: JSON.stringify(document),
+      });
+      return {
+        id: document.$id,
+        values: record.data[0].embedding,
+        metadata: document,
+      };
+    })
+  );
+  log(`Created ${embeddings.length} embeddings.`);
 
-    const { documents } = await databases.listDocuments(
-      process.env.APPWRITE_DATABASE_ID,
-      process.env.APPWRITE_COLLECTION_ID,
-      queries
-    );
-
-    if (documents.length === 0) {
-      log(`No more documents found.`);
-      break;
-    }
-
-    cursor = documents[documents.length - 1].$id;
-
-    const embeddings = await Promise.all(
-      documents.map(async (document) => {
-        const record = await openai.embeddings.create({
-          model: 'text-embedding-ada-002',
-          input: JSON.stringify(document),
-        });
-        return {
-          id: document.$id,
-          values: record.data[0].embedding,
-          metadata: document,
-        };
-      })
-    );
-
-    await index.upsert(embeddings);
-
-    log(`Synced ${documents.length} documents.`);
-  } while (cursor);
-
-  log('Sync finished.');
-
+  log('Syncing embeddings with Pinecone...');
+  await pineconeIndex.upsert(embeddings);
   return res.send('Sync finished.', 200);
 };
