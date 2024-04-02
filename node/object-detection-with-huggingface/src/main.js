@@ -11,19 +11,19 @@ export default async ({ req, res, log, error }) => {
   const bucketId = process.env.APPWRITE_BUCKET_ID ?? 'image_classification';
 
   if (req.method !== 'POST') {
-    return res.send('Method not allowed', 405);
+    return res.json({ ok: false, error: 'Method not allowed' }, 405);
   }
 
   let fileId = req.body.$id || req.body.imageId;
 
   if (!fileId) {
     error('Missing fileId');
-    return res.send('Bad request', 400);
+    return res.json({ ok: false, error: 'Bad request' }, 400);
   }
 
   if (req.body.bucketId && req.body.bucketId != bucketId) {
     error('Invalid bucketId');
-    return res.send('Bad request', 400);
+    return res.json({ ok: false, error: 'Bad request' }, 400);
   }
 
   const appwrite = new AppwriteService();
@@ -34,11 +34,11 @@ export default async ({ req, res, log, error }) => {
   } catch (err) {
     if (err.code === 404) {
       error(err);
-      return res.send('File not found', 404);
+      return res.json({ ok: false, error: 'File not found' }, 404);
     }
 
     error(err);
-    return res.send('Bad request', 400);
+    return res.json({ ok: false, error: 'Bad request' }, 400);
   }
 
   const hf = new HfInference(process.env.HUGGINGFACE_ACCESS_TOKEN);
@@ -52,7 +52,7 @@ export default async ({ req, res, log, error }) => {
     await appwrite.createImageLabels(databaseId, collectionId, fileId, result);
   } catch (err) {
     error(err);
-    return res.send('Internal server error', 500);
+    return res.json({ ok: false, error: 'Failed to create image labels' }, 500);
   }
 
   log('Image ' + fileId + ' classified', result);

@@ -28,7 +28,7 @@ export default async ({ req, res, log }) => {
   }
 
   if (req.method !== 'POST') {
-    return res.send('Method not allowed', 405);
+    return res.json({ ok: false, error: 'Method not allowed' }, 405);
   }
 
   const pinecone = new Pinecone();
@@ -36,7 +36,10 @@ export default async ({ req, res, log }) => {
 
   if (req.path === '/prompt') {
     if (!req.body.prompt || typeof req.body.prompt !== 'string') {
-      return res.send('Missing required field `prompt`', 400);
+      return res.json(
+        { ok: false, error: 'Missing required field `prompt`' },
+        400
+      );
     }
 
     const model = new ChatOpenAI();

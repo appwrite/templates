@@ -13,7 +13,7 @@ export default async ({ req, res, error }) => {
   const model = process.env['PERPLEXITY_MODEL'] || 'mistral-7b-instruct';
 
   if (!req.body.prompt || typeof req.body.prompt !== 'string') {
-    return res.send(
+    return res.json(
       { ok: false, error: 'Missing required field `prompt`' },
       400
     );

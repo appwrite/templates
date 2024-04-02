@@ -19,7 +19,7 @@ export default async ({ req, res, log }) => {
   }
 
   if (req.method !== 'POST') {
-    return res.send('Method not allowed', 405);
+    return res.json({ ok: false, error: 'Method not allowed' }, 405);
   }
 
   const pinecone = new Pinecone();

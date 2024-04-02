@@ -15,11 +15,11 @@ export default async ({ req, res, log, error }) => {
   const bucketId = process.env.APPWRITE_BUCKET_ID ?? 'text_to_speech';
 
   if (req.method !== 'POST') {
-    return res.send({ ok: false, error: 'Method not allowed' }, 405);
+    return res.json({ ok: false, error: 'Method not allowed' }, 405);
   }
 
   if (!req.body.text || typeof req.body.text !== 'string') {
-    return res.send({ ok: false, error: 'Missing required field `text`' }, 400);
+    return res.json({ ok: false, error: 'Missing required field `text`' }, 400);
   }
 
   const response = await fetch(
@@ -37,7 +37,7 @@ export default async ({ req, res, log, error }) => {
 
   if (!response.ok) {
     error(await response.text());
-    return res.send({ ok: false, error: 'Failed to process text' }, 500);
+    return res.json({ ok: false, error: 'Failed to process text' }, 500);
   }
 
   const blob = await response.blob();

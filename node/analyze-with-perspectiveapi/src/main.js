@@ -11,7 +11,7 @@ export default async ({ req, res }) => {
   }
 
   if (!req.body.text || typeof req.body.text !== 'string') {
-    return res.send({ ok: false, error: 'Missing required field `text`' }, 400);
+    return res.json({ ok: false, error: 'Missing required field `text`' }, 400);
   }
 
   const response = await fetch(
