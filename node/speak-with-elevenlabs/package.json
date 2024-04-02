@@ -9,8 +9,8 @@
   },
   "keywords": [],
   "dependencies": {
-    "node-appwrite": "^12.0.0",
-    "node-fetch": "^3.3.2"
+    "elevenlabs": "^0.2.2",
+    "node-appwrite": "^12.0.0"
   },
   "devDependencies": {
     "prettier": "^3.0.0"
