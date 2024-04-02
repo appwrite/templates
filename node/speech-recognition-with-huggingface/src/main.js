@@ -11,7 +11,7 @@ export default async ({ req, res, log, error }) => {
   const bucketId = process.env.APPWRITE_BUCKET_ID ?? 'speech_recognition';
 
   if (req.method !== 'POST') {
-    return res.send('Method Not Allowed', 405);
+    return res.send('Method not allowed', 405);
   }
 
   const fileId = req.body.$id ?? req.body.fileId;
