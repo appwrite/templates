@@ -15,7 +15,10 @@ export default async ({ req, res }) => {
   }
 
   if (!req.body.source || typeof req.body.source !== 'string') {
-    return res.json({ ok: false, error: 'source is required.' }, 400);
+    return res.json(
+      { ok: false, error: 'Missing required field `source`' },
+      400
+    );
   }
 
   const hf = new HfInference(process.env.HUGGINGFACE_ACCESS_TOKEN);

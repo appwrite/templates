@@ -21,6 +21,7 @@ Image of a dog on Appwrite Storage is sent as input and is recognized.
 
 ```json
 {
+  "ok": true,
   "id": "660560a8d856801ad6f2",
   "tts": "660560ae625f233d71b0"
 }
@@ -70,7 +71,7 @@ The endpoint where your Appwrite server is located. If not provided, it defaults
 
 ### APPWRITE_BUCKET_ID
 
-The ID of the storage bucket where the images are stored.
+The ID of the storage bucket where the audio files are stored.
 
 | Question     | Answer           |
 | ------------ | ---------------- |
@@ -95,7 +96,7 @@ The ID of the collection where the responses are stored.
 | Required     | No               |
 | Sample Value | `text_to_speech` |
 
-### HUGGING_FACE_API_KEY
+### HUGGINGFACE_ACCESS_TOKEN
 
 Secret for sending requests to the Hugging Face API.
 
@@ -103,4 +104,4 @@ Secret for sending requests to the Hugging Face API.
 | ------------- | --------------------------------------------------------------------------------------------------- |
 | Required      | Yes                                                                                                 |
 | Sample Value  | `hf_x2a...`                                                                                         |
-| Documentation | [Hugging Face: API Keys](https://huggingface.co/docs/api-inference/en/quicktour#get-your-api-token) |
+| Documentation | [Hugging Face: API tokens](https://huggingface.co/docs/api-inference/en/quicktour#get-your-api-token) |

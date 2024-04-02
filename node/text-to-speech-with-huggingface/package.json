@@ -9,9 +9,8 @@
     "setup": "node src/setup.js"
   },
   "dependencies": {
-    "dotenv": "^16.4.5",
-    "node-appwrite": "^9.0.0",
-    "node-fetch": "^3.3.2"
+    "@huggingface/inference": "^2.6.6",
+    "node-appwrite": "^9.0.0"
   },
   "devDependencies": {
     "prettier": "^3.0.0"

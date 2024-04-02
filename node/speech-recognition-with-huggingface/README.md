@@ -69,7 +69,7 @@ The endpoint where your Appwrite server is located. If not provided, it defaults
 
 ### APPWRITE_BUCKET_ID
 
-The ID of the storage bucket where the images are stored.
+The ID of the bucket where audio is stored.
 
 | Question     | Answer              |
 | ------------ | ------------------- |
@@ -94,7 +94,7 @@ The ID of the collection where the responses are stored.
 | Required     | No                  |
 | Sample Value | `speech_recogition` |
 
-### HUGGING_FACE_API_KEY
+### HUGGINGFACE_ACCESS_TOKEN
 
 Secret for sending requests to the Hugging Face API.
 
@@ -102,4 +102,4 @@ Secret for sending requests to the Hugging Face API.
 | ------------- | --------------------------------------------------------------------------------------------------- |
 | Required      | Yes                                                                                                 |
 | Sample Value  | `hf_x2a...`                                                                                         |
-| Documentation | [Hugging Face: API Keys](https://huggingface.co/docs/api-inference/en/quicktour#get-your-api-token) |
+| Documentation | [Hugging Face: API tokens](https://huggingface.co/docs/api-inference/en/quicktour#get-your-api-token) |

@@ -1,16 +1,16 @@
 {
-  "name": "speech-recognition-with-hugging-face",
+  "name": "speak-with-elevenlabs",
   "version": "1.0.0",
   "description": "",
   "main": "src/main.js",
   "type": "module",
   "scripts": {
-    "format": "prettier --write .",
-    "setup": "node src/setup.js"
+    "format": "prettier --write ."
   },
+  "keywords": [],
   "dependencies": {
-    "@huggingface/inference": "^2.6.4",
-    "node-appwrite": "^9.0.0"
+    "elevenlabs": "^0.2.2",
+    "node-appwrite": "^12.0.0"
   },
   "devDependencies": {
     "prettier": "^3.0.0"

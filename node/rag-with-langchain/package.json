@@ -1,5 +1,5 @@
 {
-  "name": "speak-with-elevenlabs",
+  "name": "rag-with-langchain",
   "version": "1.0.0",
   "description": "",
   "main": "src/main.js",
@@ -9,9 +9,11 @@
   },
   "keywords": [],
   "dependencies": {
-    "dotenv": "^16.4.5",
-    "node-appwrite": "^12.0.0",
-    "node-fetch": "^3.3.2"
+    "@langchain/openai": "^0.0.25",
+    "@langchain/pinecone": "^0.0.4",
+    "@pinecone-database/pinecone": "^2.2.0",
+    "langchain": "^0.1.30",
+    "openai": "^3.3.0"
   },
   "devDependencies": {
     "prettier": "^3.0.0"

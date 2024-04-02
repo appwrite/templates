@@ -1,9 +1,11 @@
 import AppwriteService from './appwrite.js';
 import { throwIfMissing } from './utils.js';
-import 'dotenv/config';
 
 async function setup() {
-  throwIfMissing(process.env, ['APPWRITE_API_KEY', 'APPWRITE_FUNCTION_PROJECT_ID']);
+  throwIfMissing(process.env, [
+    'APPWRITE_API_KEY',
+    'APPWRITE_FUNCTION_PROJECT_ID',
+  ]);
 
   const databaseId = process.env.APPWRITE_DATABASE_ID ?? 'ai';
   const collectionId = process.env.APPWRITE_COLLECTION_ID ?? 'text_to_speech';
