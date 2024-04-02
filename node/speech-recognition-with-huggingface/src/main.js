@@ -1,47 +1,72 @@
 import { HfInference } from '@huggingface/inference';
-import { getStaticFile, throwIfMissing } from './utils.js';
+import { throwIfMissing } from './utils.js';
+import AppwriteService from './appwrite.js';
 
-export default async ({ req, res }) => {
-  throwIfMissing(process.env, ['HUGGINGFACE_ACCESS_TOKEN']);
+export default async ({ req, res, log, error }) => {
+  throwIfMissing(process.env, ['HUGGINGFACE_ACCESS_TOKEN', 'APPWRITE_API_KEY']);
 
-  if (req.method === 'GET') {
-    return res.send(getStaticFile('index.html'), 200, {
-      'Content-Type': 'text/html; charset=utf-8',
-    });
-  }
+  const databaseId = process.env.APPWRITE_DATABASE_ID ?? 'ai';
+  const collectionId =
+    process.env.APPWRITE_COLLECTION_ID ?? 'speech_recognition';
+  const bucketId = process.env.APPWRITE_BUCKET_ID ?? 'speech_recognition';
 
   if (req.method !== 'POST') {
-    return res.json({ ok: false, error: 'Method not allowed.' }, 405);
+    return res.send('Method Not Allowed', 405);
   }
 
-  if (!req.body.source || typeof req.body.source !== 'string') {
-    return res.json(
-      { ok: false, error: 'Missing required field `source`' },
-      400
-    );
+  const fileId = req.body.$id ?? req.body.fileId;
+  if (!fileId) {
+    error('Missing fileId');
+    return res.send('Bad request', 400);
+  }
+
+  if (req.body.bucketId && req.body.bucketId != bucketId) {
+    error('Invalid bucketId');
+    return res.send('Bad request', 400);
+  }
+
+  const appwrite = new AppwriteService();
+
+  let file;
+  try {
+    file = await appwrite.getFile(bucketId, fileId);
+  } catch (err) {
+    if (err.code === 404) {
+      error(err);
+      return res.send('File not found', 404);
+    }
+
+    error(err);
+    return res.send('Bad request', 400);
   }
 
   const hf = new HfInference(process.env.HUGGINGFACE_ACCESS_TOKEN);
+
+  let result;
   try {
-    const translation = await hf.translation({
-      model: 'facebook/mbart-large-50-many-to-many-mmt',
-      inputs: req.body.source,
-      // @ts-ignore
-      parameters: {
-        src_lang: 'en_XX',
-        tgt_lang: 'fr_XX',
-      },
+    result = await hf.automaticSpeechRecognition({
+      data: file,
+      model: 'openai/whisper-large-v3',
     });
-
-    if (
-      Array.isArray(translation) ||
-      typeof translation.translation_text !== 'string'
-    ) {
-      return res.json({ ok: false, error: 'Failed to translate text.' }, 500);
-    }
-
-    return res.json({ ok: true, output: translation.translation_text }, 200);
   } catch (err) {
-    return res.json({ ok: false, error: 'Failed to query model.' }, 500);
+    error(err);
+    return res.send('Internal server error', 500);
   }
+
+  try {
+    await appwrite.createRecognitionEntry(
+      databaseId,
+      collectionId,
+      fileId,
+      result.text
+    );
+  } catch (err) {
+    error(err);
+    return res.send('Internal server error', 500);
+  }
+
+  log('Audio ' + fileId + ' recognised', result.text);
+  return res.json({
+    text: result.text,
+  });
 };
