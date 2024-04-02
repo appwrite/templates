@@ -15,32 +15,26 @@ class AppwriteService {
   }
 
   /**
-  * @param {string} bucketId
-  * @param {string} fileId
-  * @param {Blob} file
-  */
-  async createFile(bucketId, fileId, file)
-  {
-    let parsedFile = await InputFile.fromBlob(file, 'audio.flac')
+   * @param {string} bucketId
+   * @param {string} fileId
+   * @param {Blob} file
+   */
+  async createFile(bucketId, fileId, file) {
+    let parsedFile = await InputFile.fromBlob(file, 'audio.flac');
 
-    return await this.storage.createFile(
-      bucketId,
-      fileId,
-      parsedFile
-    )
+    return await this.storage.createFile(bucketId, fileId, parsedFile);
   }
 
   /**
-  *
-  */
+   *
+   */
   async updateOrCreateTTSEntry(
     databaseId,
     collectionId,
     documentId,
     fileId,
     text
-  )
-  {
+  ) {
     const data = {
       text,
       tts: fileId,
@@ -77,19 +71,19 @@ class AppwriteService {
   }
 
   /**
-  * @param {string} bucketId
-  * @param {string} fileId
-  * @returns {Promise<Buffer>}
-  */
+   * @param {string} bucketId
+   * @param {string} fileId
+   * @returns {Promise<ArrayBuffer>}
+   */
   async getFile(bucketId, fileId) {
     return await this.storage.getFileDownload(bucketId, fileId);
   }
 
   /**
-  * @param {string} databaseId
-  * @param {string} collectionId
-  * @returns {Promise<boolean>}
-  */
+   * @param {string} databaseId
+   * @param {string} collectionId
+   * @returns {Promise<boolean>}
+   */
   async doesAIDataExist(databaseId, collectionId) {
     try {
       await this.databases.get(databaseId);
@@ -102,9 +96,9 @@ class AppwriteService {
   }
 
   /**
-  * @param {string} bucketId
-  * @returns {Promise<boolean>}
-  */
+   * @param {string} bucketId
+   * @returns {Promise<boolean>}
+   */
   async doesBucketExist(bucketId) {
     try {
       await this.storage.getBucket(bucketId);
@@ -116,10 +110,10 @@ class AppwriteService {
   }
 
   /**
-  * @param {string} databaseId
-  * @param {string} collectionId
-  * @returns {Promise<void>}
-  */
+   * @param {string} databaseId
+   * @param {string} collectionId
+   * @returns {Promise<void>}
+   */
   async setupAIDatabase(databaseId, collectionId) {
     try {
       await this.databases.create(databaseId, 'AI Database');

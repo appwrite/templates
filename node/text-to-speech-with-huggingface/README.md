@@ -21,6 +21,7 @@ Image of a dog on Appwrite Storage is sent as input and is recognized.
 
 ```json
 {
+  "ok": true,
   "id": "660560a8d856801ad6f2",
   "tts": "660560ae625f233d71b0"
 }
@@ -70,7 +71,7 @@ The endpoint where your Appwrite server is located. If not provided, it defaults
 
 ### APPWRITE_BUCKET_ID
 
-The ID of the storage bucket where the images are stored.
+The ID of the storage bucket where the audio files are stored.
 
 | Question     | Answer           |
 | ------------ | ---------------- |
