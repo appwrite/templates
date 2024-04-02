@@ -95,7 +95,7 @@ The ID of the collection where the responses are stored.
 | Required     | No               |
 | Sample Value | `text_to_speech` |
 
-### HUGGINGFACE_API_TOKEN
+### HUGGINGFACE_ACCESS_TOKEN
 
 Secret for sending requests to the Hugging Face API.
 

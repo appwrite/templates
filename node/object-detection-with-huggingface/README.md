@@ -173,7 +173,7 @@ The ID of the collection where the responses are stored.
 | Required     | No                 |
 | Sample Value | `object_detection` |
 
-### HUGGINGFACE_API_TOKEN
+### HUGGINGFACE_ACCESS_TOKEN
 
 Secret for sending requests to the Hugging Face API.
 
