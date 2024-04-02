@@ -69,7 +69,7 @@ The endpoint where your Appwrite server is located. If not provided, it defaults
 
 ### APPWRITE_BUCKET_ID
 
-The ID of the storage bucket where the images are stored.
+The ID of the bucket where audio is stored.
 
 | Question     | Answer              |
 | ------------ | ------------------- |
