@@ -33,7 +33,7 @@ Sample `400` Response:
 ```json
 {
   "ok": false,
-  "error": "Missing required field: text"
+  "error": "Missing required field `text`"
 }
 ```
 
