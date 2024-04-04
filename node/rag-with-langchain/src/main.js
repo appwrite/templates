@@ -42,26 +42,22 @@ export default async ({ req, res, log }) => {
       );
     }
 
-    const model = new ChatOpenAI();
     const vectorStore = await PineconeStore.fromExistingIndex(
       new OpenAIEmbeddings(),
       { pineconeIndex }
     );
-    const retriever = vectorStore.asRetriever();
 
-    const prompt =
-      PromptTemplate.fromTemplate(`Answer the question based with following context:
-  {context}
-  
-  Question: {question}`);
+    const prompt = PromptTemplate.fromTemplate(
+      `Answer the question based with following context:{context}\nQuestion: {question}`
+    );
 
     const chain = RunnableSequence.from([
       {
-        context: retriever.pipe(formatDocumentsAsString),
+        context: vectorStore.asRetriever().pipe(formatDocumentsAsString),
         question: new RunnablePassthrough(),
       },
       prompt,
-      model,
+      new ChatOpenAI(),
       new StringOutputParser(),
     ]);
 

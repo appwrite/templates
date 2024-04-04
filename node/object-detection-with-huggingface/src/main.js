@@ -14,8 +14,7 @@ export default async ({ req, res, log, error }) => {
     return res.json({ ok: false, error: 'Method not allowed' }, 405);
   }
 
-  let fileId = req.body.$id || req.body.imageId;
-
+  const fileId = req.body.$id || req.body.imageId;
   if (!fileId) {
     error('Missing fileId');
     return res.json({ ok: false, error: 'Bad request' }, 400);

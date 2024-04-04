@@ -84,12 +84,3 @@ The maximum number of tokens that the Perplexity AI response should contain.
 | Sample Value  | `512`                                                                                                         |
 | Documentation | [OpenAI: What are tokens?](https://help.openai.com/en/articles/4936856-what-are-tokens-and-how-to-count-them) |
 
-### PERPLEXITY_MODEL
-
-The model to use for generating completions. The default is `mistral-7b-instruct`.
-
-| Question      | Answer                                                                                                        |
-| ------------- | ------------------------------------------------------------------------------------------------------------- |
-| Required      | No                                                                                                            |
-| Sample Value  | `mistral-7b-instruct`                                                                                         |
-| Documentation | [Perplexity  AI Docs](https://docs.perplexity.ai/docs/model-cards) |

@@ -1,4 +1,4 @@
-# 📣 ElevenLabs Generation Demo
+# 📣 Node Speak with ElevenLabs Function
 
 Turn text into speech using the ElevenLabs API and save the audio file to Appwrite storage while outputting a link to the file.
 

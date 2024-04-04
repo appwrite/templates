@@ -10,7 +10,9 @@ export default async ({ req, res, error }) => {
     });
   }
 
-  const model = process.env['PERPLEXITY_MODEL'] || 'mistral-7b-instruct';
+  if (req.method !== 'POST') {
+    return res.json({ ok: false, error: 'Method not allowed' }, 405);
+  }
 
   if (!req.body.prompt || typeof req.body.prompt !== 'string') {
     return res.json(
@@ -26,7 +28,7 @@ export default async ({ req, res, error }) => {
 
   try {
     const response = await perplexity.chat.completions.create({
-      model: model,
+      model: 'mistral-7b-instruct',
       max_tokens: parseInt(process.env.PERPLEXITY_MAX_TOKENS ?? '512'),
       messages: [{ role: 'user', content: req.body.prompt }],
       stream: false,
