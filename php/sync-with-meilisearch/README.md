@@ -36,7 +36,7 @@ API Key to talk to Appwrite backend APIs.
 | ------------- | -------------------------------------------------------------------------------------------------- |
 | Required      | Yes                                                                                                |
 | Sample Value  | `d1efb...aec35`                                                                                    |
-| Documentation | [Appwrite: Getting Started for Server](https://appwrite.io/docs/getting-started-for-server#apiKey) |
+| Documentation | [Appwrite: Getting Started for Server](https://appwrite.io/docs/advanced/platform/api-keys) |
 
 ### APPWRITE_DATABASE_ID
 
@@ -56,7 +56,7 @@ The ID of the collection in the Appwrite database to sync.
 | ------------- | ---------------------------------------------------------------------- |
 | Required      | Yes                                                                    |
 | Sample Value  | `7c3e8...2a9f1`                                                        |
-| Documentation | [Appwrite: Collections](https://appwrite.io/docs/databases#collection) |
+| Documentation | [Appwrite: Collections](https://appwrite.io/docs/products/databases/collections) |
 
 ### APPWRITE_ENDPOINT
 
