@@ -19,7 +19,7 @@ class AppwriteService {
    * @param {Blob} blob
    */
   async createFile(bucketId, blob) {
-    const file = await InputFile.fromBlob(blob, 'audio.flac');
+    const file = await InputFile.fromBlob(blob, 'music.wav');
     return await this.storage.createFile(bucketId, ID.unique(), file);
   }
 
@@ -27,7 +27,7 @@ class AppwriteService {
    * @param {string} bucketId
    * @returns {Promise<boolean>}
    */
-  async doesGeneratedSpeechBucketExist(bucketId) {
+  async doesGeneratedMusicBucketExist(bucketId) {
     try {
       await this.storage.getBucket(bucketId);
       return true;
@@ -37,9 +37,9 @@ class AppwriteService {
     }
   }
 
-  async setupGeneratedSpeechBucket(bucketId) {
+  async setupGeneratedMusicBucket(bucketId) {
     try {
-      await this.storage.createBucket(bucketId, 'Generated speech');
+      await this.storage.createBucket(bucketId, 'Generated music');
     } catch (err) {
       if (err.code !== 409) throw err;
     }

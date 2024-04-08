@@ -1,6 +1,6 @@
-# Node.js Text to Speech with Hugging Face
+# 🤖 Node.js Music Generation with Hugging Face Function
 
-This function uses the Hugging Face API to perform text to speech conversion. It takes an document from the Appwrite Database and sends it to the Hugging Face API for text to speech. The API returns a ID to the audio in the Appwrite bucket.
+This function uses the Hugging Face API to generate music from text.
 
 ## 🧰 Usage
 
@@ -9,7 +9,7 @@ This function uses the Hugging Face API to perform text to speech conversion. It
 **Parameters**
 | Name | Description | Location | Type | Sample Value |
 |------------|-------------|----------|--------|--------------|
-| text | Text you want to turn into audio | Body | String | `Hello World! I am running in an Appwrite function!` |
+| prompt | Prompt you want to turn into music | Body | String | `A happy lofi beat` |
 
 This function also accepts body of a document from Appwrite Databases with the text field.
 
@@ -20,7 +20,7 @@ Sample `200` Response:
 ```json
 {
   "ok": true,
-  "fileId": "660560a8d856801ad6f2"
+  "fileId": "61f1b1e3f4b7d"
 }
 ```
 
@@ -59,12 +59,12 @@ The endpoint where your Appwrite server is located. If not provided, it defaults
 
 ### APPWRITE_BUCKET_ID
 
-The ID of the storage bucket where the audio files are stored.
+The ID of the storage bucket where the music files will be stored.
 
-| Question     | Answer             |
-| ------------ | ------------------ |
-| Required     | No                 |
-| Sample Value | `generated_speech` |
+| Question     | Answer            |
+| ------------ | ----------------- |
+| Required     | No                |
+| Sample Value | `generated_music` |
 
 ### HUGGINGFACE_ACCESS_TOKEN
 
