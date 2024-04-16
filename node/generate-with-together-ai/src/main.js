@@ -17,7 +17,7 @@ export default async ({ req, res, error }) => {
   }
 
   const models = {
-    'chat': 'mistralai/Mixtral-8x7B-Instruct-v0.1',
+    'text': 'mistralai/Mixtral-8x7B-Instruct-v0.1',
     'image': 'stabilityai/stable-diffusion-xl-base-1.0'
   };
 
@@ -25,7 +25,7 @@ export default async ({ req, res, error }) => {
     return res.json({ ok: false, error: 'Missing required field `prompt`' }, 400);
   }
 
-  if (req.body.type !== 'chat' && req.body.type !== 'image') {
+  if (req.body.type !== 'text' && req.body.type !== 'image') {
     return res.json({ ok: false, error: 'Invalid field `type`' }, 400);
   }
 
@@ -34,7 +34,7 @@ export default async ({ req, res, error }) => {
   };
 
   switch (req.body.type) {
-    case 'chat':
+    case 'text':
       request = {
         ...request,
         messages: [
@@ -57,7 +57,7 @@ export default async ({ req, res, error }) => {
         prompt: req.body.prompt,
         width: 512,
         height: 512,
-        steps: 10,
+        steps: 20,
         results: 1,
         negative_prompt: "deformed, noisy, blurry, distorted",
       }
@@ -67,7 +67,7 @@ export default async ({ req, res, error }) => {
   let response;
   let url = 'https://api.together.xyz/v1/completions';
 
-  if (req.body.type === 'chat') {
+  if (req.body.type === 'text') {
     url = 'https://api.together.xyz/v1/chat/completions'
   };
 

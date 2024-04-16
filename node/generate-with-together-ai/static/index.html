@@ -59,7 +59,6 @@
             <select x-model="type">
               <option value="text">Text</option>
               <option value="image">Image</option>
-              <option value="audio">Audio</option>
             </select>
             <span class="icon-cheveron-down" aria-hidden="true"></span>
           </div>
@@ -78,9 +77,6 @@
               <template x-if="answer.type === 'image'" class="u-flex u-gap-12">
                 <img class="u-max-width-400" x-bind:src="answer.response" alt="Together output" />
               </template>
-              <template x-if="answer.type === 'audio'" class="u-flex u-gap-12">
-                <audio x-bind:src="answer.response" controls></audio>
-              </template>
               <template x-if="answer.type === 'text'" class="u-flex u-gap-12">
                 <p class="u-color-text-gray" x-text="answer.response"></p>
               </template>
@@ -91,5 +87,4 @@
     </div>
   </main>
 </body>
-
 </html>
