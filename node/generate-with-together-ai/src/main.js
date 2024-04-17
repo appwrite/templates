@@ -82,7 +82,6 @@ export default async ({ req, res, error }) => {
     })
   } catch (err) {
     error(err);
-
     return res.json({ ok: false, error: 'Failed to run model' }, 500);
   }
 
