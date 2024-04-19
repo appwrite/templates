@@ -29,12 +29,6 @@ export default async ({ res, log, error }) => {
     Query.lessThanEqual('passwordUpdate', beforeDateTime),
   ]);
 
-  /** 
-  const usersWithOutdatedHash = await users.list([
-    Query.equal('hash', ['phpass', 'md5', 'sha1']),
-  ]);
-  */
-
   const dsn = new URL(process.env.STMP_DSN);
 
   log(dsn.username);
@@ -48,12 +42,7 @@ export default async ({ res, log, error }) => {
     },
   });
 
-  const usersToNotify = [
-    //...usersWithOutdatedHash.users,
-    ...usersWithExpiredPasswords.users,
-  ];
-
-  if (usersToNotify.length === 0) {
+  if (usersWithExpiredPasswords.length === 0) {
     log('Exiting - no users to notify');
     return res.json({
       ok: true,
@@ -61,7 +50,7 @@ export default async ({ res, log, error }) => {
   }
 
   let count = 0;
-  for (const user of usersToNotify) {
+  for (const user of usersWithExpiredPasswords) {
     try {
       await transport.sendMail({
         from: dsn.searchParams.get('from'),
