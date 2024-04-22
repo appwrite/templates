@@ -1,0 +1,17 @@
+{
+  "name": "generate-with-fal",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/main.js",
+  "type": "module",
+  "scripts": {
+    "format": "prettier --write ."
+  },
+  "keywords": [],
+  "dependencies": {
+    "@fal-ai/serverless-client": "^0.9.3"
+  },
+  "devDependencies": {
+    "prettier": "^3.0.0"
+  }
+}
