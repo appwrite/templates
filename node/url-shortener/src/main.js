@@ -37,7 +37,7 @@ export default async ({ res, req, log, error }) => {
     });
   }
 
-  const shortId = req.path.replace(/^\/|\/$/g, '');
+  const shortId = req.path.replace(/^(\/)|(\/)$/g, '');
   log(`Fetching document from with ID: ${shortId}`);
 
   const urlEntry = await appwrite.getURLEntry(shortId);
