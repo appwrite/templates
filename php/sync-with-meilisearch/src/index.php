@@ -1,11 +1,10 @@
 <?php
 
-require(__DIR__ . '/../vendor/autoload.php');
-require(__DIR__ . '/utils.php');
+require_once(__DIR__ . '/../vendor/autoload.php');
+require_once(__DIR__ . '/utils.php');
 
 use Appwrite\Client;
 use Appwrite\Services\Databases;
-use Appwrite\Query;
 use MeiliSearch\Client as MeiliSearch;
 
 return function ($context) {

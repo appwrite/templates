@@ -1,9 +1,9 @@
 <?php
 
-require(__DIR__ . '/../vendor/autoload.php');
+require_once(__DIR__ . '/../vendor/autoload.php');
 
-use Appwrite\Client;
-use Appwrite\Exception;
+// use Appwrite\Client;
+// use Appwrite\Exception;
 
 // This is your Appwrite function
 // It's executed each time we get a request

@@ -1,7 +1,7 @@
 <?php
 
-require(__DIR__ . '/../vendor/autoload.php');
-require(__DIR__ . '/utils.php');
+require_once(__DIR__ . '/../vendor/autoload.php');
+require_once(__DIR__ . '/utils.php');
 
 return function ($context) {
     throw_if_missing($_ENV, ['OPENAI_API_KEY']);
