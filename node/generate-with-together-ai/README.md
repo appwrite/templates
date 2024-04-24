@@ -1,6 +1,6 @@
 # 🤖 Generate with Together AI
 
-Generate text, audio and images using Together AI's API.
+Generate text and images using Together AI's API.
 
 ## 🧰 Usage
 
@@ -18,7 +18,7 @@ Query the model for a completion.
 | ------------ | ----------------------------------------------------------------------- | -------- | ------------------ | ----------------------------- |
 | Content-Type | The content type of the request body                                    | Header   | `application/json` | N/A                           |
 | prompt       | Text to prompt the model                                                | Body     | String             | `Write a haiku about Mondays` |
-| type         | The type of completion to generate, can be `text`, `audio` or `image`   | Body     | String             | `text`                        |
+| type         | The type of completion to generate, can be `text` or `image`   | Body     | String             | `text`                        |
 
 Sample `200` Response:
 
