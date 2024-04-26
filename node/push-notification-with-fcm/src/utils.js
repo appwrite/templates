@@ -1,4 +1,27 @@
-import * as admin from 'firebase-admin';
+import admin from 'firebase-admin'
+
+
+try{
+  throwIfMissing(process.env, [
+    'FCM_PROJECT_ID',
+    'FCM_PRIVATE_KEY',
+    'FCM_CLIENT_EMAIL',
+    'FCM_DATABASE_URL',
+  ]);
+
+// initailze firebase app
+admin.initializeApp({
+  credential: admin.credential.cert({
+    projectId: process.env.FCM_PROJECT_ID,
+    clientEmail: process.env.FCM_CLIENT_EMAIL,
+    privateKey: process.env.FCM_PRIVATE_KEY,
+  }),
+  databaseURL: process.env.FCM_DATABASE_URL,
+});}
+catch(e){
+  console.log(e)
+  throw e
+}
 
 /**
  * Throws an error if any of the keys are missing from the object
@@ -23,13 +46,12 @@ export function throwIfMissing(obj, keys) {
  * @returns {Promise<string>}
  */
 export async function sendPushNotification(payload) {
-  admin.initializeApp({
-    credential: admin.credential.cert({
-      projectId: process.env.FCM_PROJECT_ID,
-      clientEmail: process.env.FCM_CLIENT_EMAIL,
-      privateKey: process.env.FCM_PRIVATE_KEY,
-    }),
-    databaseURL: process.env.FCM_DATABASE_URL,
-  });
-  return await admin.messaging().send(payload);
+ console. log(`Message: ${JSON.stringify(payload)}`);
+
+  try {
+    return await admin.messaging().send(payload);
+  }
+  catch (e) {
+    throw (`error on messaging ${e}`)
+  }
 }
