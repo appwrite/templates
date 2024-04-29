@@ -34,7 +34,7 @@ object Utils {
                     href="https://unpkg.com/@appwrite.io/pink-icons"
                 />
             </head>
-            <body>
+            <body class="theme-dark">
                 <main class="main-content">
                     <div class="top-cover u-padding-block-end-56">
                         <div class="container">
