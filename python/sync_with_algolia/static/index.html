@@ -1,10 +1,10 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Algolia Search Demo</title>
+    <title>Algolia Search demo</title>
 
     <script src="https://unpkg.com/algoliasearch@4.17.2/dist/algoliasearch-lite.umd.js"></script>
     <script src="https://unpkg.com/instantsearch.js@4.56.3/dist/instantsearch.production.min.js"></script>
@@ -22,7 +22,7 @@
           <div
             class="u-flex u-gap-16 u-flex-justify-center u-margin-block-start-16"
           >
-            <h1 class="heading-level-1">Algolia Search Demo</h1>
+            <h1 class="heading-level-1">Algolia Search demo</h1>
             <code class="u-un-break-text"></code>
           </div>
           <p
@@ -45,26 +45,26 @@
 
     <script>
       const algolia = algoliasearch(
-        '{{ALGOLIA_APP_ID}}',
-        '{{ALGOLIA_SEARCH_API_KEY}}'
+        "{{ALGOLIA_APP_ID}}",
+        "{{ALGOLIA_SEARCH_API_KEY}}"
       );
 
       const search = instantsearch({
-        indexName: '{{ALGOLIA_INDEX_ID}}',
+        indexName: "{{ALGOLIA_INDEX_ID}}",
         searchClient: algolia,
       });
 
       const searchBox = instantsearch.widgets.searchBox({
-        container: '#searchbox',
+        container: "#searchbox",
       });
 
       const hits = instantsearch.widgets.hits({
-        container: '#hits',
+        container: "#hits",
         templates: {
           item(hit, { html, components }) {
             return html`
               <div class="card">
-                <pre>${JSON.stringify(hit, null, '\t')}</pre>
+                <pre>${JSON.stringify(hit, null, "\t")}</pre>
               </div>
             `;
           },
