@@ -4,7 +4,7 @@ import AppwriteService from './appwrite.js';
 
 const HUGGINGFACE_API = 'https://api-inference.huggingface.co';
 
-export default async ({ req, res, error }) => {
+export default async ({ req, res }) => {
   throwIfMissing(process.env, ['HUGGINGFACE_ACCESS_TOKEN']);
 
   const bucketId = process.env.APPWRITE_BUCKET_ID ?? 'generated_music';
@@ -21,7 +21,7 @@ export default async ({ req, res, error }) => {
   }
 
   const response = await fetch(
-    `${HUGGINGFACE_API}/models/facebook/musicgen-large`,
+    `${HUGGINGFACE_API}/models/facebook/musicgen-small`,
     {
       headers: {
         Authorization: `Bearer ${process.env.HUGGINGFACE_ACCESS_TOKEN}`,
@@ -34,8 +34,7 @@ export default async ({ req, res, error }) => {
   );
 
   if (!response.ok) {
-    error(await response.text());
-    return res.json({ ok: false, error: 'Failed to process text' }, 500);
+    return res.json({ ok: false, error: 'Failed to generate music' }, 500);
   }
 
   const blob = await response.blob();
