@@ -5,14 +5,14 @@ async function setup() {
   console.log('Executing setup script...');
 
   throwIfMissing(process.env, ['APPWRITE_API_KEY']);
-  const bucketId = process.env.APPWRITE_BUCKET_ID ?? 'generated_speech';
+  const bucketId = process.env.APPWRITE_BUCKET_ID ?? 'generated_music';
 
   const appwrite = new AppwriteService();
 
-  if (await appwrite.doesGeneratedSpeechBucketExist(bucketId)) {
+  if (await appwrite.doesGeneratedMusicBucketExist(bucketId)) {
     console.log(`Bucket exists.`);
   } else {
-    await appwrite.setupGeneratedSpeechBucket(bucketId);
+    await appwrite.setupGeneratedMusicBucket(bucketId);
     console.log(`Bucket created.`);
   }
 }
