@@ -1,0 +1,18 @@
+{
+  "name": "speak-with-lmnt",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/main.js",
+  "type": "module",
+  "scripts": {
+    "format": "prettier --write ."
+  },
+  "keywords": [],
+  "dependencies": {
+    "lmnt-node": "^1.1.2",
+    "node-appwrite": "^12.0.0"
+  },
+  "devDependencies": {
+    "prettier": "^3.0.0"
+  }
+}
