@@ -71,7 +71,7 @@ A unique key used to authenticate with the Anyscale API. You can find your API K
 | Question      | Answer                                                                      |
 | ------------- | --------------------------------------------------------------------------- |
 | Required      | Yes                                                                         |
-| Sample Value  | `pplex-68...999`                                                              |
+| Sample Value  | `68...999`                                                              |
 | Documentation | [Anyscale AI Docs](https://docs.endpoints.anyscale.com) |
 
 ### ANYSCALE_MAX_TOKENS
