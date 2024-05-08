@@ -1,4 +1,4 @@
-# 🤖 Chat with Anyscale Function
+# 🤖 Node.js Chat with Anyscale Function
 
 Ask question, and let Anyscale's models answer.
 
