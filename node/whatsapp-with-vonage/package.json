@@ -9,11 +9,11 @@
   },
   "keywords": [],
   "dependencies": {
-    "jsonwebtoken": "^9.0.1",
+    "jsonwebtoken": "^9.0.2",
     "sha256": "^0.2.0",
-    "undici": "^5.22.1"
+    "undici": "^6.16.0"
   },
   "devDependencies": {
-    "prettier": "^3.0.0"
+    "prettier": "^3.2.5"
   }
 }

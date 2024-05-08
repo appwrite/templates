@@ -9,11 +9,11 @@
     "setup": "node src/setup.js"
   },
   "dependencies": {
-    "@huggingface/inference": "^2.6.6",
-    "node-appwrite": "^9.0.0",
-    "undici": "^6.12.0"
+    "@huggingface/inference": "^2.6.7",
+    "node-appwrite": "^12.0.1",
+    "undici": "^6.16.0"
   },
   "devDependencies": {
-    "prettier": "^3.0.0"
+    "prettier": "^3.2.5"
   }
 }

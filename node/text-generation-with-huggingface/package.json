@@ -9,9 +9,9 @@
   },
   "keywords": [],
   "dependencies": {
-    "@huggingface/inference": "^2.6.6"
+    "@huggingface/inference": "^2.6.7"
   },
   "devDependencies": {
-    "prettier": "^3.0.0"
+    "prettier": "^3.2.5"
   }
 }

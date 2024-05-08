@@ -8,9 +8,9 @@
     "format": "prettier --write ."
   },
   "devDependencies": {
-    "prettier": "^3.0.0"
+    "prettier": "^3.2.5"
   },
   "dependencies": {
-    "firebase-admin": "^11.10.1"
+    "firebase-admin": "^12.1.0"
   }
 }

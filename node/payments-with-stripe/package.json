@@ -9,11 +9,11 @@
     "setup": "node src/setup.js"
   },
   "dependencies": {
-    "node-appwrite": "^10.0.0",
-    "stripe": "^12.12.0"
+    "node-appwrite": "^12.0.1",
+    "stripe": "^15.5.0"
   },
   "devDependencies": {
-    "prettier": "^3.0.0",
-    "stripe-event-types": "^2.3.0"
+    "prettier": "^3.2.5",
+    "stripe-event-types": "^3.1.0"
   }
 }
