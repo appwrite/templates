@@ -61,7 +61,7 @@ Sample `500` Response:
 ```json
 {
     "ok": false,
-    "error": "failed due to ..."
+    "error": "Failed to send the message"
 }
 ```
 
