@@ -48,7 +48,7 @@ export default async ({ req, res, log, error }: Context) => {
   }
 
   const basicAuthToken: string = btoa(
-    `${Bun.env.VONAGE_API_KEY}:${Bun.env.VONAGE_ACCOUNT_SECRET}`
+    `${Bun.env.VONAGE_API_KEY}:${Bun.env.VONAGE_ACCOUNT_SECRET}`,
   );
 
   await fetch(`https://messages-sandbox.nexmo.com/v1/messages`, {

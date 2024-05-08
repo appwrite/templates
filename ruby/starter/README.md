@@ -36,7 +36,7 @@ Sample `200` Response:
 ## ⚙️ Configuration
 
 | Setting           | Value            |
-|-------------------|------------------|
+| ----------------- | ---------------- |
 | Runtime           | Ruby (3.0)       |
 | Entrypoint        | `lib/main.rb`    |
 | Build Commands    | `bundle install` |

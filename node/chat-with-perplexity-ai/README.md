@@ -25,8 +25,8 @@ Response from the model.
 
 ```json
 {
-    "ok": true,
-    "completion": "Monday's heavy weight, Dawning with a sigh of grey, Hopeful hearts await."
+  "ok": true,
+  "completion": "Monday's heavy weight, Dawning with a sigh of grey, Hopeful hearts await."
 }
 ```
 
@@ -68,10 +68,10 @@ Response when the model fails to respond.
 
 A unique key used to authenticate with the Perplexity API. Please note that this is a paid service and you will be charged for each request made to the API. For more information, see the [Perplexity AI pricing page](https://docs.perplexity.ai/docs/pricing).
 
-| Question      | Answer                                                                      |
-| ------------- | --------------------------------------------------------------------------- |
-| Required      | Yes                                                                         |
-| Sample Value  | `pplex-68...999`                                                              |
+| Question      | Answer                                                                |
+| ------------- | --------------------------------------------------------------------- |
+| Required      | Yes                                                                   |
+| Sample Value  | `pplex-68...999`                                                      |
 | Documentation | [Perplexity AI Docs](https://docs.perplexity.ai/docs/getting-started) |
 
 ### PERPLEXITY_MAX_TOKENS
@@ -83,4 +83,3 @@ The maximum number of tokens that the Perplexity AI response should contain.
 | Required      | No                                                                                                            |
 | Sample Value  | `512`                                                                                                         |
 | Documentation | [OpenAI: What are tokens?](https://help.openai.com/en/articles/4936856-what-are-tokens-and-how-to-count-them) |
-

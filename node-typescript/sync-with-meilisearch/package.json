@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "format": "prettier --write .",
-    "build" : "tsc"
+    "build": "tsc"
   },
   "keywords": [],
   "dependencies": {

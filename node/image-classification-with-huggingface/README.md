@@ -99,10 +99,10 @@ The ID of the storage bucket where the images are stored.
 
 The ID of the database where the responses are stored.
 
-| Question     | Answer          |
-| ------------ | --------------- |
-| Required     | No              |
-| Sample Value | `ai`            |
+| Question     | Answer |
+| ------------ | ------ |
+| Required     | No     |
+| Sample Value | `ai`   |
 
 ### APPWRITE_COLLECTION_ID
 
@@ -117,8 +117,8 @@ The ID of the collection where the responses are stored.
 
 Secret for sending requests to the Hugging Face API.
 
-| Question      | Answer                                                                                              |
-| ------------- | --------------------------------------------------------------------------------------------------- |
-| Required      | Yes                                                                                                 |
-| Sample Value  | `hf_x2a...`                                                                                         |
+| Question      | Answer                                                                                                |
+| ------------- | ----------------------------------------------------------------------------------------------------- |
+| Required      | Yes                                                                                                   |
+| Sample Value  | `hf_x2a...`                                                                                           |
 | Documentation | [Hugging Face: API tokens](https://huggingface.co/docs/api-inference/en/quicktour#get-your-api-token) |

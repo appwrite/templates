@@ -47,10 +47,10 @@ The ID of the bucket from which the files are to be deleted.
 
 API Key to talk to Appwrite backend APIs.
 
-| Question      | Answer                                                                                             |
-| ------------- | -------------------------------------------------------------------------------------------------- |
-| Required      | Yes                                                                                                |
-| Sample Value  | `d1efb...aec35`                                                                                    |
+| Question      | Answer                                                                                      |
+| ------------- | ------------------------------------------------------------------------------------------- |
+| Required      | Yes                                                                                         |
+| Sample Value  | `d1efb...aec35`                                                                             |
 | Documentation | [Appwrite: Getting Started for Server](https://appwrite.io/docs/advanced/platform/api-keys) |
 
 ### APPWRITE_ENDPOINT

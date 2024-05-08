@@ -36,7 +36,7 @@ Sample `200` Response:
 ## ⚙️ Configuration
 
 | Setting           | Value              |
-|-------------------|--------------------|
+| ----------------- | ------------------ |
 | Runtime           | PHP (8.0)          |
 | Entrypoint        | `src/index.php`    |
 | Build Commands    | `composer install` |

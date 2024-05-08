@@ -10,4 +10,3 @@ export default async ({ res, log }) => {
 
   return res.send(pdfBuffer, 200, { 'Content-Type': 'application/pdf' });
 };
-

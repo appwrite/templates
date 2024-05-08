@@ -9,7 +9,10 @@
     <link rel="stylesheet" href="https://unpkg.com/@appwrite.io/pink" />
     <link rel="stylesheet" href="https://unpkg.com/@appwrite.io/pink-icons" />
 
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
   </head>
   <body class="theme-dark">
     <main class="main-content">
@@ -57,7 +60,9 @@
 
               <div class="u-margin-block-start-8">
                 <template x-if="$store.auth.user.labels.includes('subscriber')">
-                  <div class="status is-complete u-margin-block-start-8 u-margin-block-end-8">
+                  <div
+                    class="status is-complete u-margin-block-start-8 u-margin-block-end-8"
+                  >
                     <span class="status-icon"></span>
                     <span class="text">Subscribed</span>
                   </div>
@@ -66,7 +71,9 @@
                   x-if="!$store.auth.user.labels.includes('subscriber')"
                 >
                   <div>
-                    <div class="status is-failed u-margin-block-start-8 u-margin-block-end-8">
+                    <div
+                      class="status is-failed u-margin-block-start-8 u-margin-block-end-8"
+                    >
                       <span class="status-icon"></span>
                       <span class="text">Not subscribed</span>
                     </div>
@@ -106,10 +113,7 @@
                       class="email"
                       placeholder="Enter email address"
                     />
-                    <button
-                      x-on:click="subscribe()"
-                      class="button"
-                    >
+                    <button x-on:click="subscribe()" class="button">
                       <span class="text">Subscribe with Lemon Squeezy</span>
                     </button>
                   </div>

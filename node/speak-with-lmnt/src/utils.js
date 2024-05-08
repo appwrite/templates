@@ -1,10 +1,10 @@
-import path from 'path';
-import { fileURLToPath } from 'url';
-import fs from 'fs';
+import path from "path";
+import { fileURLToPath } from "url";
+import fs from "fs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const staticFolder = path.join(__dirname, '../static');
+const staticFolder = path.join(__dirname, "../static");
 
 /**
  * Returns the contents of a file in the static folder
@@ -29,6 +29,6 @@ export function throwIfMissing(obj, keys) {
     }
   }
   if (missing.length > 0) {
-    throw new Error(`Missing required fields: ${missing.join(', ')}`);
+    throw new Error(`Missing required fields: ${missing.join(", ")}`);
   }
 }

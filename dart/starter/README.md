@@ -36,7 +36,7 @@ Sample `200` Response:
 ## ⚙️ Configuration
 
 | Setting           | Value           |
-|-------------------|-----------------|
+| ----------------- | --------------- |
 | Runtime           | Dart (2.17)     |
 | Entrypoint        | `lib/main.dart` |
 | Build Commands    | `dart pub get`  |

@@ -40,7 +40,7 @@ export default async ({ req, res }) => {
 
   const client = new Client()
     .setEndpoint(
-      process.env.APPWRITE_ENDPOINT ?? "https://cloud.appwrite.io/v1"
+      process.env.APPWRITE_ENDPOINT ?? "https://cloud.appwrite.io/v1",
     )
     .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
     .setKey(process.env.APPWRITE_API_KEY);
@@ -50,7 +50,7 @@ export default async ({ req, res }) => {
     process.env.APPWRITE_BUCKET_ID,
     ID.unique(),
     InputFile.fromBlob(blob, "audio.mp3"),
-    [Permission.read(Role.any())]
+    [Permission.read(Role.any())],
   );
 
   return res.json(
@@ -58,6 +58,6 @@ export default async ({ req, res }) => {
       ok: true,
       response: `${endpoint}/storage/buckets/${process.env.APPWRITE_BUCKET_ID}/files/${file["$id"]}/view?project=${process.env.APPWRITE_FUNCTION_PROJECT_ID}`,
     },
-    200
+    200,
   );
 };

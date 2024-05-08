@@ -36,7 +36,7 @@ Sample `200` Response:
 ## ⚙️ Configuration
 
 | Setting           | Value                    |
-|-------------------|--------------------------|
+| ----------------- | ------------------------ |
 | Runtime           | Deno (1.35)              |
 | Entrypoint        | `src/main.ts`            |
 | Build Commands    | `deno cache src/main.ts` |

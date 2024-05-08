@@ -1,6 +1,6 @@
 /**
-* Throws an error if any of the keys are missing from the object.
-*/
+ * Throws an error if any of the keys are missing from the object.
+ */
 export function throwIfMissing(obj: any, keys: string[]): void {
   const missing: string[] = [];
   for (let key of keys) {

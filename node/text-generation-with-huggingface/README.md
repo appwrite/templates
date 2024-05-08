@@ -25,8 +25,8 @@ Response from the model.
 
 ```json
 {
-    "ok": true,
-    "completion": "Monday's heavy weight, Dawning with a sigh of grey, Hopeful hearts await."
+  "ok": true,
+  "completion": "Monday's heavy weight, Dawning with a sigh of grey, Hopeful hearts await."
 }
 ```
 

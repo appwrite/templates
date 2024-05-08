@@ -54,7 +54,7 @@ Sample `401` Response:
 ## ⚙️ Configuration
 
 | Setting           | Value           |
-| ----------------- | -------------   |
+| ----------------- | --------------- |
 | Runtime           | Dart (3.1)      |
 | Entrypoint        | `lib/main.dart` |
 | Build Commands    | `pub get`       |

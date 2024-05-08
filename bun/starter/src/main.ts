@@ -1,4 +1,4 @@
-import { Client } from 'node-appwrite';
+import { Client } from "node-appwrite";
 
 // This is your Appwrite function
 // It's executed each time we get a request

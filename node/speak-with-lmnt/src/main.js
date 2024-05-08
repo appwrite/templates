@@ -7,14 +7,14 @@ import {
   Permission,
   Role,
 } from "node-appwrite";
-import Speech from 'lmnt-node';
+import Speech from "lmnt-node";
 
 export default async ({ req, res }) => {
   throwIfMissing(process.env, [
     "LMNT_API_KEY",
     "APPWRITE_API_KEY",
     "APPWRITE_BUCKET_ID",
-    "APPWRITE_FUNCTION_PROJECT_ID"
+    "APPWRITE_FUNCTION_PROJECT_ID",
   ]);
 
   if (req.method === "GET") {
@@ -29,9 +29,12 @@ export default async ({ req, res }) => {
 
   const lmnt = new Speech(process.env.LMNT_API_KEY);
 
-  const speechAudio = await lmnt.synthesize(req.body.text, 'lily', { format: 'mp3' });
+  const speechAudio = await lmnt.synthesize(req.body.text, "lily", {
+    format: "mp3",
+  });
 
-  const endpoint = process.env.APPWRITE_ENDPOINT ?? "https://cloud.appwrite.io/v1";
+  const endpoint =
+    process.env.APPWRITE_ENDPOINT ?? "https://cloud.appwrite.io/v1";
 
   const client = new Client()
     .setEndpoint(endpoint)
@@ -43,7 +46,7 @@ export default async ({ req, res }) => {
     process.env.APPWRITE_BUCKET_ID,
     ID.unique(),
     InputFile.fromBlob(new Blob([speechAudio.audio]), "audio.mp3"),
-    [Permission.read(Role.any())]
+    [Permission.read(Role.any())],
   );
 
   return res.json(
@@ -51,6 +54,6 @@ export default async ({ req, res }) => {
       ok: true,
       response: `${endpoint}/storage/buckets/${process.env.APPWRITE_BUCKET_ID}/files/${file["$id"]}/view?project=${process.env.APPWRITE_FUNCTION_PROJECT_ID}`,
     },
-    200
+    200,
   );
 };

@@ -14,10 +14,10 @@ Query the model for a completion.
 
 **Parameters**
 
-| Name         | Description                                                                       | Location | Type               | Sample Value                                                                                                                                    | Required |
-| ------------ | --------------------------------------------------------------------------------- | -------- | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| Content-Type | The content type of the request body                                              | Header   | `application/json` | N/A                                                                                                                                             | Yes      |
-| text         | Text for the model to say                                                         | Body     | String             | ` Appwrite is a secure backend server for web, mobile, and Flutter apps, providing easy setup for database, authentication, storage, and more.` | Yes      |
+| Name         | Description                          | Location | Type               | Sample Value                                                                                                                                    | Required |
+| ------------ | ------------------------------------ | -------- | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| Content-Type | The content type of the request body | Header   | `application/json` | N/A                                                                                                                                             | Yes      |
+| text         | Text for the model to say            | Body     | String             | ` Appwrite is a secure backend server for web, mobile, and Flutter apps, providing easy setup for database, authentication, storage, and more.` | Yes      |
 
 Sample `200` Response:
 
@@ -68,10 +68,10 @@ Response when the model fails to respond.
 
 A unique key used to authenticate with the LMNT API. You can find your API key in the LMNT dashboard.
 
-| Question      | Answer                                                                      |
-| ------------- | --------------------------------------------------------------------------- |
-| Required      | Yes                                                                         |
-| Sample Value  | `d03xxxxxxxx26`                                                             |
+| Question      | Answer                                                               |
+| ------------- | -------------------------------------------------------------------- |
+| Required      | Yes                                                                  |
+| Sample Value  | `d03xxxxxxxx26`                                                      |
 | Documentation | [LMNT Docs](https://docs.lmnt.com/getting-started/environment-setup) |
 
 ### APPWRITE_ENDPOINT
