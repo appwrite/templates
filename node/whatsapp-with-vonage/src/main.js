@@ -35,7 +35,7 @@ export default async ({ req, res }) => {
   const basicAuthToken = btoa(
     `${process.env.VONAGE_API_KEY}:${process.env.VONAGE_API_SECRET}`
   );
-  
+
   await fetch(`https://messages-sandbox.nexmo.com/v1/messages`, {
     method: 'POST',
     body: JSON.stringify({

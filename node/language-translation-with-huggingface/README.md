@@ -17,7 +17,7 @@ Query the model for a translation.
 | Name         | Description                          | Location | Type               | Sample Value        |
 | ------------ | ------------------------------------ | -------- | ------------------ | ------------------- |
 | Content-Type | The content type of the request body | Header   | `application/json` | N/A                 |
-| source   | Text to translate                    | Body     | String             | `My name is Walter` |
+| source       | Text to translate                    | Body     | String             | `My name is Walter` |
 
 Sample `200` Response:
 

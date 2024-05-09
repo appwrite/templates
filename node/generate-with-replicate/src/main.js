@@ -1,4 +1,4 @@
-import Replicate from "replicate";
+import Replicate from 'replicate';
 import { getStaticFile, throwIfMissing } from './utils.js';
 
 export default async ({ req, res, error }) => {
@@ -11,16 +11,25 @@ export default async ({ req, res, error }) => {
   }
 
   const models = {
-    'audio': 'meta/musicgen:b05b1dff1d8c6dc63d14b0cdb42135378dcb87f6373b0d3d341ede46e59e2b38',
-    'text': 'meta/llama-2-70b-chat',
-    'image': 'stability-ai/sdxl:39ed52f2a78e934b3ba6e2a89f5b1c712de7dfea535525255b1aa35c5565e08b'
+    audio:
+      'meta/musicgen:b05b1dff1d8c6dc63d14b0cdb42135378dcb87f6373b0d3d341ede46e59e2b38',
+    text: 'meta/llama-2-70b-chat',
+    image:
+      'stability-ai/sdxl:39ed52f2a78e934b3ba6e2a89f5b1c712de7dfea535525255b1aa35c5565e08b',
   };
 
   if (!req.body.prompt || typeof req.body.prompt !== 'string') {
-    return res.json({ ok: false, error: 'Missing required field `prompt`' }, 400);
+    return res.json(
+      { ok: false, error: 'Missing required field `prompt`' },
+      400
+    );
   }
 
-  if (req.body.type !== 'audio' && req.body.type !== 'text' && req.body.type !== 'image') {
+  if (
+    req.body.type !== 'audio' &&
+    req.body.type !== 'text' &&
+    req.body.type !== 'image'
+  ) {
     return res.json({ ok: false, error: 'Invalid field `type`' }, 400);
   }
 
@@ -29,7 +38,7 @@ export default async ({ req, res, error }) => {
   let request = {
     input: {
       prompt: req.body.prompt,
-    }
+    },
   };
 
   // Allows you to tinker parameters for individual output types
@@ -38,23 +47,23 @@ export default async ({ req, res, error }) => {
       request.input = {
         ...request.input,
         length: 30,
-      }
-    break;
+      };
+      break;
     case 'text':
       request.input = {
         ...request.input,
         max_new_tokens: 512,
-      }
-    break;
+      };
+      break;
     case 'image':
       request.input = {
         ...request.input,
         width: 512,
         height: 512,
-        negative_prompt: "deformed, noisy, blurry, distorted",
-      }
-    break;
-  };
+        negative_prompt: 'deformed, noisy, blurry, distorted',
+      };
+      break;
+  }
 
   let response;
 
@@ -67,7 +76,7 @@ export default async ({ req, res, error }) => {
   }
 
   if (req.body.type === 'image') {
-    response = response[0]
+    response = response[0];
   } else if (req.body.type === 'text') {
     response = response.join('');
   }

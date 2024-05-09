@@ -1,22 +1,28 @@
 <!-- Name your function -->
+
 # ⚡ Template Function
 
 <!-- Write short function tagline -->
+
 Your function's description goes here.
 
 ## 🧰 Usage
 
 <!-- Copy section for each endpoint -->
 <!-- Document endpoint method and url  -->
+
 ### GET /
 
 <!-- Describe the endpoint -->
+
 Your endpoint description goes here.
 
 **Parameters**
+
 <!-- Document each expected parameter -->
+
 | Name   | Description                       | Location                     | Type                               | Sample Value |
-|--------|-----------------------------------|------------------------------|------------------------------------|--------------|
+| ------ | --------------------------------- | ---------------------------- | ---------------------------------- | ------------ |
 | userId | Your param description goes here. | Path / Query / Body / Header | String / Number / Boolean / Object | 642...7cd    |
 
 **Response**
@@ -40,8 +46,9 @@ Sample `400` Response:
 ## ⚙️ Configuration
 
 <!-- Update values and remove irrelevant settings -->
+
 | Setting           | Value            |
-|-------------------|------------------|
+| ----------------- | ---------------- |
 | Runtime           | Node (18.0)      |
 | Entrypoint        | `src/main.js`    |
 | Build Commands    | `npm run build`  |
@@ -54,16 +61,19 @@ Sample `400` Response:
 
 <!-- Copy section for each variable -->
 <!-- Name the variable -->
+
 ### APPWRITE_API_KEY
 
 <!-- Describe the variable -->
-API Key to talk to Appwrite backend APIs. 
+
+API Key to talk to Appwrite backend APIs.
 
 <!-- Mark if variable is required or not -->
 <!-- Provide sample (but invalid) value -->
 <!-- Link to docs or remove if irrelevant -->
-| Question       | Answer          |
-|----------------|-----------------|
-| Required       | Yes / No        |
-| Sample Value   | `d1efb...aec35` |
-| Documentation  | [Appwrite: Getting Started for Server](https://appwrite.io/docs/advanced/platform/api-keys) |
+
+| Question      | Answer                                                                                      |
+| ------------- | ------------------------------------------------------------------------------------------- |
+| Required      | Yes / No                                                                                    |
+| Sample Value  | `d1efb...aec35`                                                                             |
+| Documentation | [Appwrite: Getting Started for Server](https://appwrite.io/docs/advanced/platform/api-keys) |

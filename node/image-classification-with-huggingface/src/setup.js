@@ -5,7 +5,8 @@ async function setup() {
   throwIfMissing(process.env, ['APPWRITE_API_KEY']);
 
   const databaseId = process.env.APPWRITE_DATABASE_ID ?? 'ai';
-  const collectionId = process.env.APPWRITE_COLLECTION_ID ?? 'image_classification';
+  const collectionId =
+    process.env.APPWRITE_COLLECTION_ID ?? 'image_classification';
   const bucketId = process.env.APPWRITE_BUCKET_ID ?? 'image_classification';
 
   console.log('Executing setup script...');

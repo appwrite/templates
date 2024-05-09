@@ -23,7 +23,7 @@ object Utils {
                 <meta charset="UTF-8" />
                 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                <title>Meilisearch Demo</title>
+                <title>Meilisearch demo</title>
 
                 <script src="https://unpkg.com/meilisearch@0.34.1"></script>
                 <script src="https://unpkg.com/alpinejs" defer></script>
@@ -34,14 +34,14 @@ object Utils {
                     href="https://unpkg.com/@appwrite.io/pink-icons"
                 />
             </head>
-            <body>
+            <body class="theme-dark">
                 <main class="main-content">
                     <div class="top-cover u-padding-block-end-56">
                         <div class="container">
                             <div
                                 class="u-flex u-gap-16 u-flex-justify-center u-margin-block-start-16"
                             >
-                                <h1 class="heading-level-1">Meilisearch Demo</h1>
+                                <h1 class="heading-level-1">Meilisearch demo</h1>
                                 <code class="u-un-break-text"></code>
                             </div>
                             <p

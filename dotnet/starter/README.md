@@ -36,7 +36,7 @@ Sample `200` Response:
 ## ⚙️ Configuration
 
 | Setting           | Value          |
-|-------------------|----------------|
+| ----------------- | -------------- |
 | Runtime           | .NET (6.0)     |
 | Entrypoint        | `src/Index.cs` |
 | Permissions       | `any`          |

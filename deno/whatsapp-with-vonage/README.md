@@ -29,7 +29,7 @@ Sample `200` Response:
 
 ```json
 {
-    "ok": true
+  "ok": true
 }
 ```
 
@@ -37,8 +37,8 @@ Sample `400` Response:
 
 ```json
 {
-    "ok": false,
-    "error": "Missing required parameter: from"
+  "ok": false,
+  "error": "Missing required parameter: from"
 }
 ```
 
@@ -46,8 +46,8 @@ Sample `401` Response:
 
 ```json
 {
-    "ok": false,
-    "error": "Payload hash mismatch."
+  "ok": false,
+  "error": "Payload hash mismatch."
 }
 ```
 

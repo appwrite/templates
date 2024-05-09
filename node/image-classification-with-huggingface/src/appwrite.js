@@ -15,39 +15,33 @@ class AppwriteService {
   }
 
   /**
-  * @param {string} databaseId
-  * @param {string} collectionId
-  * @param {string} imageId
-  * @param {object} labels
-  * @returns {Promise<void>}
-  */
-  async createImageLabels(databaseId, collectionId, imageId, labels)
-  {
-    await this.databases.createDocument(
-      databaseId,
-      collectionId,
-      ID.unique(),
-      {
-        image: imageId,
-        labels: JSON.stringify(labels),
-      }
-    );
+   * @param {string} databaseId
+   * @param {string} collectionId
+   * @param {string} imageId
+   * @param {object} labels
+   * @returns {Promise<void>}
+   */
+  async createImageLabels(databaseId, collectionId, imageId, labels) {
+    await this.databases.createDocument(databaseId, collectionId, ID.unique(), {
+      image: imageId,
+      labels: JSON.stringify(labels),
+    });
   }
 
   /**
-  * @param {string} bucketId
-  * @param {string} fileId
-  * @returns {Promise<Buffer>}
-  */
+   * @param {string} bucketId
+   * @param {string} fileId
+   * @returns {Promise<Buffer>}
+   */
   async getFile(bucketId, fileId) {
     return await this.storage.getFileDownload(bucketId, fileId);
   }
 
   /**
-  * @param {string} databaseId
-  * @param {string} collectionId
-  * @returns {Promise<boolean>}
-  */
+   * @param {string} databaseId
+   * @param {string} collectionId
+   * @returns {Promise<boolean>}
+   */
   async doesAIDataExist(databaseId, collectionId) {
     try {
       await this.databases.get(databaseId);
@@ -60,9 +54,9 @@ class AppwriteService {
   }
 
   /**
-  * @param {string} bucketId
-  * @returns {Promise<boolean>}
-  */
+   * @param {string} bucketId
+   * @returns {Promise<boolean>}
+   */
   async doesBucketExist(bucketId) {
     try {
       await this.storage.getBucket(bucketId);
@@ -74,10 +68,10 @@ class AppwriteService {
   }
 
   /**
-  * @param {string} databaseId
-  * @param {string} collectionId
-  * @returns {Promise<void>}
-  */
+   * @param {string} databaseId
+   * @param {string} collectionId
+   * @returns {Promise<void>}
+   */
   async setupAIDatabase(databaseId, collectionId) {
     try {
       await this.databases.create(databaseId, 'AI Database');
@@ -86,7 +80,11 @@ class AppwriteService {
     }
 
     try {
-      await this.databases.createCollection(databaseId, collectionId, 'Image Labels');
+      await this.databases.createCollection(
+        databaseId,
+        collectionId,
+        'Image Labels'
+      );
     } catch (err) {
       if (err.code !== 409) throw err;
     }

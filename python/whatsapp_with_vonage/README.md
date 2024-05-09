@@ -51,16 +51,15 @@ Sample `401` Response:
 }
 ```
 
-
 ## ⚙️ Configuration
 
-| Setting           | Value         |
-| ----------------- | ------------- |
-| Runtime           | Python (3.9)  |
-| Entrypoint        | `src/main.py` |
+| Setting           | Value                             |
+| ----------------- | --------------------------------- |
+| Runtime           | Python (3.9)                      |
+| Entrypoint        | `src/main.py`                     |
 | Build Commands    | `pip install -r requirements.txt` |
-| Permissions       | `any`         |
-| Timeout (Seconds) | 15            |
+| Permissions       | `any`                             |
+| Timeout (Seconds) | 15                                |
 
 ## 🔒 Environment Variables
 
@@ -101,5 +100,5 @@ Vonage WhatsApp number to send messages from.
 | Question      | Answer                                                                                                                        |
 | ------------- | ----------------------------------------------------------------------------------------------------------------------------- |
 | Required      | Yes                                                                                                                           |
-| Sample Value  | `14000000102`                                                                                                                |
+| Sample Value  | `14000000102`                                                                                                                 |
 | Documentation | [Vonage: Q&A](https://api.support.vonage.com/hc/en-us/articles/4431993282580-Where-do-I-find-my-WhatsApp-Number-Certificate-) |

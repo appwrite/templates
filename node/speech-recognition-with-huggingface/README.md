@@ -98,8 +98,8 @@ The ID of the collection where the responses are stored.
 
 Secret for sending requests to the Hugging Face API.
 
-| Question      | Answer                                                                                              |
-| ------------- | --------------------------------------------------------------------------------------------------- |
-| Required      | Yes                                                                                                 |
-| Sample Value  | `hf_x2a...`                                                                                         |
+| Question      | Answer                                                                                                |
+| ------------- | ----------------------------------------------------------------------------------------------------- |
+| Required      | Yes                                                                                                   |
+| Sample Value  | `hf_x2a...`                                                                                           |
 | Documentation | [Hugging Face: API tokens](https://huggingface.co/docs/api-inference/en/quicktour#get-your-api-token) |

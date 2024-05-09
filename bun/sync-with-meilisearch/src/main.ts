@@ -1,32 +1,30 @@
-import { Client, Databases, Query } from 'node-appwrite';
-import { getStaticFile, interpolate, throwIfMissing } from './utils';
-import { MeiliSearch } from 'meilisearch';
+import { Client, Databases, Query } from "node-appwrite";
+import { getStaticFile, interpolate, throwIfMissing } from "./utils";
+import { MeiliSearch } from "meilisearch";
 
 export default async ({ req, res, log }) => {
   throwIfMissing(Bun.env, [
-    'APPWRITE_API_KEY',
-    'APPWRITE_DATABASE_ID',
-    'APPWRITE_COLLECTION_ID',
-    'MEILISEARCH_ENDPOINT',
-    'MEILISEARCH_INDEX_NAME',
-    'MEILISEARCH_ADMIN_API_KEY',
-    'MEILISEARCH_SEARCH_API_KEY',
+    "APPWRITE_API_KEY",
+    "APPWRITE_DATABASE_ID",
+    "APPWRITE_COLLECTION_ID",
+    "MEILISEARCH_ENDPOINT",
+    "MEILISEARCH_INDEX_NAME",
+    "MEILISEARCH_ADMIN_API_KEY",
+    "MEILISEARCH_SEARCH_API_KEY",
   ]);
 
-  if (req.method === 'GET') {
-    const html = interpolate(await getStaticFile('index.html'), {
+  if (req.method === "GET") {
+    const html = interpolate(await getStaticFile("index.html"), {
       MEILISEARCH_ENDPOINT: Bun.env.MEILISEARCH_ENDPOINT,
       MEILISEARCH_INDEX_NAME: Bun.env.MEILISEARCH_INDEX_NAME,
       MEILISEARCH_SEARCH_API_KEY: Bun.env.MEILISEARCH_SEARCH_API_KEY,
     });
 
-    return res.send(html, 200, { 'Content-Type': 'text/html; charset=utf-8' });
+    return res.send(html, 200, { "Content-Type": "text/html; charset=utf-8" });
   }
 
   const client = new Client()
-    .setEndpoint(
-      Bun.env.APPWRITE_ENDPOINT ?? 'https://cloud.appwrite.io/v1'
-    )
+    .setEndpoint(Bun.env.APPWRITE_ENDPOINT ?? "https://cloud.appwrite.io/v1")
     .setProject(Bun.env.APPWRITE_FUNCTION_PROJECT_ID)
     .setKey(Bun.env.APPWRITE_API_KEY);
 
@@ -51,7 +49,7 @@ export default async ({ req, res, log }) => {
     const { documents } = await databases.listDocuments(
       Bun.env.APPWRITE_DATABASE_ID,
       Bun.env.APPWRITE_COLLECTION_ID,
-      queries
+      queries,
     );
 
     if (documents.length > 0) {
@@ -63,10 +61,10 @@ export default async ({ req, res, log }) => {
     }
 
     log(`Syncing chunk of ${documents.length} documents ...`);
-    await index.addDocuments(documents, { primaryKey: '$id' });
+    await index.addDocuments(documents, { primaryKey: "$id" });
   } while (cursor !== null);
 
-  log('Sync finished.');
+  log("Sync finished.");
 
-  return res.send('Sync finished.', 200);
+  return res.send("Sync finished.", 200);
 };

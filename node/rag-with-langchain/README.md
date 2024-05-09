@@ -29,8 +29,8 @@ Response from the model.
 
 ```json
 {
-    "ok": true,
-    "completion": "Monday's heavy weight, Dawning with a sigh of grey, Hopeful hearts await."
+  "ok": true,
+  "completion": "Monday's heavy weight, Dawning with a sigh of grey, Hopeful hearts await."
 }
 ```
 
@@ -136,4 +136,3 @@ API Key for OpenAI API. Used to generate the embeddings for the documents, and q
 | Required      | Yes                                                      |
 | Sample Value  | `searchKey1234`                                          |
 | Documentation | [OpenAI: API Keys](https://platform.openai.com/api-keys) |
-

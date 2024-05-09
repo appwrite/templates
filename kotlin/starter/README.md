@@ -35,12 +35,12 @@ Sample `200` Response:
 
 ## ⚙️ Configuration
 
-| Setting           | Value          |
-|-------------------|----------------|
-| Runtime           | Kotlin (1.7)   |
-| Entrypoint        | `src/Main.kt`  |
-| Permissions       | `any`          |
-| Timeout (Seconds) | 15             |
+| Setting           | Value         |
+| ----------------- | ------------- |
+| Runtime           | Kotlin (1.7)  |
+| Entrypoint        | `src/Main.kt` |
+| Permissions       | `any`         |
+| Timeout (Seconds) | 15            |
 
 ## 🔒 Environment Variables
 

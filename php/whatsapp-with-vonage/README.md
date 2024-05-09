@@ -54,8 +54,8 @@ Sample `401` Response:
 ## ⚙️ Configuration
 
 | Setting           | Value              |
-| ----------------- |--------------------|
-| Runtime           |  PHP (8.0)         |
+| ----------------- | ------------------ |
+| Runtime           | PHP (8.0)          |
 | Entrypoint        | `src/index.php`    |
 | Build Commands    | `composer install` |
 | Permissions       | `any`              |

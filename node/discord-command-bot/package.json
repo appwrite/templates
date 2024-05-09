@@ -10,9 +10,9 @@
   },
   "dependencies": {
     "discord-interactions": "^3.4.0",
-    "undici": "^5.23.0"
+    "undici": "^6.16.0"
   },
   "devDependencies": {
-    "prettier": "^3.0.0"
+    "prettier": "^3.2.5"
   }
 }

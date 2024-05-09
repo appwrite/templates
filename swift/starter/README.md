@@ -36,7 +36,7 @@ Sample `200` Response:
 ## ⚙️ Configuration
 
 | Setting           | Value                 |
-|-------------------|-----------------------|
+| ----------------- | --------------------- |
 | Runtime           | Swift (5.5)           |
 | Entrypoint        | `Sources/index.swift` |
 | Permissions       | `any`                 |

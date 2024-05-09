@@ -36,7 +36,7 @@ Sample `200` Response:
 ## ⚙️ Configuration
 
 | Setting           | Value                             |
-|-------------------|-----------------------------------|
+| ----------------- | --------------------------------- |
 | Runtime           | Python (3.9)                      |
 | Entrypoint        | `src/main.py`                     |
 | Build Commands    | `pip install -r requirements.txt` |

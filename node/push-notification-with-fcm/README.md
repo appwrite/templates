@@ -42,8 +42,8 @@ Sample `200` Response:
 
 ```json
 {
-    "ok": true,
-    "messageId": "as4jg109cbe1"
+  "ok": true,
+  "messageId": "as4jg109cbe1"
 }
 ```
 
@@ -51,8 +51,8 @@ Sample `400` Response:
 
 ```json
 {
-    "ok": false,
-    "error": "Device token and message are required."
+  "ok": false,
+  "error": "Device token and message are required."
 }
 ```
 
@@ -60,8 +60,8 @@ Sample `500` Response:
 
 ```json
 {
-    "ok": false,
-    "error": "Failed to send the message"
+  "ok": false,
+  "error": "Failed to send the message."
 }
 ```
 
@@ -81,38 +81,38 @@ Sample `500` Response:
 
 A unique identifier for your FCM project.
 
-| Question      | Answer                                                                                             |
-| ------------- | -------------------------------------------------------------------------------------------------- |
-| Required      | Yes                                                                                                |
-| Sample Value  | `mywebapp-f6e57`                                                                                   |
-| Documentation | [FCM: Project ID](https://firebase.google.com/docs/projects/learn-more#project-id)                 |
+| Question      | Answer                                                                             |
+| ------------- | ---------------------------------------------------------------------------------- |
+| Required      | Yes                                                                                |
+| Sample Value  | `mywebapp-f6e57`                                                                   |
+| Documentation | [FCM: Project ID](https://firebase.google.com/docs/projects/learn-more#project-id) |
 
 ### FCM_CLIENT_EMAIL
 
 Your FCM service account email.
 
-| Question      | Answer                                                                                             |
-| ------------- | -------------------------------------------------------------------------------------------------- |
-| Required      | Yes                                                                                                |
-| Sample Value  | `fcm-adminsdk-1a0de@test-f6e57.iam.gserviceaccount.com`                                            |
+| Question      | Answer                                                                                                       |
+| ------------- | ------------------------------------------------------------------------------------------------------------ |
+| Required      | Yes                                                                                                          |
+| Sample Value  | `fcm-adminsdk-1a0de@test-f6e57.iam.gserviceaccount.com`                                                      |
 | Documentation | [FCM: SDK Setup](https://firebase.google.com/docs/admin/setup#initialize_the_sdk_in_non-google_environments) |
 
 ### FCM_PRIVATE_KEY
 
 A unique private key used to authenticate with FCM.
 
-| Question      | Answer                                                                                             |
-| ------------- | -------------------------------------------------------------------------------------------------- |
-| Required      | Yes                                                                                                |
-| Sample Value | `0b6830cc66d92804e11af2153242d34211d675675`                                                         |
+| Question      | Answer                                                                                                       |
+| ------------- | ------------------------------------------------------------------------------------------------------------ |
+| Required      | Yes                                                                                                          |
+| Sample Value  | `0b6830cc66d92804e11af2153242d34211d675675`                                                                  |
 | Documentation | [FCM: SDK Setup](https://firebase.google.com/docs/admin/setup#initialize_the_sdk_in_non-google_environments) |
 
 ### FCM_DATABASE_URL
 
 URL of your FCM database.
 
-| Question      | Answer                                                                                             |
-| ------------- | -------------------------------------------------------------------------------------------------- |
-| Required      | Yes                                                                                                |
-| Sample Value | `https://my-app-e398e.firebaseio.com`                                                               |
+| Question      | Answer                                                                                                       |
+| ------------- | ------------------------------------------------------------------------------------------------------------ |
+| Required      | Yes                                                                                                          |
+| Sample Value  | `https://my-app-e398e.firebaseio.com`                                                                        |
 | Documentation | [FCM: SDK Setup](https://firebase.google.com/docs/admin/setup#initialize_the_sdk_in_non-google_environments) |

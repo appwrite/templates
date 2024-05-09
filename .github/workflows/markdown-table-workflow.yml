@@ -12,22 +12,21 @@ jobs:
       contents: write
 
     steps:
-    - name: Prepare repository
-      uses: actions/checkout@v4
+      - name: Prepare repository
+        uses: actions/checkout@v4
 
-    - name: Prepare Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: 18
+      - name: Prepare Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
 
-    - name: Run table generator
-      run: | 
-        cd .github/workflows/markdown-table-workflow
-        npm install
-        node index.js
+      - name: Run table generator
+        run: |
+          cd .github/workflows/markdown-table-workflow
+          npm install
+          node index.js
 
-    - name: Commit changes
-      uses: stefanzweifel/git-auto-commit-action@v5
-      with:
-        commit_message: "docs: update README table"
-
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "docs: update README table"

@@ -35,12 +35,12 @@ Sample `200` Response:
 
 ## ⚙️ Configuration
 
-| Setting           | Value              |
-|-------------------|--------------------|
-| Runtime           | C++ (17)           |
-| Entrypoint        | `src/main.cc`      |
-| Permissions       | `any`              |
-| Timeout (Seconds) | 15                 |
+| Setting           | Value         |
+| ----------------- | ------------- |
+| Runtime           | C++ (17)      |
+| Entrypoint        | `src/main.cc` |
+| Permissions       | `any`         |
+| Timeout (Seconds) | 15            |
 
 ## 🔒 Environment Variables
 

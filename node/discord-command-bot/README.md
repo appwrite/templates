@@ -10,10 +10,10 @@ Webhook to receive Discord command events. To receive events, you must register 
 
 **Parameters**
 
-| Name                  | Description                      | Location | Type   | Sample Value    |
-| --------------------- | -------------------------------- | -------- | ------ | --------------- |
-| x-signature-ed25519   | Signature of the request payload | Header   | string | `d1efb...aec35` |
-| x-signature-timestamp | Timestamp of the request payload | Header   | string | `1629837700`    |
+| Name                  | Description                      | Location | Type   | Sample Value                                                                                  |
+| --------------------- | -------------------------------- | -------- | ------ | --------------------------------------------------------------------------------------------- |
+| x-signature-ed25519   | Signature of the request payload | Header   | string | `d1efb...aec35`                                                                               |
+| x-signature-timestamp | Timestamp of the request payload | Header   | string | `1629837700`                                                                                  |
 | JSON Body             | GitHub webhook payload           | Body     | Object | See [Discord docs](https://discord.com/developers/docs/interactions/receiving-and-responding) |
 
 **Response**
@@ -58,7 +58,7 @@ Public Key of your application in Discord Developer Portal.
 | Question      | Answer                                                                                                                 |
 | ------------- | ---------------------------------------------------------------------------------------------------------------------- |
 | Required      | Yes                                                                                                                    |
-| Sample Value  | `db9...980`                                                                                                        |
+| Sample Value  | `db9...980`                                                                                                            |
 | Documentation | [Discord Docs](https://discord.com/developers/docs/tutorials/hosting-on-cloudflare-workers#creating-an-app-on-discord) |
 
 ### DISCORD_APPLICATION_ID
@@ -68,7 +68,7 @@ ID of your application in Discord Developer Portal.
 | Question      | Answer                                                                                                                 |
 | ------------- | ---------------------------------------------------------------------------------------------------------------------- |
 | Required      | Yes                                                                                                                    |
-| Sample Value  | `427...169`                                                                                                        |
+| Sample Value  | `427...169`                                                                                                            |
 | Documentation | [Discord Docs](https://discord.com/developers/docs/tutorials/hosting-on-cloudflare-workers#creating-an-app-on-discord) |
 
 ### DISCORD_TOKEN
@@ -78,5 +78,5 @@ Bot token of your application in Discord Developer Portal.
 | Question      | Answer                                                                                                                 |
 | ------------- | ---------------------------------------------------------------------------------------------------------------------- |
 | Required      | Yes                                                                                                                    |
-| Sample Value  | `NDI...LUfg`                                                                                                        |
+| Sample Value  | `NDI...LUfg`                                                                                                           |
 | Documentation | [Discord Docs](https://discord.com/developers/docs/tutorials/hosting-on-cloudflare-workers#creating-an-app-on-discord) |

@@ -58,6 +58,7 @@ const overrideWords = {
   elevenlabs: "ElevenLabs",
   langchain: "LangChain",
   huggingface: "Hugging Face",
+  fal: "fal.ai",
 };
 
 const folderDenylist = [".github", ".git"];
@@ -94,7 +95,7 @@ function getRuntimeToTemplates() {
   for (const runtimeDir of runtimeDirs) {
     const runtime = verboseRuntimes[runtimeDir] || runtimeDir;
     const templateDirs = getDirectories(
-      path.join(".", "../../../", runtimeDir)
+      path.join(".", "../../../", runtimeDir),
     );
 
     runtimeToTemplates[runtime] = templateDirs.map((templateDir) => {
@@ -132,7 +133,7 @@ function generateTableRows(sortedTemplates) {
       template,
       ...sortedRuntimes.map((runtime) => {
         const matchingRuntime = templateToRuntimes[template].find(
-          (r) => r.name === runtime
+          (r) => r.name === runtime,
         );
         return matchingRuntime ? `[✅](${matchingRuntime.dir})` : "🏗️";
       }),

@@ -9,9 +9,9 @@
   },
   "keywords": [],
   "devDependencies": {
-    "prettier": "^3.0.0"
+    "prettier": "^3.2.5"
   },
   "dependencies": {
-    "undici": "^5.22.1"
+    "undici": "^6.16.0"
   }
 }

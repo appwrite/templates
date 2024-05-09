@@ -36,11 +36,11 @@ This endpoint is a webhook that handles two types of events from Lemon Squeezy: 
 
 **Parameters**
 
-| Name | Description                  | Location | Type   | Sample Value                                                          |
-| ---- | ---------------------------- | -------- | ------ | --------------------------------------------------------------------- |
-| None | Webhook payload from Lemon Squeezy. | Body     | Object | [See Lemon Squeezy documentation](https://Lemon Squeezy.com/docs/api/events/object) |
-| x-signature | Signature from Lemon Squeezy.        | Headers  | String | [See Lemon Squeezy docs](https://docs.lemonsqueezy.com/guides/developer-guide/webhooks#signing-and-validating-webhook-requests) |
-| x-event-name | Name of Lemon Squeezy webhook event | Headers  | String | [See Lemon Squeezy docs](https://docs.lemonsqueezy.com/help/webhooks#event-types) |
+| Name         | Description                         | Location | Type   | Sample Value                                                                                                                    |
+| ------------ | ----------------------------------- | -------- | ------ | ------------------------------------------------------------------------------------------------------------------------------- |
+| None         | Webhook payload from Lemon Squeezy. | Body     | Object | [See Lemon Squeezy documentation](https://Lemon Squeezy.com/docs/api/events/object)                                             |
+| x-signature  | Signature from Lemon Squeezy.       | Headers  | String | [See Lemon Squeezy docs](https://docs.lemonsqueezy.com/guides/developer-guide/webhooks#signing-and-validating-webhook-requests) |
+| x-event-name | Name of Lemon Squeezy webhook event | Headers  | String | [See Lemon Squeezy docs](https://docs.lemonsqueezy.com/help/webhooks#event-types)                                               |
 
 **Response**
 
@@ -77,10 +77,10 @@ Sample `401` Response:
 
 Your Appwrite project's API key.
 
-| Question      | Answer                                                                                                                                    |
-| ------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| Required      | Yes                                                                                                                                       |
-| Sample Value  | `083d341ee48...`                                                                                                                          |
+| Question      | Answer                                                                                                                                                          |
+| ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Required      | Yes                                                                                                                                                             |
+| Sample Value  | `083d341ee48...`                                                                                                                                                |
 | Documentation | [Appwrite: Create an API key](https://appwrite.io/docs/advanced/platform/api-keys#:~:text=To%20create%20a%20new%20API,scope%20to%20grant%20your%20application.) |
 
 ### APPWRITE_ENDPOINT

@@ -1,6 +1,6 @@
-import { Env } from 'bun';
-import { join, dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { Env } from "bun";
+import { join, dirname } from "path";
+import { fileURLToPath } from "url";
 
 /**
  * Throws an error if any of the keys are missing from the object
@@ -13,13 +13,13 @@ export function throwIfMissing(obj: Env, keys: string[]) {
     }
   }
   if (missing.length > 0) {
-    throw new Error(`Missing required fields: ${missing.join(', ')}`);
+    throw new Error(`Missing required fields: ${missing.join(", ")}`);
   }
 }
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const staticFolder = join(__dirname, '../static');
+const staticFolder = join(__dirname, "../static");
 
 /**
  * Returns the contents of a file in the static folder
@@ -31,6 +31,9 @@ export async function getStaticFile(fileName: string): Promise<string> {
 /**
  * Inserts the values into the template
  */
-export function interpolate(template: string, values: Record<string, string | undefined>): string {
-  return template.replace(/{{([^}]+)}}/g, (_, key) => values[key] || '');
+export function interpolate(
+  template: string,
+  values: Record<string, string | undefined>,
+): string {
+  return template.replace(/{{([^}]+)}}/g, (_, key) => values[key] || "");
 }
