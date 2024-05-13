@@ -2,13 +2,20 @@ import { getStaticFile } from "./utils.js";
 import OpenAI from "openai";
 
 export default async ({ req, res, error }) => {
+  throwIfMissing(process.env, ['ANYSCALE_API_KEY']);
+
   if (req.method === "GET") {
     return res.send(getStaticFile("index.html"), 200, {
       "Content-Type": "text/html; charset=utf-8",
     });
   }
 
-  const openai = new OpenAI(
+  if (req.method !== 'POST') {
+    return res.json({ ok: false, error: 'Method not allowed' }, 405);
+  }
+
+  // AnyScale is an OpenAI Compatible API.
+  const anyscale = new OpenAI(
     {
       apiKey: process.env.ANYSCALE_API_KEY,
       baseURL: "https://api.endpoints.anyscale.com/v1",
@@ -23,7 +30,7 @@ export default async ({ req, res, error }) => {
   }
 
   try {
-    const response = await openai.chat.completions.create({
+    const response = await anyscale.chat.completions.create({
       model: "mistralai/Mixtral-8x7B-Instruct-v0.1",
       max_tokens: parseInt(process.env.ANYSCALE_MAX_TOKENS ?? "512"),
       messages: [{ role: "user", content: req.body.prompt }],

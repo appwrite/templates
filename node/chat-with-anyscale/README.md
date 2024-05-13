@@ -37,7 +37,7 @@ Response when the request body is missing.
 ```json
 {
   "ok": false,
-  "error": "Missing body with a prompt."
+  "error": "Missing required field: prompt"
 }
 ```
 
