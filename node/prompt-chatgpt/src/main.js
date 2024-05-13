@@ -1,4 +1,4 @@
-import { OpenAIApi, Configuration } from 'openai';
+import { OpenAIApi } from 'openai';
 import { getStaticFile, throwIfMissing } from './utils.js';
 
 export default async ({ req, res }) => {
