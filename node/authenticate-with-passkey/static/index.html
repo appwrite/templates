@@ -10,13 +10,13 @@
   <link rel="stylesheet" href="https://unpkg.com/@appwrite.io/pink-icons" />
   <script src="//unpkg.com/alpinejs" defer></script>
   <script src="https://unpkg.com/@simplewebauthn/browser/dist/bundle/index.umd.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/matej-15-qa-appwrite@14.0.0-rc.1"></script>
+  <script src="https://cdn.jsdelivr.net/npm/appwrite@14.0.0"></script>
 
   <script>
     const client = new Appwrite.Client();
     client
-      .setEndpoint('https://qa.appwrite.org/v1')
-      .setProject('65c767c0831640a7a150');
+      .setEndpoint('https://cloud.appwrite.io/v1')
+      .setProject('[YOUR_PROJECT_ID]');
 
     const account = new Appwrite.Account(client);
 
@@ -48,7 +48,7 @@
           this.submitting = true;
 
           try {
-            const responseStart = await fetch('https://passkey.functions.qa.appwrite.org/v1/challenges', {
+            const responseStart = await fetch('/v1/challenges', {
               method: 'POST',
               body: JSON.stringify({ email: this.email }),
               headers: {
@@ -64,7 +64,7 @@
 
             const registration = await SimpleWebAuthnBrowser.startRegistration(body.options);
 
-            const responseFinish = await fetch('https://passkey.functions.qa.appwrite.org/v1/challenges', {
+            const responseFinish = await fetch('/v1/challenges', {
               method: 'PUT',
               body: JSON.stringify({ challengeId: body.challengeId, registration }),
               headers: {
@@ -92,7 +92,7 @@
           this.submitting = true;
 
           try {
-            const responseStart = await fetch('https://passkey.functions.qa.appwrite.org/v1/tokens', {
+            const responseStart = await fetch('/v1/tokens', {
               method: 'POST',
               body: JSON.stringify({ email: this.email }),
               headers: {
@@ -108,7 +108,7 @@
 
             const authentication = await SimpleWebAuthnBrowser.startAuthentication(body.options);
 
-            const responseFinish = await fetch('https://passkey.functions.qa.appwrite.org/v1/tokens', {
+            const responseFinish = await fetch('/v1/tokens', {
               method: 'PUT',
               body: JSON.stringify({ challengeId: body.challengeId, authentication }),
               headers: {
@@ -161,7 +161,7 @@
       <div class="main-header-end u-margin-inline-end-16">
         <ul class="buttons-list is-with-padding">
           <li class="buttons-list-item is-not-mobile u-padding-inline-0">
-            <a href="https://github.com/appwrite/templates/tree/main/node/authenticate-with-passkey" target="_blank"
+            <a href="https://github.com/meldiron/authenticate-with-passkey" target="_blank"
               class="button is-secondary is-not-mobile"><span class="text">View on GitHub</span></a>
           </li>
         </ul>

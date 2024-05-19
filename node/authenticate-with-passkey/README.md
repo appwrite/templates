@@ -4,7 +4,7 @@ Sign-in with passkey into Appwrite Account.
 
 ## 🧰 Usage
 
-TODO
+Read tutorial [article on Dev.to](https://dev.to/meldiron/biometric-authentication-with-passkeys-3e1) to learn more.
 
 ## ⚙️ Configuration
 
@@ -18,4 +18,30 @@ TODO
 
 ## 🔒 Environment Variables
 
-TODO (APPWRITE_API_KEY, APPWRITE_ENDPOINT, ALLOWED_ORIGIN)
+### ALLOWED_HOSTNAME
+
+Hostname (like `myapp.com`, without protocol or port) that is allowed to use passkey authentication.
+
+| Question     | Answer                         |
+| ------------ | ------------------------------ |
+| Required     | No                             |
+| Sample Value | `passkeydemo.appwrite.global` |
+
+### APPWRITE_API_KEY
+
+API Key to talk to Appwrite backend APIs.
+
+| Question      | Answer                                                                                             |
+| ------------- | -------------------------------------------------------------------------------------------------- |
+| Required      | Yes                                                                                                |
+| Sample Value  | `d1efb...aec35`                                                                                    |
+| Documentation | [Appwrite: Getting Started for Server](https://appwrite.io/docs/advanced/platform/api-keys) |
+
+### APPWRITE_ENDPOINT
+
+The URL endpoint of the Appwrite server. If not provided, it defaults to the Appwrite Cloud server: `https://cloud.appwrite.io/v1`.
+
+| Question     | Answer                         |
+| ------------ | ------------------------------ |
+| Required     | No                             |
+| Sample Value | `https://cloud.appwrite.io/v1` |
