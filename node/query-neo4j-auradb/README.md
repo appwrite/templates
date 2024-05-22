@@ -1,4 +1,4 @@
-# 🗄️ Node.js Query Neo4j Autota DB Function
+# 🗄️ Node.js Query Neo4j Aura DB Function
 
 A function to store and query warehouses, categories, and relations between them.
 
