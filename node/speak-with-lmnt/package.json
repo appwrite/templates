@@ -9,7 +9,7 @@
   },
   "keywords": [],
   "dependencies": {
-    "lmnt-node": "^1.1.2",
+    "lmnt-node": "^1.2.0",
     "node-appwrite": "^12.0.1"
   },
   "devDependencies": {

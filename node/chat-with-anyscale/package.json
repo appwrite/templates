@@ -1,5 +1,5 @@
 {
-  "name": "text-generation-with-hugging-face",
+  "name": "chat-with-anyscale",
   "version": "1.0.0",
   "description": "",
   "main": "src/main.js",
@@ -9,7 +9,8 @@
   },
   "keywords": [],
   "dependencies": {
-    "@huggingface/inference": "^2.7.0"
+    "node-appwrite": "^12.0.1",
+    "openai": "^4.47.1"
   },
   "devDependencies": {
     "prettier": "^3.2.5"

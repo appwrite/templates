@@ -11,6 +11,6 @@
     "prettier": "^3.2.5"
   },
   "dependencies": {
-    "firebase-admin": "^12.1.0"
+    "firebase-admin": "^12.1.1"
   }
 }
