@@ -9,8 +9,8 @@
   },
   "keywords": [],
   "dependencies": {
-    "@huggingface/inference": "^2.6.7",
-    "openai": "^4.42.0"
+    "@huggingface/inference": "^2.7.0",
+    "openai": "^4.47.1"
   },
   "devDependencies": {
     "prettier": "^3.2.5"

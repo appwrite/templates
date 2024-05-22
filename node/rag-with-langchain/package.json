@@ -9,11 +9,11 @@
   },
   "keywords": [],
   "dependencies": {
-    "@langchain/openai": "^0.0.28",
-    "@langchain/pinecone": "^0.0.4",
-    "@pinecone-database/pinecone": "^2.2.0",
-    "langchain": "^0.1.36",
-    "openai": "^4.42.0"
+    "@langchain/openai": "^0.0.33",
+    "@langchain/pinecone": "^0.0.6",
+    "@pinecone-database/pinecone": "^2.2.1",
+    "langchain": "^0.2.0",
+    "openai": "^4.47.1"
   },
   "devDependencies": {
     "prettier": "^3.2.5"

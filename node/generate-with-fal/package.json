@@ -9,7 +9,7 @@
   },
   "keywords": [],
   "dependencies": {
-    "@fal-ai/serverless-client": "^0.9.3"
+    "@fal-ai/serverless-client": "^0.10.0"
   },
   "devDependencies": {
     "prettier": "^3.2.5"
