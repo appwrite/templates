@@ -12,6 +12,10 @@ export default async ({ req, res, log, error }) => {
         'UPSTASH_TOKEN'
     ]);
 
+    if(req.method !== 'GET') {
+        return res.send('Not found.', 404);
+    }
+
     if (!index) {
         index = await getIndex();
     }

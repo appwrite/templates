@@ -20,6 +20,10 @@ export default async ({ req, res, log, error }) => {
         'ENDPOINT_ID'
     ]);
 
+    if(req.method !== 'GET') {
+        return res.send('Not found.', 404);
+    }
+
     if (!client) {
         client = await getClient();
     }
