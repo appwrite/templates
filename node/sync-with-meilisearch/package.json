@@ -9,7 +9,7 @@
   },
   "keywords": [],
   "dependencies": {
-    "meilisearch": "^0.39.0",
+    "meilisearch": "^0.40.0",
     "node-appwrite": "^12.0.1"
   },
   "devDependencies": {

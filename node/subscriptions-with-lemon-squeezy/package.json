@@ -8,7 +8,7 @@
     "format": "prettier --write ."
   },
   "dependencies": {
-    "@lemonsqueezy/lemonsqueezy.js": "^2.2.0",
+    "@lemonsqueezy/lemonsqueezy.js": "^3.0.0",
     "node-appwrite": "^12.0.1"
   },
   "devDependencies": {
