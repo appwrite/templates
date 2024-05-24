@@ -1,6 +1,7 @@
 import json
 import os
-from .utils import get_static_file, throw_if_missing, get_all_documents
+from .utils import get_static_file, throw_if_missing
+from .appwrite import get_all_documents
 from qdrant_client import QdrantClient, models
 from openai import OpenAI
 
@@ -21,9 +22,11 @@ def main(context):
 
     if context.req.method == "GET":
         html = get_static_file("index.html")
+        context.log("Serving index.html")
         return context.res.send(html, 200, {"content-type": "text/html; charset=utf-8"})
 
     if context.req.method != "POST":
+        context.log("Method not allowed")
         return context.res.send({"ok": False, "error": "Method not allowed"}, 405)
 
     client = QdrantClient(
@@ -33,6 +36,7 @@ def main(context):
     openai = OpenAI()
 
     if context.req.path == "/search":
+        context.log("Searching the collection")
         response = openai.embeddings.create(
             input=context.req.body["prompt"], model="text-embedding-3-small"
         )
@@ -44,12 +48,15 @@ def main(context):
             limit=5,
         )
 
+        search_results = [result.model_dump() for result in search_results]
+
         return context.res.json(
             {
                 "searchResults": search_results,
             }
         )
 
+    context.log("Syncing to Qdrant collection")
     documents = get_all_documents()
     points = []
     for index, document in enumerate(documents):
