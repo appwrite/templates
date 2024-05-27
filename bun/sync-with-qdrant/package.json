@@ -1,0 +1,21 @@
+{
+  "name": "sync-with-qdrant",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/main.ts",
+  "type": "module",
+  "scripts": {
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "@qdrant/js-client-rest": "^1.9.0",
+    "bun-types": "^1.0.7",
+    "node-appwrite": "^11.0.0",
+    "openai": "^4.47.1",
+    "path": "^0.12.7",
+    "url": "^0.11.3"
+  },
+  "devDependencies": {
+    "prettier": "^3.0.0"
+  }
+}

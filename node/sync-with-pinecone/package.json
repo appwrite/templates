@@ -9,9 +9,9 @@
   },
   "keywords": [],
   "dependencies": {
-    "@pinecone-database/pinecone": "^2.2.0",
+    "@pinecone-database/pinecone": "^2.2.1",
     "node-appwrite": "^12.0.1",
-    "openai": "^4.42.0"
+    "openai": "^4.47.1"
   },
   "devDependencies": {
     "prettier": "^3.2.5"
