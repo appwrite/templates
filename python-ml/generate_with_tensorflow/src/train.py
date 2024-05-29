@@ -47,15 +47,15 @@ def main():
         ]
     )
 
-    def loss(labels, logits):
-        return tf.keras.losses.sparse_categorical_crossentropy(
-            labels, logits, from_logits=True
-        )
-
-    model.compile(optimizer="adam", loss=loss)
+    model.compile(
+        optimizer="adam", loss=tf.losses.SparseCategoricalCrossentropy(from_logits=True)
+    )
 
     EPOCHS = 10
     checkpoint_dir = "./training_checkpoints"
+
+    os.makedirs(checkpoint_dir, exist_ok=True)
+
     checkpoint_prefix = f"{checkpoint_dir}/ckpt_{{epoch}}"
 
     checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(

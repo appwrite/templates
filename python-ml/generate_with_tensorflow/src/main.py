@@ -14,7 +14,7 @@ def main(context):
     try:
         throw_if_missing(context.req.body, ["prompt"])
     except ValueError as err:
-        return context.res.json({"ok": False, "error": err.message}, 400)
+        return context.res.json({"ok": False, "error": str(err)}, 400)
 
     prompt = context.req.body["prompt"]
     generated_text = generate_text(prompt)
