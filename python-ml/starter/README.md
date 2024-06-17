@@ -29,7 +29,8 @@ Sample `200` Response:
   "motto": "Build like a team of hundreds_",
   "learn": "https://appwrite.io/docs",
   "connect": "https://appwrite.io/discord",
-  "getInspired": "https://builtwith.appwrite.io"
+  "getInspired": "https://builtwith.appwrite.io",
+  "numpy": "1.24.3"
 }
 ```
 
@@ -37,7 +38,7 @@ Sample `200` Response:
 
 | Setting           | Value                             |
 | ----------------- | --------------------------------- |
-| Runtime           | Python (3.9)                      |
+| Runtime           | Python ML (3.11)                      |
 | Entrypoint        | `src/main.py`                     |
 | Build Commands    | `pip install -r requirements.txt` |
 | Permissions       | `any`                             |
