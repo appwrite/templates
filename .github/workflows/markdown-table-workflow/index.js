@@ -3,6 +3,7 @@ import path from "node:path";
 import { markdownTable } from "markdown-table";
 
 const verboseRuntimes = {
+  go: "Go",
   cpp: "C++",
   dart: "Dart",
   deno: "Deno",
