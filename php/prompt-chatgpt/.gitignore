@@ -468,3 +468,6 @@ composer.phar
 *.css.map
 *.sass.map
 *.scss.map
+
+# Directory used by Appwrite CLI for local development
+.appwrite

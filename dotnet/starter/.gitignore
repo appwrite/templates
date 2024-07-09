@@ -151,3 +151,6 @@ test-results/
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# Directory used by Appwrite CLI for local development
+.appwrite

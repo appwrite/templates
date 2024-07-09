@@ -470,3 +470,6 @@ composer.phar
 *.scss.map
 
 composer.lock
+
+# Directory used by Appwrite CLI for local development
+.appwrite

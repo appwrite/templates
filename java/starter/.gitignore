@@ -27,3 +27,6 @@ replay_pid*
 
 # Ignore Gradle build output directory
 build
+
+# Directory used by Appwrite CLI for local development
+.appwrite
