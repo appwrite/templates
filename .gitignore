@@ -130,3 +130,6 @@ dist
 .pnp.*
 
 appwrite.json
+
+# VSCode history directory
+.history
