@@ -47,26 +47,27 @@ Sample `400` Response:
 
 <!-- Update values and remove irrelevant settings -->
 
-| Setting           | Value            |
-| ----------------- | ---------------- |
-| Runtime           | Node (18.0)      |
-| Entrypoint        | `src/main.js`    |
-| Build Commands    | `npm run build`  |
-| Permissions       | `any`            |
-| Events            | `users.*.create` |
-| CRON              | `0 * * * *`      |
-| Timeout (Seconds) | 15               |
+| Setting           | Value                      |
+| ----------------- | -------------------------- |
+| Runtime           | Node (18.0)                |
+| Entrypoint        | `src/main.js`              |
+| Build Commands    | `npm run build`            |
+| Permissions       | `any`                      |
+| Events            | `users.*.create`           |
+| CRON              | `0 * * * *`                |
+| Timeout (Seconds) | 15                         |
+| Scopes            | `teams.read`, `users.write`|
 
 ## 🔒 Environment Variables
 
 <!-- Copy section for each variable -->
 <!-- Name the variable -->
 
-### APPWRITE_API_KEY
+### GITHUB_ACCESS_TOKEN
 
 <!-- Describe the variable -->
 
-API Key to talk to Appwrite backend APIs.
+Access token to talk to GitHub APIs.
 
 <!-- Mark if variable is required or not -->
 <!-- Provide sample (but invalid) value -->
@@ -76,4 +77,4 @@ API Key to talk to Appwrite backend APIs.
 | ------------- | ------------------------------------------------------------------------------------------- |
 | Required      | Yes / No                                                                                    |
 | Sample Value  | `d1efb...aec35`                                                                             |
-| Documentation | [Appwrite: Getting Started for Server](https://appwrite.io/docs/advanced/platform/api-keys) |
+| Documentation | [GitHub: Access tokens](https://github.com/settings/tokens) |

@@ -42,6 +42,7 @@ Sample `200` Response:
 | Build Commands    | `bun install` |
 | Permissions       | `any`         |
 | Timeout (Seconds) | 15            |
+| Scopes            | `users.read`  |
 
 ## 🔒 Environment Variables
 
