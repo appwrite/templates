@@ -1,8 +1,9 @@
 import { Client, Users } from "node-appwrite";
 
-// This is your Appwrite Function that runs for every execution
+// This Appwrite function will be executed every time your function is triggered
 export default async ({ req, res, log, error }: any) => {
-  // You can use Appwrite SDK to talk to other services
+  // You can use the Appwrite SDK to interact with other services
+  // For this example, we're using the Auth service
   const client = new Client()
     .setEndpoint(Bun.env["APPWRITE_FUNCTION_API_ENDPOINT"])
     .setProject(Bun.env["APPWRITE_FUNCTION_PROJECT_ID"])
@@ -11,19 +12,17 @@ export default async ({ req, res, log, error }: any) => {
 
   try {
     const response = await users.list();
-    // You can log messages to the Appwrite Console
-    // Client-side never sees those
+    // Log messages and errors to the Appwrite Console
+    // These logs won't be seen by your end users
     log(`Amount of users: ${response.total}`);
   } catch(err) {
-    // If something goes wrong, you can log error
-    // Errors can be found in Appwrite Console too
     error("Could not list users: " + err.message);
   }
 
   // The `req` object contains the request data
   if (req.path === "/ping") {
     // Use `res` object to respond with `text()`, `json()`, or `binary()`
-    // Make sure to always return response!
+    // Don't forget to return a response!
     return res.text("Pong");
   }
 
