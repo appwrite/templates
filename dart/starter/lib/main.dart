@@ -1,30 +1,32 @@
 import 'dart:async';
 import 'package:dart_appwrite/dart_appwrite.dart';
 
-// This is your Appwrite function
-// It's executed each time we get a request
+// This Appwrite function will be executed every time your function is triggered
 Future<dynamic> main(final context) async {
-// Why not try the Appwrite SDK?
-  //
-  // final client = Client()
-  //    .setEndpoint('https://cloud.appwrite.io/v1')
-  //    .setProject(Platform.environment['APPWRITE_FUNCTION_PROJECT_ID'])
-  //    .setKey(Platform.environment['APPWRITE_API_KEY']);
+  // You can use the Appwrite SDK to interact with other services
+  // For this example, we're using the Users service
+  final client = Client()
+    .setEndpoint(Platform.environment['APPWRITE_FUNCTION_API_ENDPOINT'])
+    .setProject(Platform.environment['APPWRITE_FUNCTION_PROJECT_ID'])
+    .setKey(context.req.headers['x-appwrite-key'] ?? '');
+  final users = Users(client)
 
-  // You can log messages to the console
-  context.log('Hello, Logs!');
-
-  // If something goes wrong, log an error
-  context.error('Hello, Errors!');
-
-  // The `req` object contains the request data
-  if (context.req.method == 'GET') {
-    // Send a response with the res object helpers
-    // `res.send()` dispatches a string back to the client
-    return context.res.send('Hello, World!');
+  try {
+    final response = await users.list();
+    // Log messages and errors to the Appwrite Console
+    // These logs won't be seen by your end users
+    context.log('Total users: ' + response.total);
+  } catch (e) {
+    context.error('Could not list users: ' + e.toString());
   }
 
-  // `res.json()` is a handy helper for sending JSON
+  // The req object contains the request data
+  if (context.req.path === "/ping") {
+    // Use res object to respond with text(), json(), or binary()
+    // Don't forget to return a response!
+    return context.res.text('Pong');
+  }
+
   return context.res.json({
     'motto': 'Build like a team of hundreds_',
     'learn': 'https://appwrite.io/docs',

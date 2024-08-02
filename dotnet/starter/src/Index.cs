@@ -5,32 +5,36 @@ using Appwrite.Services;
 using Appwrite.Models;
 
 public class Handler {
-
-    // This is your Appwrite function
-    // It"s executed each time we get a request
+    // This Appwrite function will be executed every time your function is triggered
     public async Task<RuntimeOutput> Main(RuntimeContext Context) 
     {
-        // Why not try the Appwrite SDK?
-        //
-        // var client = new Client()
-        //     .SetEndpoint("http://cloud.appwrite.io/v1")  
-        //     .SetProject(Environment.GetEnvironmentVariable("APPWRITE_FUNCTION_PROJECT_ID"))        
-        //     .SetKey(Environment.GetEnvironmentVariable("APPWRITE_API_KEY"))
+        // You can use the Appwrite SDK to interact with other services
+        // For this example, we're using the Users service
+        var client = new Client()
+            .SetEndpoint(Environment.GetEnvironmentVariable("APPWRITE_FUNCTION_PROJECT_ID"))
+            .SetProject(Environment.GetEnvironmentVariable("APPWRITE_FUNCTION_PROJECT_ID"))
+            .SetKey(context.Req.Headers.TryGetValue("x-appwrite-key", out string DynamicKey) ? DynamicKey : "");
+        var users = new Users(client);
 
-        // You can log messages to the console
-        Context.Log("Hello, Logs!");
-
-        // If something goes wrong, log an error
-        Context.Error("Hello, Errors!");
-
-        // The `Context.Req` object contains the request data
-        if (Context.Req.Method == "GET") {
-            // Send a response with the res object helpers
-            // `Context.Res.Send()` dispatches a string back to the client
-            return Context.Res.Send("Hello, World!");
+        try
+        {
+            var response = await users.List();
+            // Log messages and errors to the Appwrite Console
+            // These logs won't be seen by your end users
+            Context.Log("Total users: " + response.Total);
+        }
+        catch (Exception e)
+        {
+            Context.Error("Could not list users: " + e.ToString());
         }
 
-        // `Context.Res.Json()` is a handy helper for sending JSON
+        // The req object contains the request data
+        if (Context.Req.Path == "/ping") {
+            // Use res object to respond with text(), json(), or binary()
+            // Don't forget to return a response!
+            return Context.Res.Text("Pong");
+        }
+
         return Context.Res.Json(new Dictionary<string, object?>()
         {
             { "motto", "Build like a team of hundreds_" },
