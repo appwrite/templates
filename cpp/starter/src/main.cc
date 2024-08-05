@@ -6,23 +6,20 @@
 namespace runtime {
   class Handler {
     public:
-      // This is your Appwrite function
-      // It's executed each time we get a request
+      // This Appwrite function will be executed every time your function is triggered
       static RuntimeOutput main(RuntimeContext &context) {
-        // You can log messages to the console
+        // Log messages and errors to the Appwrite Console
+        // These logs won't be seen by your end users
         context.log("Hello, Logs!");
-
-        // If something goes wrong, log an error
         context.error("Hello, Errors!");
 
-        // The `req` object contains the request data
-        if (context.req.method == "GET") {
-          // Send a response with the res object helpers
-          // `context.res.send()` dispatches a string back to the client
-          return context.res.send("Hello, World!");
+        // The req object contains the request data
+        if (context.req.path == "/ping") {
+          // Use res object to respond with text(), json(), or binary()
+          // Don't forget to return a response!
+          return context.res.text("Pong");
         }
 
-        // `context.res.json()` is a handy helper for sending JSON
         Json::Value response;
         response["motto"] = "Build like a team of hundreds_";
         response["learn"] = "https://appwrite.io/docs";
