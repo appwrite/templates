@@ -16,7 +16,7 @@ Sample `200` Response:
 Pong
 ```
 
-### POST, PUT, PATCH, DELETE /
+### GET, POST, PUT, PATCH, DELETE /
 
 - Returns a "Learn More" JSON response.
 
