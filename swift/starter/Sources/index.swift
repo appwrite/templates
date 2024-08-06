@@ -14,11 +14,9 @@ func main(context: RuntimeContext) async throws -> RuntimeOutput {
 
     do {
         let response = try await users.list()
-        FIX ME BEFORE MERGE PLEASE
-        context.log(response)
         // Log messages and errors to the Appwrite Console
         // These logs won't be seen by your end users
-        context.log("Total users: X")
+        context.log("Total users: " + String(response.total))
     } catch {
         context.error("Could not list users: " + String(describing: error))
     }
