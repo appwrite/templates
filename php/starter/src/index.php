@@ -2,34 +2,36 @@
 
 require_once(__DIR__ . '/../vendor/autoload.php');
 
-// use Appwrite\Client;
-// use Appwrite\Exception;
+use Appwrite\Client;
+use Appwrite\Services\Users;
 
-// This is your Appwrite function
-// It's executed each time we get a request
+// This Appwrite function will be executed every time your function is triggered
 return function ($context) {
-    // Why not try the Appwrite SDK?
-    //
-    // $client = new Client();
-    // $client
-    //     ->setEndpoint('https://cloud.appwrite.io/v1')
-    //     ->setProject(getenv('APPWRITE_FUNCTION_PROJECT_ID'))
-    //      ->setKey(getenv('APPWRITE_API_KEY'));
+    // You can use the Appwrite SDK to interact with other services
+    // For this example, we're using the Users service
+    $client = new Client();
+    $client
+        ->setEndpoint(getenv('APPWRITE_FUNCTION_API_ENDPOINT'))
+        ->setProject(getenv('APPWRITE_FUNCTION_PROJECT_ID'))
+        ->setKey($context->req->headers['x-appwrite-key']);
+    $users = new Users($client);
 
-    // You can log messages to the console
-    $context->log('Hello, Logs!');
-
-    // If something goes wrong, log an error
-    $context->error('Hello, Errors!');
-
-    // The `req` object contains the request data
-    if ($context->req->method === 'GET') {
-        // Send a response with the res object helpers
-        // `res.send()` dispatches a string back to the client
-        return $context->res->send('Hello, World!');
+    try {
+        $response = $users->list();
+        // Log messages and errors to the Appwrite Console
+        // These logs won't be seen by your end users
+        $context->log('Total users: ' . $response['total']);
+    } catch(Throwable $error) {
+        $context->error('Could not list users: ' . $error->getMessage());
     }
 
-    // `res.json()` is a handy helper for sending JSON
+    // The req object contains the request data
+    if ($context->req->path === '/ping') {
+        // Use res object to respond with text(), json(), or binary()
+        // Don't forget to return a response!
+        return $context->res->text('Pong');
+    }
+
     return $context->res->json([
         'motto' => 'Build like a team of hundreds_',
         'learn' => 'https://appwrite.io/docs',
