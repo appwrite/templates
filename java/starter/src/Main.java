@@ -1,35 +1,51 @@
 package io.openruntimes.java.src;
 
-import io.openruntimes.java.RuntimeContext;
-import io.openruntimes.java.RuntimeOutput;
+import java.util.concurrent.CountDownLatch;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ArrayList;
+import java.util.Arrays;
 import io.appwrite.Client;
+import io.appwrite.services.Users;
+import io.appwrite.models.UserList;
+import io.appwrite.coroutines.CoroutineCallback;
+import io.openruntimes.java.RuntimeContext;
+import io.openruntimes.java.RuntimeOutput;
 
 public class Main {
-
-    // This is your Appwrite function
-    // It's executed each time we get a request
+    // This Appwrite function will be executed every time your function is triggered
     public RuntimeOutput main(RuntimeContext context) throws Exception {
-        // Why not try the Appwrite SDK?
-        //
-        // Client client = new Client();
-        // client
-        //     .setEndpoint("https://cloud.appwrite.io/v1")
-        //     .setProject(System.getenv("APPWRITE_FUNCTION_PROJECT_ID"))
-        //     .setKey(System.getenv("APPWRITE_API_KEY"));
+        // You can use the Appwrite SDK to interact with other services
+        // For this example, we're using the Users service
+        Client client = new Client();
+        client
+            .setEndpoint(System.getenv("APPWRITE_FUNCTION_API_ENDPOINT"))
+            .setProject(System.getenv("APPWRITE_FUNCTION_PROJECT_ID"))
+            .setKey(context.getReq().getHeaders().getOrDefault("x-appwrite-key", ""));
+        Users users = new Users(client);
 
-        // You can log messages to the console
-        context.log("Hello, Logs!");
+        CountDownLatch latch = new CountDownLatch(1); 
+        users.list(
+            new CoroutineCallback<>((response, error) -> {
+                if (error != null) {
+                    context.error("Could not list users: " + error.getMessage());
+                    latch.countDown();
+                    return;
+                }
 
-        // If something goes wrong, log an error
-        context.error("Hello, Errors!");
+                // Log messages and errors to the Appwrite Console
+                // These logs won't be seen by your end users
+                context.log("Total users: " + String.valueOf(response.getTotal()));
+                latch.countDown();
+            })
+        );
+        latch.await();
 
-        // The `context.getReq()` object contains the request data
-        if (context.getReq().getMethod().equals("GET")) {
-            // Send a response with the res object helpers
-            // `context.getRes().send()` dispatches a string back to the client
-            return context.getRes().send("Hello, World!");
+        // The req object contains the request data
+        if (context.getReq().getPath().equals("/ping")) {
+            // Use res object to respond with text(), json(), or binary()
+            // Don't forget to return a response!
+            return context.getRes().text("Pong");
         }
 
         Map<String, Object> json = new HashMap<>();
@@ -37,8 +53,6 @@ public class Main {
         json.put("learn", "https://appwrite.io/docs");
         json.put("connect", "https://appwrite.io/discord");
         json.put("getInspired", "https://builtwith.appwrite.io");
-
-        // `context.getRes().json()` is a handy helper for sending JSON
         return context.getRes().json(json);
     }
 }

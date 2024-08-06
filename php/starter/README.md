@@ -4,16 +4,16 @@ A simple starter function. Edit `src/index.php` to get started and create someth
 
 ## 🧰 Usage
 
-### GET /
+### GET /ping
 
-- Returns a "Hello, World!" message.
+- Returns a "Pong" message.
 
 **Response**
 
 Sample `200` Response:
 
 ```text
-Hello, World!
+Pong
 ```
 
 ### POST, PUT, PATCH, DELETE /

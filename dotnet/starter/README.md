@@ -4,16 +4,16 @@ A simple starter function. Edit `src/Index.cs` to get started and create somethi
 
 ## 🧰 Usage
 
-### GET /
+### GET /ping
 
-- Returns a "Hello, World!" message.
+- Returns a "Pong" message.
 
 **Response**
 
 Sample `200` Response:
 
 ```text
-Hello, World!
+Pong
 ```
 
 ### POST, PUT, PATCH, DELETE /

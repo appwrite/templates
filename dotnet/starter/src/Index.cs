@@ -11,9 +11,9 @@ public class Handler {
         // You can use the Appwrite SDK to interact with other services
         // For this example, we're using the Users service
         var client = new Client()
-            .SetEndpoint(Environment.GetEnvironmentVariable("APPWRITE_FUNCTION_PROJECT_ID"))
+            .SetEndpoint(Environment.GetEnvironmentVariable("APPWRITE_FUNCTION_API_ENDPOINT"))
             .SetProject(Environment.GetEnvironmentVariable("APPWRITE_FUNCTION_PROJECT_ID"))
-            .SetKey(context.Req.Headers.TryGetValue("x-appwrite-key", out string DynamicKey) ? DynamicKey : "");
+            .SetKey(Context.Req.Headers.TryGetValue("x-appwrite-key", out string DynamicKey) ? DynamicKey : "");
         var users = new Users(client);
 
         try

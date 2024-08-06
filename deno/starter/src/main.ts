@@ -5,8 +5,8 @@ export default async ({ req, res, log, error }: any) => {
   // You can use the Appwrite SDK to interact with other services
   // For this example, we're using the Users service
   const client = new Client()
-    .setEndpoint(Deno.env.get("APPWRITE_FUNCTION_API_ENDPOINT"))
-    .setProject(Deno.env.get("APPWRITE_FUNCTION_PROJECT_ID"))
+    .setEndpoint(Deno.env.get("APPWRITE_FUNCTION_API_ENDPOINT") ?? '')
+    .setProject(Deno.env.get("APPWRITE_FUNCTION_PROJECT_ID") ?? '')
     .setKey(req.headers['x-appwrite-key'] ?? '');
   const users = new Users(client);
 

@@ -4,16 +4,16 @@ A simple starter function. Edit `Sources/index.swift` to get started and create 
 
 ## 🧰 Usage
 
-### GET /
+### GET /ping
 
-- Returns a "Hello, World!" message.
+- Returns a "Pong" message.
 
 **Response**
 
 Sample `200` Response:
 
 ```text
-Hello, World!
+Pong
 ```
 
 ### POST, PUT, PATCH, DELETE /

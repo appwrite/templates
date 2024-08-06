@@ -1,37 +1,51 @@
 package handler
 
 import (
-	"github.com/open-runtimes/types-for-go/v4"
+	"os"
+	"strconv"
+
+	"github.com/appwrite/sdk-for-go/appwrite"
+	"github.com/open-runtimes/types-for-go/v4/openruntimes"
 )
 
-// This is your Appwrite function
-// It's executed each time we get a request
-func Main(Context *types.Context) types.ResponseOutput {
-	// Why not try the Appwrite SDK?
-	//
-	// appwriteClient := client.NewClient()
-	// appwriteClient.SetEndpoint(os.Getenv("APPWRITE_FUNCTION_API_ENDPOINT"))
-	// appwriteClient.SetProject(os.Getenv("APPWRITE_FUNCTION_PROJECT_ID"))
-	// appwriteClient.SetKey(Context.Req.Headers["x-appwrite-key"])
+type Response struct {
+	Motto       string `json:"motto"`
+	Learn       string `json:"learn"`
+	Connect     string `json:"connect"`
+	GetInspired string `json:"getInspired"`
+}
 
-	// You can log messages to the console
-	Context.Log("Hello, Logs!")
+// This Appwrite function will be executed every time your function is triggered
+func Main(Context openruntimes.Context) openruntimes.Response {
+	// You can use the Appwrite SDK to interact with other services
+	// For this example, we're using the Users service
+	client := appwrite.NewClient(
+		appwrite.WithEndpoint(os.Getenv("APPWRITE_FUNCTION_API_ENDPOINT")),
+		appwrite.WithProject(os.Getenv("APPWRITE_FUNCTION_PROJECT_ID")),
+		appwrite.WithKey(Context.Req.Headers["x-appwrite-key"]),
+	)
+	users := appwrite.NewUsers(client)
 
-	// If something goes wrong, log an error
-	Context.Error("Hello, Errors!")
-
-	// The `Req` object contains the request data
-	if Context.Req.Method == "GET" {
-		// Send a text response with the res object helpers
-		// `Res.Text()` dispatches a string back to the client
-		return Context.Res.Text("Hello, World!", 200, nil)
+	response, err := users.List()
+	if err != nil {
+		Context.Error("Could not list users: " + err.Error())
+	} else {
+		// Log messages and errors to the Appwrite Console
+		// These logs won't be seen by your end users
+		Context.Log("Total users: " + strconv.Itoa(response.Total))
 	}
 
-	// `Res.Json()` is a handy helper for sending JSON
-	return Context.Res.Json(map[string]interface{}{
-		"motto":       "Build like a team of hundreds_",
-		"learn":       "https://appwrite.io/docs",
-		"connect":     "https://appwrite.io/discord",
-		"getInspired": "https://builtwith.appwrite.io",
-	}, 200, nil)
+	// The req object contains the request data
+	if Context.Req.Path == "/ping" {
+		// Use res object to respond with text(), json(), or binary()
+		// Don't forget to return a response!
+		return Context.Res.Text("Pong")
+	}
+
+	return Context.Res.Json(Response{
+		Motto:       "Build like a team of hundreds_",
+		Learn:       "https://appwrite.io/docs",
+		Connect:     "https://appwrite.io/discord",
+		GetInspired: "https://builtwith.appwrite.io",
+	})
 }
