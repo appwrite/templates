@@ -4,19 +4,19 @@ A simple starter function. Edit `src/main.ts` to get started and create somethin
 
 ## 🧰 Usage
 
-### GET /
+### GET /ping
 
-- Returns a "Hello, World!" message.
+- Returns a "Pong" message.
 
 **Response**
 
 Sample `200` Response:
 
 ```text
-Hello, World!
+Pong
 ```
 
-### POST, PUT, PATCH, DELETE /
+### GET, POST, PUT, PATCH, DELETE /
 
 - Returns a "Learn More" JSON response.
 
@@ -42,6 +42,7 @@ Sample `200` Response:
 | Build Commands    | `bun install` |
 | Permissions       | `any`         |
 | Timeout (Seconds) | 15            |
+| Scopes            | `users.read`  |
 
 ## 🔒 Environment Variables
 

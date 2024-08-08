@@ -1,29 +1,31 @@
-import { Client } from "https://deno.land/x/appwrite@7.0.0/mod.ts";
+import { Client, Users } from "https://deno.land/x/appwrite@7.0.0/mod.ts";
 
-// This is your Appwrite function
-// It's executed each time we get a request
+// This Appwrite function will be executed every time your function is triggered
 export default async ({ req, res, log, error }: any) => {
-  // Why not try the Appwrite SDK?
-  //
-  // const client = new Client()
-  //    .setEndpoint('https://cloud.appwrite.io/v1')
-  //    .setProject(Deno.env.get("APPWRITE_FUNCTION_PROJECT_ID"))
-  //    .setKey(Deno.env.get("APPWRITE_API_KEY"));
+  // You can use the Appwrite SDK to interact with other services
+  // For this example, we're using the Users service
+  const client = new Client()
+    .setEndpoint(Deno.env.get("APPWRITE_FUNCTION_API_ENDPOINT") ?? '')
+    .setProject(Deno.env.get("APPWRITE_FUNCTION_PROJECT_ID") ?? '')
+    .setKey(req.headers['x-appwrite-key'] ?? '');
+  const users = new Users(client);
 
-  // You can log messages to the console
-  log("Hello, Logs!");
-
-  // If something goes wrong, log an error
-  error("Hello, Errors!");
-
-  // The `req` object contains the request data
-  if (req.method === "GET") {
-    // Send a response with the res object helpers
-    // `res.send()` dispatches a string back to the client
-    return res.send("Hello, World!");
+  try {
+    const response = await users.list();
+    // Log messages and errors to the Appwrite Console
+    // These logs won't be seen by your end users
+    log(`Total users: ${response.total}`);
+  } catch(err) {
+    error("Could not list users: " + err.message);
   }
 
-  // `res.json()` is a handy helper for sending JSON
+  // The req object contains the request data
+  if (req.path === "/ping") {
+    // Use res object to respond with text(), json(), or binary()
+    // Don't forget to return a response!
+    return res.text("Pong");
+  }
+
   return res.json({
     motto: "Build like a team of hundreds_",
     learn: "https://appwrite.io/docs",

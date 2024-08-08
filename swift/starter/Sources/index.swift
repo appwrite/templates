@@ -2,30 +2,32 @@ import Appwrite
 import AppwriteModels
 import Foundation
 
-// This is your Appwrite function
-// It's executed each time we get a request
+// This Appwrite function will be executed every time your function is triggered
 func main(context: RuntimeContext) async throws -> RuntimeOutput {
-    // Why not try the Appwrite SDK?
-    //
-    // let client = Client()
-    //    .setEndpoint("https://cloud.appwrite.io/v1")
-    //    .setProject(ProcessInfo.processInfo.environment["APPWRITE_FUNCTION_PROJECT_ID"])
-    //    .setKey(ProcessInfo.processInfo.environment["APPWRITE_API_KEY"]);
+    // You can use the Appwrite SDK to interact with other services
+    // For this example, we're using the Users service
+    let client = Client()
+       .setEndpoint(ProcessInfo.processInfo.environment["APPWRITE_FUNCTION_API_ENDPOINT"] ?? "")
+       .setProject(ProcessInfo.processInfo.environment["APPWRITE_FUNCTION_PROJECT_ID"] ?? "")
+       .setKey(context.req.headers["x-appwrite-key"] ?? "")
+    let users = Users(client)
 
-    // You can log messages to the console
-    context.log("Hello, Logs!")
-
-    // If something goes wrong, log an error
-    context.error("Hello, Errors!")
-
-    // The `context.req` object contains the request data
-    if context.req.method == "GET" {
-        // Send a response with the res object helpers
-        // `res.send()` dispatches a string back to the client
-        return try context.res.send("Hello, World!")
+    do {
+        let response = try await users.list()
+        // Log messages and errors to the Appwrite Console
+        // These logs won't be seen by your end users
+        context.log("Total users: " + String(response.total))
+    } catch {
+        context.error("Could not list users: " + String(describing: error))
     }
 
-    // `context.res.json()` is a handy helper for sending JSON
+    // The req object contains the request data
+    if context.req.path == "/ping" {
+        // Use res object to respond with text(), json(), or binary()
+        // Don't forget to return a response!
+        return context.res.text("Pong")
+    }
+
     return try context.res.json([
         "motto": "Build like a team of hundreds_",
         "learn": "https://appwrite.io/docs",
