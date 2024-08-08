@@ -13,6 +13,8 @@ def main(context)
 
   begin
     response = users.list()
+    # Log messages and errors to the Appwrite Console
+    # These logs won't be seen by your end users
     context.log("Total users: " + response.total.to_s)
   rescue Exception => e
     context.error("Could not list users: " + e.full_message)

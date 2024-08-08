@@ -1,14 +1,7 @@
 import { Client, Users } from 'node-appwrite';
 
-type Context = {
-  req: any;
-  res: any;
-  log: (msg: any) => void;
-  error: (msg: any) => void;
-};
-
 // This Appwrite function will be executed every time your function is triggered
-export default async ({ req, res, log, error }: Context) => {
+export default async ({ req, res, log, error }: any) => {
   // You can use the Appwrite SDK to interact with other services
   // For this example, we're using the Users service
   const client = new Client()
