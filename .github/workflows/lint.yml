@@ -11,5 +11,5 @@ jobs:
       - uses: actions/checkout@v4
       - name: Trunk Check
         uses: trunk-io/trunk-action@v1
-        with:
-          post-annotations: true
+        # with:
+        #   post-annotations: true
