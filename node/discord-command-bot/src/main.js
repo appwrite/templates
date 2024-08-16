@@ -14,7 +14,7 @@ export default async ({ req, res, error, log }) => {
 
   if (
     !verifyKey(
-      req.bodyRaw,
+      req.bodyBinary,
       req.headers['x-signature-ed25519'],
       req.headers['x-signature-timestamp'],
       process.env.DISCORD_PUBLIC_KEY

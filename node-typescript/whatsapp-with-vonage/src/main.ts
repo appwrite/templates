@@ -41,7 +41,7 @@ export default async ({ req, res, log, error }: Context) => {
             return res.json({ ok: false, error: err.message }, 400);
     }
 
-    if (sha256(req.bodyRaw) !== (decoded as JwtPayload).payload_hash) {
+    if (sha256(req.bodyBinary) !== (decoded as JwtPayload).payload_hash) {
         return res.json({ ok: false, error: 'Payload hash mismatch.' }, 401);
     }
 
@@ -60,9 +60,9 @@ export default async ({ req, res, log, error }: Context) => {
         method: 'POST',
         body: JSON.stringify({
             from: process.env.VONAGE_WHATSAPP_NUMBER,
-            to: req.body.from,
+            to: req.bodyJson.from,
             message_type: 'text',
-            text: `Hi there! You sent me: ${req.body.text}`,
+            text: `Hi there! You sent me: ${req.bodyJson.text}`,
             channel: 'whatsapp',
         }),
         headers: {

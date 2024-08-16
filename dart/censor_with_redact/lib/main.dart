@@ -13,7 +13,7 @@ Future<dynamic> main(final context) async {
   }
 
   try {
-    throwIfMissing(context.req.body, ['text']);
+    throwIfMissing(context.req.bodyJson, ['text']);
   } catch (err) {
     return context.res.json({'ok': false, 'error': err.toString()});
   }
@@ -26,7 +26,7 @@ Future<dynamic> main(final context) async {
                 'Bearer ${Platform.environment['PANGEA_REDACT_TOKEN']}',
           },
           body: jsonEncode({
-            'text': context.req.body['text'],
+            'text': context.req.bodyJson['text'],
           }));
 
   final data = jsonDecode(response.body);

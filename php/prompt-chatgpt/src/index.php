@@ -13,7 +13,7 @@ return function ($context) {
     }
 
     try {
-        throw_if_missing($context->req->body, ['prompt']);
+        throw_if_missing($context->req->bodyJson, ['prompt']);
     } catch (Exception $e) {
         return $context->res->json(['ok' => false, 'error' => $e->getMessage()], 400);
     }
@@ -25,7 +25,7 @@ return function ($context) {
             'model' => 'gpt-3.5-turbo',
             'max_tokens' => $_ENV['MAX_TOKENS'] ?: 150,
             'messages' => [
-                ['role' => 'user', 'content' => $context->req->body['prompt']]
+                ['role' => 'user', 'content' => $context->req->bodyJson['prompt']]
             ],
         ]);
 

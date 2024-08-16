@@ -33,7 +33,7 @@ export default async ({ req, res, log }: Context) => {
   if (req.path === '/search') {
     const queryEmbedding = await openai.embeddings.create({
       model: 'text-embedding-3-small',
-      input: req.body.prompt,
+      input: req.bodyJson.prompt,
     });
 
     const searchResults = await client.search(

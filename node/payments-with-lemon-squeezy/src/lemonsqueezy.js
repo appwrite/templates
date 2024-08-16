@@ -49,7 +49,7 @@ class LemonSqueezyService {
       const secret = process.env.LEMON_SQUEEZY_WEBHOOK_SECRET;
       const hmac = crypto.createHmac('sha256', secret);
       const digest = Buffer.from(
-        hmac.update(context.req.bodyRaw).digest('hex'),
+        hmac.update(context.req.bodyBinary).digest('hex'),
         'utf8'
       );
       const signature = Buffer.from(context.req.headers['x-signature'], 'utf8');

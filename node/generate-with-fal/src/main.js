@@ -10,7 +10,7 @@ export default async ({ req, res, error }) => {
     });
   }
 
-  if (!req.body.prompt || typeof req.body.prompt !== 'string') {
+  if (!req.bodyJson.prompt || typeof req.bodyJson.prompt !== 'string') {
     return res.json(
       { ok: false, error: 'Missing required field `prompt`' },
       400
@@ -22,7 +22,7 @@ export default async ({ req, res, error }) => {
   try {
     const result = await fal.subscribe('fal-ai/fast-sdxl', {
       input: {
-        prompt: req.body.prompt,
+        prompt: req.bodyJson.prompt,
       },
     });
     return res.json({ ok: true, src: result.images[0].url });

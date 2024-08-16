@@ -22,7 +22,7 @@ export default async ({ req, res, error }) => {
     },
   );
 
-  if (!req.body.prompt && typeof req.body.prompt !== "string") {
+  if (!req.bodyJson.prompt && typeof req.bodyJson.prompt !== "string") {
     return res.json(
       { ok: false, error: "Missing required field `prompt`" },
       400,
@@ -33,7 +33,7 @@ export default async ({ req, res, error }) => {
     const response = await anyscale.chat.completions.create({
       model: "mistralai/Mixtral-8x7B-Instruct-v0.1",
       max_tokens: parseInt(process.env.ANYSCALE_MAX_TOKENS ?? "512"),
-      messages: [{ role: "user", content: req.body.prompt }],
+      messages: [{ role: "user", content: req.bodyJson.prompt }],
       stream: false
     });
     const completion = response.choices[0].message?.content;

@@ -40,7 +40,7 @@ export default async ({ req, res, log, error }: Context) => {
 
   const hash = crypto.subtle.digestSync(
     "SHA-256",
-    new TextEncoder().encode(req.bodyRaw),
+    new TextEncoder().encode(req.bodyBinary),
   );
 
   if (encodeHex(hash) !== payload.payload_hash) {
@@ -48,7 +48,7 @@ export default async ({ req, res, log, error }: Context) => {
   }
 
   try {
-    throwIfMissing(req.body, ["from", "text"]);
+    throwIfMissing(req.bodyJson, ["from", "text"]);
   } catch (err) {
     return res.json({ ok: false, error: err.message }, 400);
   }
@@ -61,9 +61,9 @@ export default async ({ req, res, log, error }: Context) => {
     method: "POST",
     body: JSON.stringify({
       from: Deno.env.get("VONAGE_WHATSAPP_NUMBER"),
-      to: req.body.from,
+      to: req.bodyJson.from,
       message_type: "text",
-      text: `Hi there! You sent me: ${req.body.text}`,
+      text: `Hi there! You sent me: ${req.bodyJson.text}`,
       channel: "whatsapp",
     }),
     headers: {

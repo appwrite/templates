@@ -14,13 +14,13 @@ export default async ({ req, res, log, error }) => {
     return res.json({ ok: false, error: 'Method not allowed' }, 405);
   }
 
-  const fileId = req.body.$id ?? req.body.fileId;
+  const fileId = req.bodyJson.$id ?? req.bodyJson.fileId;
   if (!fileId) {
     error('Missing fileId');
     return res.json({ ok: false, error: 'Bad request' }, 400);
   }
 
-  if (req.body.bucketId && req.body.bucketId != bucketId) {
+  if (req.bodyJson.bucketId && req.bodyJson.bucketId != bucketId) {
     error('Invalid bucketId');
     return res.json({ ok: false, error: 'Bad request' }, 400);
   }

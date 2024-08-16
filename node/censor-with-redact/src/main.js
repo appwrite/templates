@@ -10,7 +10,7 @@ export default async ({ req, res }) => {
     });
   }
 
-  if (!req.body.text || typeof req.body.text !== 'string') {
+  if (!req.bodyJson.text || typeof req.bodyJson.text !== 'string') {
     return res.json({ ok: false, error: 'Missing required field `text`' }, 400);
   }
 
@@ -21,7 +21,7 @@ export default async ({ req, res }) => {
       Authorization: `Bearer ${process.env.PANGEA_REDACT_TOKEN}`,
     },
     body: JSON.stringify({
-      text: req.body.text,
+      text: req.bodyJson.text,
     }),
   });
 

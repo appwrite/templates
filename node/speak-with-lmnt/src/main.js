@@ -23,13 +23,13 @@ export default async ({ req, res }) => {
     });
   }
 
-  if (!req.body.text || typeof req.body.text !== "string") {
+  if (!req.bodyJson.text || typeof req.bodyJson.text !== "string") {
     return res.json({ ok: false, error: "Missing required field `text`" }, 400);
   }
 
   const lmnt = new Speech(process.env.LMNT_API_KEY);
 
-  const speechAudio = await lmnt.synthesize(req.body.text, "lily", {
+  const speechAudio = await lmnt.synthesize(req.bodyJson.text, "lily", {
     format: "mp3",
   });
 

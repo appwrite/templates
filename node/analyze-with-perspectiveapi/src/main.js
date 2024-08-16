@@ -10,7 +10,7 @@ export default async ({ req, res }) => {
     });
   }
 
-  if (!req.body.text || typeof req.body.text !== 'string') {
+  if (!req.bodyJson.text || typeof req.bodyJson.text !== 'string') {
     return res.json({ ok: false, error: 'Missing required field `text`' }, 400);
   }
 
@@ -23,7 +23,7 @@ export default async ({ req, res }) => {
       },
       body: JSON.stringify({
         comment: {
-          text: req.body.text,
+          text: req.bodyJson.text,
           type: 'PLAIN_TEXT',
         },
         languages: ['en'],

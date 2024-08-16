@@ -47,7 +47,7 @@ return function ($context) {
     }
 
     $form = [];
-    parse_str($context->req->body, $form);
+    parse_str($context->req->bodyText, $form);
 
     try {
         throw_if_missing($form, ['email']);

@@ -29,7 +29,7 @@ def main(context)
 
   decoded = JWT.decode(token, ENV["VONAGE_API_SIGNATURE_SECRET"], true, algorithm: "HS256")
 
-  if Digest::SHA256.hexdigest(context.req.body_raw) != decoded[0]["payload_hash"] 
+  if Digest::SHA256.hexdigest(context.req.body_binary) != decoded[0]["payload_hash"] 
     return context.res.json({ "ok" => false, "error" => "Payload hash mismatch." }, 400)
   end
 

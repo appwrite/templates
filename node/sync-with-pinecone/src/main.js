@@ -30,7 +30,7 @@ export default async ({ req, res, log }) => {
   if (req.path === '/search') {
     const queryEmbedding = await openai.embeddings.create({
       model: 'text-embedding-ada-002',
-      input: req.body.prompt,
+      input: req.bodyJson.prompt,
     });
 
     const searchResults = await pineconeIndex.query({

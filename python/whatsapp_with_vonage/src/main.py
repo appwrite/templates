@@ -29,7 +29,7 @@ def main(context):
 
     decoded = decode(token, os.environ["VONAGE_API_SIGNATURE_SECRET"], ["HS256"])
 
-    if sha256(context.req.body_raw.encode()).hexdigest() != decoded["payload_hash"]:
+    if sha256(context.req.body_binary.encode()).hexdigest() != decoded["payload_hash"]:
         return context.res.json({"ok": False, "error": "Payload hash mismatch."}, 401)
 
     try:

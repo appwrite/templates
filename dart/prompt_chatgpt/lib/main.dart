@@ -12,7 +12,7 @@ Future<dynamic> main(final context) async {
   }
 
   try {
-    throwIfMissing(context.req.body, ['prompt']);
+    throwIfMissing(context.req.bodyJson, ['prompt']);
   } catch (err) {
     return context.res.json({'ok': false, 'error': err.toString()});
   }
@@ -25,7 +25,7 @@ Future<dynamic> main(final context) async {
       maxTokens: int.parse(Platform.environment['OPENAI_MAX_TOKENS'] ?? '512'),
       messages: [
         OpenAIChatCompletionChoiceMessageModel(
-            content: context.req.body['prompt'],
+            content: context.req.bodyJson['prompt'],
             role: OpenAIChatMessageRole.user)
       ],
     );
