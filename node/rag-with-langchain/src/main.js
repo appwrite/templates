@@ -24,7 +24,7 @@ export default async ({ req, res, log }) => {
 
   if (req.method === 'GET') {
     const html = getStaticFile('index.html');
-    return res.send(html, 200, { 'Content-Type': 'text/html; charset=utf-8' });
+    return res.text(html, 200, { 'Content-Type': 'text/html; charset=utf-8' });
   }
 
   if (req.method !== 'POST') {
@@ -96,5 +96,5 @@ export default async ({ req, res, log }) => {
   });
 
   log(`Indexed ${documents.length} documents.`);
-  return res.send('Index finished.', 200);
+  return res.text('Index finished.', 200);
 };

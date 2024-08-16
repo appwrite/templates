@@ -13,7 +13,7 @@ export default async ({ req, res, log, error }) => {
     ]);
 
     if(req.method !== 'GET') {
-        return res.send('Not found.', 404);
+        return res.text('Not found.', 404);
     }
 
     if (!index) {

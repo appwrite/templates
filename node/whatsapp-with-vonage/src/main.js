@@ -12,7 +12,7 @@ export default async ({ req, res }) => {
   ]);
 
   if (req.method === 'GET') {
-    return res.send(getStaticFile('index.html'), 200, {
+    return res.text(getStaticFile('index.html'), 200, {
       'Content-Type': 'text/html; charset=utf-8',
     });
   }

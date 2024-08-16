@@ -16,7 +16,7 @@ def main(context)
   )
 
   if context.req.method == "GET"
-    return context.res.send(
+    return context.res.text(
       get_static_file("index.html"),
       200,
       { "content-type" => "text/html" }

@@ -16,7 +16,7 @@ export default async ({ req, res, log }: Context) => {
 
   if (req.method === 'GET') {
     const html = getStaticFile('index.html');
-    return res.send(html, 200, { 'Content-Type': 'text/html; charset=utf-8' });
+    return res.text(html, 200, { 'Content-Type': 'text/html; charset=utf-8' });
   }
 
   if (req.method !== 'POST') {
@@ -79,7 +79,7 @@ export default async ({ req, res, log }: Context) => {
   await client.upsert(process.env.QDRANT_COLLECTION_NAME, {
     points,
   });
-  return res.send('Sync finished.', 200);
+  return res.text('Sync finished.', 200);
 };
 
 type Context = {

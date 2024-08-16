@@ -12,5 +12,5 @@ export default async ({ req, res, log, error }) => {
 
   await appwrite.cleanBucket(process.env.APPWRITE_BUCKET_ID);
 
-  return res.send('Buckets cleaned', 200);
+  return res.text('Buckets cleaned', 200);
 };

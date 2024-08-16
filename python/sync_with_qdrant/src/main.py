@@ -23,11 +23,11 @@ def main(context):
     if context.req.method == "GET":
         html = get_static_file("index.html")
         context.log("Serving index.html")
-        return context.res.send(html, 200, {"content-type": "text/html; charset=utf-8"})
+        return context.res.text(html, 200, {"content-type": "text/html; charset=utf-8"})
 
     if context.req.method != "POST":
         context.log("Method not allowed")
-        return context.res.send({"ok": False, "error": "Method not allowed"}, 405)
+        return context.res.json({"ok": False, "error": "Method not allowed"}, 405)
 
     client = QdrantClient(
         url=os.environ["QDRANT_URL"], api_key=os.environ["QDRANT_API_KEY"]
@@ -70,4 +70,4 @@ def main(context):
         points.append(point)
 
     client.upsert(os.environ["QDRANT_COLLECTION_NAME"], points=points)
-    return context.res.send("Sync finished.", 200)
+    return context.res.text("Sync finished.", 200)

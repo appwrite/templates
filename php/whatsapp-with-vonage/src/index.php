@@ -15,7 +15,7 @@ return function ($context) {
     ]);
 
     if ($context->req->method === "GET") {
-        return $context->res->send(get_static_file("index.html"), 200, [
+        return $context->res->text(get_static_file("index.html"), 200, [
             "Content-Type" => "text/html; charset=utf-8",
         ]);
     }

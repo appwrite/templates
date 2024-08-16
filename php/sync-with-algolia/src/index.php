@@ -25,7 +25,7 @@ return function ($context) {
             'ALGOLIA_INDEX_ID' => $_ENV['ALGOLIA_INDEX_ID'],
             'ALGOLIA_SEARCH_API_KEY' => $_ENV['ALGOLIA_SEARCH_API_KEY'],
         ]);
-        return $context->res->send($html, 200, [
+        return $context->res->text($html, 200, [
             'Content-Type' => 'text/html',
         ]);
     }
@@ -79,5 +79,5 @@ return function ($context) {
 
     $context->log('Sync finished.');
 
-    return $context->res->send('Sync finished.', 200);
+    return $context->res->text('Sync finished.', 200);
 };

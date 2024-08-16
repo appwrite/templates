@@ -20,7 +20,7 @@ export default async ({ req, res, log }) => {
       ALGOLIA_SEARCH_API_KEY: process.env.ALGOLIA_SEARCH_API_KEY,
     });
 
-    return res.send(html, 200, { 'Content-Type': 'text/html; charset=utf-8' });
+    return res.text(html, 200, { 'Content-Type': 'text/html; charset=utf-8' });
   }
 
   const client = new Client()
@@ -72,5 +72,5 @@ export default async ({ req, res, log }) => {
 
   log('Sync finished.');
 
-  return res.send('Sync finished.', 200);
+  return res.text('Sync finished.', 200);
 };

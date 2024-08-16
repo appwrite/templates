@@ -7,7 +7,7 @@ Future<dynamic> main(final context) async {
   throwIfMissing(Platform.environment, ['OPENAI_API_KEY']);
 
   if (context.req.method == 'GET') {
-    return context.res.send(getStaticFile('index.html'), 200,
+    return context.res.text(getStaticFile('index.html'), 200,
         {'Content-Type': 'text/html; charset=utf-8'});
   }
 

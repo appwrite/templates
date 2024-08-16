@@ -20,7 +20,7 @@ export default async ({ res, req, log, error }) => {
       new URL(req.body.url);
     } catch (err) {
       error(err.message);
-      return res.send({ ok: false, error: err.message }, 400);
+      return res.json({ ok: false, error: err.message }, 400);
     }
 
     const urlEntry = await appwrite.createURLEntry(
@@ -43,7 +43,7 @@ export default async ({ res, req, log, error }) => {
   const urlEntry = await appwrite.getURLEntry(shortId);
 
   if (!urlEntry) {
-    return res.send('Invalid link.', 404);
+    return res.text('Invalid link.', 404);
   }
 
   return res.redirect(urlEntry.url);
