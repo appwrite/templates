@@ -41,7 +41,7 @@ Create a new short ID for a URL.
 | Name         | Description                                           | Location | Type               | Sample Value                                                   |
 | ------------ | ----------------------------------------------------- | -------- | ------------------ | -------------------------------------------------------------- |
 | Content-Type | Content type                                          | Header   | `application/json` |
-| long         | Long URL to shorten                                   | Body     | String             | `https://mywebapp.com/pages/hugelongurl?with=query&params=123` |
+| url         | Long URL to shorten                                   | Body     | String             | `https://mywebapp.com/pages/hugelongurl?with=query&params=123` |
 | shortCode    | Short ID to use, else will be automatically generated | Body     | Optional String    | `discord`                                                      |
 
 **Response**
@@ -78,25 +78,6 @@ When the URL parameter is missing.
 | Timeout (Seconds) | 15                             |
 
 ## 🔒 Environment Variables
-
-### APPWRITE_API_KEY
-
-The API Key to talk to Appwrite backend APIs.
-
-| Question      | Answer                                                                                      |
-| ------------- | ------------------------------------------------------------------------------------------- |
-| Required      | Yes                                                                                         |
-| Sample Value  | `d1efb...aec35`                                                                             |
-| Documentation | [Appwrite: Getting Started for Server](https://appwrite.io/docs/advanced/platform/api-keys) |
-
-### APPWRITE_ENDPOINT
-
-The URL endpoint of the Appwrite server. If not provided, it defaults to the Appwrite Cloud server: `https://cloud.appwrite.io/v1`.
-
-| Question     | Answer                         |
-| ------------ | ------------------------------ |
-| Required     | No                             |
-| Sample Value | `https://cloud.appwrite.io/v1` |
 
 ### APPWRITE_DATABASE_ID
 
