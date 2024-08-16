@@ -20,7 +20,7 @@ def main(context)
       'MEILISEARCH_SEARCH_API_KEY' => ENV['MEILISEARCH_SEARCH_API_KEY']
     })
 
-    return context.res.send(html, 200, { 'Content-Type' => 'text/html; charset=utf-8' })
+    return context.res.text(html, 200, { 'Content-Type' => 'text/html; charset=utf-8' })
   end
 
   client = Appwrite::Client.new
@@ -68,5 +68,5 @@ def main(context)
 
   context.log('Sync finished.')
 
-  return context.res.send('Sync finished.', 200)
+  return context.res.text('Sync finished.', 200)
 end

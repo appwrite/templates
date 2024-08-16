@@ -7,13 +7,13 @@ return function ($context) {
     throw_if_missing($_ENV, ['OPENAI_API_KEY']);
 
     if ($context->req->method === 'GET') {
-        return $context->res->send(get_static_file('index.html'), 200, [
+        return $context->res->text(get_static_file('index.html'), 200, [
             'Content-Type' => 'text/html; charset=utf-8',
         ]);
     }
 
     try {
-        throw_if_missing($context->req->body, ['prompt']);
+        throw_if_missing($context->req->bodyJson, ['prompt']);
     } catch (Exception $e) {
         return $context->res->json(['ok' => false, 'error' => $e->getMessage()], 400);
     }
@@ -25,7 +25,7 @@ return function ($context) {
             'model' => 'gpt-3.5-turbo',
             'max_tokens' => $_ENV['MAX_TOKENS'] ?: 150,
             'messages' => [
-                ['role' => 'user', 'content' => $context->req->body['prompt']]
+                ['role' => 'user', 'content' => $context->req->bodyJson['prompt']]
             ],
         ]);
 

@@ -11,7 +11,7 @@ export default async ({ req, res, error }) => {
   ]);
 
   if (req.method === 'GET') {
-    return res.send(getStaticFile('index.html'), 200, {
+    return res.text(getStaticFile('index.html'), 200, {
       'Content-Type': 'text/html; charset=utf-8',
     });
   }
@@ -21,22 +21,22 @@ export default async ({ req, res, error }) => {
     image: 'stabilityai/stable-diffusion-xl-base-1.0',
   };
 
-  if (!req.body.prompt || typeof req.body.prompt !== 'string') {
+  if (!req.bodyJson.prompt || typeof req.bodyJson.prompt !== 'string') {
     return res.json(
       { ok: false, error: 'Missing required field `prompt`' },
       400
     );
   }
 
-  if (req.body.type !== 'text' && req.body.type !== 'image') {
+  if (req.bodyJson.type !== 'text' && req.bodyJson.type !== 'image') {
     return res.json({ ok: false, error: 'Invalid field `type`' }, 400);
   }
 
   let request = {
-    model: models[req.body.type],
+    model: models[req.bodyJson.type],
   };
 
-  switch (req.body.type) {
+  switch (req.bodyJson.type) {
     case 'text':
       request = {
         ...request,
@@ -47,7 +47,7 @@ export default async ({ req, res, error }) => {
           },
           {
             role: 'user',
-            content: req.body.prompt,
+            content: req.bodyJson.prompt,
           },
         ],
         max_tokens: 512,
@@ -57,7 +57,7 @@ export default async ({ req, res, error }) => {
     case 'image':
       request = {
         ...request,
-        prompt: req.body.prompt,
+        prompt: req.bodyJson.prompt,
         width: 512,
         height: 512,
         steps: 20,
@@ -70,7 +70,7 @@ export default async ({ req, res, error }) => {
   let response;
   let url = 'https://api.together.xyz/v1/completions';
 
-  if (req.body.type === 'text') {
+  if (req.bodyJson.type === 'text') {
     url = 'https://api.together.xyz/v1/chat/completions';
   }
 
@@ -91,7 +91,7 @@ export default async ({ req, res, error }) => {
   let resJson = await response.json();
 
   // Upload image to Appwrite Storage and return URL
-  if (req.body.type === 'image') {
+  if (req.bodyJson.type === 'image') {
     const endpoint =
       process.env.APPWRITE_ENDPOINT || 'https://cloud.appwrite.io/v1';
 
@@ -112,7 +112,7 @@ export default async ({ req, res, error }) => {
 
     return res.json({
       ok: true,
-      type: req.body.type,
+      type: req.bodyJson.type,
       response: `${endpoint}/storage/buckets/${process.env.APPWRITE_BUCKET_ID}/files/${file['$id']}/view?project=${process.env.APPWRITE_FUNCTION_PROJECT_ID}`,
     });
   }
@@ -120,7 +120,7 @@ export default async ({ req, res, error }) => {
   return res.json(
     {
       ok: true,
-      type: req.body.type,
+      type: req.bodyJson.type,
       response: resJson.choices[0].message.content,
     },
     200

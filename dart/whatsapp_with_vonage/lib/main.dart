@@ -14,7 +14,7 @@ Future<dynamic> main(final context) async {
   ]);
 
   if (context.req.method == 'GET') {
-    return context.res.send(getStaticFile('index.html'), 200,
+    return context.res.text(getStaticFile('index.html'), 200,
         {'Content-Type': 'text/html; charset=utf-8'});
   }
 
@@ -24,7 +24,7 @@ Future<dynamic> main(final context) async {
     return context.res.json({'ok': false, 'error': 'Unauthorized'}, 401);
   }
 
-  if (context.req.body['from'] == null || context.req.body['text'] == null) {
+  if (context.req.bodyJson['from'] == null || context.req.bodyJson['text'] == null) {
     return context.res.json({'ok': false, 'error': 'Missing required fields.'}, 400);
   }
 
@@ -34,7 +34,7 @@ Future<dynamic> main(final context) async {
     return context.res.json({'ok': false, 'error': 'Missing payload hash.'}, 400);
   }
 
-  final payloadHash = sha256.convert(utf8.encode(context.req.bodyRaw)).toString();
+  final payloadHash = sha256.convert(utf8.encode(context.req.bodyBinary)).toString();
 
   if (jwt.payload['payload_hash'] != payloadHash) {
     return context.res.json({'ok': false, 'error': 'Payload hash mismatch.'}, 401);
@@ -50,9 +50,9 @@ Future<dynamic> main(final context) async {
     },
     body: jsonEncode({
       'from': Platform.environment['VONAGE_WHATSAPP_NUMBER'],
-      'to': context.req.body['from'],
+      'to': context.req.bodyJson['from'],
       'message_type': 'text',
-      'text': 'Hi there! You sent me: ${context.req.body['text']}',
+      'text': 'Hi there! You sent me: ${context.req.bodyJson['text']}',
       'channel': 'whatsapp',
     }),
   );

@@ -11,9 +11,9 @@ export default async ({ req, res, log, error }) => {
     throwIfRequestNotValid(req);
   } catch (err) {
     error(err.message);
-    return res.send({ ok: false, error: err.message }, 400);
+    return res.json({ ok: false, error: err.message }, 400);
   }
 
   log('Valid Request');
-  return res.send('Hello World!');
+  return res.text('Hello World!');
 };

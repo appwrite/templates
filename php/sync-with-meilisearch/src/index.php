@@ -25,7 +25,7 @@ return function ($context) {
             'MEILISEARCH_SEARCH_API_KEY' => $_ENV['MEILISEARCH_SEARCH_API_KEY'],
         ]);
 
-        return $context->res->send($html, 200, [
+        return $context->res->text($html, 200, [
             'Content-Type' => 'text/html',
         ]);
     }
@@ -69,5 +69,5 @@ return function ($context) {
 
     $context->log('Sync complete');
 
-    return $context->res->send('Sync complete', 200);
+    return $context->res->text('Sync complete', 200);
 };

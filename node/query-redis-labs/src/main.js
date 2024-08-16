@@ -10,7 +10,7 @@ export default async ({ req, res, log, error }) => {
     throwIfMissing(process.env, ['REDIS_HOST', 'REDIS_PASSWORD']);
 
     if(req.method !== 'GET') {
-        return res.send('Not found.', 404);
+        return res.text('Not found.', 404);
     }
 
     if (!client) {

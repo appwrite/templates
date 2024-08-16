@@ -17,9 +17,9 @@ export default async ({ res, req, log, error }) => {
   }
 
   await github.postComment(
-    req.body.repository,
-    req.body.issue,
-    `Thanks for the issue report @${req.body.issue.user.login}! We will look into it as soon as possible.`
+    req.bodyJson.repository,
+    req.bodyJson.issue,
+    `Thanks for the issue report @${req.bodyJson.issue.user.login}! We will look into it as soon as possible.`
   );
 
   return res.json({ ok: true });

@@ -5,12 +5,12 @@ export default async ({ req, res }) => {
   throwIfMissing(process.env, ['HUGGINGFACE_ACCESS_TOKEN']);
 
   if (req.method === 'GET') {
-    return res.send(getStaticFile('index.html'), 200, {
+    return res.text(getStaticFile('index.html'), 200, {
       'Content-Type': 'text/html; charset=utf-8',
     });
   }
 
-  if (!req.body.prompt) {
+  if (!req.bodyJson.prompt) {
     return res.json({ ok: false, error: 'Prompt is required.' }, 400);
   }
 
@@ -19,8 +19,8 @@ export default async ({ req, res }) => {
   try {
     const result = await hf.textGeneration({
       model: 'mistralai/Mistral-7B-Instruct-v0.2',
-      inputs: req.body.prompt,
-      max_new_tokens: req.body.max_new_tokens || 200,
+      inputs: req.bodyJson.prompt,
+      max_new_tokens: req.bodyJson.max_new_tokens || 200,
     });
 
     return res.json({ ok: true, completion: result.generated_text }, 200);

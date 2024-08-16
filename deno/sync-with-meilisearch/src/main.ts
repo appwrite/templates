@@ -24,7 +24,7 @@ export default async ({ req, res, log, error }: any) => {
       MEILISEARCH_SEARCH_API_KEY: Deno.env.get("MEILISEARCH_SEARCH_API_KEY"),
     });
 
-    return new res.send(html, 200, {
+    return new res.text(html, 200, {
       "Content-Type": "text/html; charset=utf-8",
     });
   }
@@ -74,5 +74,5 @@ export default async ({ req, res, log, error }: any) => {
 
   log("Sync finished.");
 
-  return res.send("Sync finished.", 200);
+  return res.text("Sync finished.", 200);
 };

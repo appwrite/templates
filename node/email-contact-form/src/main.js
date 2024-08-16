@@ -29,7 +29,7 @@ export default async ({ req, res, log, error }) => {
   }
 
   if (req.method === 'GET' && req.path === '/') {
-    return res.send(getStaticFile('index.html'), 200, {
+    return res.text(getStaticFile('index.html'), 200, {
       'Content-Type': 'text/html; charset=utf-8',
     });
   }
@@ -76,7 +76,7 @@ export default async ({ req, res, log, error }) => {
   }
 
   if (typeof form._next !== 'string' || !form._next) {
-    return res.send(getStaticFile('success.html'), 200, {
+    return res.text(getStaticFile('success.html'), 200, {
       'Content-Type': 'text/html; charset=utf-8',
     });
   }

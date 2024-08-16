@@ -5,7 +5,7 @@ from .utils import get_static_file, throw_if_missing
 
 def main(context):
     if context.req.method == "GET":
-        return context.res.send(
+        return context.res.text(
             get_static_file("index.html"),
             200,
             {"content-type": "text/html; charset=utf-8"},

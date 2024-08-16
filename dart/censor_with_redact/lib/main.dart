@@ -8,12 +8,12 @@ Future<dynamic> main(final context) async {
   throwIfMissing(Platform.environment, ['PANGEA_REDACT_TOKEN']);
 
   if (context.req.method == 'GET') {
-    return context.res.send(getStaticFile('index.html'), 200,
+    return context.res.text(getStaticFile('index.html'), 200,
         {'Content-Type': 'text/html; charset=utf-8'});
   }
 
   try {
-    throwIfMissing(context.req.body, ['text']);
+    throwIfMissing(context.req.bodyJson, ['text']);
   } catch (err) {
     return context.res.json({'ok': false, 'error': err.toString()});
   }
@@ -26,7 +26,7 @@ Future<dynamic> main(final context) async {
                 'Bearer ${Platform.environment['PANGEA_REDACT_TOKEN']}',
           },
           body: jsonEncode({
-            'text': context.req.body['text'],
+            'text': context.req.bodyJson['text'],
           }));
 
   final data = jsonDecode(response.body);

@@ -13,7 +13,7 @@ export default async ({ req, res }) => {
     return res.json({ ok: false, error: 'Method not allowed' }, 405);
   }
 
-  if (!req.body.prompt || typeof req.body.prompt !== 'string') {
+  if (!req.bodyJson.prompt || typeof req.bodyJson.prompt !== 'string') {
     return res.json(
       { ok: false, error: 'Missing required field `prompt`' },
       400
@@ -28,7 +28,7 @@ export default async ({ req, res }) => {
       },
       method: 'POST',
       body: JSON.stringify({
-        inputs: req.body.prompt,
+        inputs: req.bodyJson.prompt,
       }),
     }
   );

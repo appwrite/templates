@@ -18,23 +18,23 @@ export default async ({ req, res }) => {
   ]);
 
   if (req.method === "GET") {
-    return res.send(getStaticFile("index.html"), 200, {
+    return res.text(getStaticFile("index.html"), 200, {
       "Content-Type": "text/html; charset=utf-8",
     });
   }
 
-  if (!req.body.text || typeof req.body.text !== "string") {
+  if (!req.bodyJson.text || typeof req.bodyJson.text !== "string") {
     return res.json({ ok: false, error: "Missing required field `text`" }, 400);
   }
 
   const elevenlabs = new ElevenLabsClient();
 
   const speechAudio = await elevenlabs.voiceGeneration.generate({
-    accent: req.body.accent ?? "british",
+    accent: req.bodyJson.accent ?? "british",
     accent_strength: 1.0,
-    age: req.body.age ?? "young",
-    gender: req.body.gender ?? "female",
-    text: req.body.text,
+    age: req.bodyJson.age ?? "young",
+    gender: req.bodyJson.gender ?? "female",
+    text: req.bodyJson.text,
   });
   const blob = await consumers.blob(speechAudio);
 

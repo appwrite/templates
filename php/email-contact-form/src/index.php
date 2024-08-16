@@ -27,7 +27,7 @@ return function ($context) {
     }
 
     if ($context->req->method === 'GET' && $context->req->path === '/') {
-        return $context->send(get_static_file('index.html'), 200, [
+        return $context->text(get_static_file('index.html'), 200, [
             'content-type' => 'text/html; charset=utf-8',
         ]);
     }
@@ -47,7 +47,7 @@ return function ($context) {
     }
 
     $form = [];
-    parse_str($context->req->body, $form);
+    parse_str($context->req->bodyText, $form);
 
     try {
         throw_if_missing($form, ['email']);
@@ -72,7 +72,7 @@ return function ($context) {
     }
 
     if (!isset($form['_next']) || empty($form['_next'])) {
-        return $context->send(get_static_file('success.html'), 200, [
+        return $context->text(get_static_file('success.html'), 200, [
             'content-type' => 'text/html; charset=utf-8',
         ]);
     }

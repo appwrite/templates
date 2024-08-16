@@ -24,7 +24,7 @@ export default async ({ req, res, log }) => {
 
   if (req.method === 'GET') {
     const html = getStaticFile('index.html');
-    return res.send(html, 200, { 'Content-Type': 'text/html; charset=utf-8' });
+    return res.text(html, 200, { 'Content-Type': 'text/html; charset=utf-8' });
   }
 
   if (req.method !== 'POST') {
@@ -35,7 +35,7 @@ export default async ({ req, res, log }) => {
   const pineconeIndex = pinecone.index(process.env.PINECONE_INDEX_ID);
 
   if (req.path === '/prompt') {
-    if (!req.body.prompt || typeof req.body.prompt !== 'string') {
+    if (!req.bodyJson.prompt || typeof req.bodyJson.prompt !== 'string') {
       return res.json(
         { ok: false, error: 'Missing required field `prompt`' },
         400
@@ -61,7 +61,7 @@ export default async ({ req, res, log }) => {
       new StringOutputParser(),
     ]);
 
-    const result = await chain.invoke(req.body.prompt);
+    const result = await chain.invoke(req.bodyJson.prompt);
 
     return res.json({ ok: true, completion: result }, 200);
   }
@@ -96,5 +96,5 @@ export default async ({ req, res, log }) => {
   });
 
   log(`Indexed ${documents.length} documents.`);
-  return res.send('Index finished.', 200);
+  return res.text('Index finished.', 200);
 };

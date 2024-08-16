@@ -22,7 +22,7 @@ def main(context):
             'MEILISEARCH_SEARCH_API_KEY': os.environ['MEILISEARCH_SEARCH_API_KEY'],
         })
 
-        return context.res.send(html, 200, {'content-type': 'text/html; charset=utf-8'})
+        return context.res.text(html, 200, {'content-type': 'text/html; charset=utf-8'})
 
     client = Client()
     client.set_endpoint(os.environ.get('APPWRITE_ENDPOINT', 'https://cloud.appwrite.io/v1'))
@@ -62,4 +62,4 @@ def main(context):
 
     context.log('Sync finished.')
 
-    return context.res.send('Sync finished.', 200)
+    return context.res.text('Sync finished.', 200)

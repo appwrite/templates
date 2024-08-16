@@ -31,7 +31,7 @@ export function throwIfRequestNotValid(req) {
     throw new Error('Invalid request: replay attack');
   }
 
-  const signatureBaseString = `v0:${timestamp}:${req.bodyRaw}`;
+  const signatureBaseString = `v0:${timestamp}:${req.bodyText}`;
   const hmac = crypto.createHmac('sha256', process.env['SLACK_SIGNING_SECRET']);
   hmac.update(signatureBaseString);
 

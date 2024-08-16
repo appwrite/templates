@@ -23,15 +23,15 @@ class GithubService {
 
     return (
       typeof signature !== 'string' ||
-      (await verify(process.env.GITHUB_WEBHOOK_SECRET, req.bodyRaw, signature))
+      (await verify(process.env.GITHUB_WEBHOOK_SECRET, req.bodyBinary, signature))
     );
   }
 
   isIssueOpenedEvent(req: any): boolean {
     return (
       req.headers['x-github-event'] === 'issues' &&
-      req.body.issue &&
-      req.body.action === 'opened'
+      req.bodyJson.issue &&
+      req.bodyJson.action === 'opened'
     );
   }
 
