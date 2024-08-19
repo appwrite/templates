@@ -15,7 +15,7 @@ return function ($context) {
     ]);
 
     if ($context->req->method === "GET") {
-        return $context->res->send(get_static_file("index.html"), 200, [
+        return $context->res->text(get_static_file("index.html"), 200, [
             "Content-Type" => "text/html; charset=utf-8",
         ]);
     }
@@ -32,7 +32,7 @@ return function ($context) {
     $decoded_array = (array) $decoded;
 
     if (
-        hash("sha256", $context->req->bodyRaw) !==
+        hash("sha256", $context->req->bodyBinary) !==
         $decoded_array["payload_hash"]
     ) {
         $context->res->json(
@@ -45,7 +45,7 @@ return function ($context) {
     }
 
     try {
-        throw_if_missing($context->req->body, ["from", "text"]);
+        throw_if_missing($context->req->bodyJson, ["from", "text"]);
     } catch (Exception $e) {
         $context->res->json(
             [
@@ -63,9 +63,9 @@ return function ($context) {
 
     $data = [
         "from" => $_ENV["VONAGE_WHATSAPP_NUMBER"],
-        "to" => $context->req->body["from"],
+        "to" => $context->req->bodyJson["from"],
         "message_type" => "text",
-        "text" => "Hi there, you sent me: " . $context->req->body["text"],
+        "text" => "Hi there, you sent me: " . $context->req->bodyJson["text"],
         "channel" => "whatsapp",
     ];
 

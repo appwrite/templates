@@ -19,7 +19,7 @@ export default async (context) => {
       APPWRITE_FUNCTION_ID: process.env.APPWRITE_FUNCTION_ID,
     });
 
-    return res.send(html, 200, { 'Content-Type': 'text/html; charset=utf-8' });
+    return res.text(html, 200, { 'Content-Type': 'text/html; charset=utf-8' });
   }
 
   const appwrite = new AppwriteService();
@@ -85,6 +85,6 @@ export default async (context) => {
       return res.json({ success: true });
 
     default:
-      return res.send('Not Found', 404);
+      return res.text('Not Found', 404);
   }
 };

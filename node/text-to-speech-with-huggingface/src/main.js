@@ -13,7 +13,7 @@ export default async ({ req, res, error }) => {
     return res.json({ ok: false, error: 'Method not allowed' }, 405);
   }
 
-  if (!req.body.text || typeof req.body.text !== 'string') {
+  if (!req.bodyJson.text || typeof req.bodyJson.text !== 'string') {
     return res.json({ ok: false, error: 'Missing required field `text`' }, 400);
   }
 
@@ -25,7 +25,7 @@ export default async ({ req, res, error }) => {
       },
       method: 'POST',
       body: JSON.stringify({
-        inputs: req.body.text,
+        inputs: req.bodyJson.text,
       }),
     }
   );

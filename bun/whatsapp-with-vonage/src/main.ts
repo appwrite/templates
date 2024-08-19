@@ -18,7 +18,7 @@ export default async ({ req, res, log, error }: Context) => {
   ]);
 
   if (req.method === "GET") {
-    return res.send(getStaticFile("index.html"), 200, {
+    return res.text(getStaticFile("index.html"), 200, {
       "Content-Type": "text/html; charset=utf-8",
     });
   }
@@ -35,14 +35,14 @@ export default async ({ req, res, log, error }: Context) => {
   }
 
   const hasher = new Bun.CryptoHasher("sha256");
-  const hashedValue = hasher.update(req.bodyRaw).digest("hex").toString();
+  const hashedValue = hasher.update(req.bodyBinary).digest("hex").toString();
 
   if (hashedValue != decodedToken["payload_hash"]) {
     return res.json({ ok: false, error: "Payload hash mismatched" }, 401);
   }
 
   try {
-    throwIfMissing(req.body, ["from", "text"]);
+    throwIfMissing(req.bodyJson, ["from", "text"]);
   } catch (err) {
     return res.json({ ok: false, error: err.message }, 400);
   }
@@ -55,9 +55,9 @@ export default async ({ req, res, log, error }: Context) => {
     method: "POST",
     body: JSON.stringify({
       from: Bun.env.VONAGE_WHATSAPP_NUMBER,
-      to: req.body.from,
+      to: req.bodyJson.from,
       message_type: "text",
-      text: `You sent me: ${req.body.text}`,
+      text: `You sent me: ${req.bodyJson.text}`,
       channel: "whatsapp",
     }),
     headers: {

@@ -15,7 +15,7 @@ export default async ({ req, res, log }) => {
 
   if (req.method === 'GET') {
     const html = getStaticFile('index.html');
-    return res.send(html, 200, { 'Content-Type': 'text/html; charset=utf-8' });
+    return res.text(html, 200, { 'Content-Type': 'text/html; charset=utf-8' });
   }
 
   if (req.method !== 'POST') {
@@ -30,7 +30,7 @@ export default async ({ req, res, log }) => {
   if (req.path === '/search') {
     const queryEmbedding = await openai.embeddings.create({
       model: 'text-embedding-ada-002',
-      input: req.body.prompt,
+      input: req.bodyJson.prompt,
     });
 
     const searchResults = await pineconeIndex.query({
@@ -67,5 +67,5 @@ export default async ({ req, res, log }) => {
 
   log('Syncing embeddings with Pinecone...');
   await pineconeIndex.upsert(embeddings);
-  return res.send('Sync finished.', 200);
+  return res.text('Sync finished.', 200);
 };

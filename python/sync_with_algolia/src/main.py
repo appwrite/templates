@@ -29,7 +29,7 @@ def main(context):
                 "ALGOLIA_SEARCH_API_KEY": os.environ["ALGOLIA_SEARCH_API_KEY"],
             },
         )
-        return context.res.send(html, 200, {"Content-Type": "text/html; charset=utf-8"})
+        return context.res.text(html, 200, {"Content-Type": "text/html; charset=utf-8"})
 
     client = (
         Client()
@@ -74,4 +74,4 @@ def main(context):
 
     context.log("Sync finished.")
 
-    return context.res.send("Sync finished.", 200)
+    return context.res.text("Sync finished.", 200)

@@ -5,7 +5,7 @@ export default async ({ req, res }) => {
   throwIfMissing(process.env, ['HUGGINGFACE_ACCESS_TOKEN']);
 
   if (req.method === 'GET') {
-    return res.send(getStaticFile('index.html'), 200, {
+    return res.text(getStaticFile('index.html'), 200, {
       'Content-Type': 'text/html; charset=utf-8',
     });
   }
@@ -14,7 +14,7 @@ export default async ({ req, res }) => {
     return res.json({ ok: false, error: 'Method not allowed.' }, 405);
   }
 
-  if (!req.body.source || typeof req.body.source !== 'string') {
+  if (!req.bodyJson.source || typeof req.bodyJson.source !== 'string') {
     return res.json(
       { ok: false, error: 'Missing required field `source`' },
       400
@@ -25,7 +25,7 @@ export default async ({ req, res }) => {
   try {
     const translation = await hf.translation({
       model: 'facebook/mbart-large-50-many-to-many-mmt',
-      inputs: req.body.source,
+      inputs: req.bodyJson.source,
       // @ts-ignore
       parameters: {
         src_lang: 'en_XX',

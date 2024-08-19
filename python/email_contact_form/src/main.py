@@ -28,7 +28,7 @@ def main(context):
         )
 
     if context.req.method == "GET" and context.req.path == "/":
-        return context.res.send(
+        return context.res.text(
             get_static_file("index.html"),
             200,
             {
@@ -78,7 +78,7 @@ def main(context):
         )
 
     if not form["_next"]:
-        return context.res.send(
+        return context.res.text(
             get_static_file("success.html"),
             200,
             "content-type: text/html; charset=utf-8",

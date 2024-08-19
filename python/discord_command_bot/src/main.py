@@ -14,7 +14,7 @@ def main(context):
     )
 
     if not verify_key(
-        context.req.bodyRaw,
+        context.req.body_bianary,
         context.req.headers["x-signature-ed25519"],
         context.req.headers["x-signature-timestamp"],
         os.environ["DISCORD_PUBLIC_KEY"],

@@ -52,7 +52,7 @@ class StripeService {
   validateWebhook(context, req) {
     try {
       const event = this.client.webhooks.constructEvent(
-        req.bodyRaw,
+        req.bodyBinary,
         req.headers['stripe-signature'],
         process.env.STRIPE_WEBHOOK_SECRET
       );

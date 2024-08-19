@@ -7,7 +7,7 @@ def main(context):
     throw_if_missing(context.env, ["PANGEA_REDACT_TOKEN"])
 
     if context.req.method == "GET":
-        return context.res.send(
+        return context.res.text(
             get_static_file("index.html"),
             200,
             {"Content-Type": "text/html; charset=utf-8"},

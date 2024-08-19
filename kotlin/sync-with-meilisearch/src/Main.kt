@@ -31,7 +31,7 @@ class Main {
                 "MEILISEARCH_SEARCH_API_KEY" to System.getenv("MEILISEARCH_SEARCH_API_KEY"),
             ))
 
-            return context.res.send(html, 200, mapOf("content-type" to "text/html"))
+            return context.res.text(html, 200, mapOf("content-type" to "text/html"))
         }
 
         val client = AppwriteClient().apply {
@@ -78,6 +78,6 @@ class Main {
 
         context.log("Sync finished.");
 
-        return context.res.send("Sync finished.");
+        return context.res.text("Sync finished.");
     }
 }

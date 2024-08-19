@@ -5,7 +5,7 @@ export default async ({ req, res, error }) => {
   throwIfMissing(process.env, ['PERPLEXITY_API_KEY']);
 
   if (req.method === 'GET') {
-    return res.send(getStaticFile('index.html'), 200, {
+    return res.text(getStaticFile('index.html'), 200, {
       'Content-Type': 'text/html; charset=utf-8',
     });
   }
@@ -14,7 +14,7 @@ export default async ({ req, res, error }) => {
     return res.json({ ok: false, error: 'Method not allowed' }, 405);
   }
 
-  if (!req.body.prompt || typeof req.body.prompt !== 'string') {
+  if (!req.bodyJson.prompt || typeof req.bodyJson.prompt !== 'string') {
     return res.json(
       { ok: false, error: 'Missing required field `prompt`' },
       400
@@ -30,7 +30,7 @@ export default async ({ req, res, error }) => {
     const response = await perplexity.chat.completions.create({
       model: 'mistral-7b-instruct',
       max_tokens: parseInt(process.env.PERPLEXITY_MAX_TOKENS ?? '512'),
-      messages: [{ role: 'user', content: req.body.prompt }],
+      messages: [{ role: 'user', content: req.bodyJson.prompt }],
       stream: false,
     });
     const completion = response.choices[0].message?.content;

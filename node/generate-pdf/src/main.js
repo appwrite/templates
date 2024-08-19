@@ -8,5 +8,5 @@ export default async ({ res, log }) => {
   const pdfBuffer = await createPdf(fakeOrder);
   log('PDF created.');
 
-  return res.send(pdfBuffer, 200, { 'Content-Type': 'application/pdf' });
+  return res.binary(pdfBuffer, 200, { 'Content-Type': 'application/pdf' });
 };
