@@ -5,7 +5,6 @@ import { fetch } from 'undici';
 export default async ({ req, res, error }) => {
   throwIfMissing(process.env, [
     'TOGETHER_API_KEY',
-    'APPWRITE_API_KEY',
     'APPWRITE_FUNCTION_PROJECT_ID',
     'APPWRITE_BUCKET_ID',
   ]);
@@ -92,13 +91,12 @@ export default async ({ req, res, error }) => {
 
   // Upload image to Appwrite Storage and return URL
   if (req.bodyJson.type === 'image') {
-    const endpoint =
-      process.env.APPWRITE_ENDPOINT || 'https://cloud.appwrite.io/v1';
+    const endpoint = process.env.APPWRITE_FUNCTION_API_ENDPOINT;
 
     const client = new Client()
       .setEndpoint(endpoint)
-      .setKey(process.env.APPWRITE_API_KEY)
-      .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID);
+      .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
+      .setKey(req.headers['x-appwrite-key']);
 
     const storage = new Storage(client);
 

@@ -10,7 +10,6 @@ def main(context):
     throw_if_missing(
         os.environ,
         [
-            "APPWRITE_API_KEY",
             "APPWRITE_DATABASE_ID",
             "APPWRITE_COLLECTION_ID",
             "ALGOLIA_APP_ID",
@@ -33,9 +32,9 @@ def main(context):
 
     client = (
         Client()
-        .set_endpoint(os.environ["APPWRITE_ENDPOINT"] or "https://cloud.appwrite.io/v1")
+        .set_endpoint(os.environ["APPWRITE_FUNCTION_API_ENDPOINT"])
         .set_project(os.environ["APPWRITE_FUNCTION_PROJECT_ID"])
-        .set_key(os.environ["APPWRITE_API_KEY"])
+        .set_key(context.req.headers["x-appwrite-key"])
     )
     database = Databases(client)
 

@@ -14,7 +14,6 @@ import AppwriteService from './appwrite.js';
 
 export default async ({ req, res, log }) => {
   throwIfMissing(process.env, [
-    'APPWRITE_API_KEY',
     'APPWRITE_DATABASE_ID',
     'APPWRITE_COLLECTION_ID',
     'PINECONE_API_KEY',
@@ -66,7 +65,7 @@ export default async ({ req, res, log }) => {
     return res.json({ ok: true, completion: result }, 200);
   }
 
-  const appwrite = new AppwriteService();
+  const appwrite = new AppwriteService(req.headers['x-appwrite-key']);
 
   log('Fetching documents from Appwrite database...');
 

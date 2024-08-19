@@ -135,7 +135,7 @@
     <script>
       const { Client, Account, Functions } = Appwrite;
       const client = new Client()
-        .setEndpoint('{{APPWRITE_ENDPOINT}}')
+        .setEndpoint('{{APPWRITE_FUNCTION_API_ENDPOINT}}')
         .setProject('{{APPWRITE_FUNCTION_PROJECT_ID}}');
       const account = new Account(client);
       const functions = new Functions(client);

@@ -3,14 +3,12 @@ import { Client, Users } from 'node-appwrite';
 const LabelsSubscriber = 'subscriber';
 
 class AppwriteService {
-  constructor() {
+  constructor(apiKey) {
     const client = new Client();
     client
-      .setEndpoint(
-        process.env.APPWRITE_ENDPOINT ?? 'https://cloud.appwrite.io/v1'
-      )
+      .setEndpoint(process.env.APPWRITE_FUNCTION_API_ENDPOINT)
       .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
-      .setKey(process.env.APPWRITE_API_KEY);
+      .setKey(apiKey);
 
     this.users = new Users(client);
   }

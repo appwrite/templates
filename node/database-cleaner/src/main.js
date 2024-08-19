@@ -5,11 +5,10 @@ export default async ({ req, res, log, error }) => {
   throwIfMissing(process.env, [
     'APPWRITE_DATABASE_ID',
     'APPWRITE_COLLECTION_ID',
-    'APPWRITE_API_KEY',
     'RETENTION_PERIOD_DAYS',
   ]);
 
-  const appwrite = new AppwriteService();
+  const appwrite = new AppwriteService(req.headers['x-appwrite-key'] ?? '');
 
   await appwrite.cleanCollection(
     process.env.APPWRITE_DATABASE_ID,

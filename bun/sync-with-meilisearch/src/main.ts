@@ -4,7 +4,6 @@ import { MeiliSearch } from "meilisearch";
 
 export default async ({ req, res, log }) => {
   throwIfMissing(Bun.env, [
-    "APPWRITE_API_KEY",
     "APPWRITE_DATABASE_ID",
     "APPWRITE_COLLECTION_ID",
     "MEILISEARCH_ENDPOINT",
@@ -24,9 +23,9 @@ export default async ({ req, res, log }) => {
   }
 
   const client = new Client()
-    .setEndpoint(Bun.env.APPWRITE_ENDPOINT ?? "https://cloud.appwrite.io/v1")
+    .setEndpoint(Bun.env.APPWRITE_FUNCTION_API_ENDPOINT)
     .setProject(Bun.env.APPWRITE_FUNCTION_PROJECT_ID)
-    .setKey(Bun.env.APPWRITE_API_KEY);
+    .setKey(req.headers['x-appwrite-key'] ?? '');
 
   const databases = new Databases(client);
 

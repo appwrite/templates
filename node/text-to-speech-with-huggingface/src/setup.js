@@ -4,10 +4,9 @@ import { throwIfMissing } from './utils.js';
 async function setup() {
   console.log('Executing setup script...');
 
-  throwIfMissing(process.env, ['APPWRITE_API_KEY']);
   const bucketId = process.env.APPWRITE_BUCKET_ID ?? 'generated_speech';
 
-  const appwrite = new AppwriteService();
+  const appwrite = new AppwriteService(process.env.APPWRITE_FUNCTION_API_KEY);
 
   if (await appwrite.doesGeneratedSpeechBucketExist(bucketId)) {
     console.log(`Bucket exists.`);

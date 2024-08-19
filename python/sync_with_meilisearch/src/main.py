@@ -6,7 +6,6 @@ from .utils import get_static_file, interpolate, throw_if_missing
 
 def main(context):
     throw_if_missing(os.environ, [
-        'APPWRITE_API_KEY',
         'APPWRITE_DATABASE_ID',
         'APPWRITE_COLLECTION_ID',
         'MEILISEARCH_ENDPOINT',
@@ -25,9 +24,9 @@ def main(context):
         return context.res.text(html, 200, {'content-type': 'text/html; charset=utf-8'})
 
     client = Client()
-    client.set_endpoint(os.environ.get('APPWRITE_ENDPOINT', 'https://cloud.appwrite.io/v1'))
+    client.set_endpoint(os.environ.get('APPWRITE_FUNCTION_API_ENDPOINT'))
     client.set_project(os.environ['APPWRITE_FUNCTION_PROJECT_ID'])
-    client.set_key(os.environ['APPWRITE_API_KEY'])
+    client.set_key(context.req.headers['x-appwrite-key'])
 
     databases = Databases(client)
 

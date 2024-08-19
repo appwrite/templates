@@ -4,7 +4,6 @@ require_relative 'utils'
 
 def main(context)
   throw_if_missing(ENV, [
-    'APPWRITE_API_KEY',
     'APPWRITE_DATABASE_ID',
     'APPWRITE_COLLECTION_ID',
     'MEILISEARCH_ENDPOINT',
@@ -25,9 +24,9 @@ def main(context)
 
   client = Appwrite::Client.new
   client
-    .set_endpoint(ENV['APPWRITE_ENDPOINT'] || 'https://cloud.appwrite.io/v1')
+    .set_endpoint(ENV['APPWRITE_FUNCTION_API_ENDPOINT'])
     .set_project(ENV['APPWRITE_FUNCTION_PROJECT_ID'])
-    .set_key(ENV['APPWRITE_API_KEY'])
+    .set_key(context.req.headers["x-appwrite-key"])
 
   databases = Appwrite::Databases.new(client)
 

@@ -10,7 +10,6 @@ def main(context):
     throw_if_missing(
         os.environ,
         [
-            "APPWRITE_API_KEY",
             "APPWRITE_DATABASE_ID",
             "APPWRITE_COLLECTION_ID",
             "QDRANT_URL",
@@ -57,7 +56,7 @@ def main(context):
         )
 
     context.log("Syncing to Qdrant collection")
-    documents = get_all_documents()
+    documents = get_all_documents(context.req.headers['x-appwrite-key'])
     points = []
     for index, document in enumerate(documents):
         response = openai.embeddings.create(

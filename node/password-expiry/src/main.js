@@ -2,10 +2,9 @@ import { throwIfMissing } from './utils.js';
 import { Client, Users, Query } from 'node-appwrite';
 import nodemailer from 'nodemailer';
 
-export default async ({ res, log, error }) => {
+export default async ({ req, res, log, error }) => {
   throwIfMissing(process.env, [
     'APPWRITE_FUNCTION_PROJECT_ID',
-    'APPWRITE_API_KEY',
     'MAX_PASSWORD_AGE',
     'RESET_PASSWORD_URL',
     'STMP_DSN',
@@ -13,11 +12,9 @@ export default async ({ res, log, error }) => {
 
   const client = new Client();
   client
-    .setEndpoint(
-      process.env.APPWRITE_ENDPOINT ?? 'https://cloud.appwrite.io/v1'
-    )
+    .setEndpoint(process.env.APPWRITE_FUNCTION_API_ENDPOINT)
     .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
-    .setKey(process.env.APPWRITE_API_KEY);
+    .setKey(req.headers['x-appwrite-key']);
 
   const users = new Users(client);
 

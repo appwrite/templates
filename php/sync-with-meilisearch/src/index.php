@@ -9,7 +9,6 @@ use MeiliSearch\Client as MeiliSearch;
 
 return function ($context) {
     throw_if_missing($_ENV, [
-        'APPWRITE_API_KEY',
         'APPWRITE_DATABASE_ID',
         'APPWRITE_COLLECTION_ID',
         'MEILISEARCH_ENDPOINT',
@@ -32,9 +31,9 @@ return function ($context) {
 
     $client = new Client();
     $client
-        ->setEndpoint('https://cloud.appwrite.io/v1')
+        ->setEndpoint($_ENV['APPWRITE_FUNCTION_API_ENDPOINT'])
         ->setProject($_ENV['APPWRITE_PROJECT_ID'])
-        ->setKey($_ENV['APPWRITE_API_KEY']);
+        ->setKey($context->req->headers['x-appwrite-key'] ?? '');
 
     $databases = new Databases($client);
 

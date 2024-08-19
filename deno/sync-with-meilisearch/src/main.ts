@@ -8,7 +8,6 @@ import { MeiliSearch } from "https://esm.sh/meilisearch@0.35.0";
 
 export default async ({ req, res, log, error }: any) => {
   throwIfMissing(Deno.env.toObject(), [
-    "APPWRITE_API_KEY",
     "APPWRITE_DATABASE_ID",
     "APPWRITE_COLLECTION_ID",
     "MEILISEARCH_ENDPOINT",
@@ -30,11 +29,9 @@ export default async ({ req, res, log, error }: any) => {
   }
 
   const client = new Client()
-    .setEndpoint(
-      Deno.env.get("APPWRITE_ENDPOINT") ?? "https://cloud.appwrite.io/v1",
-    )
+    .setEndpoint(Deno.env.get("APPWRITE_FUNCTION_API_ENDPOINT") ?? "")
     .setProject(Deno.env.get("APPWRITE_FUNCTION_PROJECT_ID") ?? "")
-    .setKey(Deno.env.get("APPWRITE_API_KEY") ?? "");
+    .setKey(req.headers['x-appwrite-key'] ?? "");
 
   const databases = new Databases(client);
 

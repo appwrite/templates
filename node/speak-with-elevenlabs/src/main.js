@@ -13,7 +13,6 @@ import consumers from "stream/consumers";
 export default async ({ req, res }) => {
   throwIfMissing(process.env, [
     "ELEVENLABS_API_KEY",
-    "APPWRITE_API_KEY",
     "APPWRITE_BUCKET_ID",
   ]);
 
@@ -39,11 +38,9 @@ export default async ({ req, res }) => {
   const blob = await consumers.blob(speechAudio);
 
   const client = new Client()
-    .setEndpoint(
-      process.env.APPWRITE_ENDPOINT ?? "https://cloud.appwrite.io/v1",
-    )
+    .setEndpoint(process.env.APPWRITE_FUNCTION_API_ENDPOINT)
     .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
-    .setKey(process.env.APPWRITE_API_KEY);
+    .setKey(req.headers['x-appwrite-key']);
 
   const storage = new Storage(client);
   const file = await storage.createFile(

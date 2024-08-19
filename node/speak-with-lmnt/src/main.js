@@ -12,9 +12,7 @@ import Speech from "lmnt-node";
 export default async ({ req, res }) => {
   throwIfMissing(process.env, [
     "LMNT_API_KEY",
-    "APPWRITE_API_KEY",
     "APPWRITE_BUCKET_ID",
-    "APPWRITE_FUNCTION_PROJECT_ID",
   ]);
 
   if (req.method === "GET") {
@@ -33,13 +31,12 @@ export default async ({ req, res }) => {
     format: "mp3",
   });
 
-  const endpoint =
-    process.env.APPWRITE_ENDPOINT ?? "https://cloud.appwrite.io/v1";
+  const endpoint = process.env.APPWRITE_FUNCTION_API_ENDPOINT;
 
   const client = new Client()
     .setEndpoint(endpoint)
     .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
-    .setKey(process.env.APPWRITE_API_KEY);
+    .setKey(req.headers['x-appwrite-key']);
 
   const storage = new Storage(client);
   const file = await storage.createFile(

@@ -2,15 +2,13 @@ import AppwriteService from './appwrite.js';
 import { throwIfMissing } from './utils.js';
 
 async function setup() {
-  throwIfMissing(process.env, ['APPWRITE_API_KEY']);
-
   const databaseId = process.env.APPWRITE_DATABASE_ID ?? 'ai';
   const collectionId = process.env.APPWRITE_COLLECTION_ID ?? 'object_detection';
   const bucketId = process.env.APPWRITE_BUCKET_ID ?? 'object_detection';
 
   console.log('Executing setup script...');
 
-  const appwrite = new AppwriteService();
+  const appwrite = new AppwriteService(process.env.APPWRITE_FUNCTION_API_KEY);
 
   if (await appwrite.doesAIDataExist(databaseId, collectionId)) {
     console.log(`Database exists.`);
