@@ -29,7 +29,7 @@ Response from the model.
 ```json
 {
   "ok": true,
-  "response": "https://cloud.appwrite.io/v1/storage/buckets/text_to_speech/files/66019da664270f02c20c/view?project=project_id"
+  "imageUrl": "https://cloud.appwrite.io/v1/storage/buckets/text_to_speech/files/66019da664270f02c20c/view?project=project_id"
 }
 ```
 

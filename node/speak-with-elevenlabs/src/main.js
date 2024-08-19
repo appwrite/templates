@@ -1,14 +1,10 @@
 import { getStaticFile, throwIfMissing } from "./utils.js";
-import {
-  Client,
-  Storage,
-  ID,
-  InputFile,
-  Permission,
-  Role,
-} from "node-appwrite";
+import { Client, Storage, ID, Permission, Role } from "node-appwrite";
 import { ElevenLabsClient } from "elevenlabs";
 import consumers from "stream/consumers";
+
+const APPWRITE_ENDPOINT =
+  process.env.APPWRITE_ENDPOINT ?? "https://cloud.appwrite.io/v1";
 
 export default async ({ req, res }) => {
   throwIfMissing(process.env, [
@@ -27,7 +23,7 @@ export default async ({ req, res }) => {
     return res.json({ ok: false, error: "Missing required field `text`" }, 400);
   }
 
-  const elevenlabs = new ElevenLabsClient();
+  const elevenLabs = new ElevenLabsClient();
 
   const speechAudio = await elevenlabs.voiceGeneration.generate({
     accent: req.bodyJson.accent ?? "british",
@@ -36,12 +32,11 @@ export default async ({ req, res }) => {
     gender: req.bodyJson.gender ?? "female",
     text: req.bodyJson.text,
   });
+
   const blob = await consumers.blob(speechAudio);
 
   const client = new Client()
-    .setEndpoint(
-      process.env.APPWRITE_ENDPOINT ?? "https://cloud.appwrite.io/v1",
-    )
+    .setEndpoint(APPWRITE_ENDPOINT)
     .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
     .setKey(process.env.APPWRITE_API_KEY);
 
@@ -49,15 +44,25 @@ export default async ({ req, res }) => {
   const file = await storage.createFile(
     process.env.APPWRITE_BUCKET_ID,
     ID.unique(),
-    InputFile.fromBlob(blob, "audio.mp3"),
-    [Permission.read(Role.any())],
+    blob,
+    [Permission.read(Role.any())]
+  );
+
+  const imageUrl = new URL(
+    `/storage/buckets/${process.env.APPWRITE_BUCKET_ID}/files/${file["$id"]}/view`,
+    APPWRITE_ENDPOINT
+  );
+
+  imageUrl.searchParams.set(
+    "project",
+    process.env.APPWRITE_FUNCTION_PROJECT_ID
   );
 
   return res.json(
     {
       ok: true,
-      response: `${endpoint}/storage/buckets/${process.env.APPWRITE_BUCKET_ID}/files/${file["$id"]}/view?project=${process.env.APPWRITE_FUNCTION_PROJECT_ID}`,
+      imageUrl: imageUrl.toString(),
     },
-    200,
+    200
   );
 };
