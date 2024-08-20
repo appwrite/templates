@@ -8,13 +8,11 @@ export default async (context) => {
   throwIfMissing(process.env, [
     'STRIPE_SECRET_KEY',
     'STRIPE_WEBHOOK_SECRET',
-    'APPWRITE_API_KEY',
   ]);
 
   if (req.method === 'GET') {
     const html = interpolate(getStaticFile('index.html'), {
-      APPWRITE_ENDPOINT:
-        process.env.APPWRITE_ENDPOINT ?? 'https://cloud.appwrite.io/v1',
+      APPWRITE_FUNCTION_API_ENDPOINT: process.env.APPWRITE_FUNCTION_API_ENDPOINT,
       APPWRITE_FUNCTION_PROJECT_ID: process.env.APPWRITE_FUNCTION_PROJECT_ID,
       APPWRITE_FUNCTION_ID: process.env.APPWRITE_FUNCTION_ID,
     });
@@ -22,7 +20,7 @@ export default async (context) => {
     return res.text(html, 200, { 'Content-Type': 'text/html; charset=utf-8' });
   }
 
-  const appwrite = new AppwriteService();
+  const appwrite = new AppwriteService(context.req.headers['x-appwrite-key']);
   const stripe = new StripeService();
 
   switch (req.path) {

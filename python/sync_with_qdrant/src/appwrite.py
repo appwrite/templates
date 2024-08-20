@@ -3,13 +3,11 @@ from appwrite.client import Client
 from appwrite.services.databases import Databases
 from appwrite.query import Query
 
-def get_all_documents():
+def get_all_documents(api_key):
     client = Client()
-    client.set_endpoint(
-        os.environ.get("APPWRITE_ENDPOINT", "https://cloud.appwrite.io/v1")
-    )
+    client.set_endpoint(os.environ.get("APPWRITE_FUNCTION_API_ENDPOINT"))
     client.set_project(os.environ["APPWRITE_FUNCTION_PROJECT_ID"])
-    client.set_key(os.environ["APPWRITE_API_KEY"])
+    client.set_key(api_key)
 
     databases = Databases(client)
 

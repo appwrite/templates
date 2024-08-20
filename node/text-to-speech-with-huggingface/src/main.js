@@ -5,7 +5,7 @@ import AppwriteService from './appwrite.js';
 const HUGGINGFACE_API = 'https://api-inference.huggingface.co';
 
 export default async ({ req, res, error }) => {
-  throwIfMissing(process.env, ['HUGGINGFACE_ACCESS_TOKEN', 'APPWRITE_API_KEY']);
+  throwIfMissing(process.env, ['HUGGINGFACE_ACCESS_TOKEN']);
 
   const bucketId = process.env.APPWRITE_BUCKET_ID ?? 'generated_speech';
 
@@ -37,7 +37,7 @@ export default async ({ req, res, error }) => {
 
   const blob = await response.blob();
 
-  const appwrite = new AppwriteService();
+  const appwrite = new AppwriteService(req.headers['x-appwrite-key']);
   const file = await appwrite.createFile(bucketId, blob);
 
   return res.json({

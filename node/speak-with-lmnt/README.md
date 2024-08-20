@@ -74,25 +74,6 @@ A unique key used to authenticate with the LMNT API. You can find your API key i
 | Sample Value  | `d03xxxxxxxx26`                                                      |
 | Documentation | [LMNT Docs](https://docs.lmnt.com/getting-started/environment-setup) |
 
-### APPWRITE_ENDPOINT
-
-The endpoint of the Appwrite API.
-
-| Question      | Answer                         |
-| ------------- | ------------------------------ |
-| Required      | No                             |
-| Default Value | `https://cloud.appwrite.io/v1` |
-
-### APPWRITE_API_KEY
-
-A unique key used to authenticate with the Appwrite API. You can generate your API key in the Appwrite dashboard. It must have the `files.read` and `files.write` permissions.
-
-| Question      | Answer                                                               |
-| ------------- | -------------------------------------------------------------------- |
-| Required      | Yes                                                                  |
-| Sample Value  | `631xxxxxxxx8a`                                                      |
-| Documentation | [Appwrite Docs](https://appwrite.io/docs/advanced/platform/api-keys) |
-
 ### APPWRITE_BUCKET_ID
 
 The ID of the Appwrite storage bucket where the audio files will be saved.

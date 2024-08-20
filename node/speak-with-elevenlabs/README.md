@@ -77,25 +77,6 @@ A unique key used to authenticate with the ElevenLabs API. You can find your API
 | Sample Value  | `d03xxxxxxxx26`                                                             |
 | Documentation | [ElevenLabs Docs](https://elevenlabs.io/docs/api-reference/getting-started) |
 
-### APPWRITE_ENDPOINT
-
-The endpoint of the Appwrite API.
-
-| Question      | Answer                         |
-| ------------- | ------------------------------ |
-| Required      | No                             |
-| Default Value | `https://cloud.appwrite.io/v1` |
-
-### APPWRITE_API_KEY
-
-A unique key used to authenticate with the Appwrite API. You can generate your API key in the Appwrite dashboard. It must have the `files.read` and `files.write` permissions.
-
-| Question      | Answer                                                               |
-| ------------- | -------------------------------------------------------------------- |
-| Required      | Yes                                                                  |
-| Sample Value  | `631xxxxxxxx8a`                                                      |
-| Documentation | [Appwrite Docs](https://appwrite.io/docs/advanced/platform/api-keys) |
-
 ### APPWRITE_BUCKET_ID
 
 The ID of the Appwrite storage bucket where the audio files will be saved.

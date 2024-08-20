@@ -3,7 +3,7 @@ import { throwIfMissing } from './utils.js';
 import AppwriteService from './appwrite.js';
 
 export default async ({ req, res, log, error }) => {
-  throwIfMissing(process.env, ['HUGGINGFACE_ACCESS_TOKEN', 'APPWRITE_API_KEY']);
+  throwIfMissing(process.env, ['HUGGINGFACE_ACCESS_TOKEN']);
 
   const databaseId = process.env.APPWRITE_DATABASE_ID ?? 'ai';
   const collectionId =
@@ -25,7 +25,7 @@ export default async ({ req, res, log, error }) => {
     return res.json({ ok: false, error: 'Bad request' }, 400);
   }
 
-  const appwrite = new AppwriteService();
+  const appwrite = new AppwriteService(req.headers['x-appwrite-key']);
 
   let file;
   try {

@@ -28,16 +28,6 @@ Sample `204` Response: No content.
 
 ## 🔒 Environment Variables
 
-### APPWRITE_API_KEY
-
-API Key to talk to Appwrite backend APIs.
-
-| Question      | Answer                                                                                      |
-| ------------- | ------------------------------------------------------------------------------------------- |
-| Required      | Yes                                                                                         |
-| Sample Value  | `d1efb...aec35`                                                                             |
-| Documentation | [Appwrite: Getting Started for Server](https://appwrite.io/docs/advanced/platform/api-keys) |
-
 ### APPWRITE_DATABASE_ID
 
 The ID of the Appwrite database that contains the collection to sync.
@@ -57,15 +47,6 @@ The ID of the collection in the Appwrite database to sync.
 | Required      | Yes                                                                              |
 | Sample Value  | `7c3e8...2a9f1`                                                                  |
 | Documentation | [Appwrite: Collections](https://appwrite.io/docs/products/databases/collections) |
-
-### APPWRITE_ENDPOINT
-
-The URL endpoint of the Appwrite server. If not provided, it defaults to the Appwrite Cloud server: `https://cloud.appwrite.io/v1`.
-
-| Question     | Answer                         |
-| ------------ | ------------------------------ |
-| Required     | No                             |
-| Sample Value | `https://cloud.appwrite.io/v1` |
 
 ### MEILISEARCH_ENDPOINT
 

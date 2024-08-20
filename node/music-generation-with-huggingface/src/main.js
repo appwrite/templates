@@ -39,7 +39,7 @@ export default async ({ req, res }) => {
 
   const blob = await response.blob();
 
-  const appwrite = new AppwriteService();
+  const appwrite = new AppwriteService(req.headers['x-appwrite-key']);
   // @ts-ignore
   const file = await appwrite.createFile(bucketId, blob);
 

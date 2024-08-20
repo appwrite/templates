@@ -65,27 +65,6 @@ Sample `404` Response:
 
 ## 🔒 Environment Variables
 
-### APPWRITE_API_KEY
-
-Your Appwrite project's API key.
-
-| Question      | Answer                                                                                            |
-| ------------- | ------------------------------------------------------------------------------------------------- |
-| Required      | Yes                                                                                               |
-| Sample Value  | `083d341ee48...`                                                                                  |
-| Documentation | [Appwrite: Create an API key](https://appwrite.io/docs/advanced/platform/api-keys#create-api-key) |
-
-This key should have all permissions in the `Databases` scope aswell as all permissions in the `Storage` scope.
-
-### APPWRITE_ENDPOINT
-
-The endpoint where your Appwrite server is located. If not provided, it defaults to the Appwrite Cloud server: `https://cloud.appwrite.io/v1`.
-
-| Question     | Answer                         |
-| ------------ | ------------------------------ |
-| Required     | No                             |
-| Sample Value | `https://cloud.appwrite.io/v1` |
-
 ### APPWRITE_BUCKET_ID
 
 The ID of the storage bucket where the images are stored.

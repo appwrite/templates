@@ -3,13 +3,12 @@ import { generateShortCode, throwIfMissing } from './utils.js';
 
 export default async ({ res, req, log, error }) => {
   throwIfMissing(process.env, [
-    'APPWRITE_API_KEY',
     'APPWRITE_DATABASE_ID',
     'APPWRITE_COLLECTION_ID',
     'SHORT_BASE_URL',
   ]);
 
-  const appwrite = new AppwriteService();
+  const appwrite = new AppwriteService(req.headers['x-appwrite-key']);
 
   if (
     req.method === 'POST' &&

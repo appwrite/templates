@@ -15,7 +15,6 @@ class Main {
     suspend fun main(context: RuntimeContext): RuntimeOutput {
 
         Utils.throwIfMissing(System.getenv(), listOf(
-            "APPWRITE_API_KEY",
             "APPWRITE_DATABASE_ID",
             "APPWRITE_COLLECTION_ID",
             "MEILISEARCH_ENDPOINT",
@@ -35,9 +34,9 @@ class Main {
         }
 
         val client = AppwriteClient().apply {
-            setEndpoint(System.getenv("APPWRITE_ENDPOINT") ?: "https://cloud.appwrite.io/v1")
+            setEndpoint(System.getenv("APPWRITE_FUNCTION_API_ENDPOINT"))
             setProject(System.getenv("APPWRITE_FUNCTION_PROJECT_ID"))
-            setKey(System.getenv("APPWRITE_API_KEY"))
+            setKey(context.res.headers["x-appwrite-key"])
         }
 
         val databases = Databases(client)

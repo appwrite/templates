@@ -73,25 +73,6 @@ Sample `401` Response:
 
 ## 🔒 Environment Variables
 
-### APPWRITE_API_KEY
-
-Your Appwrite project's API key.
-
-| Question      | Answer                                                                                                                                                          |
-| ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Required      | Yes                                                                                                                                                             |
-| Sample Value  | `083d341ee48...`                                                                                                                                                |
-| Documentation | [Appwrite: Create an API key](https://appwrite.io/docs/advanced/platform/api-keys#:~:text=To%20create%20a%20new%20API,scope%20to%20grant%20your%20application.) |
-
-### APPWRITE_ENDPOINT
-
-The endpoint where your Appwrite server is located. If not provided, it defaults to the Appwrite Cloud server: `https://cloud.appwrite.io/v1`.
-
-| Question     | Answer                         |
-| ------------ | ------------------------------ |
-| Required     | No                             |
-| Sample Value | `https://cloud.appwrite.io/v1` |
-
 ### LEMON_SQUEEZY_API_KEY
 
 API key for sending requests to the Lemon Squeezy API.

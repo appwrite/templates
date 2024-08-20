@@ -86,25 +86,6 @@ A unique key used to authenticate with the Together AI API. Please note that thi
 | Sample Value  | `r8_......`                                                  |
 | Documentation | [Together AI Docs](https://docs.together.ai/docs/quickstart) |
 
-### APPWRITE_ENDPOINT
-
-The endpoint of the Appwrite API.
-
-| Question      | Answer                         |
-| ------------- | ------------------------------ |
-| Required      | No                             |
-| Default Value | `https://cloud.appwrite.io/v1` |
-
-### APPWRITE_API_KEY
-
-A unique key used to authenticate with the Appwrite API. You can generate your API key in the Appwrite dashboard. It must have the `files.read` and `files.write` permissions.
-
-| Question      | Answer                                                               |
-| ------------- | -------------------------------------------------------------------- |
-| Required      | Yes                                                                  |
-| Sample Value  | `631xxxxxxxx8a`                                                      |
-| Documentation | [Appwrite Docs](https://appwrite.io/docs/advanced/platform/api-keys) |
-
 ### APPWRITE_BUCKET_ID
 
 The ID of the Appwrite storage bucket where the image files will be saved. It must have permissions set for `any` read access for the front-end to work.
