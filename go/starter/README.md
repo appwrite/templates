@@ -37,7 +37,7 @@ Sample `200` Response:
 
 | Setting           | Value         |
 | ----------------- | ------------- |
-| Runtime           | Go (1.22)     |
+| Runtime           | Go (1.23)     |
 | Entrypoint        | `main.go`     |
 | Permissions       | `any`         |
 | Timeout (Seconds) | 15            |
