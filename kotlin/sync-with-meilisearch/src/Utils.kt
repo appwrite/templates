@@ -28,10 +28,10 @@ object Utils {
                 <script src="https://unpkg.com/meilisearch@0.34.1"></script>
                 <script src="https://unpkg.com/alpinejs" defer></script>
 
-                <link rel="stylesheet" href="https://unpkg.com/@appwrite.io/pink" />
+                <link rel="stylesheet" href="https://unpkg.com/@appwrite.io/pink@0" />
                 <link
                     rel="stylesheet"
-                    href="https://unpkg.com/@appwrite.io/pink-icons"
+                    href="https://unpkg.com/@appwrite.io/pink-icons@0"
                 />
             </head>
             <body class="theme-dark">
