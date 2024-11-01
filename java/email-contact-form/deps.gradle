@@ -1,0 +1,4 @@
+dependencies {
+    implementation 'io.appwrite:sdk-for-kotlin:4.0.0'
+    implementation 'com.sun.mail:jakarta.mail:2.0.0'
+}
