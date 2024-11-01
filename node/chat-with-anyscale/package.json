@@ -9,7 +9,7 @@
   },
   "keywords": [],
   "dependencies": {
-    "node-appwrite": "^12.0.1",
+    "node-appwrite": "^14.1.0",
     "openai": "^4.47.1"
   },
   "devDependencies": {
