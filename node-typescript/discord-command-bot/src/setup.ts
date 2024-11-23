@@ -8,7 +8,7 @@ async function setup() {
     'DISCORD_TOKEN',
   ]);
 
-  const registerApi = `https://discord.com/api/v9/applications/${process.env.DISCORD_APPLICATION_ID}/commands`;
+  const registerApi = `https://discord.com/api/v10/applications/${process.env.DISCORD_APPLICATION_ID}/commands`;
 
   /**
    * Register commands with Discord API
