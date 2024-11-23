@@ -10,6 +10,10 @@ async function setup() {
 
   const registerApi = `https://discord.com/api/v9/applications/${process.env.DISCORD_APPLICATION_ID}/commands`;
 
+  /**
+   * Register commands with Discord API
+   * @see https://discord.com/developers/docs/interactions/application-commands#create-global-application-command
+   */
   const commands = [
     {
       name: 'hello',
