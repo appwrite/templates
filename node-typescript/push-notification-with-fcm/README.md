@@ -104,13 +104,3 @@ A unique private key used to authenticate with FCM.
 | Required      | Yes                                                                                                          |
 | Sample Value  | `0b6830cc66d92804e11af2153242d34211d675675`                                                                  |
 | Documentation | [FCM: SDK Setup](https://firebase.google.com/docs/admin/setup#initialize_the_sdk_in_non-google_environments) |
-
-### FCM_DATABASE_URL
-
-URL of your FCM database.
-
-| Question      | Answer                                                                                                       |
-| ------------- | ------------------------------------------------------------------------------------------------------------ |
-| Required      | Yes                                                                                                          |
-| Sample Value  | `https://my-app-e398e.firebaseio.com`                                                                        |
-| Documentation | [FCM: SDK Setup](https://firebase.google.com/docs/admin/setup#initialize_the_sdk_in_non-google_environments) |

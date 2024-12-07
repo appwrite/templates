@@ -42,7 +42,6 @@ throwIfMissing(process.env, [
   'FCM_PROJECT_ID',
   'FCM_PRIVATE_KEY',
   'FCM_CLIENT_EMAIL',
-  'FCM_DATABASE_URL',
 ]);
 
 export default async ({ req, res, log, error }: Context) => {

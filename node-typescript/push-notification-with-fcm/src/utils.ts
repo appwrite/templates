@@ -4,7 +4,6 @@ throwIfMissing(process.env, [
   'FCM_PROJECT_ID',
   'FCM_PRIVATE_KEY',
   'FCM_CLIENT_EMAIL',
-  'FCM_DATABASE_URL',
 ]);
 
 // initialize firebase app
@@ -14,7 +13,6 @@ admin.initializeApp({
     clientEmail: process.env.FCM_CLIENT_EMAIL,
     privateKey: process.env.FCM_PRIVATE_KEY,
   }),
-  databaseURL: process.env.FCM_DATABASE_URL,
 });
 
 /**
