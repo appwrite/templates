@@ -7,7 +7,7 @@
   "scripts": {
     "format": "prettier --write .",
     "build": "tsc",
-    "test": "npm run build && node test.js"
+    "test": "npm run build && node --env-file .env test.js"
   },
   "dependencies": {
     "firebase-admin": "^13.0.1",

@@ -1,4 +1,5 @@
 import admin from 'firebase-admin';
+import process from 'process';
 
 throwIfMissing(process.env, [
   'FCM_PROJECT_ID',
