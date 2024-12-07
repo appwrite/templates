@@ -1,0 +1,20 @@
+{
+  "name": "starter-template",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/main.js",
+  "type": "module",
+  "scripts": {
+    "format": "prettier --write .",
+    "build": "tsc",
+    "test": "npm run build && node --env-file .env test.js"
+  },
+  "dependencies": {
+    "firebase-admin": "^13.0.1",
+    "typescript": "^5.4.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.12",
+    "prettier": "^3.2.5"
+  }
+}

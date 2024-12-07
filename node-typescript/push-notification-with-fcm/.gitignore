@@ -129,10 +129,5 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-appwrite.json
-
-# VSCode history directory
-.history
-
-# WebStorm Files
-.idea
+# Directory used by Appwrite CLI for local development
+.appwrite
