@@ -10,31 +10,29 @@ Send a push notification to a user.
 
 **Parameters**
 
-| Name         | Description                          | Location | Type               | Sample Value   |
-| ------------ | ------------------------------------ | -------- | ------------------ | -------------- |
-| Content-Type | The content type of the request body | Header   | `application/json` | N/A            |
-| deviceToken  | FCM device identifier                | Body     | String             | `642...7cd`    |
+| Name         | Description                          | Location | Type               | Sample Value                                |
+| ------------ | ------------------------------------ | -------- | ------------------ | ------------------------------------------- |
+| Content-Type | The content type of the request body | Header   | `application/json` | N/A                                         |
+| deviceToken  | FCM device identifier                | Body     | String             | `642...7cd`                                 |
 | message      | Message to send                      | Body     | Object             | `{"title": "hello","body": "how are you?"}` |
-| data      | Additional data to pass                         | Body     | Object             | `{"greet": "welcome"}` |
+| data         | Additional data to pass              | Body     | Object             | `{"greet": "welcome"}`                      |
 
 **Request**
 
 `deviceToken` and `message` are required. `data` is optional.
 
-
 ```json
 {
-    "deviceToken": "642...7cd",
-    "message": {
-        "title": "hello",
-        "body": "how are you?"
-    },
-    "data": {
-        "greet": "welcome" 
-    }    
+  "deviceToken": "642...7cd",
+  "message": {
+    "title": "hello",
+    "body": "how are you?"
+  },
+  "data": {
+    "greet": "welcome"
+  }
 }
 ```
-
 
 **Response**
 

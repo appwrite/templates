@@ -20,4 +20,4 @@ main({
   },
   log: console.log,
   error: console.error,
-})
+});

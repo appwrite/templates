@@ -40,10 +40,12 @@ export function throwIfMissing(obj: Record<string, any>, keys: string[]): void {
  * @param payload - The message payload
  * @returns {Promise<string>}
  */
-export async function sendPushNotification(payload: admin.messaging.Message): Promise<string> {
+export async function sendPushNotification(
+  payload: admin.messaging.Message
+): Promise<string> {
   try {
     return await admin.messaging().send(payload);
   } catch (e) {
-    throw new Error("Error on messaging");
+    throw new Error('Error on messaging');
   }
 }

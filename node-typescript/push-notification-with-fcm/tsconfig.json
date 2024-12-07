@@ -12,8 +12,5 @@
     "noImplicitAny": true,
     "skipLibCheck": true
   },
-  "include": [
-    "src/**/*.ts",
-    "env.d.ts"
-  ]
+  "include": ["src/**/*.ts", "env.d.ts"]
 }
