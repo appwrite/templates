@@ -1,0 +1,73 @@
+# Byte-compiled files
+*.pyc
+*.pyo
+__pycache__/
+
+# Virtual environments
+env/
+venv/
+.venv/
+
+# Environment variables files
+.env
+.env.*
+
+# Logs
+*.log
+*.out
+*.err
+
+# Database files
+*.sqlite3
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# macOS hidden files
+.DS_Store
+
+# Windows hidden files
+Thumbs.db
+desktop.ini
+
+# Python egg and build files
+*.egg
+*.egg-info/
+dist/
+build/
+pip-wheel-metadata/
+*.egg-info/
+*.whl
+
+# Coverage and testing
+htmlcov/
+.coverage
+.tox/
+.nox/
+.cache/
+pytest_cache/
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# IDE and Editor directories
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Temporary files
+*.tmp
+*.swp
+*.bak
+*.orig
+*.rej
+*.swo
+*.~undo-tree
+
+# Documentation
+docs/_build/
+
+# Wheel build files
+*.wheel
