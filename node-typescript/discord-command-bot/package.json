@@ -1,0 +1,20 @@
+{
+  "name": "discord-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/main.js",
+  "scripts": {
+    "build": "tsc",
+    "format": "prettier --write .",
+    "setup": "node dist/setup.js"
+  },
+  "dependencies": {
+    "discord-interactions": "^4.1.0",
+    "typescript": "^5.6.3",
+    "undici": "6.21.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.9.1",
+    "prettier": "^3.3.3"
+  }
+}
