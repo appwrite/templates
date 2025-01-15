@@ -28,7 +28,7 @@ export default async ({ req, res, error }) => {
 
   try {
     const response = await perplexity.chat.completions.create({
-      model: 'mistral-7b-instruct',
+      model: 'llama-3.1-sonar-small-128k-online',
       max_tokens: parseInt(process.env.PERPLEXITY_MAX_TOKENS ?? '512'),
       messages: [{ role: 'user', content: req.bodyJson.prompt }],
       stream: false,
