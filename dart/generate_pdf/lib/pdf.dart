@@ -16,7 +16,6 @@ Future<Uint8List> createPDF(order) async {
       margin: pw.EdgeInsets.only(left: 50),
       build: (pw.Context context) {
         return pw.Stack(children: [
-          //Manually positioned to match the output from the Node.js template
           // Invoice title
           pw.Positioned(
               bottom: 750,
