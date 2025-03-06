@@ -20,7 +20,7 @@ Returns a binary stream of the generated PDF document. The `Content-Type` of the
 
 | Setting           | Value           |
 | ----------------- | --------------- |
-| Runtime           | Dart (3.7.1)     |
+| Runtime           | Dart (3.5.0)     |
 | Entrypoint        | `lib/main.dart` |
 | Build Commands    | `dart pub get`  |
 | Permissions       | `any`           |

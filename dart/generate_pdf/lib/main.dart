@@ -1,9 +1,10 @@
 import 'dart:convert';
-import 'package:shelf/shelf.dart';
+//import 'package:dart_appwrite/dart_appwrite.dart';
+//import 'package:shelf/shelf.dart';
 import './pdf.dart';
 import './faker.dart';
 
-Future<Response> pdfHandler(Request request) async {
+Future<List<int>> pdfHandler() async {
   final fakeOrder = generateFakeOrder();
   print(
       'Generated fake order: ${JsonEncoder.withIndent('  ').convert(fakeOrder)}');
@@ -11,5 +12,16 @@ Future<Response> pdfHandler(Request request) async {
   final pdfBuffer = await createPDF(fakeOrder);
   print('PDF created');
 
-  return Response.ok(pdfBuffer, headers: {'Content-Type': 'application/pdf'});
+  return pdfBuffer;
+}
+
+Future main(final context) async {
+  try {
+    final pdfBuffer = await pdfHandler();
+    return context.res
+        .binary(pdfBuffer, 200, {'Content-Type': 'application/pdf'});
+  } catch (e) {
+    context.error('Error occurred while generating PDF: $e');
+    return context.res.text('Error occurred while generating PDF: $e', 500);
+  }
 }
