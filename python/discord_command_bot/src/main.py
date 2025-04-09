@@ -34,9 +34,8 @@ def main(context):
     context.log("Valid request")
 
     interaction = context.req.body
-
-    if (interaction.type == InteractionType.APPLICATION_COMMAND) and (
-        interaction.data.name == "hello"
+    if (interaction["type"] == InteractionType.APPLICATION_COMMAND) and (
+        interaction["data"]["name"] == "hello"
     ):
         context.log("Matched hello command - returning message")
 
