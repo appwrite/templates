@@ -38,13 +38,15 @@ def main(context):
         interaction["data"]["name"] == "hello"
     ):
         context.log("Matched hello command - returning message")
-
         return context.res.json(
             {
                 "type": InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
                 "data": {
+                    "tts": False,
                     "content": "Hello World!",
-                },
+                    "embeds": [],
+                    "allowed_mentions": {"parse": []}
+                }
             },
             200
         )
