@@ -13,15 +13,6 @@ def main(context):
         ],
     )
 
-    if context.req.body["type"] == 1:
-        context.log("Ping request - returning PONG")
-        return context.res.json(
-            {
-                "type": InteractionResponseType.PONG,
-            },
-            200,
-        )
-
     if not verify_key(
         context.req.body_binary,
         context.req.headers["x-signature-ed25519"],
@@ -30,6 +21,15 @@ def main(context):
     ):
         context.error("Invalid request")
         return context.res.json({"error": "Invalid request signature"}, 401)
+    
+    if context.req.body["type"] == 1:
+        context.log("Ping request - returning PONG")
+        return context.res.json(
+            {
+                "type": InteractionResponseType.PONG,
+            },
+            200,
+        )
 
     context.log("Valid request")
 
