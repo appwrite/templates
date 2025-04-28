@@ -14,38 +14,39 @@ def main(context):
     )
 
     if not verify_key(
-        context.req.body_bianary,
+        context.req.body_binary,
         context.req.headers["x-signature-ed25519"],
         context.req.headers["x-signature-timestamp"],
         os.environ["DISCORD_PUBLIC_KEY"],
     ):
         context.error("Invalid request")
         return context.res.json({"error": "Invalid request signature"}, 401)
-
-    context.log("Valid request")
-
-    interaction = context.req.body
-
-    if (interaction.type == InteractionType.APPLICATION_COMMAND) and (
-        interaction.data.name == "hello"
-    ):
-        context.log("Matched hello command - returning message")
-
+    
+    if context.req.body["type"] == 1:
+        context.log("Ping request - returning PONG")
         return context.res.json(
             {
-                "type": InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-                "data": {
-                    "content": "Hello World!",
-                },
+                "type": InteractionResponseType.PONG,
             },
             200,
         )
 
-    context.log("Didn't match command - returning PONG")
+    context.log("Valid request")
 
-    return context.res.json(
-        {
-            "type": InteractionResponseType.PONG,
-        },
-        200,
-    )
+    interaction = context.req.body
+    if (interaction["type"] == InteractionType.APPLICATION_COMMAND) and (
+        interaction["data"]["name"] == "hello"
+    ):
+        context.log("Matched hello command - returning message")
+        return context.res.json(
+            {
+                "type": InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+                "data": {
+                    "tts": False,
+                    "content": "Hello World!",
+                    "embeds": [],
+                    "allowed_mentions": {"parse": []}
+                }
+            },
+            200
+        )
