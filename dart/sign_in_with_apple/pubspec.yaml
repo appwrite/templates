@@ -1,0 +1,14 @@
+name: sign_in_with_apple
+version: 1.0.0
+
+environment:
+  sdk: ^2.17.0
+
+dependencies:
+  dart_appwrite: ^16.0.0
+  dart_jsonwebtoken: ^3.2.0
+  http: ^1.4.0
+  crypto: ^3.0.6
+
+dev_dependencies:
+  lints: ^2.0.0
