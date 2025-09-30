@@ -4,7 +4,7 @@ Includes functions for calculating expiry dates and validating required fields.
 """
 
 import os
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 def get_expiry_date():
     """
@@ -19,7 +19,7 @@ def get_expiry_date():
     except ValueError:
         retention_period = 30
 
-    expiry_date = datetime.utcnow() - timedelta(days=retention_period)
+    expiry_date = datetime.now(timezone.utc) - timedelta(days=retention_period)
     return expiry_date.isoformat() + "Z"
 
 
@@ -33,6 +33,7 @@ def throw_if_missing(obj, keys):
     """
     missing = []
     for key in keys:
+        # Disallow 0 retention to prevent immediate deletion of objects, which can cause data loss.
         if key not in obj or obj[key] is None or obj[key] == 0:
             missing.append(key)
 
