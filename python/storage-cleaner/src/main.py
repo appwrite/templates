@@ -6,7 +6,7 @@ from .utils import throw_if_missing
 def main(context):
     throw_if_missing(os.environ, ["RETENTION_PERIOD_DAYS", "APPWRITE_BUCKET_ID"])
 
-    api_key = context.req.headers["x-appwrite-key"]
+    api_key = context.req.headers.get("x-appwrite-key")
 
     if not api_key:
         return context.res.json(

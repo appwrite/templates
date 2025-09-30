@@ -54,7 +54,7 @@ class AppwriteService:
                         self.storage.delete_file(bucket_id, file_id)
                         deleted_files_count += 1
                 except Exception as e:
-                    failed_files.append({"id": f["$id"], "error": str(e)})
+                    failed_files.append({"id": file_id, "error": str(e)})
 
             if not files:
                 break
