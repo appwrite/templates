@@ -83,8 +83,6 @@ Image saved as D:\...\output\gemini-image-10.png
 ## 🧯 Troubleshooting
 
 - "Cannot read properties of undefined (reading 'size')"
-  - Ensure you have the correct File class path in `src/appwrite.js`:
-    - `import { File } from 'node-fetch-native-with-agent'`
   - Run `npm install` to ensure dependencies are present
   - Use Node 18+ (the SDK relies on `fetch`, `File`, etc.)
 
