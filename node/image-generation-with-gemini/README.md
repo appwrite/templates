@@ -46,7 +46,7 @@ Set these in a local `.env` file (or inject in your platform):
 | `GEMINI_API_KEY`                  | Yes      | `AIza...`                                     | Google Gemini API key                                            |
 | `GEMINI_MODEL`                    | No       | `gemini-2.0-flash-preview-image-generation`  | Defaults to the value shown                                      |
 
-| `APPWRITE_FUNCTION_API_ENDPOINT`  | Yes*     | `https://cloud.appwrite.io/v1`                | Appwrite endpoint                                                |
+| `APPWRITE_FUNCTION_API_ENDPOINT`  | Yes\*     | `https://cloud.appwrite.io/v1`                | Appwrite endpoint                                                |
 | `APPWRITE_FUNCTION_PROJECT_ID`    | Yes*     | `YOUR_PROJECT_ID`                             | Appwrite project ID                                              |
 | `APPWRITE_FUNCTION_API_KEY`       | Yes*     | `YOUR_API_KEY`                                | Appwrite API key with Storage permissions                        |
 | `APPWRITE_BUCKET_ID`              | No       | `Generated_Images`                            | Bucket ID used/created                                           |
@@ -72,7 +72,7 @@ APPWRITE_BUCKET_ID=Generated_Images
 
 On success, you'll see logs like:
 
-```
+```text
 Image saved as D:\...\output\gemini-image-10.png
 ✓ Image created at: D:\...\output\gemini-image-10.png
 📤 Uploading to Appwrite...
@@ -82,10 +82,8 @@ Image saved as D:\...\output\gemini-image-10.png
 
 ## 🧯 Troubleshooting
 
-- "Cannot read properties of undefined (reading 'size')"
-  - Ensure you have the correct File class path in `src/appwrite.js`:
-    - `import { File } from 'node-fetch-native-with-agent'`
-  - Run `npm install` to ensure dependencies are present
+   "Cannot read properties of undefined (reading 'size')"
+ - Run `npm install` to ensure dependencies are present
   - Use Node 18+ (the SDK relies on `fetch`, `File`, etc.)
 
 - 401 / 403 errors when uploading
