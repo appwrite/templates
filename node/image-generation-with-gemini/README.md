@@ -46,7 +46,7 @@ Set these in a local `.env` file (or inject in your platform):
 | `GEMINI_API_KEY`                  | Yes      | `AIza...`                                     | Google Gemini API key                                            |
 | `GEMINI_MODEL`                    | No       | `gemini-2.0-flash-preview-image-generation`  | Defaults to the value shown                                      |
 
-| `APPWRITE_FUNCTION_API_ENDPOINT`  | Yes*     | `https://cloud.appwrite.io/v1`                | Appwrite endpoint                                                |
+| `APPWRITE_FUNCTION_API_ENDPOINT`  | Yes\*    | `https://cloud.appwrite.io/v1`                | Appwrite endpoint                                                |
 | `APPWRITE_FUNCTION_PROJECT_ID`    | Yes*     | `YOUR_PROJECT_ID`                             | Appwrite project ID                                              |
 | `APPWRITE_FUNCTION_API_KEY`       | Yes*     | `YOUR_API_KEY`                                | Appwrite API key with Storage permissions                        |
 | `APPWRITE_BUCKET_ID`              | No       | `Generated_Images`                            | Bucket ID used/created                                           |
