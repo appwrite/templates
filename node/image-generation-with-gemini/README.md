@@ -1,6 +1,6 @@
 # ⚡ Image Generation with Gemini (Node)
 
-Generate images using Google's Gemini API, save them locally, and optionally upload them to an Appwrite Storage bucket.
+Generate images using Google's Gemini API, save them locally, and automatically upload them to an Appwrite Storage bucket.
 
 ## 🧰 Usage
 
@@ -21,6 +21,7 @@ Ensures the bucket exists (creates it if missing):
 ```powershell
 node src/setup.js
 ```
+Or the upload function in utils.js does this itself.
 
 Images are written to `./output` as `gemini-image-<n>.png`.
 
