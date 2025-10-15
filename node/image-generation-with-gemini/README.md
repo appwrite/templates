@@ -80,8 +80,6 @@ Image saved as D:\...\output\gemini-image-10.png
 ✓ Upload complete! File ID: <FILE_ID>
 ```
 
-## 🧯 Troubleshooting
-
 - "Cannot read properties of undefined (reading 'size')"
   - Run `npm install` to ensure dependencies are present
   - Use Node 18+ (the SDK relies on `fetch`, `File`, etc.)
