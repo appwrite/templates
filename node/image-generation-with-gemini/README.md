@@ -46,11 +46,7 @@ Set these in a local `.env` file (or inject in your platform):
 | `GEMINI_API_KEY`                  | Yes      | `AIza...`                                     | Google Gemini API key                                            |
 | `GEMINI_MODEL`                    | No       | `gemini-2.0-flash-preview-image-generation`  | Defaults to the value shown                                      |
 
-<<<<<<< HEAD
-| `APPWRITE_FUNCTION_API_ENDPOINT`  | Yes\*     | `https://cloud.appwrite.io/v1`                | Appwrite endpoint                                                |
-=======
 | `APPWRITE_FUNCTION_API_ENDPOINT`  | Yes\*    | `https://cloud.appwrite.io/v1`                | Appwrite endpoint                                                |
->>>>>>> 930fe536e4b5fcfb9b3293cae72cbbc88d8696f4
 | `APPWRITE_FUNCTION_PROJECT_ID`    | Yes*     | `YOUR_PROJECT_ID`                             | Appwrite project ID                                              |
 | `APPWRITE_FUNCTION_API_KEY`       | Yes*     | `YOUR_API_KEY`                                | Appwrite API key with Storage permissions                        |
 | `APPWRITE_BUCKET_ID`              | No       | `Generated_Images`                            | Bucket ID used/created                                           |
@@ -84,15 +80,13 @@ Image saved as D:\...\output\gemini-image-10.png
 ✓ Upload complete! File ID: <FILE_ID>
 ```
 
-<<<<<<< HEAD
+
 ## 🧯 Troubleshooting
 
-   "Cannot read properties of undefined (reading 'size')"
- - Run `npm install` to ensure dependencies are present
-=======
+
 - "Cannot read properties of undefined (reading 'size')"
   - Run `npm install` to ensure dependencies are present
->>>>>>> 930fe536e4b5fcfb9b3293cae72cbbc88d8696f4
+
   - Use Node 18+ (the SDK relies on `fetch`, `File`, etc.)
 
 - 401 / 403 errors when uploading
