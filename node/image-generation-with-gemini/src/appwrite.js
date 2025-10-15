@@ -7,10 +7,19 @@ import { File } from 'node-fetch-native-with-agent';
 
 class AppwriteService {
   constructor(apiKey) {
+    const endpoint = process.env.APPWRITE_FUNCTION_API_ENDPOINT;
+    const projectId = process.env.APPWRITE_FUNCTION_PROJECT_ID;
+
+    if (!endpoint || !projectId) {
+      throw new Error(
+        "APPWRITE_FUNCTION_API_ENDPOINT and APPWRITE_FUNCTION_PROJECT_ID must be set"
+      );
+    }
+
     const client = new Client();
     client
-      .setEndpoint(process.env.APPWRITE_FUNCTION_API_ENDPOINT)
-      .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
+      .setEndpoint(endpoint)
+      .setProject(projectId)
       .setKey(apiKey);
 
     this.databases = new Databases(client);

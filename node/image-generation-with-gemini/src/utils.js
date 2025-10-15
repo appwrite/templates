@@ -37,13 +37,23 @@ export async function generateImage(prompt) {
     const outputName = path.join(outputDir, `gemini-image-${imageNumber}.png`);
   try {
     const response = await ai.models.generateContent({
-    //   model: "gemini-2.0-flash-preview-image-generation",
-    model:process.env.GEMINI_MODEL||'gemini-2.0-flash-preview-image-generation',
-      contents: prompt, 
-      config:{responseModalities:[Modality.TEXT,Modality.IMAGE]}
+    model: process.env.GEMINI_MODEL || 'gemini-2.0-flash-preview-image-generation',
+      contents: prompt,
+      config: { responseModalities: [Modality.TEXT, Modality.IMAGE] }
     });
 
-    for (const part of response.candidates[0].content.parts) {
+    // Validate that we got at least one candidate back
+    if (!response.candidates || response.candidates.length === 0) {
+      throw new Error("No candidates returned from Gemini API");
+    }
+
+    const candidate = response.candidates[0];
+    // Validate structure of the first candidate
+    if (!candidate.content || !candidate.content.parts) {
+      throw new Error("Invalid response structure from Gemini API");
+    }
+
+    for (const part of candidate.content.parts) {
       if (part.inlineData) {
         const buffer = Buffer.from(part.inlineData.data, "base64");
         fs.writeFileSync(outputName, buffer);
