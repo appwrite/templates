@@ -29,5 +29,5 @@ Execute the function with the following JSON data to create a short URL:
 
 ```json
 {
-  "url": "[https://www.google.com](https://www.google.com)"
+  "url": "https://www.google.com"
 }
