@@ -1,9 +1,11 @@
 import os
 from appwrite.client import Client
 from appwrite.services.databases import Databases
+from functools import lru_cache
 
 # This is your Appwrite function
 # It's executed each time we get a request
+@lru_cache(maxsize=1)
 def get_database():
     # Validate environment variables
     required_vars = ["APPWRITE_ENDPOINT", "APPWRITE_PROJECT", "APPWRITE_API_KEY"]

@@ -15,19 +15,25 @@ A Python function to create and manage short URLs.
 1.  **Create an Appwrite Database and Collection:**
     * Create a database with a unique ID.
     * Create a collection with the following attribute:
-        * `original_url` (string, required)
+        * `original_url` (string, required, size 2048)
 
 2.  **Deploy the Function:**
     * Package the function: `tar -czvf code.tar.gz .`
-    * Upload and deploy the packaged function to your Appwrite project.
+    * In the Appwrite Console, go to **Functions** and click **Create Function**.
+    * Select the **Python 3.9** runtime.
+    * Upload the `code.tar.gz` file.
+    * In the **Settings** tab, set the **Entrypoint** to `src/main.py`.
+    * Add the required environment variables.
+    * Activate the function.
 
 ## 🛠️ Usage
 
 ### Create a Short URL
 
-Execute the function with the following JSON data to create a short URL:
+Execute the function with a `POST` request and a JSON body:
 
 ```json
 {
-  "url": "https://www.google.com"
+  "url": "[https://www.google.com](https://www.google.com)"
 }
+```
