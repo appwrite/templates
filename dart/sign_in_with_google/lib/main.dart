@@ -8,7 +8,11 @@ import 'package:http/http.dart' as http;
 import 'package:jose/jose.dart';
 
 Future<dynamic> main(final context) async {
-  final requiredEnvVars = ['GOOGLE_CLIENT_ID'];
+  final requiredEnvVars = [
+    'GOOGLE_CLIENT_ID',
+    'APPWRITE_FUNCTION_API_ENDPOINT',
+    'APPWRITE_FUNCTION_PROJECT_ID',
+  ];
   for (var varName in requiredEnvVars) {
     if (Platform.environment[varName]?.isEmpty ?? true) {
       throw Exception('Environment variable $varName must be set.');
