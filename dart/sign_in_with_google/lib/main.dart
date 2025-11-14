@@ -65,7 +65,6 @@ Future<dynamic> main(final context) async {
   final email = tokenInfo['email'] ?? '';
   final emailVerified = tokenInfo['email_verified'] == 'true';
   final name = tokenInfo['name'] ?? '';
-  final picture = tokenInfo['picture'] ?? '';
 
   // You can use the Appwrite SDK to interact with other services
   // For this example, we're using the Users service
@@ -102,7 +101,10 @@ Future<dynamic> main(final context) async {
 
   // Mark the user as verified if the email is verified by Google and not already verified
   if (emailVerified && !user.emailVerification) {
-    users.updateEmailVerification(userId: userId, emailVerification: true);
+    await users.updateEmailVerification(
+      userId: userId,
+      emailVerification: true,
+    );
   }
 
   // Create token
