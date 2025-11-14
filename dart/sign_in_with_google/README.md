@@ -7,7 +7,7 @@ This function:
 1. The user's email will be verified if Google has verified it and it hasn't been already in Appwrite.
 1. A token will be returned allowing the user to exchange the token for a session via `account.createSession()`.
 
-> Note: This function verifies the Google ID token using Google's tokeninfo endpoint as described in the [official documentation](https://developers.google.com/identity/gsi/web/guides/verify-google-id-token).
+> Note: This function verifies the Google ID token by validating its cryptographic signature using Google's public keys (JWK format), as recommended in the [official documentation](https://developers.google.com/identity/gsi/web/guides/verify-google-id-token). The function also validates the token's audience, issuer, and expiry claims.
 
 ## 🧰 Usage
 
@@ -104,8 +104,9 @@ Future<void> signInWithGoogle() async {
 
 ## 🔐 Security Notes
 
-* The Google ID token is verified using Google's official tokeninfo endpoint
+* The Google ID token's cryptographic signature is verified using Google's public keys (RSA)
+* The correct public key is selected using the `kid` (key ID) from the JWT header
 * The token's audience (client ID) is verified to match your application
-* The token's issuer is verified to be Google
-* The token's expiration time is checked
+* The token's issuer is verified to be Google (`accounts.google.com`)
+* The token's expiration time is checked to ensure it hasn't expired
 * Email verification status from Google is honored in Appwrite
