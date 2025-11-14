@@ -1,4 +1,3 @@
-````markdown
 # sign-in-with-google
 
 This function:
@@ -110,5 +109,3 @@ Future<void> signInWithGoogle() async {
 * The token's issuer is verified to be Google
 * The token's expiration time is checked
 * Email verification status from Google is honored in Appwrite
-
-````
