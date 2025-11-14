@@ -26,9 +26,28 @@ Future<dynamic> main(final context) async {
   }
 
   // Fetch Google's public keys for JWT verification
-  final certsResponse = await http.get(
-    Uri.parse('https://www.googleapis.com/oauth2/v3/certs'),
-  );
+  http.Response certsResponse;
+  try {
+    certsResponse = await http
+        .get(
+      Uri.parse('https://www.googleapis.com/oauth2/v3/certs'),
+    )
+        .timeout(
+      const Duration(seconds: 5),
+      onTimeout: () {
+        throw TimeoutException(
+          'Request to fetch Google public keys timed out after 5 seconds',
+        );
+      },
+    );
+  } on TimeoutException catch (e) {
+    context.log('Timeout fetching Google public keys: $e');
+    throw Exception(
+        'Failed to fetch Google public keys: Request timed out. Please try again.');
+  } catch (e) {
+    context.log('Error fetching Google public keys: $e');
+    throw Exception('Failed to fetch Google public keys: $e');
+  }
 
   if (certsResponse.statusCode != 200) {
     throw Exception(
@@ -137,7 +156,7 @@ Future<dynamic> main(final context) async {
   // Mark the user as verified if the email is verified by Google and not already verified
   if (emailVerified && !user.emailVerification) {
     await users.updateEmailVerification(
-      userId: userId,
+      userId: user.$id,
       emailVerification: true,
     );
   }
