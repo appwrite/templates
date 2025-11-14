@@ -55,7 +55,7 @@ Sample `200` Response:
 
 | Setting           | Value                       |
 | ----------------- | ---------------             |
-| Runtime           | Dart (3.5 )                 |
+| Runtime           | Dart (3.5)                 |
 | Entrypoint        | `lib/main.dart`             |
 | Build Commands    | `dart pub get`              |
 | Permissions       | `any`                       |
