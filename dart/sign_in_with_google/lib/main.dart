@@ -102,9 +102,10 @@ Future<dynamic> main(final context) async {
   }
 
   // Verify the token is issued by Google
-  final iss = claims.issuer ?? '';
-  if (iss != 'https://accounts.google.com' && iss != 'accounts.google.com') {
-    throw Exception('ID Token is not issued by Google.');
+  final iss = (claims.issuer?.toString() ?? '').trim();
+  final validIssuers = ['https://accounts.google.com', 'accounts.google.com'];
+  if (!validIssuers.contains(iss)) {
+    throw Exception('ID Token is not issued by Google. Issuer: $iss');
   }
 
   // Verify the token has not expired
