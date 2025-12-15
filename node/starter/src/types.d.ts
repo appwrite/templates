@@ -6,12 +6,12 @@ declare global {
     /**
      * The request object contains all data regarding the function execution request.
      */
-    req: Request;
+    req: AppwriteRequest;
 
     /**
      * The response object allows you to return a response to the execution.
      */
-    res: Response;
+    res: AppwriteResponse;
 
     /**
      * Log a message to the Appwrite Console.
@@ -26,7 +26,7 @@ declare global {
     error: (message: any) => void;
   }
 
-  interface Request {
+  interface AppwriteRequest {
     /**
      * Raw request body text.
      */
@@ -88,7 +88,7 @@ declare global {
     url: string;
   }
 
-  interface Response {
+  interface AppwriteResponse {
     /**
      * Returns a text response.
      * @param text Content to return.
