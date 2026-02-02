@@ -7,6 +7,7 @@ from appwrite.client import Client
 from appwrite.services.storage import Storage
 from appwrite.query import Query
 from .utils import get_expiry_date
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 
 class AppwriteService:
@@ -47,17 +48,24 @@ class AppwriteService:
                 ) from e
             files = response.get("files", [])
 
-            for f in files:
-                try:
-                    file_id = f.get("$id")
-                    if file_id:
-                        self.storage.delete_file(bucket_id, file_id)
-                        deleted_files_count += 1
-                except Exception as e:
-                    failed_files.append({"id": file_id, "error": str(e)})
-
             if not files:
                 break
+
+            with ThreadPoolExecutor() as executor:
+                future_to_file = {
+                    executor.submit(self.storage.delete_file, bucket_id, f.get("$id")): f
+                    for f in files
+                    if f.get("$id")
+                }
+
+                for future in as_completed(future_to_file):
+                    file_info = future_to_file[future]
+                    file_id = file_info.get("$id")
+                    try:
+                        future.result()
+                        deleted_files_count += 1
+                    except Exception as e:
+                        failed_files.append({"id": file_id, "error": str(e)})
 
         if failed_files:
             raise RuntimeError(

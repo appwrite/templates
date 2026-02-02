@@ -4,7 +4,10 @@ from .utils import throw_if_missing
 
 
 def main(context):
-    throw_if_missing(os.environ, ["RETENTION_PERIOD_DAYS", "APPWRITE_BUCKET_ID"])
+    try:
+        throw_if_missing(os.environ, ["RETENTION_PERIOD_DAYS", "APPWRITE_BUCKET_ID"])
+    except ValueError as e:
+        return context.res.json({"error": str(e)}, 500)
 
     api_key = context.req.headers.get("x-appwrite-key")
 
@@ -17,7 +20,7 @@ def main(context):
 
     try:
         appwrite.clean_bucket(os.environ["APPWRITE_BUCKET_ID"])
-        return context.res.text("Buckets cleaned", 200)
+        return context.res.json({"message": "Buckets cleaned"}, 200)
     except ValueError as e:
         return context.res.json({"error": str(e)}, 400)
     except Exception as e:
