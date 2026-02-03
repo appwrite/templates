@@ -1,5 +1,5 @@
 import os
-from .appwrite import AppwriteService
+from .appwrite_service import AppwriteService
 from .utils import throw_if_missing
 
 

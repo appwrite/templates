@@ -51,6 +51,7 @@ class AppwriteService:
             if not files:
                 break
 
+            batch_failed = False
             with ThreadPoolExecutor() as executor:
                 future_to_file = {
                     executor.submit(self.storage.delete_file, bucket_id, f.get("$id")): f
@@ -66,6 +67,10 @@ class AppwriteService:
                         deleted_files_count += 1
                     except Exception as e:
                         failed_files.append({"id": file_id, "error": str(e)})
+                        batch_failed = True
+
+            if batch_failed:
+                break
 
         if failed_files:
             raise RuntimeError(
