@@ -1,0 +1,28 @@
+{
+  "name": "sign-in-with-apple",
+  "version": "1.0.0",
+  "description": "Sign in with Apple for Appwrite functions",
+  "type": "module",
+  "main": "dist/main.js",
+  "scripts": {
+    "build": "tsc",
+    "format": "prettier --write ."
+  },
+  "keywords": [
+    "appwrite",
+    "apple",
+    "sign-in",
+    "authentication"
+  ],
+  "dependencies": {
+    "jsonwebtoken": "^9.0.2",
+    "node-appwrite": "^14.1.0",
+    "typescript": "^5.4.5",
+    "undici": "^6.18.1"
+  },
+  "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.6",
+    "@types/node": "^20.12.12",
+    "prettier": "^3.2.5"
+  }
+}
