@@ -1,0 +1,22 @@
+{
+  "name": "image-generation-with-gemini",
+  "version": "1.0.0",
+  "description": "Generate images using gemini API and upload to appwrite storage automatically.",
+  "main": "src/main.js",
+  "author": "imnb57",
+  "license": "ISC",
+  "type": "module",
+  "scripts": {
+    "format": "prettier --write .",
+    "setup": "node src/setup.js"
+  },
+  "keywords": [],
+  "devDependencies": {
+    "prettier": "^3.6.2"
+  },
+  "dependencies": {
+    "@google/genai": "^1.25.0",
+    "node-appwrite": "^14.1.0",
+    "dotenv": "^17.2.3"
+  }
+}
