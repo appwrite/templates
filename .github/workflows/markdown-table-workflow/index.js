@@ -16,6 +16,7 @@ const verboseRuntimes = {
   php: "PHP",
   python: "Python",
   ruby: "Ruby",
+  rust: "Rust",
   swift: "Swift",
 };
 
