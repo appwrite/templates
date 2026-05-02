@@ -21,7 +21,10 @@ pub fn main(context: Context) -> Response {
         );
     let users = Users::new(&client);
 
-    match tokio::runtime::Runtime::new() {
+    match tokio::runtime::Builder::new_current_thread()
+        .enable_all()
+        .build()
+    {
         Ok(runtime) => match runtime.block_on(users.list(None, None, None)) {
             Ok(response) => {
                 // Log messages and errors to the Appwrite Console
