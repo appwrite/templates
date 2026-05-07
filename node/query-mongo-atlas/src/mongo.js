@@ -5,7 +5,7 @@ import { MongoClient, ServerApiVersion } from 'mongodb';
  */
 export async function getClient() {
     const client = new MongoClient(process.env.MONGO_URI, {
-        appName: 'devrel-integration-atlas-appwrite-php',
+        appName: 'devrel-integration-atlas-appwrite-node',
         serverApi: {
             version: ServerApiVersion.v1,
             strict: true,
