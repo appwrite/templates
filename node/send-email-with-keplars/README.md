@@ -1,12 +1,8 @@
-# 📧 Send Email with Keplars
+# Send Email with Keplars
 
-Send transactional emails from your Appwrite Function using the [Keplars](https://keplars.com) priority-queue API — instant, high, async, or bulk delivery.
+Send transactional emails from your Appwrite Function using the [Keplars](https://keplars.com) priority-queue API with instant, high, async, or bulk delivery.
 
-## 🧰 Usage
-
-### GET /
-
-Returns a 405 Method Not Allowed.
+## Usage
 
 ### POST /
 
@@ -19,9 +15,9 @@ Send an email.
 | `to` | string \| string[] | Yes | Recipient email address(es) |
 | `from` | string | Yes | Sender address (must be verified in Keplars) |
 | `subject` | string | Yes | Email subject line |
-| `body` | string | No | Email body (HTML or plain text) |
+| `body` | string | No | Email body (HTML or plain text). Required if `template_id` is not set. |
 | `from_name` | string | No | Sender display name |
-| `template_id` | string | No | Keplars template ID |
+| `template_id` | string | No | Keplars template ID. Required if `body` is not set. |
 | `params` | object | No | Template variables |
 
 **Success response:**
@@ -45,14 +41,13 @@ Send an email.
 }
 ```
 
-## ⚙️ Configuration
+## Configuration
 
 | Variable | Description | Required |
 | --- | --- | --- |
 | `KEPLARS_API_KEY` | Your Keplars API key (`kms_...`) | Yes |
-| `KEPLARS_PRIORITY` | Delivery priority: `instant`, `high`, `async`, `bulk` | No (default: `high`) |
 
-## 🚀 Deployment
+## Deployment
 
 1. Create a new Appwrite Function
 2. Add the environment variables above
@@ -72,11 +67,3 @@ curl -X POST https://[REGION].appwrite.io/v1/functions/[FUNCTION_ID]/executions 
   }'
 ```
 
-## 📦 Priority Reference
-
-| Priority | Delivery | Use case |
-| --- | --- | --- |
-| `instant` | 0-5 seconds | OTP, auth codes |
-| `high` | 0-30 seconds | Password reset, alerts |
-| `async` | 0-5 minutes | Welcome emails, notifications |
-| `bulk` | Background | Newsletters, campaigns |

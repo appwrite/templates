@@ -1,11 +1,6 @@
 import { throwIfMissing } from './utils.js';
 
-const PRIORITY_ENDPOINTS = {
-  instant: 'https://api.keplars.com/api/v1/send-email/instant',
-  high: 'https://api.keplars.com/api/v1/send-email/high',
-  async: 'https://api.keplars.com/api/v1/send-email/async',
-  bulk: 'https://api.keplars.com/api/v1/send-email/bulk',
-};
+const ENDPOINT = 'https://api.keplars.com/api/v1/send-email/async';
 
 export default async ({ req, res, log, error }) => {
   throwIfMissing(process.env, ['KEPLARS_API_KEY']);
@@ -14,15 +9,8 @@ export default async ({ req, res, log, error }) => {
     return res.json({ ok: false, error: 'Method not allowed' }, 405);
   }
 
-  const {
-    to,
-    from,
-    from_name,
-    subject,
-    body,
-    template_id,
-    params,
-  } = req.body ?? {};
+  const { to, from, from_name, subject, body, template_id, params } =
+    req.body ?? {};
 
   if (!to || !from || !subject) {
     return res.json(
@@ -31,8 +19,15 @@ export default async ({ req, res, log, error }) => {
     );
   }
 
-  const priority = process.env.KEPLARS_PRIORITY ?? 'high';
-  const endpoint = PRIORITY_ENDPOINTS[priority] ?? PRIORITY_ENDPOINTS.high;
+  if (!body && !template_id) {
+    return res.json(
+      {
+        ok: false,
+        error: 'Either body or template_id must be provided',
+      },
+      400
+    );
+  }
 
   const payload = {
     to: Array.isArray(to) ? to : [to],
@@ -46,7 +41,7 @@ export default async ({ req, res, log, error }) => {
   if (params && typeof params === 'object') payload.params = params;
 
   try {
-    const response = await fetch(endpoint, {
+    const response = await fetch(ENDPOINT, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${process.env.KEPLARS_API_KEY}`,
@@ -59,8 +54,12 @@ export default async ({ req, res, log, error }) => {
     const data = await response.json();
 
     if (!response.ok) {
-      error(`Keplars API error ${response.status}: ${JSON.stringify(data)}`);
-      return res.json({ ok: false, error: data }, response.status);
+      const message =
+        typeof data?.message === 'string'
+          ? data.message
+          : `Keplars API error: ${response.status}`;
+      error(message);
+      return res.json({ ok: false, error: message }, response.status);
     }
 
     log(`Email sent to ${Array.isArray(to) ? to.join(', ') : to}`);
