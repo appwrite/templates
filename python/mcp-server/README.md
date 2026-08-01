@@ -150,7 +150,7 @@ Appwrite Functions are short-lived request/response workers. They do not run a S
 | ----------------- | --------------------------------- |
 | Runtime           | Python (3.12)                     |
 | Entrypoint        | `src/main.py`                     |
-| Build Commands    | `pip install -r requirements.txt` |
+| Build Commands    | `pip install -q --disable-pip-version-check -r requirements.txt` |
 | Permissions       | `any`                             |
 | Timeout (Seconds) | 30                                |
 
