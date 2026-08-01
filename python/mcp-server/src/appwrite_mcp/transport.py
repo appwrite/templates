@@ -108,7 +108,12 @@ async def handle_http(server: MCPServer, context: Any) -> Any:
     scheme = getattr(req, "scheme", None) or "https"
     host = getattr(req, "host", None) or headers.get("host", "appwrite").split(":")[0]
 
-    timeout = float(os.environ.get("MCP_TOOL_TIMEOUT") or "25")
+    try:
+        timeout = float(os.environ.get("MCP_TOOL_TIMEOUT") or "25")
+        if timeout <= 0:
+            raise ValueError("MCP_TOOL_TIMEOUT must be positive")
+    except ValueError:
+        timeout = 25.0
 
     try:
         status, out_headers, payload = await asyncio.wait_for(
