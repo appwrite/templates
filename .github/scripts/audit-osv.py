@@ -52,8 +52,12 @@ def osv_query(ecosystem: str, name: str, version: str) -> list[dict]:
         with urllib.request.urlopen(req, timeout=30) as resp:
             data = json.loads(resp.read().decode())
     except urllib.error.HTTPError as exc:
+        # Fail closed: an unchecked dependency must not look like a clean audit.
         print(f"OSV query failed for {ecosystem}:{name}@{version}: {exc}", file=sys.stderr)
-        return []
+        raise
+    except urllib.error.URLError as exc:
+        print(f"OSV query failed for {ecosystem}:{name}@{version}: {exc}", file=sys.stderr)
+        raise
     return data.get("vulns", [])
 
 
