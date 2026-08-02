@@ -60,7 +60,7 @@ Response when the model fails to respond.
 
 | Setting           | Value         |
 | ----------------- | ------------- |
-| Runtime           | Node (18.0)   |
+| Runtime           | Node (22)     |
 | Entrypoint        | `src/main.js` |
 | Build Commands    | `npm install` |
 | Permissions       | `any`         |

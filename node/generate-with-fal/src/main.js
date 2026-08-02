@@ -1,4 +1,4 @@
-import * as fal from '@fal-ai/serverless-client';
+import { fal } from '@fal-ai/client';
 import { getStaticFile, throwIfMissing } from './utils.js';
 
 export default async ({ req, res, error }) => {
@@ -25,7 +25,7 @@ export default async ({ req, res, error }) => {
         prompt: req.bodyJson.prompt,
       },
     });
-    return res.json({ ok: true, src: result.images[0].url });
+    return res.json({ ok: true, src: result.data.images[0].url });
   } catch (e) {
     error(e);
     return res.json({ ok: false, error: 'Failed to generate image' }, 500);

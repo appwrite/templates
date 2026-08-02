@@ -7,9 +7,6 @@
   "scripts": {
     "format": "prettier --write ."
   },
-  "dependencies": {
-    "crypto": "^1.0.1"
-  },
   "devDependencies": {
     "prettier": "^3.2.5"
   }

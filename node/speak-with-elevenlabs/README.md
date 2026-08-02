@@ -77,6 +77,16 @@ A unique key used to authenticate with the ElevenLabs API. You can find your API
 | Sample Value  | `d03xxxxxxxx26`                                                             |
 | Documentation | [ElevenLabs Docs](https://elevenlabs.io/docs/api-reference/getting-started) |
 
+### ELEVENLABS_VOICE_ID
+
+The ElevenLabs voice ID to use for text-to-speech. Defaults to `JBFqnCBsd6RMkjVDRZzb` (George) when unset.
+
+| Question      | Answer                                                      |
+| ------------- | ----------------------------------------------------------- |
+| Required      | No                                                          |
+| Sample Value  | `JBFqnCBsd6RMkjVDRZzb`                                       |
+| Documentation | [ElevenLabs Voices](https://elevenlabs.io/docs/voices/intro) |
+
 ### APPWRITE_BUCKET_ID
 
 The ID of the Appwrite storage bucket where the audio files will be saved.

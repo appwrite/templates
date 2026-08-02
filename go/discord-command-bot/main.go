@@ -3,12 +3,12 @@ package handler
 import (
 	"os"
 
-	"github.com/open-runtimes/types-for-go/v4"
+	"github.com/open-runtimes/types-for-go/v4/openruntimes"
 )
 
 type any = map[string]interface{}
 
-func Main(Context *types.Context) types.ResponseOutput {
+func Main(Context openruntimes.Context) openruntimes.Response {
 	err := errorIfEnvMissing([]string{
 		"DISCORD_PUBLIC_KEY",
 		"DISCORD_APPLICATION_ID",
@@ -16,7 +16,7 @@ func Main(Context *types.Context) types.ResponseOutput {
 	})
 	if err != nil {
 		Context.Error(err.Error())
-		return Context.Res.Text("", 500, nil)
+		return Context.Res.Text("", Context.Res.WithStatusCode(500))
 	}
 
 	err = discordVerifyKey(
@@ -29,7 +29,7 @@ func Main(Context *types.Context) types.ResponseOutput {
 		Context.Error(err.Error())
 		return Context.Res.Json(any{
 			"error": "Invalid request signature.",
-		}, 401, nil)
+		}, Context.Res.WithStatusCode(401))
 	}
 
 	Context.Log("Valid request")
@@ -39,7 +39,7 @@ func Main(Context *types.Context) types.ResponseOutput {
 		Context.Error(err.Error())
 		return Context.Res.Json(any{
 			"error": "Invalid body.",
-		}, 400, nil)
+		}, Context.Res.WithStatusCode(400))
 	}
 
 	ApplicationCommandType := 2
@@ -54,12 +54,11 @@ func Main(Context *types.Context) types.ResponseOutput {
 					"content": "Hello, World!",
 				},
 			},
-			200,
-			nil,
+			Context.Res.WithStatusCode(200),
 		)
 	}
 
 	Context.Log("Didn't match command - returning PONG")
 
-	return Context.Res.Json(any{"type": 1}, 200, nil)
+	return Context.Res.Json(any{"type": 1}, Context.Res.WithStatusCode(200))
 }

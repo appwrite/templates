@@ -1,0 +1,437 @@
+name: Dependency audit
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  schedule:
+    # Weekly Monday 06:00 UTC — catch newly published advisories without a code change
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: audit-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  npm:
+    name: npm (node / node-typescript)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Audit npm templates
+        shell: bash
+        run: |
+          set +e
+          failed=0
+          {
+            echo "## npm audit"
+            echo ""
+            echo "| Template | Status |"
+            echo "| --- | --- |"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          while IFS= read -r -d '' pkg; do
+            dir=$(dirname "$pkg")
+            if [[ ! -f "$dir/package-lock.json" ]]; then
+              echo "| \`$dir\` | skipped (no lockfile) |" >> "$GITHUB_STEP_SUMMARY"
+              continue
+            fi
+            out=$(npm audit --package-lock-only --audit-level=moderate --prefix "$dir" 2>&1)
+            code=$?
+            if [[ $code -ne 0 ]]; then
+              failed=1
+              echo "| \`$dir\` | FAILED |" >> "$GITHUB_STEP_SUMMARY"
+              echo "::error title=npm audit failed::$dir"
+              echo "$out"
+            else
+              echo "| \`$dir\` | ok |" >> "$GITHUB_STEP_SUMMARY"
+            fi
+          done < <(find node node-typescript -name package.json -not -path '*/node_modules/*' -print0 | sort -z)
+
+          exit $failed
+
+  bun:
+    name: bun
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - name: Audit bun templates
+        shell: bash
+        run: |
+          set +e
+          failed=0
+          {
+            echo "## bun audit"
+            echo ""
+            echo "| Template | Status |"
+            echo "| --- | --- |"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          while IFS= read -r -d '' pkg; do
+            dir=$(dirname "$pkg")
+            (
+              cd "$dir"
+              if [[ ! -f bun.lock && ! -f bun.lockb ]]; then
+                echo "| \`$dir\` | skipped (no lockfile) |" >> "$GITHUB_STEP_SUMMARY"
+                exit 0
+              fi
+              out=$(bun audit 2>&1)
+              code=$?
+              if [[ $code -ne 0 ]]; then
+                echo "$out"
+                echo "| \`$dir\` | FAILED |" >> "$GITHUB_STEP_SUMMARY"
+                echo "::error title=bun audit failed::$dir"
+                exit 1
+              fi
+              echo "| \`$dir\` | ok |" >> "$GITHUB_STEP_SUMMARY"
+            )
+            if [[ $? -ne 0 ]]; then
+              failed=1
+            fi
+          done < <(find bun -name package.json -not -path '*/node_modules/*' -print0 | sort -z)
+
+          exit $failed
+
+  php:
+    name: composer (php)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          tools: composer
+      - name: Audit PHP templates
+        shell: bash
+        run: |
+          set +e
+          failed=0
+          {
+            echo "## composer audit"
+            echo ""
+            echo "| Template | Status |"
+            echo "| --- | --- |"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          while IFS= read -r -d '' pkg; do
+            dir=$(dirname "$pkg")
+            (
+              cd "$dir"
+              # Resolve a fresh lock so advisory-blocked version ranges fail the job
+              composer update --no-install --no-interaction --quiet 2>/tmp/composer-out.txt
+              code=$?
+              if [[ $code -ne 0 ]]; then
+                cat /tmp/composer-out.txt
+                echo "| \`$dir\` | FAILED (resolve) |" >> "$GITHUB_STEP_SUMMARY"
+                echo "::error title=composer resolve failed::$dir"
+                exit 1
+              fi
+              out=$(composer audit --locked --no-interaction 2>&1)
+              code=$?
+              if [[ $code -ne 0 ]]; then
+                echo "$out"
+                echo "| \`$dir\` | FAILED (audit) |" >> "$GITHUB_STEP_SUMMARY"
+                echo "::error title=composer audit failed::$dir"
+                exit 1
+              fi
+              echo "| \`$dir\` | ok |" >> "$GITHUB_STEP_SUMMARY"
+            )
+            if [[ $? -ne 0 ]]; then
+              failed=1
+            fi
+          done < <(find php -name composer.json -print0 | sort -z)
+
+          exit $failed
+
+  python:
+    name: pip-audit (python)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install pip-audit
+        run: pip install pip-audit
+      - name: Audit Python templates
+        shell: bash
+        run: |
+          set +e
+          failed=0
+          {
+            echo "## pip-audit"
+            echo ""
+            echo "| Template | Status |"
+            echo "| --- | --- |"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          while IFS= read -r -d '' req; do
+            dir=$(dirname "$req")
+            out=$(pip-audit -r "$req" --progress-spinner=off 2>&1)
+            code=$?
+            if [[ $code -ne 0 ]]; then
+              failed=1
+              echo "$out"
+              echo "| \`$dir\` | FAILED |" >> "$GITHUB_STEP_SUMMARY"
+              echo "::error title=pip-audit failed::$dir"
+            else
+              echo "| \`$dir\` | ok |" >> "$GITHUB_STEP_SUMMARY"
+            fi
+          done < <(find python python-ml -name requirements.txt -print0 | sort -z)
+
+          exit $failed
+
+  ruby:
+    name: bundler-audit (ruby)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler: latest
+      - name: Install bundler-audit
+        run: gem install bundler-audit
+      - name: Audit Ruby templates
+        shell: bash
+        run: |
+          set +e
+          failed=0
+          {
+            echo "## bundler-audit"
+            echo ""
+            echo "| Template | Status |"
+            echo "| --- | --- |"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          while IFS= read -r -d '' gemfile; do
+            dir=$(dirname "$gemfile")
+            (
+              cd "$dir"
+              bundle lock --update 2>/tmp/bundle-out.txt
+              code=$?
+              if [[ $code -ne 0 ]]; then
+                cat /tmp/bundle-out.txt
+                echo "| \`$dir\` | FAILED (lock) |" >> "$GITHUB_STEP_SUMMARY"
+                echo "::error title=bundle lock failed::$dir"
+                exit 1
+              fi
+              out=$(bundle-audit check --update 2>&1)
+              code=$?
+              if [[ $code -ne 0 ]]; then
+                echo "$out"
+                echo "| \`$dir\` | FAILED (audit) |" >> "$GITHUB_STEP_SUMMARY"
+                echo "::error title=bundler-audit failed::$dir"
+                exit 1
+              fi
+              echo "| \`$dir\` | ok |" >> "$GITHUB_STEP_SUMMARY"
+            )
+            if [[ $? -ne 0 ]]; then
+              failed=1
+            fi
+          done < <(find ruby -name Gemfile -print0 | sort -z)
+
+          exit $failed
+
+  go:
+    name: govulncheck (go)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.23.x"
+          cache: false
+      - name: Install govulncheck
+        run: go install golang.org/x/vuln/cmd/govulncheck@latest
+      - name: Audit Go templates
+        shell: bash
+        run: |
+          set +e
+          failed=0
+          {
+            echo "## govulncheck"
+            echo ""
+            echo "| Template | Status |"
+            echo "| --- | --- |"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          while IFS= read -r -d '' mod; do
+            dir=$(dirname "$mod")
+            (
+              cd "$dir"
+              out=$(govulncheck ./... 2>&1)
+              code=$?
+              if [[ $code -ne 0 ]]; then
+                echo "$out"
+                echo "| \`$dir\` | FAILED |" >> "$GITHUB_STEP_SUMMARY"
+                echo "::error title=govulncheck failed::$dir"
+                exit 1
+              fi
+              echo "| \`$dir\` | ok |" >> "$GITHUB_STEP_SUMMARY"
+            )
+            if [[ $? -ne 0 ]]; then
+              failed=1
+            fi
+          done < <(find go -name go.mod -print0 | sort -z)
+
+          exit $failed
+
+  rust:
+    name: cargo-audit (rust)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Install cargo-audit
+        run: cargo install cargo-audit --locked
+      - name: Audit Rust templates
+        shell: bash
+        run: |
+          set +e
+          failed=0
+          {
+            echo "## cargo audit"
+            echo ""
+            echo "| Template | Status |"
+            echo "| --- | --- |"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          while IFS= read -r -d '' cargo; do
+            dir=$(dirname "$cargo")
+            (
+              cd "$dir"
+              out=$(cargo audit 2>&1)
+              code=$?
+              if [[ $code -ne 0 ]]; then
+                echo "$out"
+                echo "| \`$dir\` | FAILED |" >> "$GITHUB_STEP_SUMMARY"
+                echo "::error title=cargo audit failed::$dir"
+                exit 1
+              fi
+              echo "| \`$dir\` | ok |" >> "$GITHUB_STEP_SUMMARY"
+            )
+            if [[ $? -ne 0 ]]; then
+              failed=1
+            fi
+          done < <(find rust -name Cargo.toml -print0 | sort -z)
+
+          exit $failed
+
+  dotnet:
+    name: nuget (dotnet)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+      - name: Audit .NET templates
+        shell: bash
+        run: |
+          set +e
+          failed=0
+          {
+            echo "## dotnet vulnerable packages"
+            echo ""
+            echo "| Template | Status |"
+            echo "| --- | --- |"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          while IFS= read -r -d '' csproj; do
+            dir=$(dirname "$csproj")
+            (
+              cd "$dir"
+              dotnet restore --verbosity quiet 2>/tmp/dotnet-out.txt
+              code=$?
+              if [[ $code -ne 0 ]]; then
+                cat /tmp/dotnet-out.txt
+                echo "| \`$dir\` | FAILED (restore) |" >> "$GITHUB_STEP_SUMMARY"
+                echo "::error title=dotnet restore failed::$dir"
+                exit 1
+              fi
+              out=$(dotnet list package --vulnerable --include-transitive 2>&1)
+              code=$?
+              if [[ $code -ne 0 ]] || echo "$out" | grep -qiE 'has the following vulnerable packages|Severity'; then
+                echo "$out"
+                echo "| \`$dir\` | FAILED |" >> "$GITHUB_STEP_SUMMARY"
+                echo "::error title=dotnet vulnerable packages::$dir"
+                exit 1
+              fi
+              echo "| \`$dir\` | ok |" >> "$GITHUB_STEP_SUMMARY"
+            )
+            if [[ $? -ne 0 ]]; then
+              failed=1
+            fi
+          done < <(find dotnet -name '*.csproj' -print0 | sort -z)
+
+          exit $failed
+
+  dart:
+    name: osv-scanner (dart)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: stable
+      - name: Install osv-scanner
+        run: |
+          curl -sSfL https://github.com/google/osv-scanner/releases/latest/download/osv-scanner_linux_amd64 -o /usr/local/bin/osv-scanner
+          chmod +x /usr/local/bin/osv-scanner
+      - name: Audit Dart templates
+        shell: bash
+        run: |
+          set +e
+          failed=0
+          {
+            echo "## osv-scanner (dart)"
+            echo ""
+            echo "| Template | Status |"
+            echo "| --- | --- |"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          while IFS= read -r -d '' pubspec; do
+            dir=$(dirname "$pubspec")
+            (
+              cd "$dir"
+              dart pub get --offline 2>/dev/null || dart pub get
+              out=$(osv-scanner --lockfile=pubspec.lock --severity=medium 2>&1)
+              code=$?
+              # osv-scanner exits 1 when vulns found, 0 when clean
+              if [[ $code -ne 0 ]]; then
+                echo "$out"
+                echo "| \`$dir\` | FAILED |" >> "$GITHUB_STEP_SUMMARY"
+                echo "::error title=osv-scanner (dart) failed::$dir"
+                exit 1
+              fi
+              echo "| \`$dir\` | ok |" >> "$GITHUB_STEP_SUMMARY"
+            )
+            if [[ $? -ne 0 ]]; then
+              failed=1
+            fi
+          done < <(find dart -name pubspec.yaml -print0 | sort -z)
+
+          exit $failed
+
+  osv-coords:
+    name: OSV (java / kotlin / deno)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Query OSV for Maven coords and Deno URL pins
+        run: python3 .github/scripts/audit-osv.py
