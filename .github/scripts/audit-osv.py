@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Query the OSV API for Maven (deps.gradle) and Deno URL-pinned dependencies.
 
-Exits non-zero if any unallowlisted vulnerability at moderate+ severity is found.
+Exits non-zero if any vulnerability at moderate+ severity is found.
 Writes a markdown summary to $GITHUB_STEP_SUMMARY when set.
 """
 
@@ -16,26 +16,9 @@ import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-ALLOWLIST_PATH = ROOT / ".github" / "audit-allowlist.json"
 OSV_QUERY = "https://api.osv.dev/v1/query"
 SEVERITY_RANK = {"CRITICAL": 4, "HIGH": 3, "MODERATE": 2, "MEDIUM": 2, "LOW": 1, "UNKNOWN": 2}
 MIN_RANK = SEVERITY_RANK["MODERATE"]
-
-
-def load_allowlist() -> set[tuple[str, str, str]]:
-    if not ALLOWLIST_PATH.exists():
-        return set()
-    data = json.loads(ALLOWLIST_PATH.read_text())
-    allowed = set()
-    for entry in data.get("allowlist", []):
-        allowed.add(
-            (
-                entry.get("ecosystem", "").lower(),
-                entry.get("package", "").lower(),
-                entry.get("id", "").upper(),
-            )
-        )
-    return allowed
 
 
 def osv_query(ecosystem: str, name: str, version: str) -> list[dict]:
@@ -90,13 +73,6 @@ def severity_of(vuln: dict) -> str:
     return "UNKNOWN"
 
 
-def is_allowlisted(allowlist: set, ecosystem: str, package: str, vuln_id: str) -> bool:
-    eco = ecosystem.lower()
-    pkg = package.lower()
-    vid = vuln_id.upper()
-    return (eco, pkg, vid) in allowlist or (eco, pkg, "") in allowlist
-
-
 def find_maven_coords() -> list[tuple[str, str, str, str]]:
     """Return (template, ecosystem, name, version) for deps.gradle files."""
     results = []
@@ -118,9 +94,6 @@ def find_deno_coords() -> list[tuple[str, str, str, str]]:
     url_re = re.compile(
         r"""https://(?:esm\.sh|cdn\.skypack\.dev)/(?P<name>@?[^@/"']+)@(?P<version>[^/"']+)"""
     )
-    deno_land_re = re.compile(
-        r"""https://deno\.land/(?:x|std)@?(?P<name>[^@/"']*)@(?P<version>[^/"']+)"""
-    )
     jose_re = re.compile(
         r"""https://deno\.land/x/jose@(?P<version>[^/"']+)"""
     )
@@ -130,8 +103,6 @@ def find_deno_coords() -> list[tuple[str, str, str, str]]:
 
     for path in sorted((ROOT / "deno").glob("*/src/**/*.ts")):
         text = path.read_text()
-        template = str(path.parents[1].relative_to(ROOT)) if path.parents[1].name != "src" else str(path.parent.parent.relative_to(ROOT))
-        # Prefer template root: deno/<template>
         parts = path.relative_to(ROOT).parts
         template = f"{parts[0]}/{parts[1]}"
 
@@ -139,15 +110,12 @@ def find_deno_coords() -> list[tuple[str, str, str, str]]:
             results.append((template, "npm", match.group("name"), match.group("version")))
 
         for match in appwrite_re.finditer(text):
-            # Appwrite Deno SDK mirrors npm node-appwrite loosely; query as npm appwrite when possible
+            # Appwrite Deno SDK mirrors npm node-appwrite loosely; query as npm when possible
             results.append((template, "npm", "node-appwrite", match.group("version")))
 
         for match in jose_re.finditer(text):
             # jose on deno.land/x maps to npm jose
             results.append((template, "npm", "jose", match.group("version").lstrip("v")))
-
-        # std library — skip OSV npm mapping; flag version for visibility only if needed
-        _ = deno_land_re
 
     # Deduplicate
     seen = set()
@@ -161,7 +129,6 @@ def find_deno_coords() -> list[tuple[str, str, str, str]]:
 
 
 def main() -> int:
-    allowlist = load_allowlist()
     targets = find_maven_coords() + find_deno_coords()
     findings = []
 
@@ -171,16 +138,13 @@ def main() -> int:
             sev = severity_of(vuln)
             if SEVERITY_RANK.get(sev, 2) < MIN_RANK:
                 continue
-            vuln_id = vuln.get("id", "UNKNOWN")
-            if is_allowlisted(allowlist, ecosystem, name, vuln_id):
-                continue
             findings.append(
                 {
                     "template": template,
                     "ecosystem": ecosystem,
                     "package": name,
                     "version": version,
-                    "id": vuln_id,
+                    "id": vuln.get("id", "UNKNOWN"),
                     "severity": sev,
                     "summary": (vuln.get("summary") or "").split("\n")[0][:120],
                 }
@@ -207,7 +171,7 @@ def main() -> int:
     if summary_path:
         Path(summary_path).write_text(report + "\n")
 
-    print(f"\nFound {len(findings)} unallowlisted moderate+ advisories.", file=sys.stderr)
+    print(f"\nFound {len(findings)} moderate+ advisories.", file=sys.stderr)
     return 1
 
 

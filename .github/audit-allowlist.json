@@ -1,4 +1,0 @@
-{
-  "description": "Consciously accepted advisories. Each entry matches by ecosystem + package + advisory id (or CVE). Entries keep the moderate gate from being loosened globally.",
-  "allowlist": []
-}
