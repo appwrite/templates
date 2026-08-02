@@ -73,6 +73,7 @@ jobs:
             [ -f "${dir}composer.json" ] || continue
             echo "::group::${dir%/}"
             (
+              set -euo pipefail
               cd "$dir"
               composer update --no-install --no-interaction
               composer audit --locked --no-interaction
@@ -120,6 +121,7 @@ jobs:
             [ -f "${dir}Gemfile" ] || continue
             echo "::group::${dir%/}"
             (
+              set -euo pipefail
               cd "$dir"
               bundle lock
               bundle-audit update
@@ -149,6 +151,7 @@ jobs:
             [ -f "${dir}pubspec.yaml" ] || continue
             echo "::group::${dir%/}"
             (
+              set -euo pipefail
               cd "$dir"
               dart pub get
               osv-scanner scan source --lockfile=pubspec.lock
@@ -216,10 +219,17 @@ jobs:
             [ -n "$csproj" ] || continue
             echo "::group::${dir%/}"
             (
+              set -euo pipefail
               cd "$dir"
               dotnet restore
-              out=$(dotnet list package --vulnerable --include-transitive)
+              set +e
+              out=$(dotnet list package --vulnerable --include-transitive 2>&1)
+              code=$?
+              set -e
               echo "$out"
+              if [ "$code" -ne 0 ]; then
+                exit "$code"
+              fi
               if echo "$out" | grep -qiE 'has the following vulnerable packages|Severity'; then
                 exit 1
               fi
