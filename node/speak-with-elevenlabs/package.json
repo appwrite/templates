@@ -9,7 +9,7 @@
   },
   "keywords": [],
   "dependencies": {
-    "elevenlabs": "^0.6.0",
+    "@elevenlabs/elevenlabs-js": "^2.60.0",
     "node-appwrite": "^14.1.0"
   },
   "devDependencies": {

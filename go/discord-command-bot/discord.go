@@ -9,7 +9,7 @@ import (
 	"io"
 	"strings"
 
-	"github.com/open-runtimes/types-for-go/v4"
+	"github.com/open-runtimes/types-for-go/v4/openruntimes"
 )
 
 type DiscordBodyData struct {
@@ -21,7 +21,7 @@ type DiscordBody struct {
 	Data DiscordBodyData `json:"data"`
 }
 
-func discordParseBody(Context *types.Context) (DiscordBody, error) {
+func discordParseBody(Context openruntimes.Context) (DiscordBody, error) {
 	var body DiscordBody
 
 	err := json.Unmarshal(Context.Req.BodyBinary(), &body)

@@ -1,6 +1,6 @@
 import { getStaticFile, throwIfMissing } from "./utils.js";
-import { Client, Storage, ID, Permission, Role } from "node-appwrite";
-import { ElevenLabsClient } from "elevenlabs";
+import { Client, Storage, ID, Permission, Role, InputFile } from "node-appwrite";
+import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 import consumers from "stream/consumers";
 
 const APPWRITE_ENDPOINT =
@@ -22,28 +22,31 @@ export default async ({ req, res }) => {
     return res.json({ ok: false, error: "Missing required field `text`" }, 400);
   }
 
-  const elevenLabs = new ElevenLabsClient();
+  const voiceId =
+    process.env.ELEVENLABS_VOICE_ID ?? "JBFqnCBsd6RMkjVDRZzb";
 
-  const speechAudio = await elevenlabs.voiceGeneration.generate({
-    accent: req.bodyJson.accent ?? "british",
-    accent_strength: 1.0,
-    age: req.bodyJson.age ?? "young",
-    gender: req.bodyJson.gender ?? "female",
-    text: req.bodyJson.text,
+  const elevenlabs = new ElevenLabsClient({
+    apiKey: process.env.ELEVENLABS_API_KEY,
   });
 
-  const blob = await consumers.blob(speechAudio);
+  const speechAudio = await elevenlabs.textToSpeech.convert(voiceId, {
+    text: req.bodyJson.text,
+    modelId: "eleven_multilingual_v2",
+    outputFormat: "mp3_44100_128",
+  });
+
+  const buffer = Buffer.from(await consumers.arrayBuffer(speechAudio));
 
   const client = new Client()
     .setEndpoint(process.env.APPWRITE_FUNCTION_API_ENDPOINT)
     .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
-    .setKey(req.headers['x-appwrite-key']);
+    .setKey(req.headers["x-appwrite-key"]);
 
   const storage = new Storage(client);
   const file = await storage.createFile(
     process.env.APPWRITE_BUCKET_ID,
     ID.unique(),
-    blob,
+    InputFile.fromBuffer(buffer, "speech.mp3"),
     [Permission.read(Role.any())]
   );
 

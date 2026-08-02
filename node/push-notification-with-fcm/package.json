@@ -11,6 +11,9 @@
     "prettier": "^3.2.5"
   },
   "dependencies": {
-    "firebase-admin": "^12.1.1"
+    "firebase-admin": "^13.10.0"
+  },
+  "overrides": {
+    "uuid": "^11.1.1"
   }
 }

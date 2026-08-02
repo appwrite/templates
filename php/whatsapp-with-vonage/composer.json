@@ -4,6 +4,6 @@
   "require": {
     "php": ">=8.0.0",
     "appwrite/appwrite": "^8.0",
-    "firebase/php-jwt": "^6.9"
+    "firebase/php-jwt": "^7.0"
   }
 }

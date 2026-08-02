@@ -1,0 +1,20 @@
+{
+  "name": "whatsapp-with-vonage",
+  "version": "1.0.0",
+  "description": "Whatsapp bot with Vonage",
+  "type": "module",
+  "main": "src/main.ts",
+  "scripts": {
+    "format": "prettier --write ."
+  },
+  "keywords": [],
+  "dependencies": {
+    "jsonwebtoken": "^9.0.2",
+    "undici": "^6.18.1"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.1.16",
+    "@types/jsonwebtoken": "^9.0.6",
+    "prettier": "^3.2.5"
+  }
+}

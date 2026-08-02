@@ -1,7 +1,6 @@
 import { getStaticFile, throwIfMissing } from './utils.js';
 import { Pinecone } from '@pinecone-database/pinecone';
 import { Document } from '@langchain/core/documents';
-import { formatDocumentsAsString } from 'langchain/util/document';
 import { OpenAIEmbeddings, ChatOpenAI } from '@langchain/openai';
 import { PineconeStore } from '@langchain/pinecone';
 import { PromptTemplate } from '@langchain/core/prompts';
@@ -11,6 +10,9 @@ import {
 } from '@langchain/core/runnables';
 import { StringOutputParser } from '@langchain/core/output_parsers';
 import AppwriteService from './appwrite.js';
+
+const formatDocumentsAsString = (docs) =>
+  docs.map((doc) => doc.pageContent).join('\n\n');
 
 export default async ({ req, res, log }) => {
   throwIfMissing(process.env, [

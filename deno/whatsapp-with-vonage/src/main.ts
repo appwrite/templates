@@ -1,6 +1,6 @@
 import { crypto } from "https://deno.land/std@0.203.0/crypto/mod.ts";
 import { encodeHex } from "https://deno.land/std@0.203.0/encoding/hex.ts";
-import { jwtVerify } from "https://deno.land/x/jose@v4.15.2/index.ts";
+import { jwtVerify } from "https://deno.land/x/jose@v4.15.5/index.ts";
 import { throwIfMissing, getStaticFile } from "./utils.ts";
 
 type Context = {
