@@ -237,3 +237,16 @@ jobs:
             echo "::endgroup::"
           done
           exit $failed
+
+  # Java/Kotlin templates only ship deps.gradle fragments (no Gradle project),
+  # so audit declared Maven coordinates directly via OSV.
+  maven:
+    name: maven
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.11"
+      - name: Audit Maven coordinates in deps.gradle
+        run: python3 .github/scripts/audit-maven.py
