@@ -1,4 +1,5 @@
-import { Client, Databases, ID, InputFile, Storage } from 'node-appwrite';
+import { Client, Databases, ID, Storage } from 'node-appwrite';
+import { InputFile } from 'node-appwrite/file';
 
 class AppwriteService {
   constructor(apiKey) {
