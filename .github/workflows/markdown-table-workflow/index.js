@@ -50,6 +50,7 @@ const overrideWords = {
   been: "been",
   am: "am",
   perspectiveapi: "PerspectiveAPI",
+  mcp: "MCP",
   pdf: "PDF",
   chatgpt: "ChatGPT",
   fcm: "FCM",
