@@ -1,6 +1,6 @@
 # 🔌 MCP Server
 
-Stateless [Model Context Protocol](https://modelcontextprotocol.io/) server on Appwrite Functions — official Python SDK (`mcp==2.0.0`), JSON-RPC over HTTPS. No SSE sessions.
+Expose custom tools to AI clients (Claude Code, Cursor, and other MCP hosts) over HTTPS. Stateless [Model Context Protocol](https://modelcontextprotocol.io/) server on Appwrite Functions — official Python SDK (`mcp==2.0.0`), JSON-RPC over HTTPS. No SSE sessions.
 
 Edit `src/app.py` to register your own tools, deploy, and point Claude Code / Cursor at the function domain.
 
