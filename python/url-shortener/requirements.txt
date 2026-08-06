@@ -1,0 +1,2 @@
+appwrite==3.1.0
+nanoid==2.0.0
