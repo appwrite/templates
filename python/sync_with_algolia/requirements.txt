@@ -1,2 +1,2 @@
-appwrite
+appwrite==23.0.0
 algoliasearch

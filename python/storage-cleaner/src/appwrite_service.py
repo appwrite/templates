@@ -46,7 +46,7 @@ class AppwriteService:
                 raise RuntimeError(
                     f"Failed to list files from bucket {bucket_id}: {str(e)}"
                 ) from e
-            files = response.get("files", [])
+            files = response.files
 
             if not files:
                 break
@@ -54,14 +54,14 @@ class AppwriteService:
             batch_failed = False
             with ThreadPoolExecutor() as executor:
                 future_to_file = {
-                    executor.submit(self.storage.delete_file, bucket_id, f.get("$id")): f
+                    executor.submit(self.storage.delete_file, bucket_id, f.id): f
                     for f in files
-                    if f.get("$id")
+                    if f.id
                 }
 
                 for future in as_completed(future_to_file):
                     file_info = future_to_file[future]
-                    file_id = file_info.get("$id")
+                    file_id = file_info.id
                     try:
                         future.result()
                         deleted_files_count += 1

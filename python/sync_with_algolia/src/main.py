@@ -1,6 +1,7 @@
 import os
 from algoliasearch.search_client import SearchClient
 from appwrite.client import Client
+from appwrite.models import Document
 from appwrite.services.databases import Databases
 from appwrite.query import Query
 from .utils import get_static_file, throw_if_missing, interpolate
@@ -55,16 +56,19 @@ def main(context):
             queries,
         )
 
-        if len(response.documents) > 0:
-            cursor = response.documents[len(response.documents) - 1]["$id"]
+        documents: list[Document] = response.documents
+
+        if len(documents) > 0:
+            cursor = documents[-1].id
         else:
             context.log("No more documents found.")
             cursor = None
             break
 
-        context.log(f"Syncing chunk of {len(response.documents)} documents...")
+        context.log(f"Syncing chunk of {len(documents)} documents...")
         documents_with_object_ids = [
-            {"objectID": document["$id"], **document} for document in response.documents
+            {"objectID": document.id, "$id": document.id, **document.data}
+            for document in documents
         ]
         index.save_objects(documents_with_object_ids)
 
