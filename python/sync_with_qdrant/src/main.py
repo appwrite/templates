@@ -59,12 +59,13 @@ def main(context):
     documents = get_all_documents(context.req.headers['x-appwrite-key'])
     points = []
     for index, document in enumerate(documents):
+        payload = {"$id": document.id, **document.data}
         response = openai.embeddings.create(
-            input=json.dumps(document), model="text-embedding-3-small"
+            input=json.dumps(payload), model="text-embedding-3-small"
         )
 
         point = models.PointStruct(
-            id=index, vector=response.data[0].embedding, payload=dict(document)
+            id=index, vector=response.data[0].embedding, payload=payload
         )
         points.append(point)
 

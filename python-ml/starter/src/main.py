@@ -12,7 +12,7 @@ def main(context):
         Client()
         .set_endpoint(os.environ["APPWRITE_FUNCTION_API_ENDPOINT"])
         .set_project(os.environ["APPWRITE_FUNCTION_PROJECT_ID"])
-        .set_key(context.req.headers["x-appwrite-key"])
+        .set_key(context.req.headers.get("x-appwrite-key", ""))
     )
     users = Users(client)
 
@@ -20,7 +20,7 @@ def main(context):
         response = users.list()
         # Log messages and errors to the Appwrite Console
         # These logs won't be seen by your end users
-        context.log("Total users: " + str(response["total"]))
+        context.log("Total users: " + str(response.total))
     except AppwriteException as err:
         context.error("Could not list users: " + repr(err))
 

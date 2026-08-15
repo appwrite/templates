@@ -1,5 +1,6 @@
 import os
 from appwrite.client import Client
+from appwrite.models import Document
 from appwrite.services.databases import Databases
 from meilisearch import Client as MeiliClient
 from .utils import get_static_file, interpolate, throw_if_missing
@@ -47,17 +48,20 @@ def main(context):
             queries
         )
 
-        documents = response['documents']
+        documents: list[Document] = response.documents
 
         if len(documents) > 0:
-            cursor = documents[-1]['$id']
+            cursor = documents[-1].id
         else:
             context.log('No more documents found.')
             cursor = None
             break
 
         context.log(f'Syncing chunk of {len(documents)} documents...')
-        index.add_documents(documents, {'primaryKey': '$id'})
+        index.add_documents(
+            [{"$id": document.id, **document.data} for document in documents],
+            {'primaryKey': '$id'},
+        )
 
     context.log('Sync finished.')
 
