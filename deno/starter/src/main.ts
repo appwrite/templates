@@ -15,8 +15,8 @@ export default async ({ req, res, log, error }: any) => {
     // Log messages and errors to the Appwrite Console
     // These logs won't be seen by your end users
     log(`Total users: ${response.total}`);
-  } catch(err) {
-    error("Could not list users: " + err.message);
+  } catch (err) {
+    error("Could not list users: " + String(err));
   }
 
   // The req object contains the request data

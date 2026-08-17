@@ -36,7 +36,7 @@ class Main {
         val client = AppwriteClient().apply {
             setEndpoint(System.getenv("APPWRITE_FUNCTION_API_ENDPOINT"))
             setProject(System.getenv("APPWRITE_FUNCTION_PROJECT_ID"))
-            setKey(context.res.headers["x-appwrite-key"])
+            setKey(context.req.headers["x-appwrite-key"] ?: "")
         }
 
         val databases = Databases(client)

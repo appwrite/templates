@@ -1,2 +1,2 @@
-tensorflow
-numpy
+tensorflow>=2.15.0,<3.0.0
+numpy>=2.0.0,<3.0.0

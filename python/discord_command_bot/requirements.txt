@@ -1,2 +1,2 @@
-requests
-discord-interactions
+requests>=2.31.0,<3.0.0
+discord-interactions>=0.4.0,<0.5.0

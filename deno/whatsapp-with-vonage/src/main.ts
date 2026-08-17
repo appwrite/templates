@@ -35,7 +35,7 @@ export default async ({ req, res, log, error }: Context) => {
   try {
     throwIfMissing(payload, ["payload_hash"]);
   } catch (err) {
-    return res.json({ ok: false, error: err.message }, 400);
+    return res.json({ ok: false, error: String(err) }, 400);
   }
 
   const hash = crypto.subtle.digestSync(
@@ -50,7 +50,7 @@ export default async ({ req, res, log, error }: Context) => {
   try {
     throwIfMissing(req.bodyJson, ["from", "text"]);
   } catch (err) {
-    return res.json({ ok: false, error: err.message }, 400);
+    return res.json({ ok: false, error: String(err) }, 400);
   }
 
   const basicAuthToken: string = btoa(

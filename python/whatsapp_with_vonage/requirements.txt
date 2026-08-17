@@ -1,2 +1,2 @@
-requests
-pyjwt
+requests>=2.31.0,<3.0.0
+pyjwt>=2.8.0,<3.0.0
