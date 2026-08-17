@@ -108,7 +108,15 @@ for path in sorted(ROOT.glob("*/*/deps.gradle")):
             fail(path, f"{group}:{artifact}", version)
 
 for path in sorted(ROOT.glob("go/*/go.mod")):
-    for module, version in re.findall(r"^\s*([^\s]+)\s+(v[^\s]+)$", path.read_text(), re.MULTILINE):
+    text = path.read_text()
+    dependencies = re.findall(
+        r"^\s*(?:require\s+)?([^\s]+)\s+(v[^\s]+)(?:\s+//.*)?$",
+        text,
+        re.MULTILINE,
+    )
+    if "require " in text and not dependencies:
+        errors.append(f"{path.relative_to(ROOT)}: no Go dependencies could be parsed")
+    for module, version in dependencies:
         if not re.fullmatch(rf"v{SEMVER}", version):
             fail(path, module, version)
 
