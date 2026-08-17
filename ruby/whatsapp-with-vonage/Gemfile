@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 
-gem 'json'
-gem 'dotenv'
-gem 'digest'
-gem 'jwt'
-gem 'httparty'
+gem 'json', '>= 2.7.6', '< 3.0.0'
+gem 'dotenv', '>= 2.8.1', '< 3.0.0'
+gem 'digest', '>= 3.2.1', '< 4.0.0'
+gem 'jwt', '>= 3.2.0', '< 4.0.0'
+gem 'httparty', '>= 0.24.0', '< 0.25.0'

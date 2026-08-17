@@ -3,7 +3,7 @@ import { Client, Databases, Query } from 'node-appwrite';
 class AppwriteService {
   databases: Databases;
 
-  constructor(apiKey) {
+  constructor(apiKey: string) {
     const client = new Client();
     client
       .setEndpoint(process.env.APPWRITE_FUNCTION_API_ENDPOINT)

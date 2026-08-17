@@ -12,7 +12,7 @@
   "dependencies": {
     "meilisearch": "^0.40.0",
     "node-appwrite": "^14.1.0",
-    "typescript": "5.4.5"
+    "typescript": "^5.4.5"
   },
   "devDependencies": {
     "prettier": "^3.2.5",

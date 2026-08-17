@@ -86,7 +86,7 @@ Security and privacy are extremely important to Appwrite, developers, and users 
 
 ## Dependencies
 
-Usage of dependencies is welcomed for purpose of simplifying template code. Please only use libraries that are well-known, and popular.
+Usage of dependencies is welcomed for purpose of simplifying template code. Please only use libraries that are well-known and popular. Dependency constraints must allow compatible patch and minor updates while excluding the next breaking version (for example, use caret ranges where the package manager supports them). Keep any committed lockfile in sync with its manifest.
 
 ## Introducing New Templates
 

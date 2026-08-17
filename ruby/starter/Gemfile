@@ -1,3 +1,3 @@
 source "https://rubygems.org"
 
-gem 'appwrite'
+gem 'appwrite', '>= 27.0.0', '< 28.0.0'

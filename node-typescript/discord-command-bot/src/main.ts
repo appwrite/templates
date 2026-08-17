@@ -7,7 +7,14 @@ import {
 import { throwIfMissing } from './utils.js';
 import commands from './commands/index.js';
 
-export default async ({ req, res, error, log }) => {
+type Context = {
+  req: any;
+  res: any;
+  log: (message: string) => void;
+  error: (message: string) => void;
+};
+
+export default async ({ req, res, error, log }: Context) => {
   throwIfMissing(process.env, [
     'DISCORD_PUBLIC_KEY',
     'DISCORD_APPLICATION_ID',

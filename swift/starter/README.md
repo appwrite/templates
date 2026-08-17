@@ -37,7 +37,7 @@ Sample `200` Response:
 
 | Setting           | Value                 |
 | ----------------- | --------------------- |
-| Runtime           | Swift (5.5)           |
+| Runtime           | Swift (6.2)           |
 | Entrypoint        | `Sources/index.swift` |
 | Permissions       | `any`                 |
 | Timeout (Seconds) | 15                    |
