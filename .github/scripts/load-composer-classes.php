@@ -15,6 +15,28 @@ if ($template === false || !is_file($template . '/vendor/autoload.php')) {
 
 require $template . '/vendor/autoload.php';
 
+function importedClasses(string $declaration): array
+{
+    $prefix = '';
+    if (str_contains($declaration, '{')) {
+        [$prefix, $declaration] = explode('{', $declaration, 2);
+        $declaration = strstr($declaration, '}', true) ?: '';
+    }
+
+    $classes = [];
+    foreach (explode(',', $declaration) as $import) {
+        $import = trim($import);
+        if ($import === '' || preg_match('/^(?:function|const)\s/i', $import)) {
+            continue;
+        }
+
+        $class = preg_split('/\s+as\s+/i', $import)[0];
+        $classes[] = trim($prefix) . $class;
+    }
+
+    return $classes;
+}
+
 $symbols = [];
 foreach (glob($template . '/src/*.php') ?: [] as $source) {
     $contents = file_get_contents($source);
@@ -25,7 +47,7 @@ foreach (glob($template . '/src/*.php') ?: [] as $source) {
 
     preg_match_all('/^\s*use\s+(?!function\s|const\s)([^;]+);/m', $contents, $matches);
     foreach ($matches[1] as $declaration) {
-        $symbols[] = preg_split('/\s+as\s+/i', trim($declaration))[0];
+        array_push($symbols, ...importedClasses($declaration));
     }
 }
 
