@@ -3,6 +3,6 @@
   "type": "library",
   "require": {
     "php": ">=8.0.0",
-    "appwrite/appwrite": "^17.4.1"
+    "appwrite/appwrite": "^18.0.1"
   }
 }
