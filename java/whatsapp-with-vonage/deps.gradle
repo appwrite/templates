@@ -1,0 +1,6 @@
+dependencies {
+    implementation 'com.google.code.gson:gson:2.9.0'
+    implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
+    implementation 'io.jsonwebtoken:jjwt-gson:0.12.3'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.3'
+}
