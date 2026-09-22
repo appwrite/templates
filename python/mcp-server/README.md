@@ -136,7 +136,7 @@ def my_tool(query: str) -> str:
     return f"got: {query}"
 ```
 
-Type hints become the tool `inputSchema`. Add `ctx: Context` to read inbound HTTP headers (including Appwrite's dynamic API key `x-appwrite-key`).
+Type hints become the tool `inputSchema`. Add `ctx: Context` to read inbound HTTP headers (including Appwrite's ephemeral API key `x-appwrite-key`).
 
 Do **not** name the tools module `server.py` — Open Runtimes already ships a top-level `server` module.
 
