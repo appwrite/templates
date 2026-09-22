@@ -5,7 +5,7 @@ Edit this file when building your own server.
 Do not name it `server.py` — that conflicts with the Open Runtimes runtime module.
 
 To call Appwrite APIs from a tool, inject ``ctx: Context`` and read the
-dynamic API key from inbound headers:
+ephemeral API key from inbound headers:
 
     from mcp.server.mcpserver import Context
 

@@ -13,7 +13,7 @@ public class Handler {
         var client = new Client()
             .SetEndpoint(Environment.GetEnvironmentVariable("APPWRITE_FUNCTION_API_ENDPOINT"))
             .SetProject(Environment.GetEnvironmentVariable("APPWRITE_FUNCTION_PROJECT_ID"))
-            .SetKey(Context.Req.Headers.TryGetValue("x-appwrite-key", out string DynamicKey) ? DynamicKey : "");
+            .SetKey(Context.Req.Headers.TryGetValue("x-appwrite-key", out string EphemeralKey) ? EphemeralKey : "");
         var users = new Users(client);
 
         try
