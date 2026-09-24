@@ -9,10 +9,13 @@
   },
   "keywords": [],
   "dependencies": {
-    "node-appwrite": "^14.1.0",
+    "node-appwrite": "^29.0.0",
     "replicate": "^0.29.4"
   },
   "devDependencies": {
     "prettier": "^3.2.5"
+  },
+  "engines": {
+    "node": ">=18.17.0"
   }
 }

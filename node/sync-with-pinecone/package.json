@@ -10,10 +10,13 @@
   "keywords": [],
   "dependencies": {
     "@pinecone-database/pinecone": "^2.2.1",
-    "node-appwrite": "^14.1.0",
+    "node-appwrite": "^29.0.0",
     "openai": "^4.47.1"
   },
   "devDependencies": {
     "prettier": "^3.2.5"
+  },
+  "engines": {
+    "node": ">=18.17.0"
   }
 }

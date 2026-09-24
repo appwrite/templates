@@ -9,11 +9,14 @@
     "build": "tsc"
   },
   "dependencies": {
-    "node-appwrite": "^20.2.1",
+    "node-appwrite": "^29.0.0",
     "typescript": "^5.4.5"
   },
   "devDependencies": {
     "@types/node": "^20.12.12",
     "prettier": "^3.2.5"
+  },
+  "engines": {
+    "node": ">=18.17.0"
   }
 }

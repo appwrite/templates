@@ -11,12 +11,15 @@
   "keywords": [],
   "dependencies": {
     "@qdrant/js-client-rest": "^1.9.0",
-    "node-appwrite": "^14.1.0",
+    "node-appwrite": "^29.0.0",
     "openai": "^4.47.1",
     "typescript": "^5.4.5"
   },
   "devDependencies": {
     "@types/node": "^20.12.10",
     "prettier": "^3.2.5"
+  },
+  "engines": {
+    "node": ">=18.17.0"
   }
 }
