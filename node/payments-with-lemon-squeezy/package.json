@@ -13,5 +13,8 @@
   "dependencies": {
     "@lemonsqueezy/lemonsqueezy.js": "^3.0.0",
     "node-appwrite": "^29.0.0"
+  },
+  "engines": {
+    "node": ">=18.17.0"
   }
 }

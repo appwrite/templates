@@ -18,5 +18,8 @@
   "devDependencies": {
     "@types/node": "^20.12.10",
     "prettier": "^3.2.5"
+  },
+  "engines": {
+    "node": ">=18.17.0"
   }
 }
