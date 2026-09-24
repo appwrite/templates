@@ -3,10 +3,10 @@ import {
   Client,
   Storage,
   ID,
-  InputFile,
   Permission,
   Role,
 } from "node-appwrite";
+import { InputFile } from "node-appwrite/file";
 import Speech from "lmnt-node";
 
 export default async ({ req, res }) => {
@@ -42,7 +42,7 @@ export default async ({ req, res }) => {
   const file = await storage.createFile(
     process.env.APPWRITE_BUCKET_ID,
     ID.unique(),
-    InputFile.fromBlob(new Blob([speechAudio.audio]), "audio.mp3"),
+    InputFile.fromBuffer(new Blob([speechAudio.audio]), "audio.mp3"),
     [Permission.read(Role.any())],
   );
 
