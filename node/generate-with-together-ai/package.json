@@ -9,7 +9,7 @@
   },
   "keywords": [],
   "dependencies": {
-    "node-appwrite": "^14.1.0",
+    "node-appwrite": "^29.0.0",
     "undici": "^6.18.1"
   },
   "devDependencies": {
