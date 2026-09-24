@@ -42,7 +42,7 @@ export default async ({ req, res }) => {
   const file = await storage.createFile(
     process.env.APPWRITE_BUCKET_ID,
     ID.unique(),
-    InputFile.fromBuffer(new Blob([speechAudio.audio]), "audio.mp3"),
+    InputFile.fromBuffer(speechAudio.audio, "audio.mp3"),
     [Permission.read(Role.any())],
   );
 

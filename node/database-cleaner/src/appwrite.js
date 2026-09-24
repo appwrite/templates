@@ -7,7 +7,7 @@ class AppwriteService {
     client
       .setEndpoint(process.env.APPWRITE_FUNCTION_API_ENDPOINT)
       .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
-      .setKey(apikey);
+      .setKey(apiKey);
 
     this.databases = new Databases(client);
   }

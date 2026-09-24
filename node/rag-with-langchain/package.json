@@ -13,7 +13,8 @@
     "@langchain/openai": "^1.5.5",
     "@langchain/pinecone": "^1.0.3",
     "@pinecone-database/pinecone": "^5.1.2",
-    "langchain": "^1.5.4"
+    "langchain": "^1.5.4",
+    "node-appwrite": "^29.0.0"
   },
   "devDependencies": {
     "prettier": "^3.2.5"
