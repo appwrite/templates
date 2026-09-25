@@ -1,7 +1,7 @@
 import { asc, eq } from 'drizzle-orm';
 import { getDb } from './db.js';
 import { todos } from './schema.js';
-import { parseBody, parseTitle, throwIfMissing } from './utils.js';
+import { parseBody, parseId, parseTitle, throwIfMissing } from './utils.js';
 
 type Context = {
   req: any;
@@ -15,12 +15,12 @@ export default async ({ req, res, log }: Context) => {
 
   // `/` targets all todos, `/123` targets the todo with ID 123
   const idParam = req.path.replace(/^\/|\/$/g, '');
-  const id = idParam === '' ? undefined : Number(idParam);
-  if (id !== undefined && !Number.isSafeInteger(id)) {
+  const id = idParam === '' ? undefined : parseId(idParam);
+  if (id === null) {
     return res.json({ ok: false, error: 'Not found.' }, 404);
   }
 
-  const db = await getDb();
+  const db = getDb();
 
   if (id === undefined && req.method === 'GET') {
     const rows = await db.select().from(todos).orderBy(asc(todos.id));

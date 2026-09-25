@@ -129,9 +129,16 @@ Sample `200` Response:
 { "ok": true }
 ```
 
-## 🗄️ Schema changes
+## 🗄️ Migrations
 
-The schema lives in `src/schema.ts`. After changing it, run `npm run db:generate` to create a migration in `drizzle/`, then redeploy. The function applies pending migrations on its first execution.
+The function doesn't create tables. Before the first deployment, apply the migrations in `drizzle/` from your machine:
+
+```bash
+npm install
+DATABASE_URL="postgresql://..." npm run db:migrate
+```
+
+After changing `src/schema.ts`, run `npm run db:generate` to create a new migration, then apply it with `npm run db:migrate`.
 
 ## ⚙️ Configuration
 
