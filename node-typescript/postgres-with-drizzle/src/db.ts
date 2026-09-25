@@ -6,7 +6,10 @@ let db: ReturnType<typeof drizzle> | undefined;
 
 export function getDb() {
   if (!db) {
-    db = drizzle(postgres(process.env.DATABASE_URL, { max: 1 }));
+    // Some transaction-mode poolers don't support prepared statements
+    db = drizzle(
+      postgres(process.env.DATABASE_URL, { max: 1, prepare: false })
+    );
   }
   return db;
 }
