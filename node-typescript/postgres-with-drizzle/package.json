@@ -1,0 +1,27 @@
+{
+  "name": "postgres-with-drizzle",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/main.js",
+  "type": "module",
+  "scripts": {
+    "format": "prettier --write .",
+    "build": "tsc",
+    "db:generate": "drizzle-kit generate"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.45.3",
+    "postgres": "^3.4.9",
+    "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.4",
+    "drizzle-kit": "^0.31.11",
+    "prettier": "^3.9.9"
+  },
+  "overrides": {
+    "@esbuild-kit/core-utils": {
+      "esbuild": "^0.25.12"
+    }
+  }
+}
