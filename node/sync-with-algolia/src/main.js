@@ -60,10 +60,10 @@ export default async ({ req, res, log }) => {
     log(`Syncing chunk of ${response.documents.length} documents...`);
 
     // node-appwrite returns integers beyond 2^53 as BigInt, which JSON
-    // cannot hold; send the numbers earlier SDK versions returned.
+    // cannot hold; send their exact value as a string.
     const documents = JSON.parse(
       JSON.stringify(response.documents, (_, value) =>
-        typeof value === 'bigint' ? Number(value) : value
+        typeof value === 'bigint' ? value.toString() : value
       )
     );
     const records = documents.map(({ $id, ...document }) => ({

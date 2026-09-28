@@ -44,11 +44,11 @@ class AppwriteService {
       cursor = documents[documents.length - 1].$id;
 
       // node-appwrite returns integers beyond 2^53 as BigInt, which JSON
-      // cannot hold; keep the numbers earlier SDK versions returned.
+      // cannot hold; keep their exact value as a string.
       cumulative.push(
         ...JSON.parse(
           JSON.stringify(documents, (_, value) =>
-            typeof value === 'bigint' ? Number(value) : value
+            typeof value === 'bigint' ? value.toString() : value
           )
         )
       );
