@@ -59,7 +59,14 @@ export default async ({ req, res, log }) => {
 
     log(`Syncing chunk of ${response.documents.length} documents...`);
 
-    const records = response.documents.map(({ $id, ...document }) => ({
+    // node-appwrite returns integers beyond 2^53 as BigInt, which JSON
+    // cannot hold; send the numbers earlier SDK versions returned.
+    const documents = JSON.parse(
+      JSON.stringify(response.documents, (_, value) =>
+        typeof value === 'bigint' ? Number(value) : value
+      )
+    );
+    const records = documents.map(({ $id, ...document }) => ({
       ...document,
       objectID: $id,
     }));

@@ -60,7 +60,14 @@ export default async ({ req, res, log }) => {
     }
 
     log(`Syncing chunk of ${documents.length} documents ...`);
-    await index.addDocuments(documents, { primaryKey: '$id' });
+    // node-appwrite returns integers beyond 2^53 as BigInt, which JSON
+    // cannot hold; send the numbers earlier SDK versions returned.
+    const records = JSON.parse(
+      JSON.stringify(documents, (_, value) =>
+        typeof value === 'bigint' ? Number(value) : value
+      )
+    );
+    await index.addDocuments(records, { primaryKey: '$id' });
   } while (cursor !== null);
 
   log('Sync finished.');
