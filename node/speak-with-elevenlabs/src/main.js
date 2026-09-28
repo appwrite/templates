@@ -1,5 +1,6 @@
 import { getStaticFile, throwIfMissing } from "./utils.js";
-import { Client, Storage, ID, Permission, Role, InputFile } from "node-appwrite";
+import { Client, Storage, ID, Permission, Role } from "node-appwrite";
+import { InputFile } from "node-appwrite/file";
 import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 import consumers from "stream/consumers";
 

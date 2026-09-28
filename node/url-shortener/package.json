@@ -10,9 +10,12 @@
   },
   "dependencies": {
     "nanoid": "^5.0.7",
-    "node-appwrite": "^14.1.0"
+    "node-appwrite": "^29.0.0"
   },
   "devDependencies": {
     "prettier": "^3.2.5"
+  },
+  "engines": {
+    "node": ">=18.17.0"
   }
 }

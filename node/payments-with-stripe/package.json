@@ -9,11 +9,14 @@
     "setup": "node src/setup.js"
   },
   "dependencies": {
-    "node-appwrite": "^14.1.0",
+    "node-appwrite": "^29.0.0",
     "stripe": "^15.7.0"
   },
   "devDependencies": {
     "prettier": "^3.2.5",
     "stripe-event-types": "^3.1.0"
+  },
+  "engines": {
+    "node": ">=18.17.0"
   }
 }

@@ -18,7 +18,7 @@ class AppwriteService {
    * @param {Blob} blob
    */
   async createFile(bucketId, blob) {
-    const file = await InputFile.fromBlob(blob, 'music.wav');
+    const file = InputFile.fromBuffer(blob, 'music.wav');
     return await this.storage.createFile(bucketId, ID.unique(), file);
   }
 
