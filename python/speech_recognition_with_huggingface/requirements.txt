@@ -1,0 +1,3 @@
+appwrite
+huggingface_hub
+python-dotenv
