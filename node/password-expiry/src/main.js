@@ -5,7 +5,6 @@ import nodemailer from 'nodemailer';
 export default async ({ req, res, log, error }) => {
   throwIfMissing(process.env, [
     'APPWRITE_FUNCTION_PROJECT_ID',
-    'MAX_PASSWORD_AGE',
     'RESET_PASSWORD_URL',
     'STMP_DSN',
   ]);
@@ -18,11 +17,12 @@ export default async ({ req, res, log, error }) => {
 
   const users = new Users(client);
 
-  const expiryPeriodMs = 1000;
+  const maxPasswordAgeDays = Number(process.env.MAX_PASSWORD_AGE || 90);
+  const expiryPeriodMs = maxPasswordAgeDays * 24 * 60 * 60 * 1000;
   const beforeTimeMs = Date.now() - expiryPeriodMs;
   const beforeDateTime = new Date(beforeTimeMs).toISOString();
 
-  const usersWithExpiredPasswords = await users.list([
+  const { users: usersWithExpiredPasswords } = await users.list([
     Query.lessThanEqual('passwordUpdate', beforeDateTime),
   ]);
 
@@ -51,7 +51,7 @@ export default async ({ req, res, log, error }) => {
     try {
       await transport.sendMail({
         from: dsn.searchParams.get('from'),
-        to: 'luke@appwrite.io',
+        to: user.email,
         subject: 'Your password needs to be updated',
         text: `Hi ${
           user.name

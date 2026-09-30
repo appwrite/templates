@@ -32,7 +32,7 @@ You can set CRON to control how often the function is executed. For example, `0 
 
 | Setting           | Value         |
 | ----------------- | ------------- |
-| Runtime           | Node (18.0)   |
+| Runtime           | Node (22)     |
 | Entrypoint        | `src/main.js` |
 | Build Commands    | `npm install` |
 | Permissions       | `any`         |
@@ -45,8 +45,8 @@ You can set CRON to control how often the function is executed. For example, `0 
 
 The maximum number of days a password can be used before the user is forced to change it.
 
-| Question      | Answer                |
-| ------------- | --------------------- |
-| Required      | No                    |
-| Default Value | `90`                  |
-| Sample Value  | `https://short.app/s` |
+| Question      | Answer |
+| ------------- | ------ |
+| Required      | No     |
+| Default Value | `90`   |
+| Sample Value  | `90`   |

@@ -8,9 +8,12 @@
     "format": "prettier --write ."
   },
   "dependencies": {
-    "nodemailer": "^9.0.3"
+    "nodemailer": "^10.0.13"
   },
   "devDependencies": {
     "prettier": "^3.2.5"
+  },
+  "engines": {
+    "node": ">=20.0.0"
   }
 }
