@@ -5,7 +5,6 @@ import nodemailer from 'nodemailer';
 export default async ({ req, res, log, error }) => {
   throwIfMissing(process.env, [
     'APPWRITE_FUNCTION_PROJECT_ID',
-    'MAX_PASSWORD_AGE',
     'RESET_PASSWORD_URL',
     'STMP_DSN',
   ]);
@@ -18,7 +17,8 @@ export default async ({ req, res, log, error }) => {
 
   const users = new Users(client);
 
-  const expiryPeriodMs = 1000;
+  const maxPasswordAgeDays = Number(process.env.MAX_PASSWORD_AGE || 90);
+  const expiryPeriodMs = maxPasswordAgeDays * 24 * 60 * 60 * 1000;
   const beforeTimeMs = Date.now() - expiryPeriodMs;
   const beforeDateTime = new Date(beforeTimeMs).toISOString();
 
