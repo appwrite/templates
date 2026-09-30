@@ -22,7 +22,7 @@ export default async ({ req, res, log, error }) => {
   const beforeTimeMs = Date.now() - expiryPeriodMs;
   const beforeDateTime = new Date(beforeTimeMs).toISOString();
 
-  const usersWithExpiredPasswords = await users.list([
+  const { users: usersWithExpiredPasswords } = await users.list([
     Query.lessThanEqual('passwordUpdate', beforeDateTime),
   ]);
 
