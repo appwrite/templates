@@ -51,7 +51,7 @@ export default async ({ req, res, log, error }) => {
     try {
       await transport.sendMail({
         from: dsn.searchParams.get('from'),
-        to: 'luke@appwrite.io',
+        to: user.email,
         subject: 'Your password needs to be updated',
         text: `Hi ${
           user.name
