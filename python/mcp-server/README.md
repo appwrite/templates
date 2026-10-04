@@ -17,7 +17,7 @@ Accepts MCP Streamable HTTP JSON requests (legacy handshake and modern `2026-07-
 | Content-Type           | Must be `application/json`                       | Header   | String | application/json |
 | Accept                 | Prefer `application/json, text/event-stream`     | Header   | String | application/json, text/event-stream |
 | MCP-Protocol-Version   | Optional. Use `2026-07-28` for the modern path   | Header   | String | 2025-06-18     |
-| Authorization          | Required when `MCP_AUTH_MODE=bearer`             | Header   | String | Bearer s3cr3t  |
+| Authorization          | Required when `MCP_AUTH_MODE` is `bearer` or `oauth` | Header   | String | Bearer s3cr3t  |
 
 **Response**
 
@@ -63,6 +63,14 @@ Sample `401` — bearer auth failure:
 }
 ```
 
+### GET /.well-known/oauth-protected-resource
+
+`MCP_AUTH_MODE=oauth` only. [RFC 9728](https://www.rfc-editor.org/rfc/rfc9728) metadata pointing MCP clients at the project's Appwrite OAuth2 server. Unauthenticated `POST /` returns `401` with `WWW-Authenticate: Bearer resource_metadata="…"` so clients find it.
+
+### GET /oauth/consent
+
+`MCP_AUTH_MODE=oauth` only. Sign-in and consent screen for the project's OAuth2 server.
+
 ### OPTIONS /
 
 CORS preflight. Returns `204` with `Access-Control-Allow-*` headers.
@@ -77,6 +85,7 @@ Not supported (no SSE streams, no sessions). Returns `405`.
 | ---- | ---------------- | ---------------- |
 | echo | `text: string`   | echoed string    |
 | add  | `a: float`, `b: float` | sum         |
+| list_rows | `database_id: string`, `table_id: string` | rows the signed-in user can read (`oauth` mode) |
 
 ### Connect a client
 
@@ -112,6 +121,17 @@ With bearer auth, set Function env `MCP_AUTH_MODE=bearer` + `MCP_AUTH_TOKEN=...`
   }
 }
 ```
+
+### Per-user sign-in (OAuth)
+
+With `MCP_AUTH_MODE=oauth`, MCP clients sign users in through the project's Appwrite OAuth2 server (Appwrite Cloud). Tools call Appwrite as that user via `oauth.client(ctx.headers)`, so table and row permissions apply.
+
+1. Enable the project's OAuth2 server with **Authorization URL** `https://<your-function>.appwrite.run/oauth/consent` and scopes such as `openid project:rows.read`.
+2. Add a **Web platform** for `<your-function>.appwrite.run` so the consent page can call Appwrite.
+3. Set `MCP_AUTH_MODE=oauth` and `MCP_AUTH_SCOPES=openid project:rows.read`.
+4. Give users access with row or table permissions, e.g. `read("user:<id>")`.
+
+Clients register themselves (dynamic client registration), so the connect step is just the URL.
 
 ### Smoke test
 
@@ -167,7 +187,7 @@ Display name returned in `initialize` → `serverInfo.name`.
 
 ### MCP_AUTH_MODE
 
-Auth gate for the endpoint. `none` (default) is open; `bearer` requires `Authorization: Bearer <token>`.
+Auth gate for the endpoint. `none` (default) is open; `bearer` requires `Authorization: Bearer <token>`; `oauth` requires an access token from the project's Appwrite OAuth2 server.
 
 | Question     | Answer         |
 | ------------ | -------------- |
@@ -182,6 +202,33 @@ Shared secret when `MCP_AUTH_MODE=bearer`. Compared with `hmac.compare_digest`.
 | ------------ | ------------------- |
 | Required     | Yes (when bearer)   |
 | Sample Value | `s3cr3t...token`    |
+
+### MCP_AUTH_SCOPES
+
+Space-separated scopes advertised to MCP clients when `MCP_AUTH_MODE=oauth`.
+
+| Question     | Answer                      |
+| ------------ | --------------------------- |
+| Required     | No                          |
+| Sample Value | `openid project:rows.read`  |
+
+### MCP_RESOURCE
+
+Resource identifier tokens must be issued for. Defaults to `https://<request host>`; set it for custom domains behind a proxy or local development.
+
+| Question     | Answer                                |
+| ------------ | ------------------------------------- |
+| Required     | No                                    |
+| Sample Value | `https://mcp.example.com`             |
+
+### MCP_AUTH_ISSUER
+
+OAuth2 issuer. Defaults to `<APPWRITE_FUNCTION_API_ENDPOINT>/oauth2/<project ID>`.
+
+| Question     | Answer                                              |
+| ------------ | --------------------------------------------------- |
+| Required     | No                                                  |
+| Sample Value | `https://fra.cloud.appwrite.io/v1/oauth2/<project>` |
 
 ### MCP_TOOL_TIMEOUT
 

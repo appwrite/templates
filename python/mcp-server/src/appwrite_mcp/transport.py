@@ -9,7 +9,8 @@ from typing import Any
 
 from mcp.server.mcpserver import MCPServer
 
-from .auth import check_auth
+from . import oauth
+from .auth import auth_mode, check_auth
 from .dispatch import dispatch
 
 CORS_HEADERS = {
@@ -19,7 +20,7 @@ CORS_HEADERS = {
         "Content-Type, Accept, Authorization, MCP-Protocol-Version, "
         "Mcp-Session-Id, Mcp-Method, Mcp-Name"
     ),
-    "Access-Control-Expose-Headers": "MCP-Protocol-Version",
+    "Access-Control-Expose-Headers": "MCP-Protocol-Version, WWW-Authenticate",
 }
 
 
@@ -63,6 +64,17 @@ async def handle_http(server: MCPServer, context: Any) -> Any:
     if method == "OPTIONS":
         return res.text("", 204, _merge_headers(CORS_HEADERS))
 
+    path = getattr(req, "path", None) or "/"
+    scheme = getattr(req, "scheme", None) or "https"
+    host = getattr(req, "host", None) or headers.get("host", "appwrite").split(":")[0]
+    resource = oauth.resource(host)
+
+    if method == "GET" and path.startswith(oauth.METADATA_PATH) and auth_mode() == "oauth":
+        return res.json(oauth.metadata(resource), 200, _merge_headers(CORS_HEADERS))
+
+    if method == "GET" and path == oauth.CONSENT_PATH and auth_mode() == "oauth":
+        return res.text(oauth.consent_page(), 200, {"content-type": "text/html; charset=utf-8"})
+
     # Stateless: no SSE GET stream, no session DELETE
     if method in ("GET", "DELETE"):
         body = _jsonrpc_error(
@@ -85,7 +97,7 @@ async def handle_http(server: MCPServer, context: Any) -> Any:
             _merge_headers(CORS_HEADERS, {"Allow": "POST, OPTIONS"}),
         )
 
-    ok, auth_err = check_auth(headers)
+    ok, auth_err = check_auth(headers, resource)
     if not ok and auth_err is not None:
         return res.json(
             auth_err["body"],
@@ -104,9 +116,6 @@ async def handle_http(server: MCPServer, context: Any) -> Any:
         context.log(f"Unusual Accept header: {accept}")
 
     raw = _read_body(req)
-    path = getattr(req, "path", None) or "/"
-    scheme = getattr(req, "scheme", None) or "https"
-    host = getattr(req, "host", None) or headers.get("host", "appwrite").split(":")[0]
 
     try:
         timeout = float(os.environ.get("MCP_TOOL_TIMEOUT") or "25")

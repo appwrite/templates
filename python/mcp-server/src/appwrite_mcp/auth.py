@@ -6,6 +6,10 @@ import hmac
 import os
 from typing import Any
 
+import jwt
+
+from . import oauth
+
 
 def auth_mode() -> str:
     return (os.environ.get("MCP_AUTH_MODE") or "none").strip().lower()
@@ -15,7 +19,7 @@ def expected_token() -> str:
     return os.environ.get("MCP_AUTH_TOKEN") or ""
 
 
-def check_auth(headers: dict[str, str]) -> tuple[bool, dict[str, Any] | None]:
+def check_auth(headers: dict[str, str], resource: str) -> tuple[bool, dict[str, Any] | None]:
     """
     Returns (ok, error_payload).
     error_payload is a dict suitable for context.res.json(..., 401, headers)
@@ -24,6 +28,9 @@ def check_auth(headers: dict[str, str]) -> tuple[bool, dict[str, Any] | None]:
     mode = auth_mode()
     if mode in ("", "none", "open", "false", "0"):
         return True, None
+
+    if mode == "oauth":
+        return _check_oauth(headers, resource)
 
     if mode != "bearer":
         return False, {
@@ -66,7 +73,21 @@ def check_auth(headers: dict[str, str]) -> tuple[bool, dict[str, Any] | None]:
     return True, None
 
 
-def _unauthorized(message: str) -> dict[str, Any]:
+def _check_oauth(headers: dict[str, str], resource: str) -> tuple[bool, dict[str, Any] | None]:
+    auth = (headers.get("authorization") or "").strip()
+    prefix = "Bearer "
+    if not auth.startswith(prefix):
+        return False, _unauthorized("Missing or invalid Authorization header", oauth.challenge(resource))
+
+    try:
+        oauth.verify(auth[len(prefix) :].strip(), resource)
+    except jwt.PyJWTError as error:
+        return False, _unauthorized(f"Invalid access token: {error}", oauth.challenge(resource, "invalid_token"))
+
+    return True, None
+
+
+def _unauthorized(message: str, challenge: str = "Bearer") -> dict[str, Any]:
     return {
         "body": {
             "jsonrpc": "2.0",
@@ -74,5 +95,5 @@ def _unauthorized(message: str) -> dict[str, Any]:
             "error": {"code": -32001, "message": message},
         },
         "status": 401,
-        "headers": {"WWW-Authenticate": "Bearer"},
+        "headers": {"WWW-Authenticate": challenge},
     }

@@ -4,8 +4,9 @@ Example hosted MCP tools for Appwrite Functions.
 Edit this file when building your own server.
 Do not name it `server.py` — that conflicts with the Open Runtimes runtime module.
 
-To call Appwrite APIs from a tool, inject ``ctx: Context`` and read the
-ephemeral API key from inbound headers:
+To call Appwrite APIs as the signed-in user (``MCP_AUTH_MODE=oauth``), inject
+``ctx: Context`` and use ``oauth.client(ctx.headers)`` — see ``list_rows`` below.
+Otherwise read the ephemeral API key from inbound headers:
 
     from mcp.server.mcpserver import Context
 
@@ -19,7 +20,10 @@ from __future__ import annotations
 
 import os
 
-from mcp.server.mcpserver import MCPServer
+from appwrite.services.tables_db import TablesDB
+from mcp.server.mcpserver import Context, MCPServer
+
+from appwrite_mcp import oauth
 
 server = MCPServer(
     name=os.environ.get("MCP_SERVER_NAME") or "appwrite-hosted-mcp",
@@ -39,3 +43,8 @@ def echo(text: str) -> str:
 @server.tool(description="Add two numbers.")
 def add(a: float, b: float) -> float:
     return a + b
+
+
+@server.tool(description="List rows the signed-in user can read (needs MCP_AUTH_MODE=oauth).")
+def list_rows(database_id: str, table_id: str, ctx: Context) -> dict:
+    return TablesDB(oauth.client(ctx.headers)).list_rows(database_id, table_id).to_dict()
