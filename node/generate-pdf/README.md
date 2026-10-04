@@ -20,7 +20,7 @@ Returns a binary stream of the generated PDF document. The `Content-Type` of the
 
 | Setting           | Value         |
 | ----------------- | ------------- |
-| Runtime           | Node (18.0)   |
+| Runtime           | Node (22)     |
 | Entrypoint        | `src/main.js` |
 | Build Commands    | `npm install` |
 | Permissions       | `any`         |
