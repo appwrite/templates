@@ -66,7 +66,7 @@ def verify(token: str, resource_url: str) -> dict[str, Any]:
     """Validate an Appwrite-issued access token (RFC 9068) for this resource. Raises jwt.PyJWTError."""
     global _jwks
     if _jwks is None:
-        _jwks = jwt.PyJWKClient(f"{issuer()}/.well-known/jwks.json", cache_keys=True, timeout=JWKS_TIMEOUT)
+        _jwks = jwt.PyJWKClient(f"{issuer()}/.well-known/jwks.json", timeout=JWKS_TIMEOUT)
 
     token_type = jwt.get_unverified_header(token).get("typ")
     if not isinstance(token_type, str) or token_type.lower() != "at+jwt":
