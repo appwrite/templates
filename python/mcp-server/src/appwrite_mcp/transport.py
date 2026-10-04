@@ -73,7 +73,15 @@ async def handle_http(server: MCPServer, context: Any) -> Any:
         return res.json(oauth.metadata(resource), 200, _merge_headers(CORS_HEADERS))
 
     if method == "GET" and path == oauth.CONSENT_PATH and auth_mode() == "oauth":
-        return res.text(oauth.consent_page(), 200, {"content-type": "text/html; charset=utf-8"})
+        return res.text(
+            oauth.consent_page(),
+            200,
+            {
+                "content-type": "text/html; charset=utf-8",
+                "content-security-policy": "frame-ancestors 'none'",
+                "x-frame-options": "DENY",
+            },
+        )
 
     # Stateless: no SSE GET stream, no session DELETE
     if method in ("GET", "DELETE"):
@@ -97,7 +105,7 @@ async def handle_http(server: MCPServer, context: Any) -> Any:
             _merge_headers(CORS_HEADERS, {"Allow": "POST, OPTIONS"}),
         )
 
-    ok, auth_err = check_auth(headers, resource)
+    ok, auth_err = await asyncio.to_thread(check_auth, headers, resource)
     if not ok and auth_err is not None:
         return res.json(
             auth_err["body"],

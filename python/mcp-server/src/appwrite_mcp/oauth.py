@@ -11,6 +11,7 @@ from appwrite.client import Client
 
 METADATA_PATH = "/.well-known/oauth-protected-resource"
 CONSENT_PATH = "/oauth/consent"
+JWKS_TIMEOUT = 5
 
 _jwks: jwt.PyJWKClient | None = None
 
@@ -65,9 +66,10 @@ def verify(token: str, resource_url: str) -> dict[str, Any]:
     """Validate an Appwrite-issued access token (RFC 9068) for this resource. Raises jwt.PyJWTError."""
     global _jwks
     if _jwks is None:
-        _jwks = jwt.PyJWKClient(f"{issuer()}/.well-known/jwks.json", cache_keys=True)
+        _jwks = jwt.PyJWKClient(f"{issuer()}/.well-known/jwks.json", cache_keys=True, timeout=JWKS_TIMEOUT)
 
-    if jwt.get_unverified_header(token).get("typ", "").lower() != "at+jwt":
+    token_type = jwt.get_unverified_header(token).get("typ")
+    if not isinstance(token_type, str) or token_type.lower() != "at+jwt":
         raise jwt.InvalidTokenError("Not an OAuth2 access token")
 
     return jwt.decode(
