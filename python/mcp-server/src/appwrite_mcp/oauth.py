@@ -6,6 +6,7 @@ import os
 from contextvars import ContextVar
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlsplit
 
 import jwt
 from appwrite.client import Client
@@ -59,8 +60,14 @@ def metadata(resource_url: str) -> dict[str, Any]:
     return document
 
 
+def metadata_url(resource_url: str) -> str:
+    """RFC 9728 §3.1: the well-known segment goes between the host and the resource's path."""
+    resource = urlsplit(resource_url)
+    return f"{resource.scheme}://{resource.netloc}{METADATA_PATH}{resource.path.rstrip('/')}"
+
+
 def challenge(resource_url: str, error: str | None = None) -> str:
-    parts = [f'resource_metadata="{resource_url}{METADATA_PATH}"']
+    parts = [f'resource_metadata="{metadata_url(resource_url)}"']
     if scopes():
         parts.append(f'scope="{" ".join(scopes())}"')
     if error:
