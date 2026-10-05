@@ -28,8 +28,8 @@ from mcp.server.mcpserver import Context, MCPServer
 
 from appwrite_mcp import oauth
 
-TASKS_DATABASE_ID = os.environ.get("TASKS_DATABASE_ID") or "main"
-TASKS_TABLE_ID = os.environ.get("TASKS_TABLE_ID") or "tasks"
+TASKS_DATABASE_ID = "main"
+TASKS_TABLE_ID = "tasks"
 
 
 class TaskPage(TypedDict):

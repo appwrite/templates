@@ -232,15 +232,6 @@ OAuth2 issuer. Defaults to `<APPWRITE_FUNCTION_API_ENDPOINT>/oauth2/<project ID>
 | Required     | No                                                  |
 | Sample Value | `https://fra.cloud.appwrite.io/v1/oauth2/<project>` |
 
-### TASKS_DATABASE_ID / TASKS_TABLE_ID
-
-Table read by the example `list_tasks` tool.
-
-| Question     | Answer           |
-| ------------ | ---------------- |
-| Required     | No               |
-| Sample Value | `main` / `tasks` |
-
 ### MCP_TOOL_TIMEOUT
 
 Soft deadline (seconds) for the whole request, before Appwrite's 30s domain hard-cap.
