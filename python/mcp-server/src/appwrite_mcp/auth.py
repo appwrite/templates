@@ -61,26 +61,23 @@ def check_auth(headers: dict[str, str], resource: str) -> tuple[bool, dict[str, 
             "headers": {},
         }, None
 
-    auth = (headers.get("authorization") or "").strip()
-    prefix = "Bearer "
-    if not auth.startswith(prefix):
+    scheme, _, provided = (headers.get("authorization") or "").strip().partition(" ")
+    if scheme.lower() != "bearer" or not provided.strip():
         return False, _unauthorized("Missing or invalid Authorization header"), None
 
-    provided = auth[len(prefix) :].strip()
-    if not hmac.compare_digest(provided, token):
+    if not hmac.compare_digest(provided.strip(), token):
         return False, _unauthorized("Invalid bearer token"), None
 
     return True, None, None
 
 
 def _check_oauth(headers: dict[str, str], resource: str) -> tuple[bool, dict[str, Any] | None, dict[str, Any] | None]:
-    auth = (headers.get("authorization") or "").strip()
-    prefix = "Bearer "
-    if not auth.startswith(prefix):
+    scheme, _, token = (headers.get("authorization") or "").strip().partition(" ")
+    if scheme.lower() != "bearer" or not token.strip():
         return False, _unauthorized("Missing or invalid Authorization header", oauth.challenge(resource)), None
 
     try:
-        verified = oauth.verify(auth[len(prefix) :].strip(), resource)
+        verified = oauth.verify(token.strip(), resource)
     except jwt.PyJWTError as error:
         return False, _unauthorized(f"Invalid access token: {error}", oauth.challenge(resource, "invalid_token")), None
 
