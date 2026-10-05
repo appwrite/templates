@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+from contextvars import ContextVar
 from pathlib import Path
 from typing import Any
 
@@ -17,6 +18,8 @@ JWKS_TIMEOUT = 5
 USER_JWT_DURATION = 60
 
 _jwks: jwt.PyJWKClient | None = None
+
+verified_claims: ContextVar[dict[str, Any] | None] = ContextVar("verified_claims", default=None)
 
 
 def issuer() -> str:
@@ -85,15 +88,17 @@ def verify(token: str, resource_url: str) -> dict[str, Any]:
     )
 
 
-def claims(headers: Any) -> dict[str, Any]:
-    """Claims of the request's access token. The transport verified this exact token before any tool runs."""
-    token = (headers or {}).get("authorization", "").removeprefix("Bearer ").strip()
-    return jwt.decode(token, options={"verify_signature": False})
+def claims() -> dict[str, Any]:
+    """Claims of the access token the transport verified for this request; refuses without one."""
+    verified = verified_claims.get()
+    if verified is None:
+        raise ToolError("Sign-in required: this tool needs MCP_AUTH_MODE=oauth")
+    return verified
 
 
-def require_scope(headers: Any, scope: str) -> None:
+def require_scope(scope: str) -> None:
     """Fail the tool call unless the user granted this app-defined scope (e.g. ``tasks.read``)."""
-    if scope not in claims(headers).get("scope", "").split():
+    if scope not in claims().get("scope", "").split():
         raise ToolError(f"Missing scope: {scope}")
 
 
@@ -107,5 +112,5 @@ def user_client(headers: Any) -> Client:
     endpoint = os.environ["APPWRITE_FUNCTION_API_ENDPOINT"]
     project = os.environ["APPWRITE_FUNCTION_PROJECT_ID"]
     server = Client().set_endpoint(endpoint).set_project(project).set_key((headers or {}).get("x-appwrite-key", ""))
-    user_jwt = Users(server).create_jwt(claims(headers)["sub"], duration=USER_JWT_DURATION)
+    user_jwt = Users(server).create_jwt(claims()["sub"], duration=USER_JWT_DURATION)
     return Client().set_endpoint(endpoint).set_project(project).set_jwt(user_jwt.jwt)

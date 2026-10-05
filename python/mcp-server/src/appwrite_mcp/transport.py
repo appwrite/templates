@@ -113,9 +113,10 @@ async def handle_http(server: MCPServer, context: Any) -> Any:
         timeout = 25.0
 
     async def authorize_and_dispatch() -> dict[str, Any] | tuple[int, dict[str, str], Any]:
-        ok, auth_err = await asyncio.to_thread(check_auth, headers, resource)
+        ok, auth_err, verified = await asyncio.to_thread(check_auth, headers, resource)
         if not ok and auth_err is not None:
             return auth_err
+        oauth.verified_claims.set(verified)
 
         accept = headers.get("accept", "")
         if (

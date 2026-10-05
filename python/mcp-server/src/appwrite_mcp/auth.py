@@ -19,7 +19,7 @@ def expected_token() -> str:
     return os.environ.get("MCP_AUTH_TOKEN") or ""
 
 
-def check_auth(headers: dict[str, str], resource: str) -> tuple[bool, dict[str, Any] | None]:
+def check_auth(headers: dict[str, str], resource: str) -> tuple[bool, dict[str, Any] | None, dict[str, Any] | None]:
     """
     Returns (ok, error_payload).
     error_payload is a dict suitable for context.res.json(..., 401, headers)
@@ -27,7 +27,7 @@ def check_auth(headers: dict[str, str], resource: str) -> tuple[bool, dict[str, 
     """
     mode = auth_mode()
     if mode in ("", "none", "open", "false", "0"):
-        return True, None
+        return True, None, None
 
     if mode == "oauth":
         return _check_oauth(headers, resource)
@@ -44,7 +44,7 @@ def check_auth(headers: dict[str, str], resource: str) -> tuple[bool, dict[str, 
             },
             "status": 500,
             "headers": {},
-        }
+        }, None
 
     token = expected_token()
     if not token:
@@ -59,32 +59,32 @@ def check_auth(headers: dict[str, str], resource: str) -> tuple[bool, dict[str, 
             },
             "status": 500,
             "headers": {},
-        }
+        }, None
 
     auth = (headers.get("authorization") or "").strip()
     prefix = "Bearer "
     if not auth.startswith(prefix):
-        return False, _unauthorized("Missing or invalid Authorization header")
+        return False, _unauthorized("Missing or invalid Authorization header"), None
 
     provided = auth[len(prefix) :].strip()
     if not hmac.compare_digest(provided, token):
-        return False, _unauthorized("Invalid bearer token")
+        return False, _unauthorized("Invalid bearer token"), None
 
-    return True, None
+    return True, None, None
 
 
-def _check_oauth(headers: dict[str, str], resource: str) -> tuple[bool, dict[str, Any] | None]:
+def _check_oauth(headers: dict[str, str], resource: str) -> tuple[bool, dict[str, Any] | None, dict[str, Any] | None]:
     auth = (headers.get("authorization") or "").strip()
     prefix = "Bearer "
     if not auth.startswith(prefix):
-        return False, _unauthorized("Missing or invalid Authorization header", oauth.challenge(resource))
+        return False, _unauthorized("Missing or invalid Authorization header", oauth.challenge(resource)), None
 
     try:
-        oauth.verify(auth[len(prefix) :].strip(), resource)
+        verified = oauth.verify(auth[len(prefix) :].strip(), resource)
     except jwt.PyJWTError as error:
-        return False, _unauthorized(f"Invalid access token: {error}", oauth.challenge(resource, "invalid_token"))
+        return False, _unauthorized(f"Invalid access token: {error}", oauth.challenge(resource, "invalid_token")), None
 
-    return True, None
+    return True, None, verified
 
 
 def _unauthorized(message: str, challenge: str = "Bearer") -> dict[str, Any]:

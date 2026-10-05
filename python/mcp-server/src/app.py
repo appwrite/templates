@@ -51,6 +51,6 @@ def add(a: float, b: float) -> float:
 
 @server.tool(description="List the signed-in user's tasks.")
 def list_tasks(ctx: Context) -> list[dict]:
-    oauth.require_scope(ctx.headers, "tasks.read")
+    oauth.require_scope("tasks.read")
     rows = TablesDB(oauth.user_client(ctx.headers)).list_rows(TASKS_DATABASE_ID, TASKS_TABLE_ID)
     return [{"id": row["$id"], **row["data"]} for row in rows.to_dict()["rows"]]
