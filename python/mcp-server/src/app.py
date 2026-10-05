@@ -64,5 +64,5 @@ def list_tasks(ctx: Context, limit: int = 25, cursor: str | None = None) -> Task
     if cursor:
         queries.append(Query.cursor_after(cursor))
     rows = TablesDB(oauth.user_client(ctx.headers)).list_rows(TASKS_DATABASE_ID, TASKS_TABLE_ID, queries).to_dict()["rows"]
-    tasks = [{"id": row["$id"], **row["data"]} for row in rows]
+    tasks = [{**row["data"], "id": row["$id"]} for row in rows]
     return {"tasks": tasks, "next_cursor": tasks[-1]["id"] if len(tasks) == page_size else None}
