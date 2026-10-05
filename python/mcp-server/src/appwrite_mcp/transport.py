@@ -105,26 +105,6 @@ async def handle_http(server: MCPServer, context: Any) -> Any:
             _merge_headers(CORS_HEADERS, {"Allow": "POST, OPTIONS"}),
         )
 
-    ok, auth_err = await asyncio.to_thread(check_auth, headers, resource)
-    if not ok and auth_err is not None:
-        return res.json(
-            auth_err["body"],
-            auth_err["status"],
-            _merge_headers(CORS_HEADERS, auth_err.get("headers") or {}),
-        )
-
-    accept = headers.get("accept", "")
-    if (
-        accept
-        and "application/json" not in accept
-        and "text/event-stream" not in accept
-        and "*/*" not in accept
-        and os.environ.get("MCP_DEBUG")
-    ):
-        context.log(f"Unusual Accept header: {accept}")
-
-    raw = _read_body(req)
-
     try:
         timeout = float(os.environ.get("MCP_TOOL_TIMEOUT") or "25")
         if timeout <= 0:
@@ -132,19 +112,33 @@ async def handle_http(server: MCPServer, context: Any) -> Any:
     except ValueError:
         timeout = 25.0
 
-    try:
-        status, out_headers, payload = await asyncio.wait_for(
-            dispatch(
-                server,
-                method=method,
-                path=path,
-                headers=headers,
-                body=raw,
-                scheme=scheme,
-                host=host,
-            ),
-            timeout=timeout,
+    async def authorize_and_dispatch() -> dict[str, Any] | tuple[int, dict[str, str], Any]:
+        ok, auth_err = await asyncio.to_thread(check_auth, headers, resource)
+        if not ok and auth_err is not None:
+            return auth_err
+
+        accept = headers.get("accept", "")
+        if (
+            accept
+            and "application/json" not in accept
+            and "text/event-stream" not in accept
+            and "*/*" not in accept
+            and os.environ.get("MCP_DEBUG")
+        ):
+            context.log(f"Unusual Accept header: {accept}")
+
+        return await dispatch(
+            server,
+            method=method,
+            path=path,
+            headers=headers,
+            body=_read_body(req),
+            scheme=scheme,
+            host=host,
         )
+
+    try:
+        result = await asyncio.wait_for(authorize_and_dispatch(), timeout=timeout)
     except asyncio.TimeoutError:
         err = _jsonrpc_error(
             None,
@@ -154,6 +148,14 @@ async def handle_http(server: MCPServer, context: Any) -> Any:
         )
         return res.json(err, 504, _merge_headers(CORS_HEADERS))
 
+    if isinstance(result, dict):
+        return res.json(
+            result["body"],
+            result["status"],
+            _merge_headers(CORS_HEADERS, result.get("headers") or {}),
+        )
+
+    status, out_headers, payload = result
     merged = _merge_headers(CORS_HEADERS, out_headers or {})
     if not payload:
         return res.text("", status, merged)

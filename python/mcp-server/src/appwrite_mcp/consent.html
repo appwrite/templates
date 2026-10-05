@@ -28,7 +28,7 @@
 <main>
   <section id="login" hidden>
     <h1>Sign in to continue</h1>
-    <p>An app wants to connect to your account.</p>
+    <p id="login-hint">An app wants to connect to your account.</p>
     <form id="login-form">
       <label for="email">Email</label>
       <input id="email" type="email" autocomplete="username" required>
@@ -50,7 +50,7 @@
   <p class="error" id="error" hidden></p>
 </main>
 
-<script src="https://cdn.jsdelivr.net/npm/appwrite@28.1.0/dist/iife/sdk.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/appwrite@^28.1.0/dist/iife/sdk.js"></script>
 <script>
   const endpoint = '__APPWRITE_ENDPOINT__';
   const project = '__APPWRITE_PROJECT__';
@@ -66,28 +66,41 @@
     $('error').hidden = false;
   }
 
-  async function grant() {
-    if (params.get('grant_id')) {
-      return { grantId: params.get('grant_id'), redirectUrl: '' };
-    }
-    const query = {};
-    for (const key of ['client_id', 'redirect_uri', 'response_type', 'scope', 'state', 'nonce', 'code_challenge', 'code_challenge_method', 'prompt', 'max_age', 'authorization_details', 'request_uri']) {
-      if (params.get(key)) query[key] = params.get(key);
-    }
-    const resources = params.getAll('resource');
+  let grantId = params.get('grant_id');
+  let signedInHere = false;
+
+  function showLogin(hint) {
+    if (hint) $('login-hint').textContent = hint;
+    $('consent').hidden = true;
+    $('login').hidden = false;
+  }
+
+  async function authorize() {
     const url = oauth2('/authorize');
-    for (const [key, value] of Object.entries(query)) url.searchParams.set(key, value);
-    for (const value of resources) url.searchParams.append('resource', value);
+    for (const key of ['client_id', 'redirect_uri', 'response_type', 'scope', 'state', 'nonce', 'code_challenge', 'code_challenge_method', 'prompt', 'max_age', 'authorization_details', 'request_uri']) {
+      if (params.get(key)) url.searchParams.set(key, params.get(key));
+    }
+    for (const value of params.getAll('resource')) url.searchParams.append('resource', value);
     return client.call('get', url, json);
   }
 
   async function showConsent(user) {
-    const { grantId, redirectUrl } = await grant();
-    if (redirectUrl) {
-      location.assign(redirectUrl);
-      return;
+    if (!grantId) {
+      const response = await authorize();
+      if (response.redirectUrl) {
+        location.assign(response.redirectUrl);
+        return;
+      }
+      grantId = response.grantId;
     }
     const details = await client.call('get', oauth2(`/grants/${grantId}`), json);
+
+    if ((details.prompt || '').split(' ').includes('login') && !signedInHere) {
+      await account.deleteSession({ sessionId: 'current' });
+      showLogin('Sign in again to continue.');
+      return;
+    }
+
     $('client').textContent = new URL(details.redirectUri).host;
     $('user').textContent = user.email;
     $('scopes').replaceChildren(...details.scopes.map((scope) => Object.assign(document.createElement('li'), { textContent: scope })));
@@ -111,13 +124,14 @@
     event.preventDefault();
     try {
       await account.createEmailPasswordSession({ email: $('email').value, password: $('password').value });
+      signedInHere = true;
       await showConsent(await account.get());
     } catch (error) {
       fail(error);
     }
   };
 
-  account.get().then(showConsent, () => { $('login').hidden = false; }).catch(fail);
+  account.get().then(showConsent, () => showLogin()).catch(fail);
 </script>
 </body>
 </html>
