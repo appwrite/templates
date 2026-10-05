@@ -20,7 +20,9 @@ ephemeral API key from inbound headers:
 from __future__ import annotations
 
 import os
+from typing import Any, TypedDict
 
+from appwrite.query import Query
 from appwrite.services.tables_db import TablesDB
 from mcp.server.mcpserver import Context, MCPServer
 
@@ -28,6 +30,11 @@ from appwrite_mcp import oauth
 
 TASKS_DATABASE_ID = os.environ.get("TASKS_DATABASE_ID") or "main"
 TASKS_TABLE_ID = os.environ.get("TASKS_TABLE_ID") or "tasks"
+
+
+class TaskPage(TypedDict):
+    tasks: list[dict[str, Any]]
+    next_cursor: str | None
 
 server = MCPServer(
     name=os.environ.get("MCP_SERVER_NAME") or "appwrite-hosted-mcp",
@@ -49,8 +56,13 @@ def add(a: float, b: float) -> float:
     return a + b
 
 
-@server.tool(description="List the signed-in user's tasks.")
-def list_tasks(ctx: Context) -> list[dict]:
+@server.tool(description="List the signed-in user's tasks, a page at a time. Pass next_cursor back as cursor for more.")
+def list_tasks(ctx: Context, limit: int = 25, cursor: str | None = None) -> TaskPage:
     oauth.require_scope("tasks.read")
-    rows = TablesDB(oauth.user_client(ctx.headers)).list_rows(TASKS_DATABASE_ID, TASKS_TABLE_ID)
-    return [{"id": row["$id"], **row["data"]} for row in rows.to_dict()["rows"]]
+    page_size = max(1, min(limit, 100))
+    queries = [Query.limit(page_size)]
+    if cursor:
+        queries.append(Query.cursor_after(cursor))
+    rows = TablesDB(oauth.user_client(ctx.headers)).list_rows(TASKS_DATABASE_ID, TASKS_TABLE_ID, queries).to_dict()["rows"]
+    tasks = [{"id": row["$id"], **row["data"]} for row in rows]
+    return {"tasks": tasks, "next_cursor": tasks[-1]["id"] if len(tasks) == page_size else None}

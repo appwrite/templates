@@ -85,7 +85,7 @@ Not supported (no SSE streams, no sessions). Returns `405`.
 | ---- | ---------------- | ---------------- |
 | echo | `text: string`   | echoed string    |
 | add  | `a: float`, `b: float` | sum         |
-| list_tasks | — | the signed-in user's tasks (`oauth` mode, needs the `tasks.read` scope) |
+| list_tasks | `limit: int = 25` (max 100), `cursor: string` | a page of the signed-in user's tasks and `next_cursor` (`oauth` mode, needs the `tasks.read` scope) |
 
 ### Connect a client
 
