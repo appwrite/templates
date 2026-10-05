@@ -85,7 +85,7 @@ Not supported (no SSE streams, no sessions). Returns `405`.
 | ---- | ---------------- | ---------------- |
 | echo | `text: string`   | echoed string    |
 | add  | `a: float`, `b: float` | sum         |
-| list_rows | `database_id: string`, `table_id: string` | rows the signed-in user can read (`oauth` mode) |
+| list_tasks | — | the signed-in user's tasks (`oauth` mode, needs the `tasks.read` scope) |
 
 ### Connect a client
 
@@ -124,12 +124,13 @@ With bearer auth, set Function env `MCP_AUTH_MODE=bearer` + `MCP_AUTH_TOKEN=...`
 
 ### Per-user sign-in (OAuth)
 
-With `MCP_AUTH_MODE=oauth`, MCP clients sign users in through the project's Appwrite OAuth2 server (Appwrite Cloud). Tools call Appwrite as that user via `oauth.client(ctx.headers)`, so table and row permissions apply.
+With `MCP_AUTH_MODE=oauth`, MCP clients sign users in through the project's Appwrite OAuth2 server (Appwrite Cloud). Your tools are the API: each checks one of your own scopes (`oauth.require_scope`) and reads Appwrite as the signed-in user (`oauth.user_client`), so row permissions apply. The access token only carries your scopes and never touches Appwrite's API directly.
 
-1. Enable the project's OAuth2 server with **Authorization URL** `https://<your-function>.appwrite.run/oauth/consent` and scopes such as `openid project:rows.read`.
+1. Enable the project's OAuth2 server with **Authorization URL** `https://<your-function>.appwrite.run/oauth/consent` and your scopes, e.g. `openid tasks.read`.
 2. Add a **Web platform** for `<your-function>.appwrite.run` so the consent page can call Appwrite.
-3. Set `MCP_AUTH_MODE=oauth` and `MCP_AUTH_SCOPES=openid project:rows.read`.
-4. Give users access with row or table permissions, e.g. `read("user:<id>")`.
+3. Give the function the `users.write` execution scope, so it can act as the signed-in user.
+4. Set `MCP_AUTH_MODE=oauth` and `MCP_AUTH_SCOPES=openid tasks.read`.
+5. Give users access with row permissions, e.g. `read("user:<id>")`.
 
 Clients register themselves (dynamic client registration), so the connect step is just the URL.
 
@@ -173,6 +174,7 @@ Appwrite Functions are short-lived request/response workers. They do not run a S
 | Build Commands    | `pip install -r requirements.txt` |
 | Permissions       | `any`                             |
 | Timeout (Seconds) | 30                                |
+| Scopes            | `users.write` (OAuth mode only)   |
 
 ## 🔒 Environment Variables
 
@@ -210,7 +212,7 @@ Space-separated scopes advertised to MCP clients when `MCP_AUTH_MODE=oauth`.
 | Question     | Answer                      |
 | ------------ | --------------------------- |
 | Required     | No                          |
-| Sample Value | `openid project:rows.read`  |
+| Sample Value | `openid tasks.read`         |
 
 ### MCP_RESOURCE
 
@@ -229,6 +231,15 @@ OAuth2 issuer. Defaults to `<APPWRITE_FUNCTION_API_ENDPOINT>/oauth2/<project ID>
 | ------------ | --------------------------------------------------- |
 | Required     | No                                                  |
 | Sample Value | `https://fra.cloud.appwrite.io/v1/oauth2/<project>` |
+
+### TASKS_DATABASE_ID / TASKS_TABLE_ID
+
+Table read by the example `list_tasks` tool.
+
+| Question     | Answer           |
+| ------------ | ---------------- |
+| Required     | No               |
+| Sample Value | `main` / `tasks` |
 
 ### MCP_TOOL_TIMEOUT
 

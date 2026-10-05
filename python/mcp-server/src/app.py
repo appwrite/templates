@@ -4,9 +4,10 @@ Example hosted MCP tools for Appwrite Functions.
 Edit this file when building your own server.
 Do not name it `server.py` — that conflicts with the Open Runtimes runtime module.
 
-To call Appwrite APIs as the signed-in user (``MCP_AUTH_MODE=oauth``), inject
-``ctx: Context`` and use ``oauth.client(ctx.headers)`` — see ``list_rows`` below.
-Otherwise read the ephemeral API key from inbound headers:
+With ``MCP_AUTH_MODE=oauth``, tools are your app's API: gate each one on an
+app-defined scope with ``oauth.require_scope`` and query Appwrite as the signed-in
+user with ``oauth.user_client`` (see ``list_tasks`` below). Otherwise read the
+ephemeral API key from inbound headers:
 
     from mcp.server.mcpserver import Context
 
@@ -24,6 +25,9 @@ from appwrite.services.tables_db import TablesDB
 from mcp.server.mcpserver import Context, MCPServer
 
 from appwrite_mcp import oauth
+
+TASKS_DATABASE_ID = os.environ.get("TASKS_DATABASE_ID") or "main"
+TASKS_TABLE_ID = os.environ.get("TASKS_TABLE_ID") or "tasks"
 
 server = MCPServer(
     name=os.environ.get("MCP_SERVER_NAME") or "appwrite-hosted-mcp",
@@ -45,6 +49,8 @@ def add(a: float, b: float) -> float:
     return a + b
 
 
-@server.tool(description="List rows the signed-in user can read (needs MCP_AUTH_MODE=oauth).")
-def list_rows(database_id: str, table_id: str, ctx: Context) -> dict:
-    return TablesDB(oauth.client(ctx.headers)).list_rows(database_id, table_id).to_dict()
+@server.tool(description="List the signed-in user's tasks.")
+def list_tasks(ctx: Context) -> list[dict]:
+    oauth.require_scope(ctx.headers, "tasks.read")
+    rows = TablesDB(oauth.user_client(ctx.headers)).list_rows(TASKS_DATABASE_ID, TASKS_TABLE_ID)
+    return [{"id": row["$id"], **row["data"]} for row in rows.to_dict()["rows"]]

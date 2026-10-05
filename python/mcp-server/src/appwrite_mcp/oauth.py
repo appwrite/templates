@@ -8,10 +8,13 @@ from typing import Any
 
 import jwt
 from appwrite.client import Client
+from appwrite.services.users import Users
+from mcp.server.mcpserver.exceptions import ToolError
 
 METADATA_PATH = "/.well-known/oauth-protected-resource"
 CONSENT_PATH = "/oauth/consent"
 JWKS_TIMEOUT = 5
+USER_JWT_DURATION = 60
 
 _jwks: jwt.PyJWKClient | None = None
 
@@ -82,12 +85,27 @@ def verify(token: str, resource_url: str) -> dict[str, Any]:
     )
 
 
-def client(headers: Any) -> Client:
-    """Appwrite client acting as the user who authorized the MCP client; permissions apply to every call."""
-    authorization = (headers or {}).get("authorization", "")
-    return (
-        Client()
-        .set_endpoint(os.environ["APPWRITE_FUNCTION_API_ENDPOINT"])
-        .set_project(os.environ["APPWRITE_FUNCTION_PROJECT_ID"])
-        .add_header("Authorization", authorization)
-    )
+def claims(headers: Any) -> dict[str, Any]:
+    """Claims of the request's access token. The transport verified this exact token before any tool runs."""
+    token = (headers or {}).get("authorization", "").removeprefix("Bearer ").strip()
+    return jwt.decode(token, options={"verify_signature": False})
+
+
+def require_scope(headers: Any, scope: str) -> None:
+    """Fail the tool call unless the user granted this app-defined scope (e.g. ``tasks.read``)."""
+    if scope not in claims(headers).get("scope", "").split():
+        raise ToolError(f"Missing scope: {scope}")
+
+
+def user_client(headers: Any) -> Client:
+    """Appwrite client acting as the signed-in user, so row permissions apply.
+
+    The function's own key mints a short-lived JWT for the token's user; the access token
+    itself carries only app-defined scopes and never reaches Appwrite. Needs the function's
+    ``users.write`` execution scope.
+    """
+    endpoint = os.environ["APPWRITE_FUNCTION_API_ENDPOINT"]
+    project = os.environ["APPWRITE_FUNCTION_PROJECT_ID"]
+    server = Client().set_endpoint(endpoint).set_project(project).set_key((headers or {}).get("x-appwrite-key", ""))
+    user_jwt = Users(server).create_jwt(claims(headers)["sub"], duration=USER_JWT_DURATION)
+    return Client().set_endpoint(endpoint).set_project(project).set_jwt(user_jwt.jwt)
