@@ -12,10 +12,17 @@ class StripeService {
 
   /**
    * @param {string} userId
+   * @param {string} verifyUrl The function's /success route
    * @param {string} successUrl
    * @param {string} failureUrl
    */
-  async checkoutSubscription(context, userId, successUrl, failureUrl) {
+  async checkoutSubscription(
+    context,
+    userId,
+    verifyUrl,
+    successUrl,
+    failureUrl
+  ) {
     /** @type {import('stripe').Stripe.Checkout.SessionCreateParams.LineItem} */
     const lineItem = {
       price_data: {
@@ -35,9 +42,14 @@ class StripeService {
       return await this.client.checkout.sessions.create({
         payment_method_types: ['card'],
         line_items: [lineItem],
-        success_url: successUrl,
+        // Stripe fills in {CHECKOUT_SESSION_ID}, so /success knows which
+        // session to verify before sending the user on to successUrl.
+        success_url: `${verifyUrl}?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: failureUrl,
         client_reference_id: userId,
+        metadata: {
+          successUrl,
+        },
         subscription_data: {
           metadata: {
             userId,
@@ -49,6 +61,24 @@ class StripeService {
       context.error(err);
       return null;
     }
+  }
+
+  /**
+   * @param {string} sessionId
+   * @returns {Promise<import('stripe').Stripe.Checkout.Session>}
+   */
+  async getCheckoutSession(sessionId) {
+    return await this.client.checkout.sessions.retrieve(sessionId);
+  }
+
+  /**
+   * Fetches a subscription from Stripe, so neither the webhook payload nor
+   * the redirect query string has to be trusted
+   * @param {string} subscriptionId
+   * @returns {Promise<import('stripe').Stripe.Subscription>}
+   */
+  async getSubscription(subscriptionId) {
+    return await this.client.subscriptions.retrieve(subscriptionId);
   }
 
   /**
