@@ -15,6 +15,59 @@ export default async (context) => {
     'DODO_PAYMENTS_PRODUCT_ID',
   ]);
 
+  const appwrite = new AppwriteService(req.headers['x-appwrite-key']);
+  const dodopayments = new DodoPaymentsService();
+
+  /**
+   * Gives or removes the subscriber label based on the subscription's current
+   * status in Dodo Payments. Both the webhook and the /success redirect call
+   * this. They can run at the same time or out of order, but each one applies
+   * the latest status from Dodo Payments and the label updates are
+   * idempotent, so they always settle on the same result.
+   * @param {string} subscriptionId
+   */
+  async function syncSubscription(subscriptionId) {
+    const subscription = await dodopayments.getSubscription(subscriptionId);
+    const subscriptionUserId = subscription.metadata?.user_id;
+
+    if (!subscriptionUserId) {
+      error(`Subscription ${subscriptionId} has no user_id in its metadata.`);
+      return subscription;
+    }
+
+    if (StatusesWithAccess.includes(subscription.status)) {
+      await appwrite.createSubscription(subscriptionUserId);
+      log(
+        `Subscription ${subscriptionId} is ${subscription.status}, user ${subscriptionUserId} has the subscriber label.`
+      );
+    } else {
+      await appwrite.deleteSubscription(subscriptionUserId);
+      log(
+        `Subscription ${subscriptionId} is ${subscription.status}, user ${subscriptionUserId} doesn't have the subscriber label.`
+      );
+    }
+    return subscription;
+  }
+
+  if (req.method === 'GET' && req.path === '/success') {
+    let successUrl = '/';
+
+    try {
+      // A cancelled or failed checkout can come back without a subscription ID.
+      if (req.query.subscription_id) {
+        const subscription = await syncSubscription(
+          req.query.subscription_id
+        );
+        successUrl = subscription.metadata?.success_url || successUrl;
+      }
+    } catch (err) {
+      // The webhook still provisions the user, so send them on regardless.
+      error(err);
+    }
+
+    return res.redirect(successUrl, 303);
+  }
+
   if (req.method === 'GET') {
     const html = interpolate(getStaticFile('index.html'), {
       APPWRITE_FUNCTION_API_ENDPOINT:
@@ -26,15 +79,17 @@ export default async (context) => {
     return res.text(html, 200, { 'Content-Type': 'text/html; charset=utf-8' });
   }
 
-  const appwrite = new AppwriteService(req.headers['x-appwrite-key']);
-  const dodopayments = new DodoPaymentsService();
-
   switch (req.path) {
     case '/subscribe':
       const body = req.bodyJson;
       const fallbackUrl = req.scheme + '://' + req.headers['host'] + '/';
       const successUrl = body.successUrl ?? fallbackUrl;
       const failureUrl = body.failureUrl ?? fallbackUrl;
+
+      // Dodo Payments returns the user to this function first, which verifies
+      // the subscription and then redirects to successUrl.
+      const verifyUrl =
+        body.verifyUrl ?? new URL('/success', successUrl).toString();
 
       const userId = req.headers['x-appwrite-user-id'];
 
@@ -48,6 +103,7 @@ export default async (context) => {
         userId,
         body.email,
         body.name,
+        verifyUrl,
         successUrl,
         failureUrl
       );
@@ -72,32 +128,9 @@ export default async (context) => {
         return res.json({ success: true });
       }
 
-      const subscription = event.data;
-      const subscriptionId = subscription.subscription_id;
-      const subscriptionUserId = subscription.metadata?.user_id;
-
-      // Dodo Payments retries any non-2xx response, and a subscription without
-      // a user ID will never succeed, so acknowledge it instead.
-      if (!subscriptionUserId) {
-        error(`Subscription ${subscriptionId} has no user_id in its metadata.`);
-        return res.json({ success: true });
-      }
-
-      // Events can arrive late or out of order, but each one carries the
-      // subscription's current status. Deciding from the status rather than
-      // the event type keeps a delayed event from restoring lost access.
-      if (StatusesWithAccess.includes(subscription.status)) {
-        await appwrite.createSubscription(subscriptionUserId);
-        log(
-          `Subscription ${subscriptionId} is ${subscription.status}, user ${subscriptionUserId} has the subscriber label.`
-        );
-      } else {
-        await appwrite.deleteSubscription(subscriptionUserId);
-        log(
-          `Subscription ${subscriptionId} is ${subscription.status}, user ${subscriptionUserId} doesn't have the subscriber label.`
-        );
-      }
-
+      // Events can arrive late or out of order, so look the subscription up
+      // and apply its current status instead of trusting the event payload.
+      await syncSubscription(event.data.subscription_id);
       return res.json({ success: true });
 
     default:

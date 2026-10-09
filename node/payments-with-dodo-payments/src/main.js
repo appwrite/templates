@@ -14,6 +14,64 @@ export default async (context) => {
   const databaseId = process.env.APPWRITE_DATABASE_ID || 'orders';
   const tableId = process.env.APPWRITE_TABLE_ID || 'orders';
 
+  const appwrite = new AppwriteService(req.headers['x-appwrite-key']);
+  const dodopayments = new DodoPaymentsService();
+
+  /**
+   * Stores the order if Dodo Payments reports the payment as succeeded. Both
+   * the webhook and the /success redirect call this, so the order is stored
+   * even if one of them never arrives.
+   * @param {string} paymentId
+   */
+  async function fulfillPayment(paymentId) {
+    const payment = await dodopayments.getPayment(paymentId);
+
+    if (payment.status !== 'succeeded') {
+      log(`Payment ${payment.payment_id} is ${payment.status}, not fulfilling.`);
+      return payment;
+    }
+
+    const orderUserId = payment.metadata?.user_id;
+    const orderId = payment.payment_id;
+
+    if (!orderUserId) {
+      error(`Payment ${orderId} has no user_id in its metadata.`);
+      return payment;
+    }
+
+    await appwrite.setup(databaseId, tableId);
+
+    const created = await appwrite.createOrder(
+      databaseId,
+      tableId,
+      orderUserId,
+      orderId
+    );
+    log(
+      created
+        ? `Created order row for user ${orderUserId} with Dodo Payments payment ID ${orderId}.`
+        : `Order ${orderId} was already stored.`
+    );
+    return payment;
+  }
+
+  if (req.method === 'GET' && req.path === '/success') {
+    let successUrl = '/';
+
+    try {
+      // A cancelled or failed checkout can come back without a payment ID.
+      if (req.query.payment_id) {
+        const payment = await fulfillPayment(req.query.payment_id);
+        successUrl = payment.metadata?.success_url || successUrl;
+      }
+    } catch (err) {
+      // The webhook still fulfills the order, so send the user on regardless.
+      error(err);
+    }
+
+    return res.redirect(successUrl, 303);
+  }
+
   if (req.method === 'GET') {
     const html = interpolate(getStaticFile('index.html'), {
       APPWRITE_FUNCTION_API_ENDPOINT:
@@ -27,15 +85,17 @@ export default async (context) => {
     return res.text(html, 200, { 'Content-Type': 'text/html; charset=utf-8' });
   }
 
-  const appwrite = new AppwriteService(req.headers['x-appwrite-key']);
-  const dodopayments = new DodoPaymentsService();
-
   switch (req.path) {
     case '/checkout':
       const body = req.bodyJson;
       const fallbackUrl = req.scheme + '://' + req.headers['host'] + '/';
       const successUrl = body.successUrl ?? fallbackUrl;
       const failureUrl = body.failureUrl ?? fallbackUrl;
+
+      // Dodo Payments returns the user to this function first, which verifies
+      // the payment and then redirects to successUrl.
+      const verifyUrl =
+        body.verifyUrl ?? new URL('/success', successUrl).toString();
 
       const userId = req.headers['x-appwrite-user-id'];
 
@@ -49,6 +109,7 @@ export default async (context) => {
         userId,
         body.email,
         body.name,
+        verifyUrl,
         successUrl,
         failureUrl
       );
@@ -73,33 +134,8 @@ export default async (context) => {
         return res.json({ success: true });
       }
 
-      const payment = event.data;
-      const orderUserId = payment.metadata?.user_id;
-      const orderId = payment.payment_id;
-
-      // Dodo Payments retries any non-2xx response, and a payment without a
-      // user ID will never succeed, so acknowledge it instead.
-      if (!orderUserId) {
-        error(`Payment ${orderId} has no user_id in its metadata.`);
-        return res.json({ success: true });
-      }
-
-      await appwrite.setup(databaseId, tableId);
-
-      const created = await appwrite.createOrder(
-        databaseId,
-        tableId,
-        orderUserId,
-        orderId
-      );
-      if (!created) {
-        log(`Order ${orderId} was already stored.`);
-        return res.json({ success: true });
-      }
-
-      log(
-        `Created order row for user ${orderUserId} with Dodo Payments payment ID ${orderId}.`
-      );
+      // Look the payment up instead of trusting the event payload.
+      await fulfillPayment(event.data.payment_id);
       return res.json({ success: true });
 
     default:

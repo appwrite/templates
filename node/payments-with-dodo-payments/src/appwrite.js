@@ -61,8 +61,10 @@ class AppwriteService {
   }
 
   /**
-   * Stores a paid order, using the order ID as the row ID so a repeated
-   * webhook delivery can't store the same order twice
+   * Stores a paid order. The webhook and the /success redirect can both run
+   * for the same payment, possibly at the same time. Using the order ID as the
+   * row ID makes the database reject the second write with a 409, so the
+   * order is only ever stored once.
    * @param {string} databaseId
    * @param {string} tableId
    * @param {string} userId

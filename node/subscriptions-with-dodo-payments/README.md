@@ -19,6 +19,7 @@ This endpoint creates a [Dodo Payments checkout session](https://docs.dodopaymen
 | x-appwrite-user-id | User ID from Appwrite.                                                                            | Header   | String             | 642...7cd                   |
 | Content-Type       | The content type of the request body                                                              | Header   | `application/json` | N/A                         |
 | successUrl         | The URL to return to after checkout. Defaults to the function domain.                             | Body     | String             | https://example.com/success |
+| verifyUrl          | Where the provider returns the user to verify the purchase. Defaults to `/success` on the `successUrl` origin. | Body | String | https://<function-domain>/success |
 | failureUrl         | The URL to redirect to after a cancelled or failed checkout. Defaults to the function domain.     | Body     | String             | https://example.com/failure |
 | email              | Optional. Prefills the customer's email address in the checkout. Test mode sends real emails too. | Body     | String             | jane@example.com            |
 | name               | Optional. Prefills the customer's name in the checkout when `email` is also set.                  | Body     | String             | Jane Doe                    |
@@ -37,9 +38,15 @@ Location: https://test.checkout.dodopayments.com/session/cks_Gi6KGJ2zFJo9rq9Ukif
 Location: https://example.com/failure
 ```
 
+### `GET /success`
+
+Dodo Payments redirects the user here after checkout. Dodo Payments adds `subscription_id` to the redirect URL, and this endpoint fetches the subscription from Dodo Payments with it. It provisions the user the same way the webhook does, then redirects to the `successUrl` given to the checkout endpoint.
+
+The webhook and this endpoint both provision the user, so either one works if the other fails. Running twice is safe: each run applies the latest status from the provider, and adding or removing a label that is already set or unset does nothing.
+
 ### `POST /webhook`
 
-This endpoint receives Dodo Payments webhooks and handles every `subscription.*` event. It verifies the [Standard Webhooks](https://www.standardwebhooks.com/) signature in the `webhook-id`, `webhook-signature` and `webhook-timestamp` headers. If the verification fails, a `401` response is sent.
+This endpoint receives Dodo Payments webhooks and handles every `subscription.*` event. It verifies the [Standard Webhooks](https://www.standardwebhooks.com/) signature in the `webhook-id`, `webhook-signature` and `webhook-timestamp` headers. If the verification fails, a `401` response is sent. The webhook payload isn't trusted: the function fetches the subscription from Dodo Payments and adds or removes the `subscriber` label based on its current status.
 
 Webhooks can arrive late, twice or out of order, but each one carries the subscription's current status. The function decides from that status rather than the event type, so a delayed event can't give access back after a cancellation:
 
