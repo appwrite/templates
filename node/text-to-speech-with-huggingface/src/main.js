@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import { throwIfMissing } from './utils.js';
 import AppwriteService from './appwrite.js';
 

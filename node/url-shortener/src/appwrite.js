@@ -34,7 +34,9 @@ class AppwriteService {
 
       return document;
     } catch (err) {
-      if (err.code !== 404) throw err;
+      // A short code Appwrite rejects as an ID (400) is as unknown as a
+      // missing one (404).
+      if (err.code !== 404 && err.code !== 400) throw err;
       return null;
     }
   }

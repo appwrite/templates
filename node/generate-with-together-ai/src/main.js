@@ -1,4 +1,5 @@
-import { Client, ID, InputFile, Storage } from 'node-appwrite';
+import { Client, ID, Storage } from 'node-appwrite';
+import { InputFile } from 'node-appwrite/file';
 import { getStaticFile, throwIfMissing } from './utils.js';
 import { fetch } from 'undici';
 

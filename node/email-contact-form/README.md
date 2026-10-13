@@ -37,7 +37,7 @@ Location: https://mywebapp.org/referer?error=Invalid+email+address
 
 | Setting           | Value           |
 | ----------------- | --------------- |
-| Runtime           | Node (18.0)     |
+| Runtime           | Node (22)       |
 | Entrypoint        | `src/main.js`   |
 | Build Commands    | `npm install`   |
 |                   | `npm run setup` |
