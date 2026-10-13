@@ -22,9 +22,19 @@ export default async ({ req, res, log, error }) => {
   const beforeTimeMs = Date.now() - expiryPeriodMs;
   const beforeDateTime = new Date(beforeTimeMs).toISOString();
 
-  const { users: usersWithExpiredPasswords } = await users.list([
-    Query.lessThanEqual('passwordUpdate', beforeDateTime),
-  ]);
+  const usersWithExpiredPasswords = [];
+  let cursor;
+  do {
+    const queries = [
+      Query.lessThanEqual('passwordUpdate', beforeDateTime),
+      Query.limit(100),
+    ];
+    if (cursor) queries.push(Query.cursorAfter(cursor));
+
+    const page = await users.list({ queries, total: false });
+    usersWithExpiredPasswords.push(...page.users);
+    cursor = page.users.length === 100 ? page.users[99].$id : undefined;
+  } while (cursor);
 
   const dsn = new URL(process.env.STMP_DSN);
 
