@@ -42,7 +42,9 @@ export default async (context) => {
       );
       return subscription;
     }
-    await setSubscriberLabel(subscriptionUserId, hasAccess);
+    if (!(await setSubscriberLabel(subscriptionUserId, hasAccess))) {
+      return subscription;
+    }
     log(
       `Subscription ${subscriptionId} is ${subscription.status}, user ${subscriptionUserId} ${hasAccess ? 'has' : "doesn't have"} the subscriber label.`
     );
@@ -65,12 +67,22 @@ export default async (context) => {
   /**
    * @param {string} userId
    * @param {boolean} hasAccess
+   * @returns {Promise<boolean>} false if the user no longer exists
    */
   async function setSubscriberLabel(userId, hasAccess) {
-    if (hasAccess) {
-      await appwrite.createSubscription(userId);
-    } else {
-      await appwrite.deleteSubscription(userId);
+    try {
+      if (hasAccess) {
+        await appwrite.createSubscription(userId);
+      } else {
+        await appwrite.deleteSubscription(userId);
+      }
+      return true;
+    } catch (err) {
+      // Dodo Payments retries any non-2xx response, and a deleted user will
+      // never come back, so acknowledge the event instead.
+      if (err.code !== 404) throw err;
+      error(`User ${userId} no longer exists.`);
+      return false;
     }
   }
 

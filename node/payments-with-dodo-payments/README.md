@@ -63,7 +63,7 @@ On `payment.succeeded`, the function creates the orders database and table if th
 
 Sample `200` Response:
 
-In case of the `payment.succeeded` event, a row for the order is created in the Appwrite table. Other events are acknowledged and ignored.
+In case of the `payment.succeeded` event, a row for the order is created in the Appwrite table. Other events are acknowledged and ignored. So is a payment with no `user_id` in its metadata, because Dodo Payments would otherwise retry it for about 28 hours.
 
 ```json
 { "success": true }

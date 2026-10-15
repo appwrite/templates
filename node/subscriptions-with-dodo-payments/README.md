@@ -72,7 +72,7 @@ A webhook and the `/success` redirect, or two webhooks, can run at the same time
 
 Sample `200` Response:
 
-In case of a `subscription.*` event, the `subscriber` label is added to or removed from the user. Other events are acknowledged and ignored.
+In case of a `subscription.*` event, the `subscriber` label is added to or removed from the user. Other events are acknowledged and ignored. So is a subscription with no `user_id` in its metadata, or one whose Appwrite user no longer exists, because Dodo Payments would otherwise retry it for about 28 hours.
 
 ```json
 { "success": true }
