@@ -15,7 +15,7 @@ class DodoPaymentsService {
     userId,
     userEmail,
     userName,
-    verifyUrl,
+    returnUrl,
     successUrl,
     failureUrl
   ) {
@@ -30,10 +30,10 @@ class DodoPaymentsService {
           user_id: userId,
           success_url: successUrl,
         },
-        // Dodo Payments returns the user to this function first, with the
-        // payment ID in the query string. It verifies the payment and then
-        // redirects to success_url.
-        return_url: verifyUrl,
+        // Dodo Payments adds the payment ID to this URL. When it's the
+        // function's /success route, the function verifies the payment there
+        // and then redirects to success_url.
+        return_url: returnUrl,
         cancel_url: failureUrl,
       });
     } catch (err) {

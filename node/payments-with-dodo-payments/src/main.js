@@ -27,7 +27,9 @@ export default async (context) => {
     const payment = await dodopayments.getPayment(paymentId);
 
     if (payment.status !== 'succeeded') {
-      log(`Payment ${payment.payment_id} is ${payment.status}, not fulfilling.`);
+      log(
+        `Payment ${payment.payment_id} is ${payment.status}, not fulfilling.`
+      );
       return payment;
     }
 
@@ -92,10 +94,12 @@ export default async (context) => {
       const successUrl = body.successUrl ?? fallbackUrl;
       const failureUrl = body.failureUrl ?? fallbackUrl;
 
-      // Dodo Payments returns the user to this function first, which verifies
-      // the payment and then redirects to successUrl.
-      const verifyUrl =
-        body.verifyUrl ?? new URL('/success', successUrl).toString();
+      // verifyUrl is this function's /success route, which verifies the
+      // payment and then redirects to successUrl. Called through the Appwrite
+      // API, the function can't tell its own domain, so the caller passes it.
+      // Without it, the user returns straight to successUrl and the webhook
+      // stores the order.
+      const returnUrl = body.verifyUrl ?? successUrl;
 
       const userId = req.headers['x-appwrite-user-id'];
 
@@ -109,7 +113,7 @@ export default async (context) => {
         userId,
         body.email,
         body.name,
-        verifyUrl,
+        returnUrl,
         successUrl,
         failureUrl
       );

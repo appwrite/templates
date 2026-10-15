@@ -478,6 +478,9 @@
           body: JSON.stringify({
             successUrl: returnUrl,
             failureUrl: returnUrl,
+            // This page is served by the function, so its /success route is
+            // on the same origin.
+            verifyUrl: window.location.origin + '/success',
             email,
             name,
           }),

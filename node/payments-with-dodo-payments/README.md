@@ -14,15 +14,15 @@ This endpoint creates a [Dodo Payments checkout session](https://docs.dodopaymen
 
 **Parameters**
 
-| Name               | Description                                                                                       | Location | Type               | Sample Value                |
-| ------------------ | ------------------------------------------------------------------------------------------------- | -------- | ------------------ | --------------------------- |
-| x-appwrite-user-id | User ID from Appwrite.                                                                            | Header   | String             | 642...7cd                   |
-| Content-Type       | The content type of the request body                                                              | Header   | `application/json` | N/A                         |
-| successUrl         | The URL to return to after checkout. Defaults to the function domain.                             | Body     | String             | https://example.com/success |
-| verifyUrl          | Where the provider returns the user to verify the purchase. Defaults to `/success` on the `successUrl` origin. | Body | String | https://<function-domain>/success |
-| failureUrl         | The URL to redirect to after a cancelled or failed checkout. Defaults to the function domain.     | Body     | String             | https://example.com/failure |
-| email              | Optional. Prefills the customer's email address in the checkout. Test mode sends real emails too. | Body     | String             | jane@example.com            |
-| name               | Optional. Prefills the customer's name in the checkout when `email` is also set.                  | Body     | String             | Jane Doe                    |
+| Name               | Description                                                                                                                                                                                                                                     | Location | Type               | Sample Value                      |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------------------ | --------------------------------- |
+| x-appwrite-user-id | User ID from Appwrite.                                                                                                                                                                                                                          | Header   | String             | 642...7cd                         |
+| Content-Type       | The content type of the request body                                                                                                                                                                                                            | Header   | `application/json` | N/A                               |
+| successUrl         | The URL to return to after checkout. Defaults to the function domain.                                                                                                                                                                           | Body     | String             | https://example.com/success       |
+| verifyUrl          | Optional. This function's `/success` URL. Dodo Payments returns the user there to verify the payment, then the function redirects to `successUrl`. Without it, the user returns straight to `successUrl` and only the webhook stores the order. | Body     | String             | https://<function-domain>/success |
+| failureUrl         | The URL to redirect to after a cancelled or failed checkout. Defaults to the function domain.                                                                                                                                                   | Body     | String             | https://example.com/failure       |
+| email              | Optional. Prefills the customer's email address in the checkout. Test mode sends real emails too.                                                                                                                                               | Body     | String             | jane@example.com                  |
+| name               | Optional. Prefills the customer's name in the checkout when `email` is also set.                                                                                                                                                                | Body     | String             | Jane Doe                          |
 
 **Response**
 
@@ -40,7 +40,7 @@ Location: https://example.com/failure
 
 ### `GET /success`
 
-Dodo Payments redirects the user here after checkout. Dodo Payments adds `payment_id` to the redirect URL, and this endpoint fetches the payment from Dodo Payments with it. It provisions the user the same way the webhook does, then redirects to the `successUrl` given to the checkout endpoint.
+Dodo Payments redirects the user here after checkout when the checkout request sets `verifyUrl`. Dodo Payments adds `payment_id` to the redirect URL, and this endpoint fetches the payment from Dodo Payments with it. It provisions the user the same way the webhook does, then redirects to the `successUrl` given to the checkout endpoint.
 
 The webhook and this endpoint both provision the user, so either one works if the other fails. Running twice is safe: orders use the provider ID as the row ID, so the database rejects a second write.
 

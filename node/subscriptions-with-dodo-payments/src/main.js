@@ -21,12 +21,12 @@ export default async (context) => {
   /**
    * Gives or removes the subscriber label based on the subscription's current
    * status in Dodo Payments. Both the webhook and the /success redirect call
-   * this. They can run at the same time or out of order, but each one applies
-   * the latest status from Dodo Payments and the label updates are
-   * idempotent, so they always settle on the same result.
+   * this, and the label updates are idempotent, so running twice is safe.
    * @param {string} subscriptionId
+   * @param {{ grantOnly?: boolean }} [options] With grantOnly, a status without
+   * access leaves the label as it is instead of removing it.
    */
-  async function syncSubscription(subscriptionId) {
+  async function syncSubscription(subscriptionId, { grantOnly = false } = {}) {
     const subscription = await dodopayments.getSubscription(subscriptionId);
     const subscriptionUserId = subscription.metadata?.user_id;
 
@@ -39,6 +39,10 @@ export default async (context) => {
       await appwrite.createSubscription(subscriptionUserId);
       log(
         `Subscription ${subscriptionId} is ${subscription.status}, user ${subscriptionUserId} has the subscriber label.`
+      );
+    } else if (grantOnly) {
+      log(
+        `Subscription ${subscriptionId} is ${subscription.status}, leaving the subscriber label to the webhook.`
       );
     } else {
       await appwrite.deleteSubscription(subscriptionUserId);
@@ -55,9 +59,12 @@ export default async (context) => {
     try {
       // A cancelled or failed checkout can come back without a subscription ID.
       if (req.query.subscription_id) {
-        const subscription = await syncSubscription(
-          req.query.subscription_id
-        );
+        // The redirect can arrive while the subscription is still pending, and
+        // its lookup can finish after a webhook has applied a newer status.
+        // Only giving the label here means it can never undo a webhook.
+        const subscription = await syncSubscription(req.query.subscription_id, {
+          grantOnly: true,
+        });
         successUrl = subscription.metadata?.success_url || successUrl;
       }
     } catch (err) {
@@ -86,10 +93,12 @@ export default async (context) => {
       const successUrl = body.successUrl ?? fallbackUrl;
       const failureUrl = body.failureUrl ?? fallbackUrl;
 
-      // Dodo Payments returns the user to this function first, which verifies
-      // the subscription and then redirects to successUrl.
-      const verifyUrl =
-        body.verifyUrl ?? new URL('/success', successUrl).toString();
+      // verifyUrl is this function's /success route, which verifies the
+      // subscription and then redirects to successUrl. Called through the
+      // Appwrite API, the function can't tell its own domain, so the caller
+      // passes it. Without it, the user returns straight to successUrl and the
+      // webhook gives the label.
+      const returnUrl = body.verifyUrl ?? successUrl;
 
       const userId = req.headers['x-appwrite-user-id'];
 
@@ -103,7 +112,7 @@ export default async (context) => {
         userId,
         body.email,
         body.name,
-        verifyUrl,
+        returnUrl,
         successUrl,
         failureUrl
       );
