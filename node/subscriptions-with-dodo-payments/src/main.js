@@ -35,22 +35,43 @@ export default async (context) => {
       return subscription;
     }
 
-    if (StatusesWithAccess.includes(subscription.status)) {
-      await appwrite.createSubscription(subscriptionUserId);
-      log(
-        `Subscription ${subscriptionId} is ${subscription.status}, user ${subscriptionUserId} has the subscriber label.`
-      );
-    } else if (grantOnly) {
+    const hasAccess = StatusesWithAccess.includes(subscription.status);
+    if (!hasAccess && grantOnly) {
       log(
         `Subscription ${subscriptionId} is ${subscription.status}, leaving the subscriber label to the webhook.`
       );
-    } else {
-      await appwrite.deleteSubscription(subscriptionUserId);
+      return subscription;
+    }
+    await setSubscriberLabel(subscriptionUserId, hasAccess);
+    log(
+      `Subscription ${subscriptionId} is ${subscription.status}, user ${subscriptionUserId} ${hasAccess ? 'has' : "doesn't have"} the subscriber label.`
+    );
+
+    // Another run can apply a newer status between this run's lookup and its
+    // label update, which this run would then overwrite. Looking the
+    // subscription up again after the update catches that, and the newer
+    // status wins.
+    const latest = await dodopayments.getSubscription(subscriptionId);
+    const latestHasAccess = StatusesWithAccess.includes(latest.status);
+    if (latestHasAccess !== hasAccess) {
+      await setSubscriberLabel(subscriptionUserId, latestHasAccess);
       log(
-        `Subscription ${subscriptionId} is ${subscription.status}, user ${subscriptionUserId} doesn't have the subscriber label.`
+        `Subscription ${subscriptionId} changed to ${latest.status} during the update, user ${subscriptionUserId} ${latestHasAccess ? 'has' : "doesn't have"} the subscriber label.`
       );
     }
-    return subscription;
+    return latest;
+  }
+
+  /**
+   * @param {string} userId
+   * @param {boolean} hasAccess
+   */
+  async function setSubscriberLabel(userId, hasAccess) {
+    if (hasAccess) {
+      await appwrite.createSubscription(userId);
+    } else {
+      await appwrite.deleteSubscription(userId);
+    }
   }
 
   if (req.method === 'GET' && req.path === '/success') {
@@ -59,9 +80,8 @@ export default async (context) => {
     try {
       // A cancelled or failed checkout can come back without a subscription ID.
       if (req.query.subscription_id) {
-        // The redirect can arrive while the subscription is still pending, and
-        // its lookup can finish after a webhook has applied a newer status.
-        // Only giving the label here means it can never undo a webhook.
+        // The redirect can arrive while the subscription is still pending, so
+        // this only gives the label and leaves removing it to the webhook.
         const subscription = await syncSubscription(req.query.subscription_id, {
           grantOnly: true,
         });

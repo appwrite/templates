@@ -18,9 +18,9 @@ This endpoint creates a [Dodo Payments checkout session](https://docs.dodopaymen
 | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------------------ | --------------------------------- |
 | x-appwrite-user-id | User ID from Appwrite.                                                                                                                                                                                                                              | Header   | String             | 642...7cd                         |
 | Content-Type       | The content type of the request body                                                                                                                                                                                                                | Header   | `application/json` | N/A                               |
-| successUrl         | The URL to return to after checkout. Defaults to the function domain.                                                                                                                                                                               | Body     | String             | https://example.com/success       |
+| successUrl         | The URL to return to after checkout. Defaults to the function domain when the request comes through it. Through the Appwrite API the function can't see its domain, so pass it.                                                                     | Body     | String             | https://example.com/success       |
 | verifyUrl          | Optional. This function's `/success` URL. Dodo Payments returns the user there to verify the subscription, then the function redirects to `successUrl`. Without it, the user returns straight to `successUrl` and only the webhook gives the label. | Body     | String             | https://<function-domain>/success |
-| failureUrl         | The URL to redirect to after a cancelled or failed checkout. Defaults to the function domain.                                                                                                                                                       | Body     | String             | https://example.com/failure       |
+| failureUrl         | The URL to redirect to after a cancelled or failed checkout. Defaults like `successUrl`.                                                                                                                                                            | Body     | String             | https://example.com/failure       |
 | email              | Optional. Prefills the customer's email address in the checkout. Test mode sends real emails too.                                                                                                                                                   | Body     | String             | jane@example.com                  |
 | name               | Optional. Prefills the customer's name in the checkout when `email` is also set.                                                                                                                                                                    | Body     | String             | Jane Doe                          |
 
@@ -42,7 +42,7 @@ Location: https://example.com/failure
 
 Dodo Payments redirects the user here after checkout when the checkout request sets `verifyUrl`. Dodo Payments adds `subscription_id` to the redirect URL, and this endpoint fetches the subscription from Dodo Payments with it. If the subscription gives access, it adds the `subscriber` label, then redirects to the `successUrl` given to the checkout endpoint.
 
-The webhook and this endpoint both give the label, so either one works if the other fails. This endpoint never removes the label, though. The redirect can arrive while the subscription is still `pending`, and its lookup can finish after a webhook has applied a newer status, so removing the label is left to the webhook. Running twice is safe: adding a label the user already has does nothing.
+The webhook and this endpoint both give the label, so either one works if the other fails. The redirect can arrive while the subscription is still `pending`, so this endpoint doesn't remove the label for a status without access. That's left to the webhook.
 
 ### `POST /webhook`
 
@@ -56,6 +56,8 @@ Webhooks can arrive late, twice or out of order. Each one looks up the subscript
 | `on_hold`, `paused`, `cancelled`, `expired`, `failed`, `pending` | Removes the `subscriber` label from the user |
 
 `past_due` is the grace period while Dodo Payments retries a failed renewal, so the customer keeps access until the subscription moves to `on_hold` or `cancelled`. See the [subscription integration guide](https://docs.dodopayments.com/developer-resources/subscription-integration-guide) for the full lifecycle.
+
+A webhook and the `/success` redirect, or two webhooks, can run at the same time. After each label update, the function looks the subscription up again and applies the newer status if it changed in the meantime, so an overlapping run can't leave the label out of date.
 
 **Parameters**
 
@@ -92,6 +94,8 @@ Sample `401` Response:
 | Permissions       | `any`                       |
 | Timeout (Seconds) | 15                          |
 | Scopes            | `users.read`, `users.write` |
+
+> `successUrl`, `failureUrl` and `verifyUrl` come from the caller, and Dodo Payments and `/success` redirect the user to them. Before going live, check them against your own domains in `POST /subscribe`, so the function can't be used to redirect people to other sites.
 
 > If using a demo web app to subscribe, make sure to add your function domain as a web platform to your Appwrite project. Doing this fixes CORS errors and allows proper functionality.
 
