@@ -18,9 +18,9 @@ export default async (context) => {
   const dodopayments = new DodoPaymentsService();
 
   /**
-   * Stores the order if Dodo Payments reports the payment as succeeded. Both
-   * the webhook and the /success redirect call this, so the order is stored
-   * even if one of them never arrives.
+   * Stores the order if Dodo Payments reports the payment as succeeded and it
+   * bought this function's product. Both the webhook and the /success redirect
+   * call this, so the order is stored even if one of them never arrives.
    * @param {string} paymentId
    */
   async function fulfillPayment(paymentId) {
@@ -29,6 +29,17 @@ export default async (context) => {
     if (payment.status !== 'succeeded') {
       log(
         `Payment ${payment.payment_id} is ${payment.status}, not fulfilling.`
+      );
+      return payment;
+    }
+
+    // Every payment in the business sends payment.succeeded, including
+    // subscription charges and other products. A subscription charge has no
+    // product_cart, so only fulfill payments that bought this product.
+    const productId = process.env.DODO_PAYMENTS_PRODUCT_ID;
+    if (!payment.product_cart?.some((item) => item.product_id === productId)) {
+      log(
+        `Payment ${payment.payment_id} isn't for product ${productId}, not fulfilling.`
       );
       return payment;
     }

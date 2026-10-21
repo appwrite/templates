@@ -46,7 +46,9 @@ The webhook and this endpoint both provision the user, so either one works if th
 
 ### `POST /webhook`
 
-This endpoint receives Dodo Payments webhooks and handles the `payment.succeeded` event. It verifies the [Standard Webhooks](https://www.standardwebhooks.com/) signature in the `webhook-id`, `webhook-signature` and `webhook-timestamp` headers. If the verification fails, a `401` response is sent. The webhook payload isn't trusted: the function fetches the payment from Dodo Payments and stores the order only if its status is `succeeded`.
+This endpoint receives Dodo Payments webhooks and handles the `payment.succeeded` event. It verifies the [Standard Webhooks](https://www.standardwebhooks.com/) signature in the `webhook-id`, `webhook-signature` and `webhook-timestamp` headers. If the verification fails, a `401` response is sent. The webhook payload isn't trusted: the function fetches the payment from Dodo Payments and stores the order only if its status is `succeeded` and its `product_cart` includes the product in `DODO_PAYMENTS_PRODUCT_ID`.
+
+Dodo Payments sends `payment.succeeded` for every payment in the business, including subscription charges and other products. A subscription charge has no `product_cart`, so the function doesn't store it as an order. This keeps orders correct when the same business also runs the Subscriptions with Dodo Payments template.
 
 On `payment.succeeded`, the function creates the orders database and table if they don't exist yet, then creates a row for the order. The row ID is the Dodo Payments payment ID, so a repeated delivery of the same event doesn't store the order twice. Only the user who paid can read the row.
 
@@ -63,7 +65,7 @@ On `payment.succeeded`, the function creates the orders database and table if th
 
 Sample `200` Response:
 
-In case of the `payment.succeeded` event, a row for the order is created in the Appwrite table. Other events are acknowledged and ignored. So is a payment with no `user_id` in its metadata, because Dodo Payments would otherwise retry it for about 28 hours.
+In case of the `payment.succeeded` event, a row for the order is created in the Appwrite table. Other events are acknowledged and ignored. So is a payment for another product, such as a subscription charge, and a payment with no `user_id` in its metadata, because Dodo Payments would otherwise retry them for about 28 hours.
 
 ```json
 { "success": true }
@@ -116,7 +118,7 @@ Signing secret of the webhook endpoint, used to verify that webhooks come from D
 
 ### DODO_PAYMENTS_PRODUCT_ID
 
-ID of the one-time product to sell.
+ID of the one-time product to sell. The function only stores orders for payments that include this product.
 
 | Question      | Answer                                                                     |
 | ------------- | -------------------------------------------------------------------------- |
