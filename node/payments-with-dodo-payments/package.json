@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "dodopayments": "^2.54.0",
-    "node-appwrite": "^29.1.0"
+    "node-appwrite": "^30.0.0"
   },
   "devDependencies": {
     "prettier": "^3.9.9"
