@@ -10,7 +10,7 @@
   "dependencies": {
     "@qdrant/js-client-rest": "^1.9.0",
     "node-appwrite": "^11.0.0",
-    "openai": "^4.47.1"
+    "openai": "^7.34.0"
   },
   "devDependencies": {
     "@types/bun": "^1.1.16",
