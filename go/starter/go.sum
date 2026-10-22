@@ -1,4 +1,4 @@
-github.com/appwrite/sdk-for-go v0.13.1 h1:g7UsGXQ2wBrbuEVa7EqgdYJddomJ0l2RTVAua0nN/FE=
-github.com/appwrite/sdk-for-go v0.13.1/go.mod h1:aFiOAbfOzGS3811eMCt3T9WDBvjvPVAfOjw10Vghi4E=
+github.com/appwrite/sdk-for-go v1.0.0 h1:ThD2kz0Aiytyl/+HYCUyCV3KdlvykySz4h8l/hVOfac=
+github.com/appwrite/sdk-for-go v1.0.0/go.mod h1:aFiOAbfOzGS3811eMCt3T9WDBvjvPVAfOjw10Vghi4E=
 github.com/open-runtimes/types-for-go/v4 v4.0.8 h1:GyhMVFN5jwgFxln3Botvlco5sdCO4snG0GuWKbzV9dY=
 github.com/open-runtimes/types-for-go/v4 v4.0.8/go.mod h1:L6N4mNQFedFSlX5hOKmtjUTZdqD691YZlVtXOxC5DSw=
