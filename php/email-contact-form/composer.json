@@ -3,6 +3,6 @@
   "type": "library",
   "require": {
     "php": ">=8.0.0",
-    "phpmailer/phpmailer": "^6.8"
+    "phpmailer/phpmailer": "^6.8 || ^7.0"
   }
 }
