@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "meilisearch": "^0.35.0",
-    "node-appwrite": "^11.0.0"
+    "node-appwrite": "^30.0.0"
   },
   "devDependencies": {
     "@types/bun": "^1.1.16",
