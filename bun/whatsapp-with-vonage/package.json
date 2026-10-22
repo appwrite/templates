@@ -13,8 +13,8 @@
     "undici": "^6.18.1"
   },
   "devDependencies": {
-    "@types/bun": "^1.1.16",
+    "@types/bun": "^1.4.3",
     "@types/jsonwebtoken": "^9.0.6",
-    "prettier": "^3.2.5"
+    "prettier": "^3.9.10"
   }
 }
