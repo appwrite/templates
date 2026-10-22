@@ -1,0 +1,268 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directories:
+      - "/node/*"
+      - "/node-typescript/*"
+      - "/.github/workflows/markdown-table-workflow"
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 10
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: "chore"
+      include: scope
+    groups:
+      npm-version-updates:
+        applies-to: version-updates
+        update-types:
+          - minor
+          - patch
+        patterns:
+          - "*"
+      npm-security-updates:
+        applies-to: security-updates
+        patterns:
+          - "*"
+  - package-ecosystem: bun
+    directories:
+      - "/bun/*"
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 10
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: "chore"
+      include: scope
+    groups:
+      bun-version-updates:
+        applies-to: version-updates
+        update-types:
+          - minor
+          - patch
+        patterns:
+          - "*"
+      bun-security-updates:
+        applies-to: security-updates
+        patterns:
+          - "*"
+  - package-ecosystem: pip
+    directories:
+      - "/python/*"
+      - "/python-ml/*"
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 10
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: "chore"
+      include: scope
+    groups:
+      pip-version-updates:
+        applies-to: version-updates
+        update-types:
+          - minor
+          - patch
+        patterns:
+          - "*"
+      pip-security-updates:
+        applies-to: security-updates
+        patterns:
+          - "*"
+  - package-ecosystem: composer
+    directories:
+      - "/php/*"
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 10
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: "chore"
+      include: scope
+    groups:
+      composer-version-updates:
+        applies-to: version-updates
+        update-types:
+          - minor
+          - patch
+        patterns:
+          - "*"
+      composer-security-updates:
+        applies-to: security-updates
+        patterns:
+          - "*"
+  - package-ecosystem: bundler
+    directories:
+      - "/ruby/*"
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 10
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: "chore"
+      include: scope
+    groups:
+      bundler-version-updates:
+        applies-to: version-updates
+        update-types:
+          - minor
+          - patch
+        patterns:
+          - "*"
+      bundler-security-updates:
+        applies-to: security-updates
+        patterns:
+          - "*"
+  - package-ecosystem: pub
+    directories:
+      - "/dart/*"
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 10
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: "chore"
+      include: scope
+    groups:
+      pub-version-updates:
+        applies-to: version-updates
+        update-types:
+          - minor
+          - patch
+        patterns:
+          - "*"
+      pub-security-updates:
+        applies-to: security-updates
+        patterns:
+          - "*"
+  - package-ecosystem: gomod
+    directories:
+      - "/go/*"
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 10
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: "chore"
+      include: scope
+    groups:
+      gomod-version-updates:
+        applies-to: version-updates
+        update-types:
+          - minor
+          - patch
+        patterns:
+          - "*"
+      gomod-security-updates:
+        applies-to: security-updates
+        patterns:
+          - "*"
+  - package-ecosystem: cargo
+    directories:
+      - "/rust/*"
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 10
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: "chore"
+      include: scope
+    groups:
+      cargo-version-updates:
+        applies-to: version-updates
+        update-types:
+          - minor
+          - patch
+        patterns:
+          - "*"
+      cargo-security-updates:
+        applies-to: security-updates
+        patterns:
+          - "*"
+  - package-ecosystem: swift
+    directories:
+      - "/swift/*"
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 10
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: "chore"
+      include: scope
+    groups:
+      swift-version-updates:
+        applies-to: version-updates
+        update-types:
+          - minor
+          - patch
+        patterns:
+          - "*"
+      swift-security-updates:
+        applies-to: security-updates
+        patterns:
+          - "*"
+  - package-ecosystem: nuget
+    directories:
+      - "/dotnet/*"
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 10
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: "chore"
+      include: scope
+    groups:
+      nuget-version-updates:
+        applies-to: version-updates
+        update-types:
+          - minor
+          - patch
+        patterns:
+          - "*"
+      nuget-security-updates:
+        applies-to: security-updates
+        patterns:
+          - "*"
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 10
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: "chore"
+      include: scope
+    groups:
+      github-actions-version-updates:
+        applies-to: version-updates
+        update-types:
+          - minor
+          - patch
+        patterns:
+          - "*"
+      github-actions-security-updates:
+        applies-to: security-updates
+        patterns:
+          - "*"
