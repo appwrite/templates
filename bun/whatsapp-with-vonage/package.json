@@ -10,7 +10,7 @@
   "keywords": [],
   "dependencies": {
     "jsonwebtoken": "^9.0.2",
-    "undici": "^6.18.1"
+    "undici": "^6.29.1"
   },
   "devDependencies": {
     "@types/bun": "^1.1.16",
