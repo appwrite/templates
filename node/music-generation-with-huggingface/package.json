@@ -11,7 +11,7 @@
   "dependencies": {
     "@huggingface/inference": "^2.7.0",
     "node-appwrite": "^29.0.0",
-    "undici": "^6.18.1"
+    "undici": "^8.12.3"
   },
   "devDependencies": {
     "prettier": "^3.2.5"
