@@ -1,25 +1,21 @@
 name: Dependabot auto-merge
 
-on: pull_request
+# Approves and merges Dependabot patch and minor updates once every check has passed.
+# Runs after each workflow a pull request triggers; the shared gate waits for all of them.
+on:
+  workflow_run:
+    workflows:
+      - 'Dependency audit'
+      - 'Template builds'
+    types:
+      - completed
 
 permissions:
+  checks: read
   contents: write
   pull-requests: write
+  statuses: read
 
 jobs:
-  auto-merge:
-    if: github.event.pull_request.user.login == 'dependabot[bot]'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Fetch Dependabot metadata
-        id: metadata
-        uses: dependabot/fetch-metadata@25dd0e34f4fe68f24cc83900b1fe3fe149efef98 # v3.1.0
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Enable auto-merge for patch and minor updates
-        if: steps.metadata.outputs.update-type == 'version-update:semver-patch' || steps.metadata.outputs.update-type == 'version-update:semver-minor'
-        run: gh pr merge --auto --squash "$PR_URL"
-        env:
-          PR_URL: ${{ github.event.pull_request.html_url }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  dependabot:
+    uses: appwrite/.github/.github/workflows/dependabot-auto-merge.yml@d559a62c510dc7eccf274dda83b0a42f89b0bc06 # main
