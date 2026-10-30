@@ -4,7 +4,7 @@ import PackageDescription
 let package = Package(
     name: "swift-function",
     dependencies: [
-        .package(url: "https://github.com/appwrite/sdk-for-swift", .upToNextMajor(from: "13.2.2")),
+        .package(url: "https://github.com/appwrite/sdk-for-swift", .upToNextMajor(from: "23.0.0")),
     ],
     targets: [
         .executableTarget(
