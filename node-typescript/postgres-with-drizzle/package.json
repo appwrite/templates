@@ -16,7 +16,7 @@
     "typescript": "^5.9.3"
   },
   "devDependencies": {
-    "@types/node": "^22.20.4",
+    "@types/node": "^26.6.5",
     "drizzle-kit": "^0.31.11",
     "prettier": "^3.9.9"
   },
