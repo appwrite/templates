@@ -4,13 +4,15 @@ version = 4
 
 [[package]]
 name = "appwrite"
-version = "0.4.0"
+version = "0.19.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "96f4d9e28009186a3dc4805f7512fbd7c20f120be779c5ce477dc8abe068a38f"
+checksum = "d745548a11d08c5369d8f9725e6e1af6bfd700f7783d18f3453a935bdf88b1d5"
 dependencies = [
  "arc-swap",
  "bytes",
+ "encoding_rs",
  "fastrand",
+ "hyper-util",
  "idna",
  "idna_adapter",
  "indexmap",
@@ -21,7 +23,9 @@ dependencies = [
  "serde_json",
  "thiserror",
  "tokio",
+ "tokio-util",
  "url",
+ "zeroize",
 ]
 
 [[package]]
@@ -127,7 +131,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "39cab71617ae0d63f51a36d69f866391735b51691dbda63cf6f96d042b63efeb"
 dependencies = [
  "libc",
- "windows-sys 0.59.0",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
