@@ -14,7 +14,7 @@
     "undici": "^6.18.1"
   },
   "devDependencies": {
-    "@types/node": "^22.9.1",
+    "@types/node": "^26.6.5",
     "prettier": "^3.3.3"
   }
 }
