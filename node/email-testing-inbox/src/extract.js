@@ -3,6 +3,8 @@
 const CODE_WORDS =
   /\b(code|otp|one[- ]time|passcode|pin|verification|verify|confirm|token|2fa|security)\b/i;
 const YEAR = /^(19|20)\d{2}$/;
+// Wording that sits right before a code: "code: 482913", "your code is 482913", "OTP 482913".
+const RIGHT_BEFORE = /\b(code|otp|passcode|pin)\W{0,3}(is\W{0,3})?$/i;
 
 export function htmlToText(html) {
   if (!html) return '';
@@ -22,6 +24,7 @@ export function htmlToText(html) {
     .trim();
 }
 
+// Code-shaped values in a line, with where each starts.
 function candidates(line) {
   const found = [];
   // "4 8 2 9 1 3" or "482-913" style codes
@@ -30,51 +33,55 @@ function candidates(line) {
   )) {
     const digits = m[1].replace(/[ -]/g, '');
     if (digits.length >= 4 && digits.length <= 8 && !YEAR.test(digits))
-      found.push(digits);
+      found.push({ code: digits, at: m.index });
   }
   // Mixed codes such as "K7Q-2XM" or "AB12CD"
   for (const m of line.matchAll(/\b([A-Z0-9]{3,4}-?[A-Z0-9]{3,4})\b/g)) {
     const raw = m[1];
-    if (/[A-Z]/.test(raw) && /\d/.test(raw)) found.push(raw);
+    if (/[A-Z]/.test(raw) && /\d/.test(raw))
+      found.push({ code: raw, at: m.index });
   }
   return found;
 }
 
+// Scores every code-shaped value and returns the best one. A value counts only near code wording,
+// or anywhere when the subject promises a code. Wording right before it counts most, then a line
+// that's only the code, the same line, and the two lines above. 6 digits win a tie, and so does
+// the earlier value.
 export function extractCode(subject, text) {
-  const subjectHasWord = CODE_WORDS.test(subject || '');
-  if (subjectHasWord) {
-    const fromSubject = candidates(subject);
-    if (fromSubject.length) return fromSubject[0];
-  }
-  const lines = (text || '')
+  const body = (text || '')
     .split('\n')
     .map((l) => l.trim())
     .filter(Boolean);
-  const bodyHasWord = subjectHasWord || lines.some((l) => CODE_WORDS.test(l));
-  if (!bodyHasWord) return null;
-  // A line that is only the code wins, then a line that mentions a code word.
-  for (const line of lines) {
-    if (/^[A-Z0-9 -]{4,15}$/.test(line)) {
-      const c = candidates(line);
-      if (c.length === 1) return c[0];
+  const subjectHasWord = CODE_WORDS.test(subject || '');
+  if (!subjectHasWord && !body.some((l) => CODE_WORDS.test(l))) return null;
+
+  let best = null;
+  const consider = (line, wordAbove) => {
+    const found = candidates(line);
+    const alone = found.length === 1 && /^[A-Z0-9 -]{4,15}$/.test(line);
+    const wordHere = CODE_WORDS.test(line);
+    for (const { code, at } of found) {
+      const rightAfter = RIGHT_BEFORE.test(line.slice(0, at));
+      if (!rightAfter && !alone && !wordHere && !wordAbove && !subjectHasWord)
+        continue;
+      const score =
+        (rightAfter ? 8 : 0) +
+        (alone ? 4 : 0) +
+        (wordHere ? 2 : 0) +
+        (wordAbove ? 1 : 0) +
+        (/^\d{6}$/.test(code) ? 0.5 : 0);
+      if (!best || score > best.score) best = { code, score };
     }
-  }
-  for (let i = 0; i < lines.length; i++) {
-    if (!CODE_WORDS.test(lines[i])) continue;
-    const near = [lines[i], lines[i + 1] || '', lines[i + 2] || ''];
-    for (const l of near) {
-      const c = candidates(l);
-      if (c.length) return c[0];
-    }
-  }
-  // The subject promised a code, so the first code-shaped value in the body is it.
-  if (subjectHasWord) {
-    for (const line of lines) {
-      const c = candidates(line);
-      if (c.length) return c[0];
-    }
-  }
-  return null;
+  };
+  consider((subject || '').trim(), false);
+  body.forEach((line, i) =>
+    consider(
+      line,
+      body.slice(Math.max(0, i - 2), i).some((l) => CODE_WORDS.test(l))
+    )
+  );
+  return best?.code ?? null;
 }
 
 function decodeEntities(s) {
