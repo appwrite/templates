@@ -24,8 +24,8 @@ def main(context):
 
     try:
         response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            max_tokens=int(os.environ.get("OPENAI_MAX_TOKENS", "512")),
+            model="gpt-5.6-terra",
+            max_completion_tokens=int(os.environ.get("OPENAI_MAX_TOKENS", "512")),
             messages=[{"role": "user", "content": context.req.body["prompt"]}],
         )
         completion = response.choices[0].message.content
