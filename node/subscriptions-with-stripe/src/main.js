@@ -2,6 +2,10 @@ import StripeService from './stripe.js';
 import AppwriteService from './appwrite.js';
 import { getStaticFile, interpolate, throwIfMissing } from './utils.js';
 
+// past_due is the grace period while Stripe retries a failed renewal, so the
+// customer keeps access. Every other status removes it.
+const StatusesWithAccess = ['active', 'trialing', 'past_due'];
+
 export default async (context) => {
   const { req, res, log, error } = context;
 
@@ -9,6 +13,58 @@ export default async (context) => {
     'STRIPE_SECRET_KEY',
     'STRIPE_WEBHOOK_SECRET',
   ]);
+
+  const appwrite = new AppwriteService(context.req.headers['x-appwrite-key']);
+  const stripe = new StripeService();
+
+  /**
+   * Gives or removes the subscriber label based on the subscription's current
+   * status in Stripe. Both the webhook and the /success redirect call this.
+   * They can run at the same time or out of order, but each one applies the
+   * latest status from Stripe and the label updates are idempotent, so they
+   * always settle on the same result.
+   * @param {string} subscriptionId
+   */
+  async function syncSubscription(subscriptionId) {
+    const subscription = await stripe.getSubscription(subscriptionId);
+    const userId = subscription.metadata?.userId;
+
+    if (!userId) {
+      error(`Subscription ${subscription.id} has no userId in its metadata.`);
+      return;
+    }
+
+    if (StatusesWithAccess.includes(subscription.status)) {
+      await appwrite.createSubscription(userId);
+      log(
+        `Subscription ${subscription.id} is ${subscription.status}, user ${userId} has the subscriber label.`
+      );
+    } else {
+      await appwrite.deleteSubscription(userId);
+      log(
+        `Subscription ${subscription.id} is ${subscription.status}, user ${userId} doesn't have the subscriber label.`
+      );
+    }
+  }
+
+  if (req.method === 'GET' && req.path === '/success') {
+    const sessionId = req.query.session_id;
+    let successUrl = '/';
+
+    try {
+      const session = await stripe.getCheckoutSession(sessionId);
+      successUrl = session.metadata?.successUrl || successUrl;
+
+      if (session.subscription) {
+        await syncSubscription(/** @type {string} */ (session.subscription));
+      }
+    } catch (err) {
+      // The webhook still provisions the user, so send them on regardless.
+      error(err);
+    }
+
+    return res.redirect(successUrl, 303);
+  }
 
   if (req.method === 'GET') {
     const html = interpolate(getStaticFile('index.html'), {
@@ -20,15 +76,16 @@ export default async (context) => {
     return res.text(html, 200, { 'Content-Type': 'text/html; charset=utf-8' });
   }
 
-  const appwrite = new AppwriteService(context.req.headers['x-appwrite-key']);
-  const stripe = new StripeService();
-
   switch (req.path) {
     case '/subscribe':
       const fallbackUrl = req.scheme + '://' + req.headers['host'] + '/';
 
       const successUrl = req.body?.successUrl ?? fallbackUrl;
       const failureUrl = req.body?.failureUrl ?? fallbackUrl;
+      // Stripe returns the user to this function first, which verifies the
+      // subscription and then redirects to successUrl.
+      const verifyUrl =
+        req.body?.verifyUrl ?? new URL('/success', successUrl).toString();
 
       const userId = req.headers['x-appwrite-user-id'];
       if (!userId) {
@@ -39,6 +96,7 @@ export default async (context) => {
       const session = await stripe.checkoutSubscription(
         context,
         userId,
+        verifyUrl,
         successUrl,
         failureUrl
       );
@@ -62,22 +120,12 @@ export default async (context) => {
       context.log('Event:');
       context.log(event);
 
-      if (event.type === 'customer.subscription.created') {
-        const session = event.data.object;
-        const userId = session.metadata.userId;
-
-        await appwrite.createSubscription(userId);
-        log(`Created subscription for user ${userId}`);
-        return res.json({ success: true });
-      }
-
-      if (event.type === 'customer.subscription.deleted') {
-        const session = event.data.object;
-        const userId = session.metadata.userId;
-
-        await appwrite.deleteSubscription(userId);
-        log(`Deleted subscription for user ${userId}`);
-        return res.json({ success: true });
+      if (
+        event.type === 'customer.subscription.created' ||
+        event.type === 'customer.subscription.updated' ||
+        event.type === 'customer.subscription.deleted'
+      ) {
+        await syncSubscription(event.data.object.id);
       }
 
       return res.json({ success: true });

@@ -15,6 +15,7 @@ This endpoint initiates a Stripe checkout session for a subscription. The user I
 | x-appwrite-user-id | User ID from Appwrite.                                    | Header   | String             | 642...7cd                   |
 | Content-Type       | The content type of the request body                      | Header   | `application/json` | N/A                         |
 | successUrl         | The URL to redirect to after a successful payment.        | Body     | String             | https://example.com/success |
+| verifyUrl          | Where the provider returns the user to verify the purchase. Defaults to `/success` on the `successUrl` origin. | Body | String | https://<function-domain>/success |
 | failureUrl         | The URL to redirect to after a cancelled payment attempt. | Body     | String             | https://example.com/failure |
 
 **Response**
@@ -31,9 +32,15 @@ Location: https://checkout.stripe.com/pay/cs_test_...#fidkdWxOYHwnP
 Location: https://mywebapp.com/cancel
 ```
 
+### `GET /success`
+
+Stripe redirects the user here after checkout. Stripe adds `session_id` to the redirect URL, and this endpoint fetches the subscription from Stripe with it. It provisions the user the same way the webhook does, then redirects to the `successUrl` given to the checkout endpoint.
+
+The webhook and this endpoint both provision the user, so either one works if the other fails. Running twice is safe: each run applies the latest status from the provider, and adding or removing a label that is already set or unset does nothing.
+
 ### `POST /webhook`
 
-This endpoint is a webhook that handles two types of events from Stripe: `customer.subscription.created` and `customer.subscription.deleted`. It validates the incoming request using the Stripe's validateWebhook method. If the validation fails, a `401` response is sent.
+This endpoint is a webhook that handles Stripe events `customer.subscription.created`, `customer.subscription.updated` and `customer.subscription.deleted`. It validates the incoming request using the Stripe's validateWebhook method. If the validation fails, a `401` response is sent. The webhook payload isn't trusted: the function fetches the subscription from Stripe and adds or removes the `subscriber` label based on its current status.
 
 **Parameters**
 
