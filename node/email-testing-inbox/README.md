@@ -24,6 +24,7 @@ For each email, the function:
 - Stores the message as a row in the `messages` table: the sender, subject, text, HTML, headers and spam score, with the verification code and links it finds.
 - Uploads each attachment to the `attachments` bucket.
 - Skips a message it already stored. Appwrite retries an email when an execution times out, so the row ID comes from the email's Message-ID and the recipient.
+- Deletes the attachments it uploaded if the message can't be stored, so a retry doesn't leave a second copy in the bucket.
 
 **Response**
 
@@ -41,14 +42,16 @@ Sample `200` Response for a message that was already stored:
 
 ### Schedule
 
-Runs on the function's CRON schedule. Deletes messages older than the retention period, with their attachments. The retention period is 7 days when the `settings` row doesn't exist. A run stops deleting after 45 seconds, and the next run continues.
+Runs on the function's CRON schedule. Deletes messages older than the retention period, with their attachments. The retention period is 7 days when the `settings` row doesn't exist. If the row can't be read for any other reason, the run stops and deletes nothing.
+
+A message is deleted only once all its attachments are deleted. If an attachment can't be deleted, the message stays, and the next run tries again. `kept` counts these messages. A run stops deleting after 45 seconds, and the next run continues.
 
 **Response**
 
 Sample `200` Response:
 
 ```json
-{ "ok": true, "removed": 12, "days": 7 }
+{ "ok": true, "removed": 12, "kept": 0, "days": 7 }
 ```
 
 ### Other triggers

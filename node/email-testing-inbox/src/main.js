@@ -61,12 +61,9 @@ async function receive({ req, log }, tables, storage) {
     .update(`${email.messageId || email.id}|${recipient}`)
     .digest('hex')
     .slice(0, 32);
-  try {
-    await tables.getRow({ databaseId: DATABASE_ID, tableId: MESSAGES, rowId });
+  if (await findMessage(tables, rowId)) {
     log(`Duplicate of ${rowId}, skipped.`);
     return { ok: true, duplicate: true, rowId };
-  } catch (err) {
-    if (err?.code !== 404) throw err;
   }
 
   // Appwrite does not keep attachments, so each one goes into the attachments bucket.
@@ -134,21 +131,67 @@ async function receive({ req, log }, tables, storage) {
       data,
     });
   } catch (err) {
-    if (err?.code !== 409) throw err;
+    const uploaded = attachments.map((a) => a.fileId).filter(Boolean);
+    if (err?.code !== 409) {
+      // The call can fail after the row was written, so look before deleting anything. If the
+      // lookup fails too, keep the files: they may belong to a stored message.
+      const row = await findMessage(tables, rowId).catch(() => {
+        throw err;
+      });
+      if (!row) {
+        // Nothing was stored. Delete the files, or the retry would upload a second set.
+        await deleteFiles(storage, uploaded);
+        throw err;
+      }
+      if (attachmentFileIds(row).join() === uploaded.join()) {
+        log(`Stored ${rowId} for ${recipient}, though the call failed.`);
+        return { ok: true, rowId };
+      }
+    }
     // Another execution stored the same message first: drop this copy's files.
-    await Promise.allSettled(
-      attachments
-        .filter((a) => a.fileId)
-        .map((a) =>
-          storage.deleteFile({ bucketId: BUCKET_ID, fileId: a.fileId })
-        )
-    );
+    await deleteFiles(storage, uploaded);
     return { ok: true, duplicate: true, rowId };
   }
   log(
     `Stored ${rowId} for ${recipient} with ${attachments.length} attachment(s).`
   );
   return { ok: true, rowId };
+}
+
+// Returns the message row, or null if there isn't one.
+async function findMessage(tables, rowId) {
+  try {
+    return await tables.getRow({
+      databaseId: DATABASE_ID,
+      tableId: MESSAGES,
+      rowId,
+      queries: [Query.select(['$id', 'attachments'])],
+    });
+  } catch (err) {
+    if (err?.code === 404) return null;
+    throw err;
+  }
+}
+
+function attachmentFileIds(row) {
+  try {
+    return JSON.parse(row.attachments || '[]')
+      .map((a) => a.fileId)
+      .filter(Boolean);
+  } catch {
+    return [];
+  }
+}
+
+// Deletes the files and returns the IDs that are still there. One that's already gone counts.
+async function deleteFiles(storage, fileIds) {
+  const results = await Promise.allSettled(
+    fileIds.map((fileId) => storage.deleteFile({ bucketId: BUCKET_ID, fileId }))
+  );
+  return fileIds.filter(
+    (_, i) =>
+      results[i].status === 'rejected' && results[i].reason?.code !== 404
+  );
 }
 
 function safeName(name) {
@@ -168,6 +211,9 @@ function normalizeDate(value) {
     : date.toISOString();
 }
 
+// A message row is the only record of its attachments' file IDs, so a row goes only once all its
+// files are gone. A row whose file fails to delete stays for the next run. The Catchall site
+// follows the same rule when someone deletes messages.
 async function cleanup({ log }, tables, storage) {
   let days = DEFAULT_RETENTION_DAYS;
   try {
@@ -177,12 +223,18 @@ async function cleanup({ log }, tables, storage) {
       rowId: 'settings',
     });
     if (settings.retentionDays > 0) days = settings.retentionDays;
-  } catch {
-    // No settings row yet: use the default.
+  } catch (err) {
+    // Only a missing settings row means the default. Any other error stops the run, so it never
+    // deletes messages a longer retention setting would keep.
+    if (err?.code !== 404) throw err;
   }
   const cutoff = new Date(Date.now() - days * 86_400_000).toISOString();
   const started = Date.now();
   let removed = 0;
+  let kept = 0;
+  // Rows come back in the order they were created. Everything before the last kept row is either
+  // deleted or kept, so the next page starts after it.
+  let after = null;
   while (Date.now() - started < 45_000) {
     const page = await tables.listRows({
       databaseId: DATABASE_ID,
@@ -191,35 +243,34 @@ async function cleanup({ log }, tables, storage) {
         Query.lessThan('receivedAt', cutoff),
         Query.select(['$id', 'attachments']),
         Query.limit(100),
+        ...(after ? [Query.cursorAfter(after)] : []),
       ],
     });
     if (page.rows.length === 0) break;
-    const fileIds = page.rows.flatMap((row) => {
-      try {
-        return JSON.parse(row.attachments || '[]')
-          .map((a) => a.fileId)
-          .filter(Boolean);
-      } catch {
-        return [];
-      }
-    });
-    await Promise.allSettled(
-      fileIds.map((fileId) =>
-        storage.deleteFile({ bucketId: BUCKET_ID, fileId })
-      )
+    const stuck = new Set(
+      await deleteFiles(storage, page.rows.flatMap(attachmentFileIds))
     );
-    await tables.deleteRows({
-      databaseId: DATABASE_ID,
-      tableId: MESSAGES,
-      queries: [
-        Query.equal(
-          '$id',
-          page.rows.map((row) => row.$id)
-        ),
-      ],
-    });
-    removed += page.rows.length;
+    const cleared = [];
+    for (const row of page.rows) {
+      if (attachmentFileIds(row).some((fileId) => stuck.has(fileId))) {
+        kept++;
+        after = row.$id;
+      } else cleared.push(row.$id);
+    }
+    if (cleared.length) {
+      await tables.deleteRows({
+        databaseId: DATABASE_ID,
+        tableId: MESSAGES,
+        queries: [Query.equal('$id', cleared)],
+      });
+      removed += cleared.length;
+    }
   }
-  log(`Removed ${removed} message(s) older than ${days} day(s).`);
-  return { ok: true, removed, days };
+  log(
+    `Removed ${removed} message(s) older than ${days} day(s).` +
+      (kept
+        ? ` Kept ${kept} whose attachments couldn't be deleted; the next run tries again.`
+        : '')
+  );
+  return { ok: true, removed, kept, days };
 }
