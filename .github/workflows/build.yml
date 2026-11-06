@@ -58,14 +58,16 @@ jobs:
 
   python:
     name: Python ${{ matrix.name }}
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.runner || 'ubuntu-latest' }}
     strategy:
       fail-fast: false
       matrix:
         include:
+          # setup-python has no Python 3.9 build for Ubuntu 26.04, which ubuntu-latest now is.
           - name: "3.9"
             version: "3.9"
             templates: "python"
+            runner: ubuntu-24.04
           - name: "3.12 MCP"
             version: "3.12"
             templates: "mcp"
