@@ -22,6 +22,7 @@ Runs for each email sent to any address at `inbox-<project-id>.appwrite.email`. 
 For each email, the function:
 
 - Stores the message as a row in the `messages` table: the sender, subject, text, HTML, headers and spam score, with the verification code and links it finds.
+- Picks the code that sits right after wording such as "code:" or "your code is", or on its own line under it. When two values are placed alike, a 6-digit one wins.
 - Uploads each attachment to the `attachments` bucket.
 - Skips a message it already stored. Appwrite retries an email when an execution times out, so the row ID comes from the email's Message-ID and the recipient.
 - Deletes the attachments it uploaded if the message can't be stored, so a retry doesn't leave a second copy in the bucket.
