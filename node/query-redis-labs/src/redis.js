@@ -5,13 +5,13 @@ import { createHash } from 'node:crypto';
  * Throws an error if any of the keys are missing from the object
  */
 export async function getClient() {
-    const { REDIS_PASSWORD, REDIS_HOST } = process.env;
+    const { REDIS_PASSWORD, REDIS_HOST, REDIS_PORT } = process.env;
 
    const client = createClient({
         password: REDIS_PASSWORD,
         socket: {
             host: REDIS_HOST,
-            port: 14714
+            port: REDIS_PORT ? parseInt(REDIS_PORT, 10) : 14714
         }
     });
 

@@ -48,3 +48,12 @@ Authentication password to access your Redis database.
 | ------------ | ------------------------------ |
 | Required     | Yes                            |
 | Sample Value | `efNNehiACfcZiwsTAjcK6xiwPyu6Dpdq` |
+
+### REDIS_PORT
+
+The port on which your Redis database is listening.
+
+| Question     | Answer                         |
+| ------------ | ------------------------------ |
+| Required     | No (Defaults to `14714`)       |
+| Sample Value | `14714`                        |
