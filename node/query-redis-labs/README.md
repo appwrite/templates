@@ -33,18 +33,37 @@ Sample `200` Response:
 
 ### REDIS_HOST
 
-The endpoint to connect to your Redis database.
+The endpoint or hostname to connect to your Redis database. Required only when `REDIS_URL` is absent.
 
-| Question     | Answer                         |
-| ------------ | ------------------------------ |
-| Required     | Yes                            |
+| Question     | Answer                                |
+| ------------ | ------------------------------------- |
+| Required     | Yes (only when `REDIS_URL` is absent) |
 | Sample Value | `redis-13258.c35.eu-central-1-1.ec2.redns.redis-cloud.com` |
+
+### REDIS_PORT
+
+The port to connect to your Redis database.
+
+| Question      | Answer  |
+| ------------- | ------- |
+| Required      | No      |
+| Default Value | `6379`  |
+| Sample Value  | `13258` |
 
 ### REDIS_PASSWORD
 
-Authentication password to access your Redis database.
+Authentication password to access your Redis database. Required only when `REDIS_URL` is absent.
 
-| Question     | Answer                         |
-| ------------ | ------------------------------ |
-| Required     | Yes                            |
-| Sample Value | `efNNehiACfcZiwsTAjcK6xiwPyu6Dpdq` |
+| Question     | Answer                                |
+| ------------ | ------------------------------------- |
+| Required     | Yes (only when `REDIS_URL` is absent) |
+| Sample Value | `efNNehiACfcZiwsTAjcK6xiwPyu6Dpdq`    |
+
+### REDIS_URL
+
+A full connection URL to connect to your Redis database (optional alternative to host/port/password).
+
+| Question     | Answer                                                                                                              |
+| ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| Required     | No                                                                                                                  |
+| Sample Value | `redis://default:efNNehiACfcZiwsTAjcK6xiwPyu6Dpdq@redis-13258.c35.eu-central-1-1.ec2.redns.redis-cloud.com:13258` |
