@@ -1,4 +1,4 @@
-import { Client, Databases, ID, Permission, Role } from 'node-appwrite';
+import { Client, Databases, Permission, Role } from 'node-appwrite';
 
 class AppwriteService {
   constructor(apiKey) {
@@ -9,8 +9,6 @@ class AppwriteService {
       .setKey(apiKey);
 
     this.databases = new Databases(client);
-
-    this.setup();
   }
 
   async setup() {
@@ -78,17 +76,30 @@ class AppwriteService {
     }
   }
 
+  /**
+   * Stores a paid order. The webhook and the /success redirect can both run
+   * for the same order, possibly at the same time. Using the order ID as the
+   * document ID makes the database reject the second write with a 409, so the
+   * order is only ever stored once.
+   * @returns {Promise<boolean>} false if the order was already stored
+   */
   async createOrder(databaseId, collectionId, userId, orderId) {
-    await this.databases.createDocument(
-      databaseId,
-      collectionId,
-      ID.unique(),
-      {
-        userId,
+    try {
+      await this.databases.createDocument(
+        databaseId,
+        collectionId,
         orderId,
-      },
-      [Permission.read(Role.user(userId))]
-    );
+        {
+          userId,
+          orderId,
+        },
+        [Permission.read(Role.user(userId))]
+      );
+      return true;
+    } catch (err) {
+      if (err.code !== 409) throw err;
+      return false;
+    }
   }
 }
 

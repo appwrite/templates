@@ -30,9 +30,15 @@ Location: https://ap...re.lemonsqueezy.com/checkout/custom/7576abf3-...e2fb
 Location: https://mywebapp.com/cancel
 ```
 
+### `GET /success`
+
+Lemon Squeezy redirects the user here after checkout. Lemon Squeezy doesn't pass an order ID in the redirect, so the checkout's redirect URL carries a `state` parameter signed with `LEMON_SQUEEZY_WEBHOOK_SECRET`. It holds the user ID, the email entered at checkout and the checkout time. This endpoint looks up purchases made with that email since the checkout started. If no email was entered, it leaves provisioning to the webhook. It provisions the user the same way the webhook does, then redirects to the `successUrl` given to the checkout endpoint.
+
+The webhook and this endpoint both provision the user, so either one works if the other fails. Running twice is safe: each run applies the latest status from the provider, and adding or removing a label that is already set or unset does nothing.
+
 ### `POST /webhook`
 
-This endpoint is a webhook that handles two types of events from Lemon Squeezy: `subscription_created` and `subscription_expired`. It validates the incoming request using the `X-Signature` header from the Lemon Squeezy webhook. If the validation fails, a `401` response is sent.
+This endpoint is a webhook that handles Lemon Squeezy `subscription_*` lifecycle events. It validates the incoming request using the `X-Signature` header from the Lemon Squeezy webhook. If the validation fails, a `401` response is sent. The webhook payload isn't trusted: the function fetches the subscription from Lemon Squeezy and adds or removes the `subscriber` label based on its current status.
 
 **Parameters**
 
