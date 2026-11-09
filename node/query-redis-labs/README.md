@@ -40,6 +40,16 @@ The endpoint to connect to your Redis database.
 | Required     | Yes                            |
 | Sample Value | `redis-13258.c35.eu-central-1-1.ec2.redns.redis-cloud.com` |
 
+
+### REDIS_PORT
+
+The port of your Redis database.
+
+| Question     | Answer  |
+| ------------ | ------- |
+| Required     | No      |
+| Sample Value | `13258` |
+
 ### REDIS_PASSWORD
 
 Authentication password to access your Redis database.
