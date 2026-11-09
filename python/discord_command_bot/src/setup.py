@@ -1,5 +1,5 @@
 import requests, os
-from .utils import throw_if_missing
+from utils import throw_if_missing
 
 
 def setup():
@@ -16,7 +16,7 @@ def setup():
 
     response = requests.post(
         REGISTER_API,
-        data={
+        json={
             "name": "hello",
             "description": "Hello World Command",
         },
