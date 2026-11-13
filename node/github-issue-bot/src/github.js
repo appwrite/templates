@@ -15,9 +15,14 @@ class GithubService {
   async verifyWebhook(req) {
     const signature = req.headers['x-hub-signature-256'];
 
-    return (
-      typeof signature !== 'string' ||
-      (await verify(process.env.GITHUB_WEBHOOK_SECRET, req.bodyBinary, signature))
+    if (typeof signature !== 'string') {
+      return false;
+    }
+
+    return await verify(
+      process.env.GITHUB_WEBHOOK_SECRET,
+      req.bodyBinary,
+      signature
     );
   }
 
