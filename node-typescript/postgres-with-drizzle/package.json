@@ -22,7 +22,7 @@
   },
   "overrides": {
     "@esbuild-kit/core-utils": {
-      "esbuild": "^0.25.12"
+      "esbuild": "^0.28.0"
     }
   }
 }

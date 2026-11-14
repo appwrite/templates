@@ -10,7 +10,7 @@
   },
   "keywords": [],
   "dependencies": {
-    "meilisearch": "^0.40.0",
+    "meilisearch": "^0.62.0",
     "node-appwrite": "^29.0.0",
     "typescript": "^5.4.5"
   },
