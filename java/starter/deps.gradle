@@ -1,3 +1,3 @@
 dependencies {
-    implementation 'io.appwrite:sdk-for-kotlin:12.2.1'
+    implementation 'io.appwrite:sdk-for-kotlin:12.3.0'
 }
