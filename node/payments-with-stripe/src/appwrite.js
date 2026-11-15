@@ -1,4 +1,4 @@
-import { Client, Databases, ID, Permission, Role } from 'node-appwrite';
+import { Client, Databases, Permission, Role } from 'node-appwrite';
 
 class AppwriteService {
   constructor(apiKey) {
@@ -12,23 +12,34 @@ class AppwriteService {
   }
 
   /**
+   * Stores a paid order. The webhook and the /success redirect can both run
+   * for the same payment, possibly at the same time. Using the payment's ID as
+   * the document ID makes the database reject the second write with a 409, so
+   * the order is only ever stored once.
    * @param {string} databaseId
    * @param {string} collectionId
+   * @param {string} documentId Stripe payment intent ID
    * @param {string} userId
    * @param {string} orderId
-   * @returns {Promise<void>}
+   * @returns {Promise<boolean>} false if the order was already stored
    */
-  async createOrder(databaseId, collectionId, userId, orderId) {
-    await this.databases.createDocument(
-      databaseId,
-      collectionId,
-      ID.unique(),
-      {
-        userId,
-        orderId,
-      },
-      [Permission.read(Role.user(userId))]
-    );
+  async createOrder(databaseId, collectionId, documentId, userId, orderId) {
+    try {
+      await this.databases.createDocument(
+        databaseId,
+        collectionId,
+        documentId,
+        {
+          userId,
+          orderId,
+        },
+        [Permission.read(Role.user(userId))]
+      );
+      return true;
+    } catch (err) {
+      if (err.code !== 409) throw err;
+      return false;
+    }
   }
 
   /**

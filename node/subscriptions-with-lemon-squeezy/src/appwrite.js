@@ -18,11 +18,13 @@ class AppwriteService {
    * @returns {Promise<void>}
    */
   async deleteSubscription(userId) {
-    const labels = (await this.users.get(userId)).labels.filter(
-      (label) => label !== LabelsSubscriber
-    );
+    const { labels } = await this.users.get(userId);
+    if (!labels.includes(LabelsSubscriber)) return;
 
-    await this.users.updateLabels(userId, labels);
+    await this.users.updateLabels(
+      userId,
+      labels.filter((label) => label !== LabelsSubscriber)
+    );
   }
 
   /**
@@ -30,10 +32,10 @@ class AppwriteService {
    * @returns {Promise<void>}
    */
   async createSubscription(userId) {
-    const labels = (await this.users.get(userId)).labels;
-    labels.push(LabelsSubscriber);
+    const { labels } = await this.users.get(userId);
+    if (labels.includes(LabelsSubscriber)) return;
 
-    await this.users.updateLabels(userId, labels);
+    await this.users.updateLabels(userId, [...labels, LabelsSubscriber]);
   }
 }
 
