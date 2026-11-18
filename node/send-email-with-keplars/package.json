@@ -1,0 +1,13 @@
+{
+  "name": "send-email-with-keplars",
+  "version": "1.0.0",
+  "description": "Send transactional emails using the Keplars priority-queue API.",
+  "main": "src/main.js",
+  "type": "module",
+  "scripts": {
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "prettier": "^3.2.5"
+  }
+}
