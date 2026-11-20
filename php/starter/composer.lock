@@ -46,7 +46,8 @@
                 "source": "https://github.com/appwrite/sdk-for-php/tree/18.0.1",
                 "url": "https://appwrite.io/support"
             },
-            "time": "2025-11-10T12:50:46+00:00"
+            "time": "2025-11-10T12:50:46+00:00",
+            "published-time": "2025-11-10T12:51:07+00:00"
         }
     ],
     "packages-dev": [],
@@ -59,5 +60,5 @@
         "php": ">=8.0.0"
     },
     "platform-dev": {},
-    "plugin-api-version": "2.9.0"
+    "plugin-api-version": "2.11.0"
 }
