@@ -1,0 +1,19 @@
+{
+  "name": "pause-on-usage-spike",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/main.js",
+  "type": "module",
+  "scripts": {
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "node-appwrite": "^32.0.0"
+  },
+  "devDependencies": {
+    "prettier": "^3.2.5"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
