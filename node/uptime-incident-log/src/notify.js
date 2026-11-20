@@ -34,7 +34,8 @@ async function send(create) {
 export async function notifySubscribers(messaging, topicId, alert, incident) {
   const topic = await messaging.getTopic({ topicId });
   const { title, text } = summary(alert, incident);
-  const prefix = `${incident.$id}-${incident.status}`;
+  // Message IDs fit 36 characters: the 32-character alert ID, then the state and channel.
+  const prefix = `${incident.$id}-${incident.status === 'firing' ? 'f' : 'r'}`;
   const topics = [topicId];
   const sent = [];
 
@@ -42,7 +43,7 @@ export async function notifySubscribers(messaging, topicId, alert, incident) {
     topic.emailTotal > 0 &&
     (await send(() =>
       messaging.createEmail({
-        messageId: `${prefix}-email`,
+        messageId: `${prefix}e`,
         subject: title,
         content: text,
         topics,
@@ -54,7 +55,7 @@ export async function notifySubscribers(messaging, topicId, alert, incident) {
   if (
     topic.smsTotal > 0 &&
     (await send(() =>
-      messaging.createSms({ messageId: `${prefix}-sms`, content: text, topics })
+      messaging.createSms({ messageId: `${prefix}s`, content: text, topics })
     ))
   ) {
     sent.push('sms');
@@ -63,7 +64,7 @@ export async function notifySubscribers(messaging, topicId, alert, incident) {
     topic.pushTotal > 0 &&
     (await send(() =>
       messaging.createPush({
-        messageId: `${prefix}-push`,
+        messageId: `${prefix}p`,
         title,
         body: text,
         topics,
