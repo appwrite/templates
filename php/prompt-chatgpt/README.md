@@ -1,6 +1,6 @@
 # 🤖 PHP Prompt ChatGPT Function
 
-Ask question, and let OpenAI GPT-3.5-turbo answer.
+Ask question, and let OpenAI GPT-5.6-terra answer.
 
 ## 🧰 Usage
 
@@ -76,7 +76,7 @@ A unique key used to authenticate with the OpenAI API. Please note that this is 
 
 ### OPENAI_MAX_TOKENS
 
-The maximum number of tokens that the OpenAI response should contain. Be aware that OpenAI models read and write a maximum number of tokens per API call, which varies depending on the model. For GPT-3.5-turbo, the limit is 4096 tokens.
+The maximum number of tokens that the OpenAI response should contain. Be aware that OpenAI models read and write a maximum number of tokens per API call, which varies depending on the model.
 
 | Question      | Answer                                                                                                        |
 | ------------- | ------------------------------------------------------------------------------------------------------------- |

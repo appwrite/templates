@@ -22,8 +22,8 @@ return function ($context) {
 
     try {
         $response = $openai->chat()->create([
-            'model' => 'gpt-3.5-turbo',
-            'max_tokens' => $_ENV['MAX_TOKENS'] ?: 150,
+            'model' => 'gpt-5.6-terra',
+            'max_completion_tokens' => $_ENV['MAX_TOKENS'] ?: 150,
             'messages' => [
                 ['role' => 'user', 'content' => $context->req->bodyJson['prompt']]
             ],
