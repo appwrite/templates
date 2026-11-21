@@ -1,5 +1,5 @@
 dependencies {
-    implementation 'io.appwrite:sdk-for-kotlin:4.0.0'
-    implementation 'com.meilisearch.sdk:meilisearch-java:0.11.2'
-    implementation 'com.google.code.gson:gson:2.10.1'
+    implementation 'io.appwrite:sdk-for-kotlin:4.1.0'
+    implementation 'com.meilisearch.sdk:meilisearch-java:0.22.1'
+    implementation 'com.google.code.gson:gson:2.15.0'
 }
