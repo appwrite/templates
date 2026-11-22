@@ -10,7 +10,6 @@ def main(context):
             [
                 "APPWRITE_DATABASE_ID",
                 "APPWRITE_COLLECTION_ID",
-                "RETENTION_PERIOD_DAYS",
             ],
         )
     except ValueError as e:
