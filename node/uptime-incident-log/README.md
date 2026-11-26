@@ -4,7 +4,7 @@ Turns uptime monitor alerts (HTTP, DNS, TCP and SMTP checks) into incident rows 
 
 ## 🧰 Usage
 
-### Event: `monitors.*.alerts.*.create`, `monitors.*.alerts.*.update`
+### Event: `monitors.*.alerts.*.create`, `monitors.*.alerts.*.update.status`
 
 On the first alert, the template creates the `status` database and its `incidents` table. Then it keeps one row per alert, under the alert's ID:
 
@@ -42,7 +42,7 @@ Sample `200` Response:
 | Entrypoint        | `src/main.js`                                                                                                                  |
 | Build Commands    | `npm install`                                                                                                                  |
 | Permissions       | None                                                                                                                           |
-| Events            | `monitors.*.alerts.*.create`, `monitors.*.alerts.*.update`                                                                     |
+| Events            | `monitors.*.alerts.*.create`, `monitors.*.alerts.*.update.status`                                                              |
 | Timeout (Seconds) | 15                                                                                                                             |
 | Scopes            | `databases.read`, `databases.write`, `tables.read`, `tables.write`, `rows.read`, `rows.write`, `topics.read`, `messages.write` |
 

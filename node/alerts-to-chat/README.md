@@ -4,7 +4,7 @@ Posts every firing and resolved monitor alert to Slack, Discord, Microsoft Teams
 
 ## 🧰 Usage
 
-### Event: `monitors.*.alerts.*.create`, `monitors.*.alerts.*.update`
+### Event: `monitors.*.alerts.*.create`, `monitors.*.alerts.*.update.status`
 
 Receives the alert as the event payload, formats it for the chat app behind `CHAT_WEBHOOK_URL` and posts it. Usage alerts show the metric, value, threshold and peak; uptime alerts show the check and what it found. A resolved alert is a new message with how long it fired.
 
@@ -26,14 +26,14 @@ Sample `502` Response, when the chat app refuses the message:
 
 ## ⚙️ Configuration
 
-| Setting           | Value                                                      |
-| ----------------- | ---------------------------------------------------------- |
-| Runtime           | Node (18.0)                                                |
-| Entrypoint        | `src/main.js`                                              |
-| Build Commands    | `npm install`                                              |
-| Permissions       | None                                                       |
-| Events            | `monitors.*.alerts.*.create`, `monitors.*.alerts.*.update` |
-| Timeout (Seconds) | 15                                                         |
+| Setting           | Value                                                             |
+| ----------------- | ----------------------------------------------------------------- |
+| Runtime           | Node (18.0)                                                       |
+| Entrypoint        | `src/main.js`                                                     |
+| Build Commands    | `npm install`                                                     |
+| Permissions       | None                                                              |
+| Events            | `monitors.*.alerts.*.create`, `monitors.*.alerts.*.update.status` |
+| Timeout (Seconds) | 15                                                                |
 
 ## 🔒 Environment Variables
 
