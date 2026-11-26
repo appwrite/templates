@@ -20,8 +20,8 @@ export default async ({ req, res }) => {
 
   try {
     const response = await openai.chat.completions.create({
-      model: 'gpt-3.5-turbo',
-      max_tokens: parseInt(process.env.OPENAI_MAX_TOKENS ?? '512'),
+      model: 'gpt-5.6-terra',
+      max_completion_tokens: parseInt(process.env.OPENAI_MAX_TOKENS ?? '512'),
       messages: [{ role: 'user', content: req.bodyJson.prompt }],
     });
     const completion = response.choices[0].message.content;
