@@ -11,8 +11,11 @@ export default async ({ req, res, log, error }) => {
   }
 
   const alert = req.bodyJson;
+  // An alert fires `create` when it opens and `update` on every later change,
+  // acknowledgements included. Only its opening and its resolution are posted.
+  const opened = req.headers['x-appwrite-event']?.endsWith('.create');
 
-  if (!alert?.monitorId || !['firing', 'resolved'].includes(alert.status)) {
+  if (!alert?.monitorId || !(opened || alert.status === 'resolved')) {
     log('Ignored: not a firing or resolved alert.');
     return res.empty();
   }
