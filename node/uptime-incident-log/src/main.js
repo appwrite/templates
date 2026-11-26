@@ -15,10 +15,13 @@ export default async ({ req, res, log }) => {
   }
 
   const alert = req.bodyJson;
+  // An alert fires `create` when it opens and `update` on every later change,
+  // acknowledgements included. Only its opening and its resolution are recorded.
+  const opened = req.headers['x-appwrite-event']?.endsWith('.create');
 
   if (
     !PROBES.includes(alert?.type) ||
-    !['firing', 'resolved'].includes(alert.status)
+    !(opened || alert.status === 'resolved')
   ) {
     log('Ignored: not a firing or resolved uptime alert.');
     return res.json({ recorded: false });

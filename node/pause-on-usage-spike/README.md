@@ -20,7 +20,7 @@ await monitors.createUsageMonitor({
 });
 ```
 
-### Event: `monitors.*.alerts.*.firing`
+### Event: `monitors.*.alerts.*.create`
 
 When the alert names a function or site and its severity is at least `MIN_SEVERITY`, the template sets that resource's `enabled` to `false`. It leaves alone:
 
@@ -52,7 +52,7 @@ Sample `200` Response:
 | Entrypoint        | `src/main.js`                                                    |
 | Build Commands    | `npm install`                                                    |
 | Permissions       | None                                                             |
-| Events            | `monitors.*.alerts.*.firing`                                     |
+| Events            | `monitors.*.alerts.*.create`                                     |
 | Timeout (Seconds) | 15                                                               |
 | Scopes            | `functions.read`, `functions.write`, `sites.read`, `sites.write` |
 
