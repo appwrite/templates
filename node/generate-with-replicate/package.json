@@ -10,7 +10,7 @@
   "keywords": [],
   "dependencies": {
     "node-appwrite": "^29.0.0",
-    "replicate": "^0.29.4"
+    "replicate": "^0.34.0"
   },
   "devDependencies": {
     "prettier": "^3.2.5"

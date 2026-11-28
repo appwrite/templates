@@ -1,2 +1,4 @@
 github.com/open-runtimes/types-for-go/v4 v4.0.8 h1:GyhMVFN5jwgFxln3Botvlco5sdCO4snG0GuWKbzV9dY=
 github.com/open-runtimes/types-for-go/v4 v4.0.8/go.mod h1:L6N4mNQFedFSlX5hOKmtjUTZdqD691YZlVtXOxC5DSw=
+github.com/open-runtimes/types-for-go/v4 v4.0.11 h1:jFAfLQG8ro5yDCPElmtoai5362ViDXQ+HS3TTw8K7RI=
+github.com/open-runtimes/types-for-go/v4 v4.0.11/go.mod h1:L6N4mNQFedFSlX5hOKmtjUTZdqD691YZlVtXOxC5DSw=
